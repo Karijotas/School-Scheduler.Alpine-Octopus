@@ -1,13 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import 'semantic-ui-css/semantic.min.css';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { HashRouter, Route, Routes } from 'react-router-dom';
+import EditMenu from './Pages/Edit/EditMenu';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+<HashRouter>
+        <Routes>
+          <Route path='/' element={<App />} />
+          <Route path='/edit' element={<EditMenu/>} />
+        </Routes></HashRouter>
+
+
+    
   </React.StrictMode>
 );
 
