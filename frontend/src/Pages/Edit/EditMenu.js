@@ -1,71 +1,87 @@
 import React, { Component } from 'react'
 import { Grid, Menu, Segment } from 'semantic-ui-react'
 import MainMenu from '../../Components/MainMenu'
-import ObjectList from './ObjectList'
+import ObjectList from './ViewObject'
 
 export default class EditMenu extends Component {
-  state = { activeItem: 'bio' }
+  state = { activeItem: 'subjects' }
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
-
   render() {
     const { activeItem } = this.state
-
     return (
       <div>
         <MainMenu />
         <Grid className='MainMenu'>
           <Grid.Column width={2}>
-            <Menu fluid vertical tabular>
+            <Menu fluid vertical secondary pointing>
+
+            
+
               <Menu.Item
-                name='dalykai'
+                name='subjects'
                 content='Dalykai'
-                active={activeItem === 'dalykai'}
+                active={activeItem === 'subjects'}
                 onClick={this.handleItemClick}
               />
+
               <Menu.Item
-                name='mokytojai'
+                name='teachers'
                 content='Mokytojai'
-                active={activeItem === 'mokytojai'}
+                active={activeItem === 'teachers'}
                 onClick={this.handleItemClick}
               />
+
               <Menu.Item
-                name='grupės'
+                name='groups'
                 content='Grupės'
-                active={activeItem === 'grupės'}
+                active={activeItem === 'groups'}
                 onClick={this.handleItemClick}
               />
+
               <Menu.Item
-                name='pamainos'
+                name='shifts'
                 content='Pamainos'
-                active={activeItem === 'pamainos'}
+                active={activeItem === 'shifts'}
                 onClick={this.handleItemClick}
               />
+
               <Menu.Item
-                name='klasės'
+                href='#/edit'
+                name='rooms'
                 content='Klasės'
-                active={activeItem === 'klasės'}
+                active={activeItem === 'rooms'}
                 onClick={this.handleItemClick}
               />
+
               <Menu.Item
-                name='programos'
+                href='#/edit'
+                name='program'
                 content='Programos'
-                active={activeItem === 'programos'}
+                active={activeItem === 'program'}
                 onClick={this.handleItemClick}
               />
+
               <Menu.Item
-                name='moduliai'
+                href='#/edit'
+                name='modules'
                 content='Moduliai'
-                active={activeItem === 'moduliai'}
+                active={activeItem === 'modules'}
                 onClick={this.handleItemClick}
               />
+
             </Menu>
           </Grid.Column>
 
           <Grid.Column stretched width={13}>
             <Segment>
-              <ObjectList />
+
+
+              {/* Here the selection from menu is passed to display your data table */}
+            {ObjectList(activeItem)}
+
+
             </Segment>
           </Grid.Column>
         </Grid>
