@@ -2,8 +2,8 @@
 # 02-07 Under Construction
 ### What needs  to be done:
 
-Each developer should add their api to EditMenu options
-Implementations could differ, so the best is to make a new file for your implementation (akin to "ViewObject", but with fetching and mapping)
+Each developer should add their api to EditMenu options\
+Implementations could differ, so the best is to make a new file for your implementation (akin to "ViewObject", but with fetching and mapping)\
 We will hopefully merge all the implementations later
 
 
