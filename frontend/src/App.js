@@ -1,16 +1,15 @@
 import './App.css';
-import MenuExampleTabular from './Components/MainMenu';
-import EditMenu from './Pages/Edit/EditMenu';
 import * as React from "react";
+import MainMenu from './Components/MainMenu';
+import Front from './Pages/FrontPage';
 
 
 
 function App() {
   return (
-    <div className="App">
-
-      <MenuExampleTabular />
-      <EditMenu/>
+    <div className="App"> 
+<MainMenu />
+<Front/>
     </div>
   );
 }

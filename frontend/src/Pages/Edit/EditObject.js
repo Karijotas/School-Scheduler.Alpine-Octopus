@@ -1,8 +1,8 @@
 import React from 'react'
-import { Button, Icon, Image, Modal } from 'semantic-ui-react'
-import ButtonExampleConditionals from '../../Components/OkCancel'
+import { Button, Modal } from 'semantic-ui-react'
+import OkCancel from '../../Components/OkCancel'
 
-function ModalScrollingExample() {
+function EditObjectModal() {
     const [open, setOpen] = React.useState(false)
 
     return (<div>
@@ -18,8 +18,6 @@ function ModalScrollingExample() {
             <Modal.Content >
                 <Modal.Description>
                     <p>
-
-
                         Text Text Text
                     </p>
 
@@ -31,7 +29,7 @@ function ModalScrollingExample() {
         <Button primary onClick={() => setOpen(false)}>
           Tvarkaraščiai <Icon name='right chevron' />
         </Button>  */}
-                <ButtonExampleConditionals />
+                <OkCancel />
             </Modal.Actions>
         </Modal>
         <Button basic icon='remove' negative></Button>
@@ -39,4 +37,4 @@ function ModalScrollingExample() {
     )
 }
 
-export default ModalScrollingExample
+export default EditObjectModal

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Table } from 'semantic-ui-react'
-import ModalScrollingExample from './EditObject'
+import EditObjectModal from './EditObject'
 
 const ObjectList = () => (
     <Table celled>
@@ -25,8 +25,8 @@ const ObjectList = () => (
                 <Table.Cell>John</Table.Cell>
                 <Table.Cell>John</Table.Cell>
                 <Table.Cell>John</Table.Cell>
-                <Table.Cell selectable collapsing>
-                    <a href='#'><ModalScrollingExample /></a>
+                <Table.Cell collapsing>
+                  <EditObjectModal />
                 </Table.Cell>
             </Table.Row>
             <Table.Row>
@@ -36,8 +36,8 @@ const ObjectList = () => (
                 <Table.Cell>John</Table.Cell>
                 <Table.Cell>John</Table.Cell>
                 <Table.Cell>John</Table.Cell>
-                <Table.Cell selectable>
-                    <a href='#'><ModalScrollingExample /></a>
+                <Table.Cell >
+                   <EditObjectModal />
                 </Table.Cell>
             </Table.Row>
             <Table.Row>
@@ -47,8 +47,8 @@ const ObjectList = () => (
                 <Table.Cell>John</Table.Cell>
                 <Table.Cell>John</Table.Cell>
                 <Table.Cell>John</Table.Cell>
-                <Table.Cell selectable>
-                    <a href='#'><ModalScrollingExample /></a>
+                <Table.Cell>
+                    <EditObjectModal />
                 </Table.Cell>
             </Table.Row>
             <Table.Row >
@@ -58,8 +58,8 @@ const ObjectList = () => (
                 <Table.Cell>John</Table.Cell>
                 <Table.Cell>John</Table.Cell>
                 <Table.Cell>John</Table.Cell>
-                <Table.Cell selectable >
-                    <a href='#'><ModalScrollingExample /></a>
+                <Table.Cell>
+                    <EditObjectModal />
                 </Table.Cell>
             </Table.Row>
             <Table.Row>
@@ -69,8 +69,8 @@ const ObjectList = () => (
                 <Table.Cell>John</Table.Cell>
                 <Table.Cell>John</Table.Cell>
                 <Table.Cell>John</Table.Cell>
-                <Table.Cell selectable >
-                    <a href='#'><ModalScrollingExample /></a>
+                <Table.Cell>
+                    <EditObjectModal />
                 </Table.Cell>
             </Table.Row>
             <Table.Row>
@@ -80,8 +80,8 @@ const ObjectList = () => (
                 <Table.Cell>John</Table.Cell>
                 <Table.Cell>John</Table.Cell>
                 <Table.Cell>John</Table.Cell>
-                <Table.Cell selectable>
-                    <a href='#' ><ModalScrollingExample /></a>
+                <Table.Cell>
+                    <EditObjectModal/>
                 </Table.Cell>
             </Table.Row>
         </Table.Body>

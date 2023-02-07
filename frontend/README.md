@@ -1,8 +1,10 @@
 
 # 02-06 Under Construction
-# What needs  to be done:
+### What needs  to be done:
 
 Pagination
+
+
 Other quality of life improvements
 
 
