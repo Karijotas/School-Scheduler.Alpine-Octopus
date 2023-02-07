@@ -1,3 +1,14 @@
+
+# 02-06 Under Construction
+### What needs  to be done:
+
+Pagination
+
+
+Other quality of life improvements
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
