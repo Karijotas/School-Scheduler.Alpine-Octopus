@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { Menu } from 'semantic-ui-react'
 import logo from '../Images/techin-logo.png'
+
+
 export default class MainMenu extends Component {
     state = { activeItem: 'bio' }
 
