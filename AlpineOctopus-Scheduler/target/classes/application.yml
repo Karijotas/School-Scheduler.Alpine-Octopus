@@ -1,0 +1,59 @@
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  jackson:
+    default-property-inclusion: non_null
+    serialization:
+      write-dates-as-timestamps: false
+    date-format: "yyyy-MM-dd HH:mm"
+  flyway:
+    enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: none
+#      ddl-auto: drop-and-create
+    generate-ddl: false
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+  datasource:
+    #url: jdbc:h2:tcp://localhost/~/test;SCHEMA=TECH_SCHEMA
+    #url: jdbc:h2:mem:test;;INIT=CREATE SCHEMA IF NOT EXISTS TECH_SCHEMA
+    url: jdbc:h2:file:~/AlpineOctopus-Scheduler
+    #    url: jdbc:h2:file:/data/demo
+    # home local Win: jdbc:h2:~/test
+    username: sa
+    password:
+    driverClassName: org.h2.Driver
+    jpa:
+      spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+#      generate-ddl: false
+
+#      hibernate:
+#        ddl-auto: none
+#  h2:
+#    console.enabled: true
+
+
+logging:
+  level:
+    lt:
+      techin: DEBUG
+    org:
+      springframework: INFO
+#      springframework: DEBUG
+#        jdbc:
+#          core:
+#            JdbcTemplate: DEBUG
+#            StatementCreatorUtils: DEBUG
+      hibernate:
+        SQL: DEBUG
+        type: TRACE
+      type:
+        descriptor:
+          sql:
+            BasicBinder: DEBUG
+Server:
+  Port: 8082
