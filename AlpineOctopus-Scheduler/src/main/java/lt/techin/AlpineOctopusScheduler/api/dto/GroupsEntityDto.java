@@ -2,14 +2,14 @@ package lt.techin.AlpineOctopusScheduler.api.dto;
 
 import java.util.Objects;
 
-public class GroupEntityDto extends GroupDto{
+public class GroupsEntityDto extends GroupsDto {
 
     private Long id;
 
-    public GroupEntityDto() {
+    public GroupsEntityDto() {
     }
 
-    public GroupEntityDto(String name, Integer schoolYear, Integer studentAmount, String program, String shift, Long id) {
+    public GroupsEntityDto(String name, Integer schoolYear, Integer studentAmount, String program, String shift, Long id) {
         super(name, schoolYear, studentAmount, program, shift);
         this.id = id;
     }
@@ -27,7 +27,7 @@ public class GroupEntityDto extends GroupDto{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        GroupEntityDto that = (GroupEntityDto) o;
+        GroupsEntityDto that = (GroupsEntityDto) o;
         return Objects.equals(getId(), that.getId());
     }
 

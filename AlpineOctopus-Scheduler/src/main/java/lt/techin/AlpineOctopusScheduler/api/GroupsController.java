@@ -1,10 +1,9 @@
 package lt.techin.AlpineOctopusScheduler.api;
 
-import lt.techin.AlpineOctopusScheduler.api.dto.GroupDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.GroupEntityDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupMapper;
-import lt.techin.AlpineOctopusScheduler.dao.GroupRepository;
-import lt.techin.AlpineOctopusScheduler.model.Group;
+import lt.techin.AlpineOctopusScheduler.api.dto.GroupsDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.GroupsEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupsMapper;
+import lt.techin.AlpineOctopusScheduler.dao.GroupsRepository;
 import lt.techin.AlpineOctopusScheduler.service.GroupService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,36 +17,36 @@ import javax.validation.Valid;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupMapper.toGroup;
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupMapper.toGroupDto;
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupsMapper.toGroup;
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupsMapper.toGroupDto;
 import static org.springframework.http.ResponseEntity.ok;
 
 @Controller
 @RequestMapping("/api/v1/groups")
 @Validated
-public class GroupController {
+public class GroupsController {
 
-    private final Logger logger = LoggerFactory.getLogger(GroupController.class);
+    private final Logger logger = LoggerFactory.getLogger(GroupsController.class);
     private final GroupService groupService;
-    private final GroupRepository groupRepository;
+    private final GroupsRepository groupsRepository;
 
-    public GroupController(GroupService groupService,
-                           GroupRepository groupRepository) {
+    public GroupsController(GroupService groupService,
+                            GroupsRepository groupsRepository) {
         this.groupService = groupService;
-        this.groupRepository = groupRepository;
+        this.groupsRepository = groupsRepository;
     }
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE,})
     @ResponseBody
-    public List<GroupEntityDto> getGroups(){
+    public List<GroupsEntityDto> getGroups(){
         return groupService.getAll()
                 .stream()
-                .map(GroupMapper::toGroupEntityDto)
+                .map(GroupsMapper::toGroupEntityDto)
                 .collect(toList());
     }
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE,})
-    public ResponseEntity<GroupDto> createGroup(@Valid @RequestBody GroupDto groupDto){
-        var createdGroup = groupService.create(toGroup(groupDto));
+    public ResponseEntity<GroupsDto> createGroup(@Valid @RequestBody GroupsDto groupsDto){
+        var createdGroup = groupService.create(toGroup(groupsDto));
 
         return ok(toGroupDto(createdGroup));
     }
@@ -63,14 +62,14 @@ public class GroupController {
         }
     }
     @PutMapping("/{groupId}")
-    public ResponseEntity<GroupDto> replaceGroup(@PathVariable Long groupId, @RequestBody GroupDto groupDto) {
-        var updatedGroup = groupService.replace(groupId, toGroup(groupDto));
+    public ResponseEntity<GroupsDto> replaceGroup(@PathVariable Long groupId, @RequestBody GroupsDto groupsDto) {
+        var updatedGroup = groupService.replace(groupId, toGroup(groupsDto));
 
         return ok(toGroupDto(updatedGroup));
     }
     @PatchMapping("/{groupId}")
-    public ResponseEntity<GroupDto> updateGroup(@PathVariable Long groupId, @RequestBody GroupDto groupDto) {
-        var updatedGroup = groupService.update(groupId, toGroup(groupDto));
+    public ResponseEntity<GroupsDto> updateGroup(@PathVariable Long groupId, @RequestBody GroupsDto groupsDto) {
+        var updatedGroup = groupService.update(groupId, toGroup(groupsDto));
 
         return ok(toGroupDto(updatedGroup));
     }

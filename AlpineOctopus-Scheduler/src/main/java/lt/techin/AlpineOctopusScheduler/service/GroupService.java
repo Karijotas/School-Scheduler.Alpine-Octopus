@@ -1,7 +1,7 @@
 package lt.techin.AlpineOctopusScheduler.service;
 
-import lt.techin.AlpineOctopusScheduler.dao.GroupRepository;
-import lt.techin.AlpineOctopusScheduler.model.Group;
+import lt.techin.AlpineOctopusScheduler.dao.GroupsRepository;
+import lt.techin.AlpineOctopusScheduler.model.Groups;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -12,42 +12,42 @@ import java.util.Optional;
 @Service
 public class GroupService {
 
-    private GroupRepository groupRepository;
+    private GroupsRepository groupsRepository;
     @Autowired
-    public GroupService(GroupRepository groupRepository) {
-        this.groupRepository = groupRepository;
+    public GroupService(GroupsRepository groupsRepository) {
+        this.groupsRepository = groupsRepository;
     }
-    public List<Group> getAll() {
-        return groupRepository.findAll();
-    }
-
-    public Optional<Group> getById(Long id){
-        return groupRepository.findById(id);
+    public List<Groups> getAll() {
+        return groupsRepository.findAll();
     }
 
-    public Group create(Group group){
-        return groupRepository.save(group);
+    public Optional<Groups> getById(Long id){
+        return groupsRepository.findById(id);
     }
-    public Group update(Long id, Group group){
-        Group existingGroup =  groupRepository.findById(id)
+
+    public Groups create(Groups groups){
+        return groupsRepository.save(groups);
+    }
+    public Groups update(Long id, Groups groups){
+        Groups existingGroups =  groupsRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Group doesn't exist"));
 
-        existingGroup.setName(group.getName());
-        existingGroup.setShift(group.getShift());
-        existingGroup.setProgram(group.getProgram());
-        existingGroup.setSchoolYear(group.getSchoolYear());
-        existingGroup.setStudentAmount(group.getStudentAmount());
-        return groupRepository.save(existingGroup);
+        existingGroups.setName(groups.getName());
+        existingGroups.setShift(groups.getShift());
+        existingGroups.setProgram(groups.getProgram());
+        existingGroups.setSchoolYear(groups.getSchoolYear());
+        existingGroups.setStudentAmount(groups.getStudentAmount());
+        return groupsRepository.save(existingGroups);
     }
 
-    public Group replace(Long id, Group group){
-        group.setId(id);
-        return groupRepository.save(group);
+    public Groups replace(Long id, Groups groups){
+        groups.setId(id);
+        return groupsRepository.save(groups);
     }
 
     public Boolean deleteById(Long id){
         try{
-            groupRepository.deleteById(id);
+            groupsRepository.deleteById(id);
             return true;
         } catch (EmptyResultDataAccessException e){
             return false;

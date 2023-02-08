@@ -1,11 +1,8 @@
 package lt.techin.AlpineOctopusScheduler.api.dto;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
-public class GroupDto {
+public class GroupsDto {
 
 
     private String name;
@@ -14,9 +11,9 @@ public class GroupDto {
     private String program;
     private String shift;
 
-    public GroupDto(){}
+    public GroupsDto(){}
 
-    public GroupDto(String name, Integer schoolYear, Integer studentAmount, String program, String shift) {
+    public GroupsDto(String name, Integer schoolYear, Integer studentAmount, String program, String shift) {
         this.name = name;
         this.schoolYear = schoolYear;
         this.studentAmount = studentAmount;
@@ -68,8 +65,8 @@ public class GroupDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        GroupDto groupDto = (GroupDto) o;
-        return Objects.equals(getName(), groupDto.getName()) && Objects.equals(getSchoolYear(), groupDto.getSchoolYear()) && Objects.equals(getStudentAmount(), groupDto.getStudentAmount()) && Objects.equals(getProgram(), groupDto.getProgram()) && Objects.equals(getShift(), groupDto.getShift());
+        GroupsDto groupsDto = (GroupsDto) o;
+        return Objects.equals(getName(), groupsDto.getName()) && Objects.equals(getSchoolYear(), groupsDto.getSchoolYear()) && Objects.equals(getStudentAmount(), groupsDto.getStudentAmount()) && Objects.equals(getProgram(), groupsDto.getProgram()) && Objects.equals(getShift(), groupsDto.getShift());
     }
 
     @Override

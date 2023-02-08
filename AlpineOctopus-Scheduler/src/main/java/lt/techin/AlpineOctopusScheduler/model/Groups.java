@@ -1,19 +1,14 @@
 package lt.techin.AlpineOctopusScheduler.model;
 
-import org.springframework.data.auditing.CurrentDateTimeProvider;
-
 import javax.persistence.Entity;
 import javax.persistence.*;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-public class Group {
+public class Groups {
 
 
     @Id
@@ -34,7 +29,7 @@ public class Group {
 
     //private Shift shift;
 
-    public Group(){}
+    public Groups(){}
 
     public Long getId() {
         return id;
@@ -88,8 +83,8 @@ public class Group {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Group group = (Group) o;
-        return Objects.equals(getId(), group.getId()) && Objects.equals(getName(), group.getName()) && Objects.equals(getSchoolYear(), group.getSchoolYear()) && Objects.equals(getStudentAmount(), group.getStudentAmount()) && Objects.equals(getProgram(), group.getProgram()) && Objects.equals(getShift(), group.getShift());
+        Groups groups = (Groups) o;
+        return Objects.equals(getId(), groups.getId()) && Objects.equals(getName(), groups.getName()) && Objects.equals(getSchoolYear(), groups.getSchoolYear()) && Objects.equals(getStudentAmount(), groups.getStudentAmount()) && Objects.equals(getProgram(), groups.getProgram()) && Objects.equals(getShift(), groups.getShift());
     }
 
     @Override
