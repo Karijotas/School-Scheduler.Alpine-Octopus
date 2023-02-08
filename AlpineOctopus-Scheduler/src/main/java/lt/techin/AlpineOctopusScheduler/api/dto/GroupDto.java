@@ -1,47 +1,27 @@
-package lt.techin.AlpineOctopusScheduler.model;
+package lt.techin.AlpineOctopusScheduler.api.dto;
 
-import org.springframework.data.auditing.CurrentDateTimeProvider;
-
-import javax.persistence.Entity;
-import javax.persistence.*;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
-@Entity
-public class Group {
+public class GroupDto {
 
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @NotBlank
     private String name;
-    @NotBlank
-    @Min(value = 2023, message = "School year should not be less than year the application was made")
     private Integer schoolYear;
-    @NotNull
     private Integer studentAmount;
-    @NotBlank
     private String program;
-    @NotBlank
     private String shift;
 
-    //private Shift shift;
+    public GroupDto(){}
 
-    public Group(){}
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public GroupDto(String name, Integer schoolYear, Integer studentAmount, String program, String shift) {
+        this.name = name;
+        this.schoolYear = schoolYear;
+        this.studentAmount = studentAmount;
+        this.program = program;
+        this.shift = shift;
     }
 
     public String getName() {
@@ -88,20 +68,19 @@ public class Group {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Group group = (Group) o;
-        return Objects.equals(getId(), group.getId()) && Objects.equals(getName(), group.getName()) && Objects.equals(getSchoolYear(), group.getSchoolYear()) && Objects.equals(getStudentAmount(), group.getStudentAmount()) && Objects.equals(getProgram(), group.getProgram()) && Objects.equals(getShift(), group.getShift());
+        GroupDto groupDto = (GroupDto) o;
+        return Objects.equals(getName(), groupDto.getName()) && Objects.equals(getSchoolYear(), groupDto.getSchoolYear()) && Objects.equals(getStudentAmount(), groupDto.getStudentAmount()) && Objects.equals(getProgram(), groupDto.getProgram()) && Objects.equals(getShift(), groupDto.getShift());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getSchoolYear(), getStudentAmount(), getProgram(), getShift());
+        return Objects.hash(getName(), getSchoolYear(), getStudentAmount(), getProgram(), getShift());
     }
 
     @Override
     public String toString() {
-        return "Group{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+        return "GroupDto{" +
+                "name='" + name + '\'' +
                 ", schoolYear=" + schoolYear +
                 ", studentAmount=" + studentAmount +
                 ", program='" + program + '\'' +
