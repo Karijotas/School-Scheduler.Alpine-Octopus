@@ -57,3 +57,4 @@ logging:
             BasicBinder: DEBUG
 Server:
   Port: 8082
+
