@@ -9,6 +9,7 @@
         <module name="AlpineOctopus-Scheduler" />
       </profile>
     </annotationProcessing>
+
     <bytecodeTargetLevel>
       <module name="AlpineOctopus-Scheduler" target="11" />
     </bytecodeTargetLevel>
