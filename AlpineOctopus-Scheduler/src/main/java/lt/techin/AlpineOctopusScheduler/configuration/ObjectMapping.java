@@ -8,12 +8,12 @@ import org.springframework.context.annotation.Configuration;
 
 import java.time.format.DateTimeFormatter;
 
+
 @Configuration
 public class ObjectMapping {
 
     private static final String dateFormat = "yyyy-MM-dd";
     private static final String dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
-
 
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer jsonCustomizer() {

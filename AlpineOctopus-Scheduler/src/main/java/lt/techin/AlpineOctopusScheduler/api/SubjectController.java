@@ -5,6 +5,9 @@ import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper;
 import lt.techin.AlpineOctopusScheduler.model.Subject;
 import lt.techin.AlpineOctopusScheduler.service.SubjectService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -22,14 +25,14 @@ import static org.springframework.http.ResponseEntity.ok;
 @RequestMapping("/api/v1/subjects")
 @Validated
 public class SubjectController {
-
+    public static Logger logger = LoggerFactory.getLogger(SubjectController.class);
     private final SubjectService subjectService;
 
     public SubjectController(SubjectService subjectService) {
         this.subjectService = subjectService;
     }
 
-    @GetMapping
+    @GetMapping (produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public List<SubjectEntityDto> getSubjects() {
         return subjectService.getAll().stream()
