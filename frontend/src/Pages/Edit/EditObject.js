@@ -2,6 +2,9 @@ import React from 'react'
 import { Button, Modal } from 'semantic-ui-react'
 import OkCancel from '../../Components/OkCancel'
 
+// !Deprecated!
+
+
 function EditObjectModal() {
     const [open, setOpen] = React.useState(false)
 
