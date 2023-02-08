@@ -16,7 +16,7 @@ export default class MainMenu extends Component {
                 <Menu.Item
                     href='/'
                     name='home'
-                    content=<img alt="logo" src={logo} />
+                    content={<img alt="logo" src={logo} />}
                     active={activeItem === 'home'}
                     onClick={this.handleItemClick}
                 />

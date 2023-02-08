@@ -32,7 +32,7 @@ function EditObjectModal() {
                 <OkCancel />
             </Modal.Actions>
         </Modal>
-        <Button basic icon='remove' negative></Button>
+        
     </div>
     )
 }

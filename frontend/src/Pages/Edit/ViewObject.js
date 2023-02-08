@@ -1,5 +1,6 @@
 import React from 'react'
 import ViewGroups from './EditPages/ViewGroups'
+import ViewPrograms from './EditPages/ViewPrograms'
 
 // Here we should pass the selection as props, and then map the values from Backend to the tables
 // I've just done here a simple if else that is only for example, not how it should work.
@@ -47,9 +48,7 @@ function ObjectList(props) {
     } 
     if (props === 'program') {
         return (
-            <p>
-                Programos:
-            </p>
+            <ViewPrograms />
 
         )
     }
