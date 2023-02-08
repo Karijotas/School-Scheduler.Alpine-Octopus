@@ -32,13 +32,14 @@ public class SubjectController {
         this.subjectService = subjectService;
     }
 
-    @GetMapping (produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping ("")
     @ResponseBody
     public List<SubjectEntityDto> getSubjects() {
-        return subjectService.getAll().stream()
+       List <SubjectEntityDto> xxx= subjectService.getAll().stream()
                 .map(SubjectMapper::toSubjectEntityDto)
                 .collect(toList());
         //return ResponseEntity.ok(subjectRepository.getAll());
+        return xxx;
     }
 
     @PostMapping
