@@ -1,8 +1,24 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Table } from 'semantic-ui-react'
 import EditObjectModal from '../EditObject'
-function ViewGroups() {
 
+const JSON_HEADERS = {
+    'Content-Type': 'application/json'
+};
+
+
+export function ViewGroups() {
+    const [groups, setGroups] = useState([]);
+
+    const fetchGroups = async () => {
+        fetch('/api/v1/groups')
+            .then(response => response.json())
+            .then(jsonResponse => setGroups(jsonResponse));
+    };
+
+    useEffect(() => {
+        fetchGroups();
+    }, []);
 
 
     return (<div>
@@ -21,76 +37,23 @@ function ViewGroups() {
             </Table.Header>
 
             <Table.Body>
-                <Table.Row >
-                    <Table.Cell collapsing>1</Table.Cell>
-                    <Table.Cell>John</Table.Cell>
-                    <Table.Cell>No Action</Table.Cell>
-                    <Table.Cell>John</Table.Cell>
-                    <Table.Cell>John</Table.Cell>
-                    <Table.Cell>John</Table.Cell>
+                {groups.map(group => (
+                    <Table.Row key={group.id}>
+                    <Table.Cell collapsing>{group.id}</Table.Cell>
+                    <Table.Cell>{group.name}</Table.Cell>
+                    <Table.Cell>{group.schoolYear}</Table.Cell>
+                    <Table.Cell>{group.studentAmount}</Table.Cell>
+                    <Table.Cell>{group.program}</Table.Cell>
+                    <Table.Cell>{group.shift}</Table.Cell>
                     <Table.Cell collapsing>
                         <EditObjectModal />
                     </Table.Cell>
                 </Table.Row>
-                <Table.Row>
-                    <Table.Cell>2</Table.Cell>
-                    <Table.Cell>Jamie</Table.Cell>
-                    <Table.Cell>Approved</Table.Cell>
-                    <Table.Cell>John</Table.Cell>
-                    <Table.Cell>John</Table.Cell>
-                    <Table.Cell>John</Table.Cell>
-                    <Table.Cell >
-                        <EditObjectModal />
-                    </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                    <Table.Cell>3</Table.Cell>
-                    <Table.Cell>Jill</Table.Cell>
-                    <Table.Cell>Denied</Table.Cell>
-                    <Table.Cell>John</Table.Cell>
-                    <Table.Cell>John</Table.Cell>
-                    <Table.Cell>John</Table.Cell>
-                    <Table.Cell>
-                        <EditObjectModal />
-                    </Table.Cell>
-                </Table.Row>
-                <Table.Row >
-                    <Table.Cell>4</Table.Cell>
-                    <Table.Cell>John</Table.Cell>
-                    <Table.Cell>No Action</Table.Cell>
-                    <Table.Cell>John</Table.Cell>
-                    <Table.Cell>John</Table.Cell>
-                    <Table.Cell>John</Table.Cell>
-                    <Table.Cell>
-                        <EditObjectModal />
-                    </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                    <Table.Cell>5</Table.Cell>
-                    <Table.Cell>Jamie</Table.Cell>
-                    <Table.Cell >Approved</Table.Cell>
-                    <Table.Cell>John</Table.Cell>
-                    <Table.Cell>John</Table.Cell>
-                    <Table.Cell>John</Table.Cell>
-                    <Table.Cell>
-                        <EditObjectModal />
-                    </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                    <Table.Cell>6</Table.Cell>
-                    <Table.Cell>Jill</Table.Cell>
-                    <Table.Cell >Denied</Table.Cell>
-                    <Table.Cell>John</Table.Cell>
-                    <Table.Cell>John</Table.Cell>
-                    <Table.Cell>John</Table.Cell>
-                    <Table.Cell>
-                        <EditObjectModal />
-                    </Table.Cell>
-                </Table.Row>
+                ))}
+               
             </Table.Body>
         </Table>
     </div>
     )
 }
 
-export default ViewGroups

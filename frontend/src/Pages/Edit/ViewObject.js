@@ -1,13 +1,12 @@
 import React from 'react'
-import ViewGroups from './EditPages/ViewGroups'
-
+import { ViewGroups } from './EditPages/ViewGroups'
 // Here we should pass the selection as props, and then map the values from Backend to the tables
 // I've just done here a simple if else that is only for example, not how it should work.
 // Change/Edit this section to suit your case. 
 // Best is to create a new file for your implementation based on this one, and later we will refactor and merge the best options
 // One could just pass the newly created file here, after return
 
-function ObjectList(props) {
+export function ObjectList(props) {
     if (props === 'groups') {
         return (
             <ViewGroups/>
@@ -63,4 +62,3 @@ function ObjectList(props) {
     }
 }
 
-export default ObjectList

@@ -33,6 +33,7 @@ public class GroupsMapper {
     public static GroupsEntityDto toGroupEntityDto(Groups groups){
         var groupEntityDto = new GroupsEntityDto();
 
+        groupEntityDto.setId(groups.getId());
         groupEntityDto.setName(groups.getName());
         groupEntityDto.setSchoolYear(groups.getSchoolYear());
         groupEntityDto.setStudentAmount(groups.getStudentAmount());
@@ -45,6 +46,7 @@ public class GroupsMapper {
     public static Groups toGroup(GroupsEntityDto groupEntityDto){
         var group = new Groups();
 
+        group.setId(groupEntityDto.getId());
         group.setName(groupEntityDto.getName());
         group.setSchoolYear(groupEntityDto.getSchoolYear());
         group.setStudentAmount(groupEntityDto.getStudentAmount());

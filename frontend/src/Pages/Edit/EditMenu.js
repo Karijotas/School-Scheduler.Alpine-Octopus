@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Grid, Menu, Segment } from 'semantic-ui-react'
 import MainMenu from '../../Components/MainMenu'
-import ObjectList from './ViewObject'
+import { ObjectList } from './ViewObject'
 
 export default class EditMenu extends Component {
   state = { activeItem: 'subjects' }
