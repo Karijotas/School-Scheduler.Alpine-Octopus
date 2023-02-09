@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Button, Grid, Icon, Menu, Segment } from 'semantic-ui-react'
 import MainMenu from '../../Components/MainMenu'
 import { ObjectList } from './ViewObject'
+import './EditPages/ViewGroups.css'
 
 export default class EditMenu extends Component {
   state = { activeItem: 'subjects' }
@@ -15,12 +16,13 @@ export default class EditMenu extends Component {
         
         <MainMenu />
         
-        <Grid className='MainMenu'>
+        <Grid className='MainMenu '>
           
           
-          <Grid.Column width={2}>
-            <Menu stackable vertical secondary pointing>
-            <Button icon labelPosition='right' primary><Icon name='book'/>Kurti Naują...</Button>
+          <Grid.Column width={2} id='main'>            
+
+            <Menu stackable vertical secondary pointing className='ui centered grid teal'>
+          <Button icon labelPosition='left' primary><Icon name='database'/>Kurti Naują Įrašą</Button>
 
             
 

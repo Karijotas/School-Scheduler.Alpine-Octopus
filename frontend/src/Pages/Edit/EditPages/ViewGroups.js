@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
-import { Button, Input, Pagination, Table } from 'semantic-ui-react'
+import { Button, Icon, Input, Pagination, Table } from 'semantic-ui-react'
 import './ViewGroups.css';
 
 const JSON_HEADERS = {
@@ -58,7 +58,7 @@ export function ViewGroups() {
                         <Table.Cell>{group.modifiedDate}</Table.Cell>
                         <Table.Cell collapsing>
                         <Link to={'/groups/edit/' + group.id}>
-                             <Button basic circular compact icon='pencil' ></Button>
+                             <Button basic circular compact icon='pencil'></Button>
                             </Link> 
                             <Button basic circular negative compact icon='trash alternate' onClick={() => removeGroup(group.id)}></Button>
 

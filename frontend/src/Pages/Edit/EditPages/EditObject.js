@@ -70,7 +70,7 @@ export function EditObject() {
     return (<div>
         <MainMenu />
         <div className='ui container' id='table'>
-             <Table celled collapsing color='yellow'>
+             <Table celled collapsing compact color='violet'>
             <Table.Header >
                 <Table.Row  >
                     <Table.HeaderCell >ID</Table.HeaderCell>
