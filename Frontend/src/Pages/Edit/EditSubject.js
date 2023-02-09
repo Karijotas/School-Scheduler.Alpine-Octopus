@@ -1,5 +1,6 @@
-import {useParams} from "react-router-dom";
+import {useParams, Link} from "react-router-dom";
 import { useState, useEffect } from "react";
+import { Table , Button} from "semantic-ui-react";
 
 export function EditSubject(){
 
@@ -44,7 +45,35 @@ const updateSubject = () => {
 
 
     return(
-        <div></div>
+        <Table celled>
+            <Table.Header>
+                <Table.Row>
+                    <Table.HeaderCell>ID</Table.HeaderCell>
+                    <Table.HeaderCell>Pavadinimas</Table.HeaderCell>   
+                    <Table.HeaderCell>Moduliai</Table.HeaderCell>                  
+                    <Table.HeaderCell>Veiksmai</Table.HeaderCell>
+
+                </Table.Row>
+            </Table.Header>
+
+            <Table.Body>
+                <Table.Row key={subject.id}>
+                        <Table.Cell collapsing>{subject.id}</Table.Cell>
+                        <Table.Cell>{subject.name}</Table.Cell>
+                        <Table.Cell>Moduliai</Table.Cell>
+                        <Table.Cell collapsing> 
+                            <Link to={"/subjects/" + subject.id}>
+                            <Button icon='pencil alternate' basic ></Button>
+                      </Link>
+                      <Link to={"/subjects/delete/" + subject.id}>
+                      <Button basic icon='remove' negative></Button>
+                      </Link>
+                            
+                            
+                        </Table.Cell>
+                </Table.Row>
+            </Table.Body>
+        </Table>
     )
     // <Container style={{ width: "25rem" }}>
     //   <Card>

@@ -2,16 +2,16 @@ package lt.techin.AlpineOctopusScheduler.api.dto;
 
 import java.util.Objects;
 
-public class SubjectDto {
+public class ModuleDto {
 
     private String name;
 
     private String description;
 
-    public SubjectDto() {
+    public ModuleDto() {
     }
 
-    public SubjectDto(String name, String description) {
+    public ModuleDto(String name, String description) {
         this.name = name;
         this.description = description;
 
@@ -37,8 +37,8 @@ public class SubjectDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SubjectDto that = (SubjectDto) o;
-        return Objects.equals(name, that.name) && Objects.equals(description, that.description);
+        ModuleDto moduleDto = (ModuleDto) o;
+        return Objects.equals(name, moduleDto.name) && Objects.equals(description, moduleDto.description);
     }
 
     @Override
@@ -48,9 +48,10 @@ public class SubjectDto {
 
     @Override
     public String toString() {
-        return "SubjectDto{" +
+        return "ModuleDto{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 '}';
     }
 }
+

@@ -32,14 +32,12 @@ public class SubjectController {
         this.subjectService = subjectService;
     }
 
-    @GetMapping ("")
+    @GetMapping
     @ResponseBody
     public List<SubjectEntityDto> getSubjects() {
-       List <SubjectEntityDto> xxx= subjectService.getAll().stream()
+       return subjectService.getAll().stream()
                 .map(SubjectMapper::toSubjectEntityDto)
                 .collect(toList());
-        //return ResponseEntity.ok(subjectRepository.getAll());
-        return xxx;
     }
 
     @PostMapping
@@ -67,5 +65,14 @@ public class SubjectController {
 
         return ok(toSubjectDto(updatedSubject));
     }
+    @GetMapping(value = "/{subjectId}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public ResponseEntity<Subject> getSubject(@PathVariable Long subjectId) {
+        var subjectOptional = subjectService.getById(subjectId);
 
+        var responseEntity = subjectOptional
+                .map(subject -> ok(subject))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+
+        return responseEntity;
+    }
 }

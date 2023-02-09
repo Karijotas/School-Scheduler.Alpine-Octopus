@@ -6,6 +6,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import EditMenu from './Pages/Edit/EditMenu';
+import { EditSubject } from './Pages/Edit/EditSubject';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -14,6 +15,7 @@ root.render(
         <Routes>
           <Route path='/' element={<App />} />
           <Route path='/edit' element={<EditMenu/>} />
+          <Route path='/subjects/update/:id' element={<EditSubject/>} />
         </Routes></HashRouter>
 
 

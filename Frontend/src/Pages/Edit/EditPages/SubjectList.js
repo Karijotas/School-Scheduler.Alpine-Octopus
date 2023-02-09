@@ -1,8 +1,8 @@
 import React from 'react'
-import { Table } from 'semantic-ui-react'
-import EditObjectModal from '../EditObject'
+import { Button, Table } from 'semantic-ui-react'
 import { useState, useEffect } from 'react';
-// import { EditSubject } from '../EditSubject';
+import { Link } from 'react-router-dom';
+import { EditSubject } from '../EditSubject';
 
 export function SubjectList() {
 
@@ -20,7 +20,7 @@ useEffect(() => {
 }, []);
 
 
-    return (<div>
+    return (
         <Table celled>
             <Table.Header>
                 <Table.Row>
@@ -36,13 +36,22 @@ useEffect(() => {
                 <Table.Row key={subject.id}>
                         <Table.Cell collapsing>{subject.id}</Table.Cell>
                         <Table.Cell>{subject.name}</Table.Cell>
-                        <Table.Cell collapsing>
-                            {/* <EditSubject /> */}
+                        <Table.Cell collapsing> 
+                        {/* <Button> Hello<EditOBJ /></Button> */}
+                            {/* <EditObjectModal /> */}
+                            <Link to={"/subjects/update/" + subject.id}>
+                            <Button icon='pencil alternate' basic ></Button>
+                      </Link>
+                      <Link to={"/subjects/delete/" + subject.id}>
+                      <Button basic icon='remove' negative></Button>
+                      </Link>
+                            
+                            
                         </Table.Cell>
                 </Table.Row>
                  ))}
             </Table.Body>
         </Table>
-    </div>
+    
     )
 }
