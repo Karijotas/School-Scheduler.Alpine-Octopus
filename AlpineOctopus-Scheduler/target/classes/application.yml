@@ -56,4 +56,4 @@ logging:
           sql:
             BasicBinder: DEBUG
 Server:
-  Port: 8083
+  Port: 8085

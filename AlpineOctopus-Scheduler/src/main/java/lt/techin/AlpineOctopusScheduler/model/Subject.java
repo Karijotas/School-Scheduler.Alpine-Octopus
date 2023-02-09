@@ -1,6 +1,7 @@
 package lt.techin.AlpineOctopusScheduler.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 @Entity
@@ -8,6 +9,7 @@ public class Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "Negali buti tuscias")
     private String name;
 
     private String description;
