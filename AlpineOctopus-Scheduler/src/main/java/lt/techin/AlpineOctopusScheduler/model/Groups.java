@@ -1,10 +1,16 @@
 package lt.techin.AlpineOctopusScheduler.model;
 
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+
 import javax.persistence.Entity;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -17,7 +23,6 @@ public class Groups {
 
     @NotBlank
     private String name;
-    @NotBlank
     @Min(value = 2023, message = "School year should not be less than year the application was made")
     private Integer schoolYear;
     @NotNull
@@ -28,8 +33,66 @@ public class Groups {
     private String shift;
 
     //private Shift shift;
+    @CreatedDate
+    private LocalDateTime createdDate;
+
+
+    @LastModifiedDate
+    private LocalDateTime modifiedDate;
+
+    @CreatedBy
+    private String createdBy;
+
+    @LastModifiedBy
+    private String modifiedBy;
+
+    @PrePersist
+    public void prePersist() {
+        createdDate = LocalDateTime.now();
+        modifiedDate = LocalDateTime.now();
+        createdBy = "API app";
+        modifiedBy = "API app";
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        modifiedDate = LocalDateTime.now();
+        modifiedBy = "API app";
+    }
 
     public Groups(){}
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public LocalDateTime getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(LocalDateTime modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
+    }
 
     public Long getId() {
         return id;
@@ -84,12 +147,12 @@ public class Groups {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Groups groups = (Groups) o;
-        return Objects.equals(getId(), groups.getId()) && Objects.equals(getName(), groups.getName()) && Objects.equals(getSchoolYear(), groups.getSchoolYear()) && Objects.equals(getStudentAmount(), groups.getStudentAmount()) && Objects.equals(getProgram(), groups.getProgram()) && Objects.equals(getShift(), groups.getShift());
+        return Objects.equals(getId(), groups.getId()) && Objects.equals(getName(), groups.getName()) && Objects.equals(getSchoolYear(), groups.getSchoolYear()) && Objects.equals(getStudentAmount(), groups.getStudentAmount()) && Objects.equals(getProgram(), groups.getProgram()) && Objects.equals(getShift(), groups.getShift()) && Objects.equals(getCreatedDate(), groups.getCreatedDate()) && Objects.equals(getModifiedDate(), groups.getModifiedDate()) && Objects.equals(getCreatedBy(), groups.getCreatedBy()) && Objects.equals(getModifiedBy(), groups.getModifiedBy());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getSchoolYear(), getStudentAmount(), getProgram(), getShift());
+        return Objects.hash(getId(), getName(), getSchoolYear(), getStudentAmount(), getProgram(), getShift(), getCreatedDate(), getModifiedDate(), getCreatedBy(), getModifiedBy());
     }
 
     @Override

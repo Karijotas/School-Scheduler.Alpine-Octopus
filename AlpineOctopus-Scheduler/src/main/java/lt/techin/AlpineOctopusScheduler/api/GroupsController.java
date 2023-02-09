@@ -4,6 +4,7 @@ import lt.techin.AlpineOctopusScheduler.api.dto.GroupsDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.GroupsEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupsMapper;
 import lt.techin.AlpineOctopusScheduler.dao.GroupsRepository;
+import lt.techin.AlpineOctopusScheduler.model.Groups;
 import lt.techin.AlpineOctopusScheduler.service.GroupService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,8 +45,19 @@ public class GroupsController {
                 .map(GroupsMapper::toGroupEntityDto)
                 .collect(toList());
     }
+
+    @GetMapping(value = "/{groupId}", produces = {MediaType.APPLICATION_JSON_VALUE,})
+    public ResponseEntity<Groups> getGroup(@PathVariable Long groupId) {
+        var groupsOptional = groupService.getById(groupId);
+
+        var responseEntity = groupsOptional
+                .map(groups -> ok(groups))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+
+        return responseEntity;
+    }
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE,})
-    public ResponseEntity<GroupsDto> createGroup(@Valid @RequestBody GroupsDto groupsDto){
+    public ResponseEntity<GroupsDto> createGroup(@RequestBody GroupsDto groupsDto){
         var createdGroup = groupService.create(toGroup(groupsDto));
 
         return ok(toGroupDto(createdGroup));

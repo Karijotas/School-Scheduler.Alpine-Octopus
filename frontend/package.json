@@ -6,8 +6,8 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "react": "16.13.1",
-    "react-dom": "16.13.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-router-dom": "^6.8.0",
     "react-scripts": "5.0.1",
     "semantic-ui-css": "^2.5.0",
@@ -38,5 +38,9 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:8083/"
+  "peerDependencies": {
+    "react": "16.13.1",
+    "react-dom": "16.13.1"
+  },
+  "proxy":"http://localhost:8083/"
 }

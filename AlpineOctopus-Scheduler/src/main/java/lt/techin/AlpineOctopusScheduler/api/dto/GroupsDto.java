@@ -1,5 +1,11 @@
 package lt.techin.AlpineOctopusScheduler.api.dto;
 
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class GroupsDto {
@@ -10,15 +16,58 @@ public class GroupsDto {
     private Integer studentAmount;
     private String program;
     private String shift;
+    private LocalDateTime createdDate;
 
+
+    private LocalDateTime modifiedDate;
+
+    private String createdBy;
+
+    private String modifiedBy;
     public GroupsDto(){}
 
-    public GroupsDto(String name, Integer schoolYear, Integer studentAmount, String program, String shift) {
+    public GroupsDto(String name, Integer schoolYear, Integer studentAmount, String program, String shift, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy) {
         this.name = name;
         this.schoolYear = schoolYear;
         this.studentAmount = studentAmount;
         this.program = program;
         this.shift = shift;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
+        this.createdBy = createdBy;
+        this.modifiedBy = modifiedBy;
+    }
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public LocalDateTime getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(LocalDateTime modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
     }
 
     public String getName() {

@@ -15,6 +15,7 @@ public class GroupsMapper {
         groupDto.setProgram(groups.getProgram());
         groupDto.setShift(groups.getShift());
 
+
         return groupDto;
     }
 
@@ -39,6 +40,9 @@ public class GroupsMapper {
         groupEntityDto.setStudentAmount(groups.getStudentAmount());
         groupEntityDto.setProgram(groups.getProgram());
         groupEntityDto.setShift(groups.getShift());
+        groupEntityDto.setModifiedDate(groups.getModifiedDate());
+
+
 
         return groupEntityDto;
     }
