@@ -22,7 +22,7 @@ export default class EditMenu extends Component {
           <Grid.Column width={2} id='main'>            
 
             <Menu stackable vertical secondary pointing className='ui centered grid'>
-          <Button icon labelPosition='left' primary><Icon name='database'/>Kurti Naują Įrašą</Button>
+          <Button icon labelPosition='left' primary href='#/create'><Icon name='database'/>Kurti Naują Įrašą</Button>
 
             
 

@@ -38,8 +38,8 @@ export function ViewGroups() {
                 <Table.Row>
                     <Table.HeaderCell>ID</Table.HeaderCell>
                     <Table.HeaderCell>Grupės pavadinimas "Teams"</Table.HeaderCell>
-                    <Table.HeaderCell>Mokslo Metai</Table.HeaderCell>
-                    <Table.HeaderCell>Studentų Kiekis</Table.HeaderCell>
+                    <Table.HeaderCell>Mokslo metai</Table.HeaderCell>
+                    <Table.HeaderCell>Studentų skaičius</Table.HeaderCell>
                     <Table.HeaderCell>Programa</Table.HeaderCell>                    
                     <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
                     <Table.HeaderCell>Veiksmai</Table.HeaderCell>

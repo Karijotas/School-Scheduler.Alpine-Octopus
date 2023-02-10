@@ -23,6 +23,7 @@ export function EditObject() {
         schoolYear: '',
         studentAmount: '',
         program: '',
+        shift: '',
         modifiedDate:'',
     });
 
@@ -69,17 +70,18 @@ export function EditObject() {
 
     return (<div>
         <MainMenu />
-        <div className='ui container' id='table'>
+        <div className='' id='table'>        <Button>Grįžti</Button>
+
              <Table celled collapsing compact color='violet'>
             <Table.Header >
                 <Table.Row  >
                     <Table.HeaderCell >ID</Table.HeaderCell>
                     <Table.HeaderCell >Grupės pavadinimas "Teams"</Table.HeaderCell>
-                    <Table.HeaderCell>Mokslo Metai</Table.HeaderCell>
-                    <Table.HeaderCell>Studentų Kiekis</Table.HeaderCell>
+                    <Table.HeaderCell>Mokslo metai</Table.HeaderCell>
+                    <Table.HeaderCell>Studentų skaičius</Table.HeaderCell>
                     <Table.HeaderCell>Programa</Table.HeaderCell>
-                   <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
-
+                    <Table.HeaderCell>Pamaina</Table.HeaderCell>
+                    <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
                     <Table.HeaderCell>Veiksmai</Table.HeaderCell>
 
                 </Table.Row>
@@ -88,10 +90,16 @@ export function EditObject() {
             <Table.Body>
                 <Table.Row key={params.id} >
                     <Table.Cell collapsing>{groups.id}</Table.Cell>
-                    <Table.Cell><Input value={groups.name} onChange={(e) => updateProperty('name', e)}/> </Table.Cell>
-                    <Table.Cell><Input value={groups.schoolYear} onChange={(e) => updateProperty('schoolYear', e)}/></Table.Cell>
-                    <Table.Cell><Input value={groups.studentAmount} onChange={(e) => updateProperty('studentAmount', e)}/></Table.Cell>
-                    <Table.Cell><Input value={groups.program} onChange={(e) => updateProperty('program', e)}/></Table.Cell>
+                    <Table.Cell collapsing><Input disabled value={groups.name} onChange={(e) => updateProperty('name', e)}/>
+                    <Button basic circular compact icon='pencil'></Button></Table.Cell>
+                    <Table.Cell collapsing><Input disabled value={groups.schoolYear} onChange={(e) => updateProperty('schoolYear', e)}/>
+                    <Button basic circular compact icon='pencil'></Button></Table.Cell>
+                    <Table.Cell collapsing><Input disabled value={groups.studentAmount} onChange={(e) => updateProperty('studentAmount', e)}/>
+                    <Button basic circular compact icon='pencil'></Button></Table.Cell>
+                    <Table.Cell collapsing><Input disabled value={groups.program} onChange={(e) => updateProperty('program', e)}/>
+                    </Table.Cell>
+                    <Table.Cell collapsing><Input disabled value={groups.shift} onChange={(e) => updateProperty('shift', e)}/>
+                    </Table.Cell>
                     <Table.Cell > {groups.modifiedDate}  </Table.Cell>
 
                     <Table.Cell collapsing> <Button primary onClick={updateGroups}>Save</Button><Button negative onClick={removeGroup}>Delete</Button>
