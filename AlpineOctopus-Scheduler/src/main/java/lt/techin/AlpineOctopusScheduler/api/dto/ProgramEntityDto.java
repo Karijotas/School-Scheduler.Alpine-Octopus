@@ -2,6 +2,7 @@ package lt.techin.AlpineOctopusScheduler.api.dto;
 
 import lt.techin.AlpineOctopusScheduler.model.Subject;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -13,8 +14,8 @@ public class ProgramEntityDto extends ProgramDto{
     public ProgramEntityDto() {
     }
 
-    public ProgramEntityDto(Long id, String name, String description, Set<Subject> subjects ) {
-        super(name, description, subjects);
+    public ProgramEntityDto(Long id, String name, String description, Set<Subject> subjects, LocalDateTime createdDate, LocalDateTime modifiedDate ) {
+        super(name, description, subjects, createdDate, modifiedDate);
         this.id = id;
     }
 

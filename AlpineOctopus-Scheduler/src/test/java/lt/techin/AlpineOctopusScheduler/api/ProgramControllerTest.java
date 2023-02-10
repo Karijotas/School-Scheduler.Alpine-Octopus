@@ -69,12 +69,12 @@ class ProgramControllerTest {
         subjects6.add(toSubject(subjectDto1));
 
 
-        var programDto1 = new ProgramEntityDto(1l, "Belekokio gerumo","apie viska" , subjects1);
-        var programDto2 = new ProgramEntityDto(2l, "Sita kieta is vis", "biski to, biski ano", subjects2);
-        var programDto3 = new ProgramEntityDto(3l, "Normali", "normalus dalykai", subjects3);
-        var programDto4 = new ProgramEntityDto(4l, "Labai sunki", "aukstoji matematika ir raketu mokslas", subjects4);
-        var programDto5 = new ProgramEntityDto(5l, "Nuobodoka", "apie kaminus", subjects5);
-        var programDto6 = new ProgramEntityDto(6l, "Pirmunams", "programavimo visokie dalykeliai", subjects6);
+        var programDto1 = new ProgramEntityDto(1l, "Belekokio gerumo","apie viska" , subjects1, null, null);
+        var programDto2 = new ProgramEntityDto(2l, "Sita kieta is vis", "biski to, biski ano", subjects2, null, null);
+        var programDto3 = new ProgramEntityDto(3l, "Normali", "normalus dalykai", subjects3, null, null);
+        var programDto4 = new ProgramEntityDto(4l, "Labai sunki", "aukstoji matematika ir raketu mokslas", subjects4, null, null);
+        var programDto5 = new ProgramEntityDto(5l, "Nuobodoka", "apie kaminus", subjects5, null, null);
+        var programDto6 = new ProgramEntityDto(6l, "Pirmunams", "programavimo visokie dalykeliai", subjects6, null, null);
 
         var mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders

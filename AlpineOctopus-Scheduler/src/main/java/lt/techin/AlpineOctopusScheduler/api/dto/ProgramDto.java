@@ -2,7 +2,14 @@ package lt.techin.AlpineOctopusScheduler.api.dto;
 
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper;
 import lt.techin.AlpineOctopusScheduler.model.Subject;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -14,13 +21,20 @@ public class ProgramDto {
 
     private Set<Subject> subjects;
 
+    private LocalDateTime createdDate;
+
+    private LocalDateTime modifiedDate;
+
+
     public ProgramDto() {
     }
 
-    public ProgramDto(String name, String description, Set<Subject> subjects) {
+    public ProgramDto(String name, String description, Set<Subject> subjects, LocalDateTime createdDate, LocalDateTime modifiedDate) {
         this.name = name;
         this.description = description;
         this.subjects = subjects;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
     }
 
     public String getName() {

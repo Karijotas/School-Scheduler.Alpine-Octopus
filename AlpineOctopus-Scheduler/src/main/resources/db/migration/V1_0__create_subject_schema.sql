@@ -8,9 +8,11 @@ CREATE TABLE SUBJECT (
 
 CREATE TABLE program
 (
-    id          BIGINT AUTO_INCREMENT NOT NULL,
-    name        VARCHAR(255),
-    description VARCHAR(255),
+    id            BIGINT AUTO_INCREMENT NOT NULL,
+    name          VARCHAR(255),
+    description   VARCHAR(255),
+    created_date  TIMESTAMP,
+    modified_date TIMESTAMP,
     CONSTRAINT pk_program PRIMARY KEY (id)
 );
 
@@ -26,3 +28,4 @@ ALTER TABLE programs_subjects
 
 ALTER TABLE programs_subjects
     ADD CONSTRAINT fk_prosub_on_subject FOREIGN KEY (subject_id) REFERENCES subject (id);
+
