@@ -3,7 +3,6 @@ package lt.techin.AlpineOctopusScheduler.api;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper;
-import lt.techin.AlpineOctopusScheduler.model.Subject;
 import lt.techin.AlpineOctopusScheduler.service.SubjectService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

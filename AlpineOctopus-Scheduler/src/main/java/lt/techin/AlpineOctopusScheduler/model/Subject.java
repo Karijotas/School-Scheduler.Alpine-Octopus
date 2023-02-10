@@ -2,6 +2,7 @@ package lt.techin.AlpineOctopusScheduler.model;
 
 import javax.persistence.*;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Subject {
@@ -11,6 +12,8 @@ public class Subject {
     private String name;
 
     private String description;
+    @ManyToMany(mappedBy = "subjects")
+    private Set<Program> programs;
 
     public Subject() {
 
