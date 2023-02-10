@@ -1,9 +1,10 @@
 package lt.techin.AlpineOctopusScheduler.model;
 
+import com.fasterxml.jackson.annotation.*;
+
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
-
 @Entity
 public class Subject {
     @Id
@@ -12,17 +13,20 @@ public class Subject {
     private String name;
 
     private String description;
-    @ManyToMany(mappedBy = "subjects")
-    private Set<Program> programs;
+
+    @OneToMany(mappedBy = "subject")
+    @JsonIgnore
+    private Set<ProgramSubjectHours> subjectHour;
 
     public Subject() {
 
     }
 
-    public Subject(Long id, String name, String description) {
+    public Subject(Long id, String name, String description, Set<ProgramSubjectHours> subjectHour) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.subjectHour = subjectHour;
     }
 
     public Long getId() {
@@ -49,25 +53,24 @@ public class Subject {
         this.description = description;
     }
 
+    public Set<ProgramSubjectHours> getSubjectHour() {
+        return subjectHour;
+    }
+
+    public void setSubjectHour(Set<ProgramSubjectHours> subjectHour) {
+        this.subjectHour = subjectHour;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Subject subject = (Subject) o;
-        return Objects.equals(id, subject.id) && Objects.equals(name, subject.name) && Objects.equals(description, subject.description);
+        return Objects.equals(id, subject.id) && Objects.equals(name, subject.name) && Objects.equals(description, subject.description) && Objects.equals(subjectHour, subject.subjectHour);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description);
-    }
-
-    @Override
-    public String toString() {
-        return "Subject{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+        return Objects.hash(id, name, description, subjectHour);
     }
 }

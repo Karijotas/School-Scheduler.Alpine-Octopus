@@ -13,6 +13,7 @@ public class SubjectMapper {
         subjectDto.setName(subject.getName());
         subjectDto.setDescription(subject.getDescription());
 
+
         return subjectDto;
     }
 
@@ -33,6 +34,7 @@ public class SubjectMapper {
         subjectDto.setName(subject.getName());
         subjectDto.setDescription(subject.getDescription());
 
+
         return subjectDto;
     }
 
@@ -42,6 +44,7 @@ public class SubjectMapper {
         subject.setId(subjectEntityDto.getId());
         subject.setName(subjectEntityDto.getName());
         subject.setDescription(subjectEntityDto.getDescription());
+
 
         return subject;
     }

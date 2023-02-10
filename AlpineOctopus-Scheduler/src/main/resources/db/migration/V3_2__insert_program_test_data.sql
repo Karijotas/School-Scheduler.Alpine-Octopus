@@ -6,3 +6,4 @@ VALUES ('Belekokio gerumo', 'apie viska', null, null),
        ('Labai sunki', 'aukstoji matematika ir raketu mokslas', null, null),
        ('Nuobodoka', 'apie kaminus', null, null),
        ('Pirmunams', 'programavimo visokie dalykeliai', null, null);
+

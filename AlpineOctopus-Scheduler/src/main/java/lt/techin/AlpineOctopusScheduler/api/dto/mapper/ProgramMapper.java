@@ -17,7 +17,7 @@ public class ProgramMapper {
 
         programDto.setName(program.getName());
         programDto.setDescription(program.getDescription());
-        programDto.setSubjects(program.getSubjects());
+
 
         return programDto;
     }
@@ -27,7 +27,7 @@ public class ProgramMapper {
 
         program.setName(programDto.getName());
         program.setDescription(programDto.getDescription());
-        program.setSubjects(programDto.getSubjects());
+
 
         return program;
     }
@@ -39,7 +39,7 @@ public class ProgramMapper {
         programDto.setId(program.getId());
         programDto.setName(program.getName());
         programDto.setDescription(program.getDescription());
-        programDto.setSubjects(program.getSubjects());
+
 
         return programDto;
     }
@@ -50,7 +50,7 @@ public class ProgramMapper {
         program.setId(programEntityDto.getId());
         program.setName(programEntityDto.getName());
         program.setDescription(programEntityDto.getDescription());
-        program.setSubjects(programEntityDto.getSubjects());
+
 
         return program;
     }

@@ -1,6 +1,9 @@
 package lt.techin.AlpineOctopusScheduler.api.dto;
 
+import lt.techin.AlpineOctopusScheduler.model.ProgramSubjectHours;
+
 import java.util.Objects;
+import java.util.Set;
 
 public class SubjectDto {
 
@@ -9,8 +12,7 @@ public class SubjectDto {
 
     private String description;
 
-    public SubjectDto() {
-    }
+    public SubjectDto() {    }
 
     public SubjectDto(String name, String description) {
         this.name = name;

@@ -1,6 +1,7 @@
 package lt.techin.AlpineOctopusScheduler.api.dto;
 
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper;
+import lt.techin.AlpineOctopusScheduler.model.ProgramSubjectHours;
 import lt.techin.AlpineOctopusScheduler.model.Subject;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -19,7 +20,7 @@ public class ProgramDto {
 
     private String description;
 
-    private Set<Subject> subjects;
+    private Set<ProgramSubjectHours> subjectHours;
 
     private LocalDateTime createdDate;
 
@@ -29,10 +30,9 @@ public class ProgramDto {
     public ProgramDto() {
     }
 
-    public ProgramDto(String name, String description, Set<Subject> subjects, LocalDateTime createdDate, LocalDateTime modifiedDate) {
+    public ProgramDto(String name, String description, LocalDateTime createdDate, LocalDateTime modifiedDate) {
         this.name = name;
         this.description = description;
-        this.subjects = subjects;
         this.createdDate = createdDate;
         this.modifiedDate = modifiedDate;
     }
@@ -53,12 +53,23 @@ public class ProgramDto {
         this.description = description;
     }
 
-    public Set<Subject> getSubjects() {
-        return subjects;
+
+
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
     }
 
-    public void setSubjects(Set<Subject> subjects) {
-        this.subjects = subjects;
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public LocalDateTime getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(LocalDateTime modifiedDate) {
+        this.modifiedDate = modifiedDate;
     }
 
     @Override
@@ -66,20 +77,22 @@ public class ProgramDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProgramDto that = (ProgramDto) o;
-        return Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(subjects, that.subjects);
+        return Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(subjectHours, that.subjectHours) && Objects.equals(createdDate, that.createdDate) && Objects.equals(modifiedDate, that.modifiedDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, subjects);
+        return Objects.hash(name, description, subjectHours, createdDate, modifiedDate);
     }
 
     @Override
     public String toString() {
-        return "ProgramMapper{" +
+        return "ProgramDto{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", subjects=" + subjects +
+                ", subjectHours=" + subjectHours +
+                ", createdDate=" + createdDate +
+                ", modifiedDate=" + modifiedDate +
                 '}';
     }
 }

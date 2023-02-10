@@ -40,7 +40,7 @@ public class ProgramService {
 
         existingProgram.setName(program.getName());
         existingProgram.setDescription(program.getDescription());
-        existingProgram.setSubjects(program.getSubjects());
+        existingProgram.setSubjectHours(program.getSubjectHours());
 
         return programRepository.save(existingProgram);
     }

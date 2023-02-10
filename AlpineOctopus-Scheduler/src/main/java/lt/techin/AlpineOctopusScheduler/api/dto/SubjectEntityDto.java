@@ -1,6 +1,9 @@
 package lt.techin.AlpineOctopusScheduler.api.dto;
 
+import lt.techin.AlpineOctopusScheduler.model.ProgramSubjectHours;
+
 import java.util.Objects;
+import java.util.Set;
 
 public class SubjectEntityDto extends SubjectDto{
 

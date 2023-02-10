@@ -1,5 +1,6 @@
 package lt.techin.AlpineOctopusScheduler.model;
 
+import com.fasterxml.jackson.annotation.*;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -9,7 +10,6 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
-
 @Entity
 public class Program {
 
@@ -23,7 +23,6 @@ public class Program {
 
     @CreatedDate
     private LocalDateTime createdDate;
-
 
     @LastModifiedDate
     private LocalDateTime modifiedDate;
@@ -41,12 +40,9 @@ public class Program {
         modifiedDate = LocalDateTime.now();
     }
 
-    @ManyToMany
-    @JoinTable(
-            name = "programs_subjects",
-            joinColumns = @JoinColumn(name = "program_id"),
-            inverseJoinColumns = @JoinColumn(name = "subject_id"))
-    private Set<Subject> subjects;
+    @OneToMany(mappedBy = "program")
+    @JsonIgnore
+    private Set<ProgramSubjectHours> subjectHours;
 
     public Program() {
     }
@@ -75,12 +71,12 @@ public class Program {
         this.description = description;
     }
 
-    public Set<Subject> getSubjects() {
-        return subjects;
+    public Set<ProgramSubjectHours> getSubjectHours() {
+        return subjectHours;
     }
 
-    public void setSubjects(Set<Subject> subjects) {
-        this.subjects = subjects;
+    public void setSubjectHours(Set<ProgramSubjectHours> subjectHours) {
+        this.subjectHours = subjectHours;
     }
 
     public LocalDateTime getCreatedDate() {
@@ -104,11 +100,11 @@ public class Program {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Program program = (Program) o;
-        return Objects.equals(id, program.id) && Objects.equals(name, program.name) && Objects.equals(description, program.description) && Objects.equals(createdDate, program.createdDate) && Objects.equals(modifiedDate, program.modifiedDate) && Objects.equals(subjects, program.subjects);
+        return Objects.equals(id, program.id) && Objects.equals(name, program.name) && Objects.equals(description, program.description) && Objects.equals(createdDate, program.createdDate) && Objects.equals(modifiedDate, program.modifiedDate) && Objects.equals(subjectHours, program.subjectHours);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, createdDate, modifiedDate, subjects);
+        return Objects.hash(id, name, description, createdDate, modifiedDate, subjectHours);
     }
 }
