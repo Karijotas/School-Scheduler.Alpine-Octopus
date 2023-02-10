@@ -57,25 +57,22 @@ export function EditObject() {
     };
 
 
-    const removeGroup = (id) => {
-        fetch('/api/v1/groups/' + params.id, {
-            method: 'DELETE',
-            headers: JSON_HEADERS
-        })
-        .then(() => window.location = listUrl);
-    }
+    // const removeGroup = (id) => {
+    //     fetch('/api/v1/groups/' + params.id, {
+    //         method: 'DELETE',
+    //         headers: JSON_HEADERS
+    //     })
+    //     .then(() => window.location = listUrl);
+    // }
 
-
-
+   
 
     return (<div>
-        <MainMenu />
-        <div className='' id='table'>        <Button>Grįžti</Button>
+        <div className='' id='table'>     
 
              <Table celled collapsing compact color='violet'>
             <Table.Header >
                 <Table.Row  >
-                    <Table.HeaderCell >ID</Table.HeaderCell>
                     <Table.HeaderCell >Grupės pavadinimas "Teams"</Table.HeaderCell>
                     <Table.HeaderCell>Mokslo metai</Table.HeaderCell>
                     <Table.HeaderCell>Studentų skaičius</Table.HeaderCell>
@@ -89,27 +86,27 @@ export function EditObject() {
 
             <Table.Body>
                 <Table.Row key={params.id} >
-                    <Table.Cell collapsing>{groups.id}</Table.Cell>
                     <Table.Cell collapsing><Input disabled value={groups.name} onChange={(e) => updateProperty('name', e)}/>
-                    <Button basic circular compact icon='pencil'></Button></Table.Cell>
-                    <Table.Cell collapsing><Input disabled value={groups.schoolYear} onChange={(e) => updateProperty('schoolYear', e)}/>
-                    <Button basic circular compact icon='pencil'></Button></Table.Cell>
+                    </Table.Cell>
+                    <Table.Cell collapsing><Input  value={groups.schoolYear} onChange={(e) => updateProperty('schoolYear', e)}/>
+                    </Table.Cell>
                     <Table.Cell collapsing><Input disabled value={groups.studentAmount} onChange={(e) => updateProperty('studentAmount', e)}/>
-                    <Button basic circular compact icon='pencil'></Button></Table.Cell>
+                    </Table.Cell>
                     <Table.Cell collapsing><Input disabled value={groups.program} onChange={(e) => updateProperty('program', e)}/>
                     </Table.Cell>
                     <Table.Cell collapsing><Input disabled value={groups.shift} onChange={(e) => updateProperty('shift', e)}/>
                     </Table.Cell>
                     <Table.Cell > {groups.modifiedDate}  </Table.Cell>
 
-                    <Table.Cell collapsing> <Button primary onClick={updateGroups}>Save</Button><Button negative onClick={removeGroup}>Delete</Button>
+                    <Table.Cell collapsing ><Button>Taisyti</Button> <Button primary onClick={updateGroups}>Save</Button>
+                    <Button primary>Atšaukti</Button>
                 </Table.Cell>
 
               
                 </Table.Row>  
                
             </ Table.Body >
-
+            <Button href='#/edit' className='controls'>Grįžti</Button>
         </Table>
         </div>
        

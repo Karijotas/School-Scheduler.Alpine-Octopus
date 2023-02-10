@@ -1,0 +1,12 @@
+/home/mantas/Documents/Akademija.it/Projektas/AlpineOctopus-Scheduler/src/main/java/lt/techin/AlpineOctopusScheduler/ServletInitializer.java
+/home/mantas/Documents/Akademija.it/Projektas/AlpineOctopus-Scheduler/src/main/java/lt/techin/AlpineOctopusScheduler/model/Groups.java
+/home/mantas/Documents/Akademija.it/Projektas/AlpineOctopus-Scheduler/src/main/java/lt/techin/AlpineOctopusScheduler/api/dto/GroupsDto.java
+/home/mantas/Documents/Akademija.it/Projektas/AlpineOctopus-Scheduler/src/main/java/lt/techin/AlpineOctopusScheduler/api/dto/mapper/GroupsMapper.java
+/home/mantas/Documents/Akademija.it/Projektas/AlpineOctopus-Scheduler/src/main/java/lt/techin/AlpineOctopusScheduler/service/GroupService.java
+/home/mantas/Documents/Akademija.it/Projektas/AlpineOctopus-Scheduler/src/main/java/lt/techin/AlpineOctopusScheduler/configuration/ObjectMapping.java
+/home/mantas/Documents/Akademija.it/Projektas/AlpineOctopus-Scheduler/src/main/java/lt/techin/AlpineOctopusScheduler/api/dto/GroupsEntityDto.java
+/home/mantas/Documents/Akademija.it/Projektas/AlpineOctopus-Scheduler/src/main/java/lt/techin/AlpineOctopusScheduler/AlpineOctopusSchedulerApplication.java
+/home/mantas/Documents/Akademija.it/Projektas/AlpineOctopus-Scheduler/src/main/java/lt/techin/AlpineOctopusScheduler/configuration/SwaggerConfiguration.java
+/home/mantas/Documents/Akademija.it/Projektas/AlpineOctopus-Scheduler/src/main/java/lt/techin/AlpineOctopusScheduler/api/GroupsController.java
+/home/mantas/Documents/Akademija.it/Projektas/AlpineOctopus-Scheduler/src/main/java/lt/techin/AlpineOctopusScheduler/dao/GroupsRepository.java
+/home/mantas/Documents/Akademija.it/Projektas/AlpineOctopus-Scheduler/src/main/java/lt/techin/AlpineOctopusScheduler/exception/Todo.java

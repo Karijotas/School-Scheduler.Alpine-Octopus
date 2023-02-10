@@ -1,4 +1,5 @@
 import React from 'react'
+import { EditObject } from './EditPages/EditObject'
 import { ViewGroups } from './EditPages/ViewGroups'
 // Here we should pass the selection as props, and then map the values from Backend to the tables
 // I've just done here a simple if else that is only for example, not how it should work.
@@ -8,14 +9,24 @@ import { ViewGroups } from './EditPages/ViewGroups'
 
 export function ObjectList(props) {
     if (props === 'groups') {
-        return (
-            <ViewGroups/>
+        if (props === 'groups/{$id}') {
+            return (
+                <EditObject />
+            )
+        } else {
+              return (
+            <ViewGroups />
         )
+        }
+      
     }
+
+
+
     if (props === 'subjects') {
         return (
             <p>
-                Dalykai:
+                <EditObject />
             </p>
 
         )
@@ -23,7 +34,7 @@ export function ObjectList(props) {
     if (props === 'teachers') {
         return (
             <p>
-                Mokytojai:
+
             </p>
 
         )
@@ -43,7 +54,7 @@ export function ObjectList(props) {
             </p>
 
         )
-    } 
+    }
     if (props === 'program') {
         return (
             <p>
@@ -52,12 +63,12 @@ export function ObjectList(props) {
 
         )
     }
-    if (props === 'modules'){
+    if (props === 'modules') {
         return (
             <p>
                 Moduliai:
             </p>
-           
+
         )
     }
 }

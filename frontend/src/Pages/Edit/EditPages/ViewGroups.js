@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
-import { Button, Icon, Input, Pagination, Table } from 'semantic-ui-react'
+import { Button, Dropdown, Icon, Input, Pagination, Table } from 'semantic-ui-react'
+import { EditObject } from './EditObject';
 import './ViewGroups.css';
 
 const JSON_HEADERS = {
@@ -9,6 +10,9 @@ const JSON_HEADERS = {
 
 
 export function ViewGroups() {
+
+    const [activeItem, setActiveItem] = useState('');
+
     const [groups, setGroups] = useState([]);
 
     const fetchGroups = async () => {
@@ -28,15 +32,31 @@ export function ViewGroups() {
     useEffect(() => {
         fetchGroups();
     }, []);
+ 
+ 
+
+    return (<div id='groups'>
+        <Input placeholder='Filtruoti pagal pavadinimą' />
+        <Dropdown
+    button
+    className='icon'
+    floating
+    labeled
+    icon='angle down'
+    options={null}
+    search
+    text='Filtruoti pagal mokslo metus'
+  />
+        <Button>Filtruoti pagal programą</Button>
+
+        <Button icon labelPosition='left' primary href='#/create' className='controls'><Icon name='database'/>Kurti naują grupę</Button>
 
 
-    return (<div className='groups'>
-        <Input placeholder='Filtruoti' className='controls'/>
 
-        <Table basic='very'>
+
+        <Table selectable >
             <Table.Header>
                 <Table.Row>
-                    <Table.HeaderCell>ID</Table.HeaderCell>
                     <Table.HeaderCell>Grupės pavadinimas "Teams"</Table.HeaderCell>
                     <Table.HeaderCell>Mokslo metai</Table.HeaderCell>
                     <Table.HeaderCell>Studentų skaičius</Table.HeaderCell>
@@ -50,17 +70,14 @@ export function ViewGroups() {
                 {groups.map(group => (
 
                     <Table.Row key={group.id}>
-                        <Table.Cell collapsing>{group.id}</Table.Cell>
                         <Table.Cell>{group.name}</Table.Cell>
                         <Table.Cell>{group.schoolYear}</Table.Cell>
                         <Table.Cell>{group.studentAmount}</Table.Cell>
                         <Table.Cell>{group.program}</Table.Cell>
                         <Table.Cell>{group.modifiedDate}</Table.Cell>
                         <Table.Cell collapsing>
-                        <Link to={'/groups/edit/' + group.id}>
-                             <Button basic circular compact icon='pencil'></Button>
-                            </Link> 
-                            <Button basic circular negative compact icon='trash alternate' onClick={() => removeGroup(group.id)}></Button>
+                             <Button basic primary compact icon='eye' title='Peržiūrėti' active={activeItem === groups.id} onClick={console.log('groups/' +group.id)}></Button>
+                            <Button basic color='black' compact icon='trash alternate' onClick={() => removeGroup(group.id)}></Button>
 
                         </Table.Cell>
                     </Table.Row>
@@ -73,9 +90,8 @@ export function ViewGroups() {
 
         <Pagination 
             defaultActivePage={1}
-            firstItem={null}
-            lastItem={null}
-            secondary
+            firstItem={groups.firstItem}
+            lastItem={groups.lastItem}
             pointing
             totalPages={3}
         />
