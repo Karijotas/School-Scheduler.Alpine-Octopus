@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Grid, Menu, Segment } from 'semantic-ui-react'
+import { Button, Grid, Icon, Menu, Segment } from 'semantic-ui-react'
 import MainMenu from '../../Components/MainMenu'
-import ObjectList from './ViewObject'
+import { ObjectList } from './ViewObject'
+import './EditPages/ViewGroups.css'
 
 export default class EditMenu extends Component {
   state = { activeItem: 'subjects' }
@@ -12,10 +13,15 @@ export default class EditMenu extends Component {
     const { activeItem } = this.state
     return (
       <div>
+        
         <MainMenu />
-        <Grid className='MainMenu'>
-          <Grid.Column width={2}>
-            <Menu fluid vertical secondary pointing>
+        
+        <Grid className='MainMenu '>
+          
+          
+          <Grid.Column width={2} id='main'>            
+
+            <Menu fluid vertical tabular className='ui centered grid'>
 
             
 
@@ -72,6 +78,7 @@ export default class EditMenu extends Component {
               />
 
             </Menu>
+
           </Grid.Column>
 
           <Grid.Column stretched width={13}>

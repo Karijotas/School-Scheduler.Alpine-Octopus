@@ -6,18 +6,24 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import EditMenu from './Pages/Edit/EditMenu';
+import { EditObject } from './Pages/Edit/EditPages/EditObject';
+import { CreatePage } from './Pages/Create/CreatePage';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-<HashRouter>
-        <Routes>
-          <Route path='/' element={<App />} />
-          <Route path='/edit' element={<EditMenu/>} />
-        </Routes></HashRouter>
+    <HashRouter>
+      <Routes>
+        <Route path='/' element={<App />} />
+        <Route path='/edit' element={<EditMenu />} />
+        <Route path='/groups/edit/:id' element={<EditObject />} />
+        <Route path='/create' element={<CreatePage />} />
+      </Routes>
+    </HashRouter>
 
 
-    
+
   </React.StrictMode>
 );
 

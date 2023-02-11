@@ -43,11 +43,11 @@ logging:
       techin: DEBUG
     org:
       springframework: INFO
-#      springframework: DEBUG
-#        jdbc:
-#          core:
-#            JdbcTemplate: DEBUG
-#            StatementCreatorUtils: DEBUG
+      #      springframework: DEBUG
+      #        jdbc:
+      #          core:
+      #            JdbcTemplate: DEBUG
+      #            StatementCreatorUtils: DEBUG
       hibernate:
         SQL: DEBUG
         type: TRACE
@@ -56,5 +56,5 @@ logging:
           sql:
             BasicBinder: DEBUG
 Server:
-  Port: 8082
+  Port: 8083
 
