@@ -2,6 +2,8 @@ package lt.techin.AlpineOctopusScheduler.api;
 
 import lt.techin.AlpineOctopusScheduler.api.dto.ProgramDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ProgramEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.SubjectDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper;
 import lt.techin.AlpineOctopusScheduler.model.Program;
@@ -17,8 +19,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper.toProgram;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper.toProgramDto;
 import static org.springframework.http.ResponseEntity.ok;
@@ -52,6 +56,11 @@ public class ProgramController {
     }
 
 
+    @GetMapping(value ="/{programId}/subjects", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public Set<String> getAllSubjectsInProgram(@PathVariable Long programId){
+        return programService.getAllSubjectsInProgram(programId);
+    }
     @DeleteMapping("/{programId}")
     public ResponseEntity<Void> deleteProgram(@PathVariable Long programId) {
         logger.info("Attempt to delete Program by id: {}", programId);
@@ -77,6 +86,7 @@ public class ProgramController {
 
         return ok(toProgramDto(updatedProgram));
     }
+
 
 
 }

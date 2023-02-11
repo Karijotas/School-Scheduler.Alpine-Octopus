@@ -15,7 +15,7 @@ public class ProgramCreator {
         program.setId(id);
         program.setName("Programa puikioji");
         program.setDescription("o tai tau vai vai vai");
-        program.setHours(null);
+
 
         return program;
     }

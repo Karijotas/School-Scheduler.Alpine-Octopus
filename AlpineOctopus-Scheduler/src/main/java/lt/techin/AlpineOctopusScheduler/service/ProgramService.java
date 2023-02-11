@@ -1,14 +1,17 @@
 package lt.techin.AlpineOctopusScheduler.service;
 
+import lt.techin.AlpineOctopusScheduler.api.dto.SubjectDto;
 import lt.techin.AlpineOctopusScheduler.dao.ProgramRepository;
 import lt.techin.AlpineOctopusScheduler.dao.SubjectRepository;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Program;
+import lt.techin.AlpineOctopusScheduler.model.Subject;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class ProgramService {
@@ -52,6 +55,9 @@ public class ProgramService {
         } catch (EmptyResultDataAccessException exception){
             return false;
         }
+    }
 
+    public Set<String> getAllSubjectsInProgram(Long id){
+        return programRepository.GetSubjectsInProgram(id);
     }
 }
