@@ -1,12 +1,13 @@
 package lt.techin.AlpineOctopusScheduler.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+
+//Mantvydas Juršys
+
 
 @Entity
 @Table(name = "TEACHERS")
-public class TeacherEntity {
+public class Teacher {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +27,7 @@ public class TeacherEntity {
 // variables end
 
 
-    public TeacherEntity() {
+    public Teacher() {
 
     }
 
