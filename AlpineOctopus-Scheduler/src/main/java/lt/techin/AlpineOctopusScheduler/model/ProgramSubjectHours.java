@@ -20,12 +20,12 @@ public class ProgramSubjectHours {
     @JoinColumn(name = "subject_id")
     Subject subject;
 
-    int subjectHours;
+    Integer subjectHours;
 
     public ProgramSubjectHours() {
     }
 
-    public ProgramSubjectHours(Long id, Program program, Subject subject, int subjectHours) {
+    public ProgramSubjectHours(Long id, Program program, Subject subject, Integer subjectHours) {
         this.id = id;
         this.program = program;
         this.subject = subject;
@@ -60,7 +60,7 @@ public class ProgramSubjectHours {
         return subjectHours;
     }
 
-    public void setSubjectHours(int subjectHours) {
+    public void setSubjectHours(Integer subjectHours) {
         this.subjectHours = subjectHours;
     }
 

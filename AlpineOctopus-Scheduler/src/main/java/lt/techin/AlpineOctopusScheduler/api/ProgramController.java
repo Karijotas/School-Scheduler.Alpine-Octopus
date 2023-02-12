@@ -1,9 +1,6 @@
 package lt.techin.AlpineOctopusScheduler.api;
 
-import lt.techin.AlpineOctopusScheduler.api.dto.ProgramDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.ProgramEntityDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.SubjectDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.*;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper;
 import lt.techin.AlpineOctopusScheduler.model.Program;
@@ -46,6 +43,7 @@ public class ProgramController {
                 .map(ProgramMapper::toProgramEntityDto)
                 .collect(toList());
     }
+
     @GetMapping(value = "/{programId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Program> getProgram(@PathVariable Long programId) {
         var programOptional = programService.getById(programId);
@@ -56,11 +54,12 @@ public class ProgramController {
     }
 
 
-    @GetMapping(value ="/{programId}/subjects", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/{programId}/subjects", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public Set<String> getAllSubjectsInProgram(@PathVariable Long programId){
+    public List<ProgramSubjectHoursDtoForList> getAllSubjectsInProgram(@PathVariable Long programId) {
         return programService.getAllSubjectsInProgram(programId);
     }
+
     @DeleteMapping("/{programId}")
     public ResponseEntity<Void> deleteProgram(@PathVariable Long programId) {
         logger.info("Attempt to delete Program by id: {}", programId);
@@ -87,6 +86,11 @@ public class ProgramController {
         return ok(toProgramDto(updatedProgram));
     }
 
+    @PostMapping(value = "/{programId}/subjects/newSubjectsWithHours")
+    @ResponseBody
+    public ProgramSubjectHours addSubjectAndHoursToProgram(@PathVariable Long programId, @RequestParam Integer subjectHours, @RequestParam Long subjectId) {
+        return programService.addSubjectAndHoursToProgram(programId, subjectId, subjectHours);
+    }
 
 
 }

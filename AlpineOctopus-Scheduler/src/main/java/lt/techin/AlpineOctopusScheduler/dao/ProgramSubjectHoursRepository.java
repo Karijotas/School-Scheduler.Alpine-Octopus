@@ -1,24 +1,18 @@
 package lt.techin.AlpineOctopusScheduler.dao;
 
-import lt.techin.AlpineOctopusScheduler.api.dto.ProgramSubjectHoursDtoForList;
-import lt.techin.AlpineOctopusScheduler.api.dto.SubjectDto;
 import lt.techin.AlpineOctopusScheduler.model.Program;
-import lt.techin.AlpineOctopusScheduler.model.Subject;
+import lt.techin.AlpineOctopusScheduler.model.ProgramSubjectHours;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 
 
 @Repository
-public interface ProgramRepository extends JpaRepository<Program, Long> {
+public interface ProgramSubjectHoursRepository extends JpaRepository<ProgramSubjectHours, Long> {
 
-@Query(value = "SELECT s.id, psh.subject_hours FROM subject s INNER JOIN program_subject_hours psh ON psh.subject_id = s.id WHERE psh.program_id = :pid", nativeQuery = true)
-List<String> GetSubjectsInProgram (@Param("pid") Long id);
 }
 
 //(@Param("names") List<String> names, @Param("status") String status);
