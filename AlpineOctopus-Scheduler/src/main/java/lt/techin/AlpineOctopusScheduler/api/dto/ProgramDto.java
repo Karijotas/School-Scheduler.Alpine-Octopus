@@ -35,6 +35,7 @@ public class ProgramDto {
         this.description = description;
         this.createdDate = createdDate;
         this.modifiedDate = modifiedDate;
+
     }
 
     public String getName() {
@@ -70,6 +71,14 @@ public class ProgramDto {
 
     public void setModifiedDate(LocalDateTime modifiedDate) {
         this.modifiedDate = modifiedDate;
+    }
+
+    public Set<ProgramSubjectHours> getSubjectHours() {
+        return subjectHours;
+    }
+
+    public void setSubjectHours(Set<ProgramSubjectHours> subjectHours) {
+        this.subjectHours = subjectHours;
     }
 
     @Override

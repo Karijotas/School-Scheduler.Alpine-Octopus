@@ -9,6 +9,10 @@ import lt.techin.AlpineOctopusScheduler.model.Subject;
 import lt.techin.AlpineOctopusScheduler.service.ProgramService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -36,10 +40,17 @@ public class ProgramController {
         this.programService = programService;
     }
 
+
+
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public List<ProgramEntityDto> getPrograms() {
-        return programService.getAll().stream()
+    public List<ProgramEntityDto> getPrograms(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                              @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
+                                              @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
+                                              @RequestParam(value = "sortDir", defaultValue = "asc", required = false) Sort.Direction sortDir) {
+
+
+        return programService.getAll(page, pageSize, sortBy, sortDir).stream()
                 .map(ProgramMapper::toProgramEntityDto)
                 .collect(toList());
     }

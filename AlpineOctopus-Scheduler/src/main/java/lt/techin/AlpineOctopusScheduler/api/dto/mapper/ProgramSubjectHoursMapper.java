@@ -3,6 +3,7 @@ package lt.techin.AlpineOctopusScheduler.api.dto.mapper;
 import lt.techin.AlpineOctopusScheduler.api.dto.ProgramDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ProgramEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ProgramSubjectHoursDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.ProgramSubjectHoursDtoForList;
 import lt.techin.AlpineOctopusScheduler.model.Program;
 import lt.techin.AlpineOctopusScheduler.model.ProgramSubjectHours;
 
@@ -30,5 +31,14 @@ public class ProgramSubjectHoursMapper {
         return programSubjectHours;
     }
 
+    public static ProgramSubjectHoursDtoForList toProgramSubjectHoursDtoForList(ProgramSubjectHours programSubjectHours) {
+        var programSubjectHoursDtoForList = new ProgramSubjectHoursDtoForList();
+
+        programSubjectHoursDtoForList.setSubject(programSubjectHours.getSubject());
+        programSubjectHoursDtoForList.setSubjectHours(programSubjectHours.getSubjectHours());
+
+
+        return programSubjectHoursDtoForList;
+    }
 
 }

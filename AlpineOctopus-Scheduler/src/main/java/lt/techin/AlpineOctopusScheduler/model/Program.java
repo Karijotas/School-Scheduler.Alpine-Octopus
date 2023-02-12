@@ -7,18 +7,24 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
+
 @Entity
 public class Program {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @NotBlank
+    @Size(min = 5, max = 40)
     private String name;
 
+    @NotBlank
+    @Size(min = 5, max = 100)
     private String description;
 
     @CreatedDate
@@ -26,7 +32,6 @@ public class Program {
 
     @LastModifiedDate
     private LocalDateTime modifiedDate;
-
 
 
     @PrePersist

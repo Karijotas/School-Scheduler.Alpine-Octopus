@@ -9,6 +9,10 @@ import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Program;
 import lt.techin.AlpineOctopusScheduler.model.ProgramSubjectHours;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -28,8 +32,15 @@ public class ProgramService {
         this.programSubjectHoursRepository = programSubjectHoursRepository;
     }
 
-    public List<Program> getAll() {
-        return programRepository.findAll();
+    private Pageable pageable(int page, int pageSize, String sortBy, Sort.Direction sortDir) {
+        return PageRequest.of(page, pageSize, sortDir, sortBy);
+    }
+
+    public Page<Program> getAll(int page, int pageSize, String sortBy, Sort.Direction sortDir) {
+
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        return programRepository.findAll(pageable);
     }
 
     public Optional<Program> getById(Long id) {
