@@ -5,7 +5,9 @@ package lt.techin.AlpineOctopusScheduler.api;
 import lt.techin.AlpineOctopusScheduler.api.dto.ModuleDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.mapper.TeacherMapper;
 import lt.techin.AlpineOctopusScheduler.model.Module;
+import lt.techin.AlpineOctopusScheduler.model.Teacher;
 import lt.techin.AlpineOctopusScheduler.service.TeacherService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +21,8 @@ import javax.validation.Valid;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.TeacherMapper.toTeacher;
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.TeacherMapper.toTeacherDto;
 import static org.springframework.http.ResponseEntity.ok;
 
 @Controller
@@ -26,7 +30,7 @@ import static org.springframework.http.ResponseEntity.ok;
 @Validated
 public class TeacherController {
 
-    public static Logger logger = LoggerFactory.getLogger(ModuleController.class);
+    public static Logger logger = LoggerFactory.getLogger(TeacherController.class);
     private final TeacherService teacherService;
 
     public TeacherController(TeacherService teacherService) {
@@ -43,8 +47,8 @@ public class TeacherController {
     }
 
     @PostMapping
-    public ResponseEntity<TeacherDto> createTeacher(@Valid @RequestBody ModuleDto moduleDto) {
-        var createdModule = teacherService.create(toTeacher(teacherDto));
+    public ResponseEntity<TeacherDto> createTeacher(@Valid @RequestBody TeacherDto teacherDto) {
+        var createdTeacher = teacherService.create(toTeacher(teacherDto));
 
         return ok(toTeacherDto(createdTeacher));
     }
@@ -61,21 +65,17 @@ public class TeacherController {
     }
 
     @PutMapping("/{teacherId}")
-    public ResponseEntity<ModuleDto> updateTeacher(@PathVariable Long teacherId, @RequestBody TeacherDto teacherDto) {
-        var updatedTeacher = teacherService.update(teacherId, toModule(teacherDto));
+    public ResponseEntity<TeacherDto> updateTeacher(@PathVariable Long teacherId, @RequestBody TeacherDto teacherDto) {
+        var updatedTeacher = teacherService.update(teacherId, toTeacher(teacherDto));
 
         return ok(toTeacherDto(updatedTeacher));
     }
     @GetMapping(value = "/{teacherId}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<Module> getTeacher(@PathVariable Long teacherId) {
+    public ResponseEntity<Teacher> getTeacher(@PathVariable Long teacherId) {
         var teacherOptional = teacherService.getById(teacherId);
 
-        var responseEntity = teacherOptional
-                .map(teacher -> ok(teacher))
+        return teacherOptional
+                .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
-
-        return responseEntity;
     }
-
-
 }

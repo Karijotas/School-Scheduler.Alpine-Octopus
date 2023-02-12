@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TeacherRepository extends JpaRepository<Teacher, Long> {
+
+    // JPA is good stuff
 }
