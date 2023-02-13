@@ -40,7 +40,7 @@ public class TeacherController {
 
     @GetMapping
     @ResponseBody
-    public List<TeacherEntityDto> getModules() {
+    public List<TeacherEntityDto> getTeachers() {
         return teacherService.getAll().stream()
                 .map(TeacherMapper::toTeacherEntityDto)
                 .collect(toList());
