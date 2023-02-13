@@ -43,8 +43,7 @@ export function ViewGroups() {
             {create && (<div>
                 <CreatePage /></div>)}
             {active && (<div className='edit'>
-                <EditObject id={active} /><Button icon labelPosition='left' className='controls' setActive='groups' onClick={() => setActive('')}>
-                    <Icon name='arrow left' />Atgal</Button></div>)}
+                <EditObject id={active} /></div>)}
 
 
             {!active && !create && (
