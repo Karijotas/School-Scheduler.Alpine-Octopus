@@ -57,7 +57,7 @@ public class ProgramController {
     @GetMapping(path = "/starting-with/{nameText}")
     @ApiOperation(value = "Get Programs starting with", notes = "Returns list of Programs starting with passed String")
     @ResponseBody
-    public List<ProgramsDtoForSearch> getProgramsByNameContaining(@PathVariable String nameText) {
+    public List<ProgramDto> getProgramsByNameContaining(@PathVariable String nameText) {
         return programService.getProgramsByNameContaining(nameText);
     }
 
@@ -82,6 +82,20 @@ public class ProgramController {
         logger.info("Attempt to delete Program by id: {}", programId);
 
         boolean deleted = programService.deleteById(programId);
+        if (deleted) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+
+    @DeleteMapping("/{programId}/{subjectId}")
+    public ResponseEntity<Void> deleteSubjectByIdFromProgram(@PathVariable Long programId, @RequestParam Long subjectId ) {
+
+
+        boolean deleted = programService.deleteSubjectInProgramById(programId, subjectId);
         if (deleted) {
             return ResponseEntity.noContent().build();
         } else {

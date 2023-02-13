@@ -49,8 +49,9 @@ public class ProgramService {
         return programRepository.findById(id);
     }
     @Transactional(readOnly = true)
-    public List<ProgramsDtoForSearch> getProgramsByNameContaining(String nameText){
-        return programRepository.findByNameContainingIgnoreCase(nameText);
+    public List<ProgramDto> getProgramsByNameContaining(String nameText){
+        return programRepository.findByNameContainingIgnoreCase(nameText).stream()
+                .map(ProgramMapper::toProgramDto).collect(Collectors.toList());
     }
 
     public Program create(Program program) {
@@ -79,7 +80,7 @@ public class ProgramService {
     }
 
     public List<ProgramSubjectHoursDtoForList> getAllSubjectsInProgram(Long id) {
-        List<String> subjectList = programRepository.GetSubjectsInProgram(id);
+        List<String> subjectList = programRepository.GetSubjectsAndHoursInProgram(id);
         List<ProgramSubjectHoursDtoForList> programSubjectHoursDtoForListsList = new ArrayList<>();
         for (String s: subjectList) {
             String[] subjectHours = s.split(",");
@@ -89,7 +90,27 @@ public class ProgramService {
         }
 return programSubjectHoursDtoForListsList;
         }
+//    @Transactional
+//    public boolean deleteSubjectInProgramById(Long programId, Long subjectId){
+//        try{
+//            programRepository.DeleteSubjectByIdInProgram(programId, subjectId);
+//            return true;
+//        } catch (EmptyResultDataAccessException exception) {
+//            return false;
+//        }
+//    }
 
+    public boolean deleteSubjectInProgramById(Long programId, Long subjectId){
+        try {
+            programSubjectHoursRepository.deleteById(programSubjectHoursRepository.findAll().stream()
+                    .filter(psh -> psh.getProgram()
+                            .getId().equals(programId)).filter(psh -> psh.getSubject().getId().equals(subjectId))
+                    .findFirst().get().getId().longValue());
+            return true;
+        }catch (EmptyResultDataAccessException exception) {
+            return false;
+        }
+    }
 
     public ProgramSubjectHours addSubjectAndHoursToProgram(Long programId, Long subjectId, Integer subjectHours) {
         var existingProgram = programRepository.findById(programId)
@@ -101,4 +122,6 @@ return programSubjectHoursDtoForListsList;
         var newProgramSubjectHoursDto = new ProgramSubjectHoursDto(existingProgram, existingSubject, subjectHours);
         return programSubjectHoursRepository.save(toProgramSubjectHours(newProgramSubjectHoursDto));
     }
+
+
 }
