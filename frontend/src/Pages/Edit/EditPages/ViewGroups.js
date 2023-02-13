@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { Button, Dropdown, Icon, Input, Pagination, Table } from 'semantic-ui-react'
-import { EditObject } from './EditObject';
 import './ViewGroups.css';
 
 const JSON_HEADERS = {

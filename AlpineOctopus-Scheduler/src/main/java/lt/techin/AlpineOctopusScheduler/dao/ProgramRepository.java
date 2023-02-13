@@ -1,6 +1,8 @@
 package lt.techin.AlpineOctopusScheduler.dao;
 
+import lt.techin.AlpineOctopusScheduler.api.dto.ProgramDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ProgramSubjectHoursDtoForList;
+import lt.techin.AlpineOctopusScheduler.api.dto.ProgramsDtoForSearch;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectDto;
 import lt.techin.AlpineOctopusScheduler.model.Program;
 import lt.techin.AlpineOctopusScheduler.model.Subject;
@@ -19,6 +21,8 @@ public interface ProgramRepository extends JpaRepository<Program, Long> {
 
 @Query(value = "SELECT s.id, psh.subject_hours FROM subject s INNER JOIN program_subject_hours psh ON psh.subject_id = s.id WHERE psh.program_id = :pid", nativeQuery = true)
 List<String> GetSubjectsInProgram (@Param("pid") Long id);
+
+List<ProgramsDtoForSearch> findByNameContainingIgnoreCase(String nameText);
 }
 
 //(@Param("names") List<String> names, @Param("status") String status);

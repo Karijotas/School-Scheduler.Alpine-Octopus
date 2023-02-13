@@ -1,18 +1,14 @@
 package lt.techin.AlpineOctopusScheduler.api;
 
+import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.*;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper;
 import lt.techin.AlpineOctopusScheduler.model.Program;
 import lt.techin.AlpineOctopusScheduler.model.ProgramSubjectHours;
-import lt.techin.AlpineOctopusScheduler.model.Subject;
 import lt.techin.AlpineOctopusScheduler.service.ProgramService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,12 +16,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper.toProgram;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper.toProgramDto;
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper.toProgramEntityDto;
 import static org.springframework.http.ResponseEntity.ok;
 
 @Controller
@@ -42,17 +37,28 @@ public class ProgramController {
 
 
 
-    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
+
+    @GetMapping
     @ResponseBody
-    public List<ProgramEntityDto> getPrograms(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                              @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
-                                              @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
-                                              @RequestParam(value = "sortDir", defaultValue = "asc", required = false) Sort.Direction sortDir) {
+    public List<ProgramEntityDto> getSubjects() {
+        return programService.getAllPrograms();
+    }
+
+    @GetMapping(path ="/page", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<ProgramDto> getPagedAllPrograms(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                              @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize)                                              {
 
 
-        return programService.getAll(page, pageSize, sortBy, sortDir).stream()
-                .map(ProgramMapper::toProgramEntityDto)
-                .collect(toList());
+        return programService.getPagedAllPrograms(page, pageSize);
+
+    }
+
+    @GetMapping(path = "/starting-with/{nameText}")
+    @ApiOperation(value = "Get Programs starting with", notes = "Returns list of Programs starting with passed String")
+    @ResponseBody
+    public List<ProgramsDtoForSearch> getProgramsByNameContaining(@PathVariable String nameText) {
+        return programService.getProgramsByNameContaining(nameText);
     }
 
     @GetMapping(value = "/{programId}", produces = {MediaType.APPLICATION_JSON_VALUE})

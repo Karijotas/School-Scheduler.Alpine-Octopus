@@ -21,6 +21,7 @@ public class Program {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
+    @Column(name = "name")
     @Size(min = 5, max = 40)
     private String name;
 

@@ -1,7 +1,7 @@
 package lt.techin.AlpineOctopusScheduler.service;
 
-import lt.techin.AlpineOctopusScheduler.api.dto.ProgramSubjectHoursDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.ProgramSubjectHoursDtoForList;
+import lt.techin.AlpineOctopusScheduler.api.dto.*;
+import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper;
 import lt.techin.AlpineOctopusScheduler.dao.ProgramRepository;
 import lt.techin.AlpineOctopusScheduler.dao.ProgramSubjectHoursRepository;
 import lt.techin.AlpineOctopusScheduler.dao.SubjectRepository;
@@ -14,8 +14,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramSubjectHoursMapper.toProgramSubjectHours;
 
@@ -32,19 +34,23 @@ public class ProgramService {
         this.programSubjectHoursRepository = programSubjectHoursRepository;
     }
 
-    private Pageable pageable(int page, int pageSize, String sortBy, Sort.Direction sortDir) {
-        return PageRequest.of(page, pageSize, sortDir, sortBy);
+    public List<ProgramEntityDto> getAllPrograms(){
+       return programRepository.findAll().stream().map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
-    public Page<Program> getAll(int page, int pageSize, String sortBy, Sort.Direction sortDir) {
+    public List<ProgramDto> getPagedAllPrograms(int page, int pageSize) {
 
         Pageable pageable = PageRequest.of(page, pageSize);
 
-        return programRepository.findAll(pageable);
+        return programRepository.findAll(pageable).stream().map(ProgramMapper::toProgramDto).collect(Collectors.toList());
     }
 
     public Optional<Program> getById(Long id) {
         return programRepository.findById(id);
+    }
+    @Transactional(readOnly = true)
+    public List<ProgramsDtoForSearch> getProgramsByNameContaining(String nameText){
+        return programRepository.findByNameContainingIgnoreCase(nameText);
     }
 
     public Program create(Program program) {

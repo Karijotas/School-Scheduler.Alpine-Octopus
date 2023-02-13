@@ -7,11 +7,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.security.auth.Subject;
+import java.util.List;
 import java.util.Set;
 
 
 @Repository
 public interface ProgramSubjectHoursRepository extends JpaRepository<ProgramSubjectHours, Long> {
+
 
 }
 
