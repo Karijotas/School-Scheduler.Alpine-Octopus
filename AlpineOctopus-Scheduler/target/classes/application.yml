@@ -12,7 +12,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+
 #      ddl-auto: drop-and-create
+
     generate-ddl: false
     properties:
       hibernate:
@@ -43,11 +45,13 @@ logging:
       techin: DEBUG
     org:
       springframework: INFO
+
 #      springframework: DEBUG
 #        jdbc:
 #          core:
 #            JdbcTemplate: DEBUG
 #            StatementCreatorUtils: DEBUG
+
       hibernate:
         SQL: DEBUG
         type: TRACE
@@ -56,4 +60,5 @@ logging:
           sql:
             BasicBinder: DEBUG
 Server:
-  Port: 8092
+  Port: 8093
+
