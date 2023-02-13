@@ -8,6 +8,7 @@ import { HashRouter, Route, Routes } from 'react-router-dom';
 import EditMenu from './Pages/Edit/EditMenu';
 import { EditObject } from './Pages/Edit/EditPages/EditObject';
 import { CreatePage } from './Pages/Create/CreatePage';
+import { CreateModule } from './Pages/Create/CreateModule';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -19,6 +20,8 @@ root.render(
         <Route path='/edit' element={<EditMenu />} />
         <Route path='/groups/edit/:id' element={<EditObject />} />
         <Route path='/create' element={<CreatePage />} />
+        <Route path='/CreateNewModule' element={<CreateModule />} />
+      
       </Routes>
     </HashRouter>
 

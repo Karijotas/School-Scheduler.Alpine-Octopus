@@ -9,6 +9,7 @@ import {
 } from "semantic-ui-react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { CreateModule } from "../../Create/CreateModule";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -43,8 +44,9 @@ export function ModuleList() {
         icon
         labelPosition="left"
         primary
-        href="#/create"
+        href="#/CreateNewModule"
         className="controls"
+        onClick={CreateModule}
       >
         <Icon name="database" />
         Kurti naują modulį

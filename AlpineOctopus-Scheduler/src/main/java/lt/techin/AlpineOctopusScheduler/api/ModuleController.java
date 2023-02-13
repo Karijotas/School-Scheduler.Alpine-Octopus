@@ -42,7 +42,7 @@ public class ModuleController {
                 .collect(toList());
     }
 
-    @PostMapping
+    @PostMapping("/CreateNewModule")
     public ResponseEntity<ModuleDto> createModule(@Valid @RequestBody ModuleDto moduleDto) {
         var createdModule = moduleService.create(toModule(moduleDto));
 
