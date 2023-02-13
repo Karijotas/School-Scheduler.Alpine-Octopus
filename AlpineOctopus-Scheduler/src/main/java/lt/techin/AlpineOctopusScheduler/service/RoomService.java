@@ -13,42 +13,36 @@ import java.util.Optional;
 
 @Service
 public class RoomService {
-    private RoomRepository roomRepository;
-    @Autowired
-    public RoomService(RoomRepository roomRepository){
+    private final RoomRepository roomRepository;
+
+    public RoomService(RoomRepository roomRepository) {
         this.roomRepository = roomRepository;
     }
 
-
-    public List<Room> getAllRooms(){
+    public List<Room> getAll() {
         return roomRepository.findAll();
     }
-    public Room getRoom(String name){
-        return roomRepository.findById(name)
-                .orElseThrow(()-> new RuntimeException());
 
+    public Optional<Room> getById(Long id) {
+        return roomRepository.findById(id);
     }
-    public Room addRoom(Room room){
+
+    public Room create(Room room) {
         return roomRepository.save(room);
     }
 
-    public Room updateRoom(String name,Room newRoom){
-        return roomRepository.findById(name)
-                .map(room ->{
-                    room.setClassName(newRoom.getClassName());
-                    room.setBuilding(newRoom.getBuilding());
-                    room.setDescription(newRoom.getDescription());
-                    return roomRepository.save(room);
-                }).orElseThrow(()-> new RuntimeException("room does not exist"));
+    public Room update(Long id, Room room) {
+        room.setId(id);//FIXME will improve later
+
+        return roomRepository.save(room);
     }
-    public Boolean deleteRoom(String name){
-        try{
-            roomRepository.deleteById(name);
+
+    public boolean deleteById(Long id) {
+        if (roomRepository.existsById(id)) {
+            roomRepository.deleteById(id);
             return true;
-        } catch (EmptyResultDataAccessException e){
-            return false;
         }
 
+        return false;
     }
-
 }

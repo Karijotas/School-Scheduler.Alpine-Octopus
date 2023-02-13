@@ -1,36 +1,19 @@
-package lt.techin.AlpineOctopusScheduler.model;
+package lt.techin.AlpineOctopusScheduler.api.dto;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.util.Objects;
 
-@Entity
-public class Room {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class RoomDto {
     private String name;
     private String building;
     private String description;
 
-    public Room() {
+    public RoomDto() {
     }
 
-    public Room(Long id, String name, String building, String description) {
-        this.id = id;
+    public RoomDto(String name, String building, String description) {
         this.name = name;
         this.building = building;
         this.description = description;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -61,20 +44,19 @@ public class Room {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Room room = (Room) o;
-        return Objects.equals(id, room.id) && Objects.equals(name, room.name) && Objects.equals(building, room.building) && Objects.equals(description, room.description);
+        RoomDto roomDto = (RoomDto) o;
+        return Objects.equals(name, roomDto.name) && Objects.equals(building, roomDto.building) && Objects.equals(description, roomDto.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, building, description);
+        return Objects.hash(name, building, description);
     }
 
     @Override
     public String toString() {
-        return "Room{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+        return "RoomDto{" +
+                "name='" + name + '\'' +
                 ", building='" + building + '\'' +
                 ", description='" + description + '\'' +
                 '}';
