@@ -1,12 +1,13 @@
 package lt.techin.AlpineOctopusScheduler.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 //Mantvydas Juršys
 
 
 @Entity
-@Table(name = "TEACHERS")
+//@Table(name = "TEACHERS")
 public class Teacher {
 
     @Id
@@ -94,5 +95,32 @@ public class Teacher {
 
     public void setShift(String shift) {
         this.shift = shift;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Teacher teacher = (Teacher) o;
+        return Double.compare(teacher.workHoursPerWeek, workHoursPerWeek) == 0 && Objects.equals(id, teacher.id) && Objects.equals(name, teacher.name) && Objects.equals(surname, teacher.surname) && Objects.equals(loginEmail, teacher.loginEmail) && Objects.equals(contactEmail, teacher.contactEmail) && Objects.equals(phone, teacher.phone) && Objects.equals(shift, teacher.shift);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, surname, loginEmail, contactEmail, phone, workHoursPerWeek, shift);
+    }
+
+    @Override
+    public String toString() {
+        return "Teacher{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", loginEmail='" + loginEmail + '\'' +
+                ", contactEmail='" + contactEmail + '\'' +
+                ", phone='" + phone + '\'' +
+                ", workHoursPerWeek=" + workHoursPerWeek +
+                ", shift='" + shift + '\'' +
+                '}';
     }
 }

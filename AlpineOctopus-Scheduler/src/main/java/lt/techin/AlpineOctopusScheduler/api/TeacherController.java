@@ -2,11 +2,9 @@ package lt.techin.AlpineOctopusScheduler.api;
 
 //Mantvydas Juršys
 
-import lt.techin.AlpineOctopusScheduler.api.dto.ModuleDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.TeacherMapper;
-import lt.techin.AlpineOctopusScheduler.model.Module;
 import lt.techin.AlpineOctopusScheduler.model.Teacher;
 import lt.techin.AlpineOctopusScheduler.service.TeacherService;
 import org.slf4j.Logger;
@@ -74,8 +72,10 @@ public class TeacherController {
     public ResponseEntity<Teacher> getTeacher(@PathVariable Long teacherId) {
         var teacherOptional = teacherService.getById(teacherId);
 
-        return teacherOptional
-                .map(ResponseEntity::ok)
+        var responseEntity = teacherOptional
+                .map(teacher -> ok(teacher))
                 .orElseGet(() -> ResponseEntity.notFound().build());
+
+        return responseEntity;
     }
 }
