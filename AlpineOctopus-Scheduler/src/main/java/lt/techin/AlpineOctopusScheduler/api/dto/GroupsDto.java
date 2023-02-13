@@ -1,5 +1,6 @@
 package lt.techin.AlpineOctopusScheduler.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -16,9 +17,10 @@ public class GroupsDto {
     private Integer studentAmount;
     private String program;
     private String shift;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
 
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modifiedDate;
 
     private String createdBy;

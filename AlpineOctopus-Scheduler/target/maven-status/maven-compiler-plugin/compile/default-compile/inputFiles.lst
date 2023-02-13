@@ -8,5 +8,5 @@
 /home/mantas/Documents/Akademija.it/Projektas/AlpineOctopus-Scheduler/src/main/java/lt/techin/AlpineOctopusScheduler/AlpineOctopusSchedulerApplication.java
 /home/mantas/Documents/Akademija.it/Projektas/AlpineOctopus-Scheduler/src/main/java/lt/techin/AlpineOctopusScheduler/configuration/SwaggerConfiguration.java
 /home/mantas/Documents/Akademija.it/Projektas/AlpineOctopus-Scheduler/src/main/java/lt/techin/AlpineOctopusScheduler/api/GroupsController.java
-/home/mantas/Documents/Akademija.it/Projektas/AlpineOctopus-Scheduler/src/main/java/lt/techin/AlpineOctopusScheduler/dao/GroupsRepository.java
 /home/mantas/Documents/Akademija.it/Projektas/AlpineOctopus-Scheduler/src/main/java/lt/techin/AlpineOctopusScheduler/exception/Todo.java
+/home/mantas/Documents/Akademija.it/Projektas/AlpineOctopus-Scheduler/src/main/java/lt/techin/AlpineOctopusScheduler/dao/GroupsRepository.java

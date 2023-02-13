@@ -6,7 +6,7 @@ spring:
     default-property-inclusion: non_null
     serialization:
       write-dates-as-timestamps: false
-    date-format: "yyyy-MM-dd HH:mm"
+    date-format: "dd-MM-yyyy HH:mm:ss"
   flyway:
     enabled: true
   jpa:

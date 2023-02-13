@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Grid, Icon, Menu, Segment } from 'semantic-ui-react'
+import { Grid, Menu, Segment } from 'semantic-ui-react'
 import MainMenu from '../../Components/MainMenu'
 import { ObjectList } from './ViewObject'
 import './EditPages/ViewGroups.css'
@@ -81,7 +81,7 @@ export default class EditMenu extends Component {
 
           </Grid.Column>
 
-          <Grid.Column stretched width={13}>
+          <Grid.Column stretched textAlign='left' verticalAlign='bottom' width={13}>
             <Segment>
 
 

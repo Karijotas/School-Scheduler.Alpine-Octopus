@@ -4,6 +4,8 @@ import lt.techin.AlpineOctopusScheduler.api.dto.GroupsDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.GroupsEntityDto;
 import lt.techin.AlpineOctopusScheduler.model.Groups;
 
+import java.time.LocalDateTime;
+
 public class GroupsMapper {
 
     public static GroupsDto toGroupDto(Groups groups){
@@ -14,6 +16,7 @@ public class GroupsMapper {
         groupDto.setStudentAmount(groups.getStudentAmount());
         groupDto.setProgram(groups.getProgram());
         groupDto.setShift(groups.getShift());
+//        groupDto.setModifiedDate(groups.getModifiedDate());
 
 
         return groupDto;
@@ -40,7 +43,7 @@ public class GroupsMapper {
         groupEntityDto.setStudentAmount(groups.getStudentAmount());
         groupEntityDto.setProgram(groups.getProgram());
         groupEntityDto.setShift(groups.getShift());
-        groupEntityDto.setModifiedDate(groups.getModifiedDate());
+//        groupEntityDto.setModifiedDate(LocalDateTime.now());
 
 
 
