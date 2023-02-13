@@ -10,6 +10,8 @@ public class SubjectCreator {
         subject.setId(id);
         subject.setName("Matematika");
         subject.setDescription("Tikslieji mokslai");
+        subject.setCreatedDate(null);
+        subject.setModifiedDate(null);
 
         return subject;
     }

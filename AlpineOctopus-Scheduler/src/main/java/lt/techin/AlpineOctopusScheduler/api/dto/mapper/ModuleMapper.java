@@ -11,6 +11,8 @@ public class ModuleMapper {
 
         moduleDto.setName(module.getName());
         moduleDto.setDescription(module.getDescription());
+        moduleDto.setCreatedDate(module.getCreatedDate());
+        moduleDto.setModifiedDate(module.getModifiedDate());
 
         return moduleDto;
     }
@@ -20,18 +22,22 @@ public class ModuleMapper {
 
         module.setName(moduleDto.getName());
         module.setDescription(moduleDto.getDescription());
+        module.setCreatedDate(moduleDto.getCreatedDate());
+        module.setModifiedDate(moduleDto.getModifiedDate());
 
         return module;
     }
 
     public static ModuleEntityDto toModuleEntityDto(Module module) {
-        var moduleDto = new ModuleEntityDto();
+        var moduleEntityDto = new ModuleEntityDto();
 
-        moduleDto.setId(module.getId());
-        moduleDto.setName(module.getName());
-        moduleDto.setDescription(module.getDescription());
+        moduleEntityDto.setId(module.getId());
+        moduleEntityDto.setName(module.getName());
+        moduleEntityDto.setDescription(module.getDescription());
+        moduleEntityDto.setCreatedDate(module.getCreatedDate());
+        moduleEntityDto.setModifiedDate(module.getModifiedDate());
 
-        return moduleDto;
+        return moduleEntityDto;
     }
 
     public static Module toModule(ModuleEntityDto moduleEntityDto) {
@@ -40,6 +46,8 @@ public class ModuleMapper {
         module.setId(moduleEntityDto.getId());
         module.setName(moduleEntityDto.getName());
         module.setDescription(moduleEntityDto.getDescription());
+        module.setCreatedDate(moduleEntityDto.getCreatedDate());
+        module.setModifiedDate(moduleEntityDto.getModifiedDate());
 
         return module;
     }

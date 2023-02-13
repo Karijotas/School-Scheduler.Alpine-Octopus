@@ -1,5 +1,6 @@
 package lt.techin.AlpineOctopusScheduler.api.dto;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class ModuleDto {
@@ -8,12 +9,18 @@ public class ModuleDto {
 
     private String description;
 
+    private LocalDateTime createdDate;
+
+    private LocalDateTime modifiedDate;
+
     public ModuleDto() {
     }
 
-    public ModuleDto(String name, String description) {
+    public ModuleDto(String name, String description, LocalDateTime createdDate, LocalDateTime modifiedDate) {
         this.name = name;
         this.description = description;
+        this.createdDate=createdDate;
+        this.modifiedDate=modifiedDate;
 
     }
 
@@ -33,17 +40,33 @@ public class ModuleDto {
         this.description = description;
     }
 
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public LocalDateTime getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(LocalDateTime modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ModuleDto moduleDto = (ModuleDto) o;
-        return Objects.equals(name, moduleDto.name) && Objects.equals(description, moduleDto.description);
+        return Objects.equals(name, moduleDto.name) && Objects.equals(description, moduleDto.description) && Objects.equals(createdDate, moduleDto.createdDate) && Objects.equals(modifiedDate, moduleDto.modifiedDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description);
+        return Objects.hash(name, description, createdDate, modifiedDate);
     }
 
     @Override
@@ -51,6 +74,8 @@ public class ModuleDto {
         return "ModuleDto{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", createdDate=" + createdDate +
+                ", modifiedDate=" + modifiedDate +
                 '}';
     }
 }

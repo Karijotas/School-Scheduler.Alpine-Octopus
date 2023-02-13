@@ -12,6 +12,8 @@ public class SubjectMapper {
 
         subjectDto.setName(subject.getName());
         subjectDto.setDescription(subject.getDescription());
+        subjectDto.setCreatedDate(subject.getCreatedDate());
+        subjectDto.setModifiedDate(subject.getModifiedDate());
 
         return subjectDto;
     }
@@ -21,19 +23,23 @@ public class SubjectMapper {
 
         subject.setName(subjectDto.getName());
         subject.setDescription(subjectDto.getDescription());
+        subject.setCreatedDate(subjectDto.getCreatedDate());
+        subject.setModifiedDate(subjectDto.getModifiedDate());
 
         return subject;
     }
 
 
     public static SubjectEntityDto toSubjectEntityDto(Subject subject) {
-        var subjectDto = new SubjectEntityDto();
+        var subjectEntityDto = new SubjectEntityDto();
 
-        subjectDto.setId(subject.getId());
-        subjectDto.setName(subject.getName());
-        subjectDto.setDescription(subject.getDescription());
+        subjectEntityDto.setId(subject.getId());
+        subjectEntityDto.setName(subject.getName());
+        subjectEntityDto.setDescription(subject.getDescription());
+        subjectEntityDto.setCreatedDate(subject.getCreatedDate());
+        subjectEntityDto.setModifiedDate(subject.getModifiedDate());
 
-        return subjectDto;
+        return subjectEntityDto;
     }
 
     public static Subject toSubject(SubjectEntityDto subjectEntityDto) {
@@ -42,6 +48,8 @@ public class SubjectMapper {
         subject.setId(subjectEntityDto.getId());
         subject.setName(subjectEntityDto.getName());
         subject.setDescription(subjectEntityDto.getDescription());
+        subject.setCreatedDate(subjectEntityDto.getCreatedDate());
+        subject.setModifiedDate(subjectEntityDto.getModifiedDate());
 
         return subject;
     }

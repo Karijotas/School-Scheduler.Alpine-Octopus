@@ -1,4 +1,5 @@
 package lt.techin.AlpineOctopusScheduler.service;
+import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Module;
 import lt.techin.AlpineOctopusScheduler.dao.ModuleRepository;
 import org.springframework.stereotype.Service;
@@ -34,9 +35,16 @@ public class ModuleService {
     }
 
     public Module update(Long id, Module module) {
-        module.setId(id);//FIXME will improve later
+        var existingModule = moduleRepository.findById(id)
+                .orElseThrow(() -> new SchedulerValidationException("Module does not exist",
+                        "id", "Module not found", id.toString()));
 
-        return moduleRepository.save(module);
+        existingModule.setName(module.getName());
+        existingModule.setDescription(module.getDescription());
+        existingModule.setCreatedDate(module.getCreatedDate());
+        existingModule.setModifiedDate(module.getModifiedDate());
+
+        return moduleRepository.save(existingModule);
     }
 
     public boolean deleteById(Long id) {
