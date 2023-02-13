@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Icon, Input, Select, Table } from 'semantic-ui-react';
-import './EditObject.css';
 import { ViewGroups } from './ViewGroups';
 
 
@@ -54,11 +53,11 @@ export function EditObject(props) {
 
 
     const applyResult = () => {
-        
-          setHide(true)
-        
+
+        setHide(true)
+
     }
-    
+
     const updateGroups = () => {
         fetch('/api/v1/groups/' + props.id, {
             method: 'PATCH',
@@ -92,9 +91,9 @@ export function EditObject(props) {
     // }
 
 
-    return (<div>{active && (<div className='' id='table'>
+    return (<div>{active && (<div >
 
-        <Table celled compact color='violet'>
+        <Table celled color='violet'>
             <Table.Header >
                 <Table.Row  >
                     <Table.HeaderCell >Grupės pavadinimas "Teams"</Table.HeaderCell>
@@ -110,7 +109,7 @@ export function EditObject(props) {
 
             <Table.Body>
                 <Table.Row  >
-                    <Table.Cell collapsing>{groups.name}</Table.Cell>
+                    <Table.Cell >{groups.name}</Table.Cell>
                     <Table.Cell >{groups.schoolYear}</Table.Cell>
                     <Table.Cell >{groups.studentAmount}</Table.Cell>
                     <Table.Cell >{groups.program} </Table.Cell>
@@ -130,9 +129,9 @@ export function EditObject(props) {
 
 
     )}
-        {!active && !hide && (<div className='' id='table'>
+        {!active && !hide && (<div >
 
-            <Table celled compact color='violet'>
+            <Table celled color='violet'>
                 <Table.Header >
                     <Table.Row  >
                         <Table.HeaderCell >Grupės pavadinimas "Teams"</Table.HeaderCell>
@@ -168,10 +167,10 @@ export function EditObject(props) {
 
                 </ Table.Body >
             </Table>
-            
+
         </div>)}
 
-{hide && <div><ViewGroups /></div>}
+        {hide && <div><ViewGroups /></div>}
 
 
 
