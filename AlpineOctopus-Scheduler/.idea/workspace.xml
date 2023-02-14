@@ -4,7 +4,36 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="938cf511-aa2f-49d2-97f5-d548a85d9c9a" name="Changes" comment="" />
+    <list default="true" id="938cf511-aa2f-49d2-97f5-d548a85d9c9a" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/migration/V3_1__insert_group_test_data.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/db/migration/V1_0__create_group_schema.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/db/migration/V3_1__insert_group_test_data.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/lt/techin/AlpineOctopusScheduler/AlpineOctopusSchedulerApplication.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/lt/techin/AlpineOctopusScheduler/api/GroupsController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/lt/techin/AlpineOctopusScheduler/api/dto/GroupsDto.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/lt/techin/AlpineOctopusScheduler/api/dto/GroupsEntityDto.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/lt/techin/AlpineOctopusScheduler/api/dto/mapper/GroupsMapper.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/lt/techin/AlpineOctopusScheduler/configuration/ObjectMapping.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/lt/techin/AlpineOctopusScheduler/configuration/SwaggerConfiguration.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/lt/techin/AlpineOctopusScheduler/dao/GroupsRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/lt/techin/AlpineOctopusScheduler/model/Groups.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/lt/techin/AlpineOctopusScheduler/service/GroupService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/lt/techin/AlpineOctopusScheduler/AlpineOctopusSchedulerApplicationTests.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/Components/MainMenu.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Components/MainMenu.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Create/CreatePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Create/CreatePage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/EditMenu.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/EditMenu.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/EditPages/EditObject.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/EditPages/EditObject.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/EditPages/ViewPrograms.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/EditPages/ViewPrograms.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/ViewObject.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/ViewObject.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/index.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -35,12 +64,15 @@
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
   }
-}]]></component>
+}</component>
   <component name="RunAnythingCache">
     <option name="myCommands">
       <command value="spring-boot:run" />
@@ -95,7 +127,7 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="1920c4a2-1348-418d-822b-389896c1a83b" name="Changes" comment="" />
+      <changelist id="938cf511-aa2f-49d2-97f5-d548a85d9c9a" name="Changes" comment="" />
       <created>1675419017894</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
