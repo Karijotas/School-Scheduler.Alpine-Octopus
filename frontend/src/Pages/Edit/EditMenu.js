@@ -27,6 +27,7 @@ export default class EditMenu extends Component {
 
               <Menu.Item
                 name='subjects'
+                icon='book'
                 content='Dalykai'
                 active={activeItem === 'subjects'}
                 onClick={this.handleItemClick}
@@ -34,6 +35,7 @@ export default class EditMenu extends Component {
 
               <Menu.Item
                 name='teachers'
+                icon='user'
                 content='Mokytojai'
                 active={activeItem === 'teachers'}
                 onClick={this.handleItemClick}
@@ -41,6 +43,7 @@ export default class EditMenu extends Component {
 
               <Menu.Item
                 name='groups'
+                icon='users'
                 content='Grupės'
                 active={activeItem === 'groups'}
                 onClick={this.handleItemClick}
@@ -49,30 +52,31 @@ export default class EditMenu extends Component {
               <Menu.Item
                 name='shifts'
                 content='Pamainos'
+                icon='sync'
                 active={activeItem === 'shifts'}
                 onClick={this.handleItemClick}
               />
 
               <Menu.Item
-                href='#/edit'
                 name='rooms'
+                icon='warehouse'
                 content='Klasės'
                 active={activeItem === 'rooms'}
                 onClick={this.handleItemClick}
               />
 
               <Menu.Item
-                href='#/edit'
                 name='program'
+                icon='unordered list'
                 content='Programos'
                 active={activeItem === 'program'}
                 onClick={this.handleItemClick}
               />
 
               <Menu.Item
-                href='#/edit'
                 name='modules'
                 content='Moduliai'
+                icon='unordered list'
                 active={activeItem === 'modules'}
                 onClick={this.handleItemClick}
               />

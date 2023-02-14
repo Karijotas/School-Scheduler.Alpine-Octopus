@@ -64,7 +64,7 @@ export function SubjectList() {
             <Table.Row key={subject.id}>
               <Table.Cell>{subject.name}</Table.Cell>
               <Table.Cell collapsing>
-                             <Button basic primary compact icon='eye' title='Peržiūrėti' active={activeItem === subjects.id} onClick={console.log('subjects/' +subject.id)}></Button>
+                             <Button basic primary compact icon='eye' title='Peržiūrėti'></Button>
                             <Button basic color='black' compact icon='trash alternate' onClick={() => removeSubject(subject.id)}></Button>
 
                         </Table.Cell>

@@ -9,7 +9,7 @@ const JSON_HEADERS = {
 };
 
 
-export function EditObject(props) {
+export function EditGroupObject(props) {
 
 
     const [hide, setHide] = useState(false)

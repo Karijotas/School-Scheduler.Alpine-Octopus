@@ -1,7 +1,6 @@
 import React from 'react'
 import { ViewGroups } from './EditPages/ViewGroups'
 import { ViewPrograms } from './EditPages/ViewPrograms'
-import { EditObject } from './EditPages/EditObject'
 import { SubjectList } from './EditPages/SubjectList'
 import { ModuleList } from './EditPages/ModuleList'
 
@@ -16,7 +15,6 @@ import { ModuleList } from './EditPages/ModuleList'
 
 export function ObjectList(props) {
     if (props === 'groups') {
-
         return (
             <ViewGroups />
 

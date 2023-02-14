@@ -20,8 +20,6 @@ public class ProgramDto {
 
     private String description;
 
-    private Set<ProgramSubjectHours> subjectHours;
-
     private LocalDateTime createdDate;
 
     private LocalDateTime modifiedDate;
@@ -73,25 +71,17 @@ public class ProgramDto {
         this.modifiedDate = modifiedDate;
     }
 
-    public Set<ProgramSubjectHours> getSubjectHours() {
-        return subjectHours;
-    }
-
-    public void setSubjectHours(Set<ProgramSubjectHours> subjectHours) {
-        this.subjectHours = subjectHours;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProgramDto that = (ProgramDto) o;
-        return Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(subjectHours, that.subjectHours) && Objects.equals(createdDate, that.createdDate) && Objects.equals(modifiedDate, that.modifiedDate);
+        return Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(createdDate, that.createdDate) && Objects.equals(modifiedDate, that.modifiedDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, subjectHours, createdDate, modifiedDate);
+        return Objects.hash(name, description, createdDate, modifiedDate);
     }
 
     @Override
@@ -99,7 +89,6 @@ public class ProgramDto {
         return "ProgramDto{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", subjectHours=" + subjectHours +
                 ", createdDate=" + createdDate +
                 ", modifiedDate=" + modifiedDate +
                 '}';

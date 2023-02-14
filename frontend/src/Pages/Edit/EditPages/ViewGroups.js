@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Dropdown, Icon, Input, Pagination, Table } from 'semantic-ui-react'
+import { Button, Divider, Header, Icon, Input, Label, Rail, Segment, Table } from 'semantic-ui-react'
 import { CreatePage } from '../../Create/CreatePage';
-import { EditObject } from './EditObject';
+import { EditGroupObject } from './EditGroupObject';
 import './ViewGroups.css';
 
 const JSON_HEADERS = {
@@ -10,15 +10,58 @@ const JSON_HEADERS = {
 
 
 export function ViewGroups() {
+    // const yearOptions = [
+    //     { key: 23, value: 2023, text: '2023' },
+    //     { key: 24, value: 2024, text: '2024' },
+    //     { key: 25, value: 2025, text: '2025' },
+    //     { key: 26, value: 2026, text: '2026' },
+    //     { key: 27, value: 2027, text: '2027' },
+    //     { key: 28, value: 2028, text: '2028' },
+    // ]
 
-    const [active, setActive] = useState('')
+    const [active, setActive] = useState()
 
     const [create, setCreate] = useState('')
 
     const [groups, setGroups] = useState([]);
 
+    const [nameText, setNameText] = useState('')
+
+    const [yearText, setYearText] = useState();
+
+    const [programText, setProgramText] = useState();
+
+    const [activePage, setActivePage] = useState(0)
+
+
+    const fetchProgramGroups = async () => {
+        fetch('/api/v1/groups/program-filter/' + programText)
+            .then(response => response.json())
+            .then(jsonResponse => setGroups(jsonResponse));
+    };
+    const fetchYearGroups = async () => {
+        fetch('/api/v1/groups/year-filter/' + yearText)
+            .then(response => response.json())
+            .then(jsonResponse => setGroups(jsonResponse));
+    };
+
+
+
+
+    const fetchFilterGroups = async () => {
+        fetch('/api/v1/groups/name-filter/' + nameText)
+            .then(response => response.json())
+            .then(jsonResponse => setGroups(jsonResponse));
+    };
+
     const fetchGroups = async () => {
-        fetch('/api/v1/groups')
+        fetch('/api/v1/groups/page?page=' + activePage)
+            .then(response => response.json())
+            .then(jsonResponse => setGroups(jsonResponse));
+    };
+
+    const fetchSingleGroups = async () => {
+        fetch('/api/v1/groups/')
             .then(response => response.json())
             .then(jsonResponse => setGroups(jsonResponse));
     };
@@ -33,7 +76,7 @@ export function ViewGroups() {
 
     useEffect(() => {
         fetchGroups();
-    }, []);
+    }, [nameText, yearText, programText, activePage]);
 
 
     return (
@@ -43,26 +86,29 @@ export function ViewGroups() {
             {create && (<div>
                 <CreatePage /></div>)}
             {active && (<div className='edit'>
-                <EditObject id={active} /></div>)}
+                <EditGroupObject id={active} /></div>)}
 
 
             {!active && !create && (
 
                 <div id='groups'>
-                    <Input placeholder='Filtruoti pagal pavadinimą' />
-                    <Dropdown
-                        button
-                        className='icon'
-                        floating
-                        labeled
-                        icon='angle down'
-                        options={null}
-                        search
-                        text='Filtruoti pagal mokslo metus'
-                    />
-                    <Button>Filtruoti pagal programą</Button>
+
+                    <Input placeholder='Filtruoti pagal pavadinimą' value={nameText} onChange={(e) => setNameText(e.target.value)} />
+                    <Button icon labelPosition='left' onClick={fetchFilterGroups}><Icon name='angle double left' />Filtruoti</Button>
+
+                    <Input placeholder='Filtruoti pagal mokslo metus' value={yearText} onChange={(e) => setYearText(e.target.value)} />
+                    <Button icon labelPosition='left' onClick={fetchYearGroups}><Icon name='angle double left' />Filtruoti</Button>
+
+                    <Input placeholder='Filtruoti pagal programą' value={programText} onChange={(e) => setProgramText(e.target.value)} />
+
+                    <Button icon labelPosition='left' onClick={fetchProgramGroups}><Icon name='angle double left' />Filtruoti</Button>
+
+
+
 
                     <Button icon labelPosition='left' primary className='controls' onClick={() => setCreate('new')}><Icon name='database' />Kurti naują grupę</Button>
+                    <Divider horizontal hidden></Divider>
+
                     <Table selectable >
                         <Table.Header>
                             <Table.Row>
@@ -92,16 +138,13 @@ export function ViewGroups() {
                         </Table.Body>
 
                     </Table>
+                    <Divider hidden></Divider>
 
-                    <Pagination
-                        defaultActivePage={1}
-                        firstItem={groups.firstItem}
-                        lastItem={groups.lastItem}
-                        pointing
-                        totalPages={3}
-                    />
+                    <Button onClick={() => setActivePage(0)}>1</Button>
+                    <Button onClick={() => setActivePage(1)}>2</Button>
                 </div>
             )}
+
 
         </div>
     )

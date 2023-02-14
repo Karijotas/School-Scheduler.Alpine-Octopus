@@ -12,11 +12,19 @@ const JSON_HEADERS = {
 export function ViewPrograms() {
 
     const [activeItem, setActiveItem] = useState('');
+    const [activePage, setActivePage] = useState(0)
+    const [nameText, setNameText] = useState('')
 
     const [programs, setPrograms] = useState([]);
 
     const fetchPrograms = async () => {
-        fetch('/api/v1/programs')
+        fetch('/api/v1/programs/page?page=' + activePage)
+            .then(response => response.json())
+            .then(jsonResponse => setPrograms(jsonResponse));
+    };
+
+    const fetchFilterPrograms = async () => {
+        fetch('/api/v1/programs/starting-with/' + nameText)
             .then(response => response.json())
             .then(jsonResponse => setPrograms(jsonResponse));
     };
@@ -31,16 +39,18 @@ export function ViewPrograms() {
 
     useEffect(() => {
         fetchPrograms();
-    }, []);
- 
- 
+    }, [activePage, nameText]);
+
 
     return (<div id='programs'>
-        <Input placeholder='Filtruoti pagal pavadinimą' />
-        
-        
+        <Input value={nameText} onChange={(e) => setNameText(e.target.value)} />
+        <Button onClick={fetchFilterPrograms}>Filtruoti</Button>
 
-        <Button icon labelPosition='left' primary href='#/create' className='controls'><Icon name='database'/>Kurti naują programą</Button>
+        {nameText && (<div></div>)}
+
+
+
+        <Button icon labelPosition='left' primary href='#/create' className='controls'><Icon name='database' />Kurti naują programą</Button>
 
 
 
@@ -48,8 +58,10 @@ export function ViewPrograms() {
         <Table selectable >
             <Table.Header>
                 <Table.Row>
+                    <Table.HeaderCell>id</Table.HeaderCell>
+
                     <Table.HeaderCell>Programos pavadinimas</Table.HeaderCell>
-                    <Table.HeaderCell>Programos aprašymas</Table.HeaderCell>                                       
+                    <Table.HeaderCell>Programos aprašymas</Table.HeaderCell>
                     <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
                     <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                 </Table.Row>
@@ -59,11 +71,12 @@ export function ViewPrograms() {
                 {programs.map(program => (
 
                     <Table.Row key={program.id}>
+                        <Table.Cell>{program.id}</Table.Cell>
                         <Table.Cell>{program.name}</Table.Cell>
                         <Table.Cell>{program.description}</Table.Cell>
                         <Table.Cell>{program.modifiedDate}</Table.Cell>
                         <Table.Cell collapsing>
-                             <Button basic primary compact icon='eye' title='Peržiūrėti' active={activeItem === program.id} onClick={console.log('program/' +program.id)}></Button>
+                            <Button basic primary compact icon='eye' title='Peržiūrėti' ></Button>
                             <Button basic color='black' compact icon='trash alternate' onClick={() => removeProgram(program.id)}></Button>
 
                         </Table.Cell>
@@ -72,16 +85,17 @@ export function ViewPrograms() {
 
 
             </Table.Body>
-           
-        </Table>
 
-        <Pagination 
-            defaultActivePage={1}
-            firstItem={programs.firstItem}
-            lastItem={programs.lastItem}
+        </Table>
+        <Button onClick={() => setActivePage(0)}>1</Button>
+        <Button onClick={() => setActivePage(1)}>2</Button>
+
+        {/* <Pagination
+            defaultActivePage={0}
             pointing
             totalPages={3}
-        />
+            onPageChange={() => setActivePage(0)}
+        /> */}
     </div>
     )
 }

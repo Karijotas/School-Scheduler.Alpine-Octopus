@@ -34,6 +34,7 @@ public class ProgramSubjectHoursMapper {
     public static ProgramSubjectHoursDtoForList toProgramSubjectHoursDtoForList(ProgramSubjectHours programSubjectHours) {
         var programSubjectHoursDtoForList = new ProgramSubjectHoursDtoForList();
 
+        programSubjectHoursDtoForList.setId(programSubjectHoursDtoForList.getId());
         programSubjectHoursDtoForList.setSubject(programSubjectHours.getSubject());
         programSubjectHoursDtoForList.setSubjectHours(programSubjectHours.getSubjectHours());
 
