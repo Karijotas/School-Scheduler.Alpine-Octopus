@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Grid, Icon, Menu, Segment } from 'semantic-ui-react'
+import { Grid, Menu, Segment } from 'semantic-ui-react'
 import MainMenu from '../../Components/MainMenu'
 import { ObjectList } from './ViewObject'
 import './EditPages/ViewGroups.css'

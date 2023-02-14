@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button, Form, Icon, Input, } from "semantic-ui-react";
 import { ViewGroups } from "../Edit/EditPages/ViewGroups";
 

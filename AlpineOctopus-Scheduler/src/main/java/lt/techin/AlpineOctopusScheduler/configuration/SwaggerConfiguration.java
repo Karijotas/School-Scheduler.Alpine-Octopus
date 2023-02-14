@@ -19,6 +19,4 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
                 .paths(PathSelectors.any())
                 .build();
     }
-
 }
-
