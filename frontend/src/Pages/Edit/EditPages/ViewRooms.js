@@ -9,30 +9,30 @@ const JSON_HEADERS = {
 };
 
 
-export function ViewGroups() {
+export function ViewRooms() {
 
     const [active, setActive] = useState('')
 
     const [create, setCreate] = useState('')
 
-    const [groups, setGroups] = useState([]);
+    const [rooms, setRooms] = useState([]);
 
-    const fetchGroups = async () => {
-        fetch('/api/v1/groups')
+    const fetchRooms = async () => {
+        fetch('/rooms')
             .then(response => response.json())
-            .then(jsonResponse => setGroups(jsonResponse));
+            .then(jsonResponse => setRooms(jsonResponse));
     };
 
     const removeGroup = (id) => {
-        fetch('/api/v1/groups/' + id, {
+        fetch('/rooms/' + id, {
             method: 'DELETE',
             headers: JSON_HEADERS
-        }).then(fetchGroups);
+        }).then(fetchRooms);
     }
 
 
     useEffect(() => {
-        fetchGroups();
+        fetchRooms();
     }, []);
 
 
@@ -43,13 +43,13 @@ export function ViewGroups() {
             {create && (<div>
                 <CreatePage /></div>)}
             {active && (<div className='edit'>
-                <EditObject id={active} /><Button icon labelPosition='left' className='controls' setActive='groups' onClick={() => setActive('')}>
+                <EditObject id={active} /><Button icon labelPosition='left' className='controls' setActive='rooms' onClick={() => setActive('')}>
                     <Icon name='arrow left' />Atgal</Button></div>)}
 
 
             {!active && !create && (
 
-                <div id='groups'>
+                <div id='rooms'>
                     <Input placeholder='Filtruoti pagal pavadinimą' />
                     <Dropdown
                         button
@@ -63,29 +63,27 @@ export function ViewGroups() {
                     />
                     <Button>Filtruoti pagal programą</Button>
 
-                    <Button icon labelPosition='left' primary className='controls' onClick={() => setCreate('new')}><Icon name='database' />Kurti naują grupę</Button>
+                    <Button icon labelPosition='left' primary className='controls' onClick={() => setCreate('new')}><Icon name='database' />Kurti naują Klasę</Button>
                     <Table selectable >
                         <Table.Header>
                             <Table.Row>
-                                <Table.HeaderCell>Grupės pavadinimas "Teams"</Table.HeaderCell>
-                                <Table.HeaderCell>Mokslo metai</Table.HeaderCell>
-                                <Table.HeaderCell>Studentų skaičius</Table.HeaderCell>
-                                <Table.HeaderCell>Programa</Table.HeaderCell>
+                                <Table.HeaderCell>Klasės pavadinimas</Table.HeaderCell>
+                                <Table.HeaderCell>Pastatas</Table.HeaderCell>
+                                <Table.HeaderCell>Aprasas</Table.HeaderCell>
                                 <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
 
                         <Table.Body>
-                            {groups.map(group => (
+                            {rooms.map(room => (
 
-                                <Table.Row key={group.id}>
-                                    <Table.Cell>{group.name}</Table.Cell>
-                                    <Table.Cell>{group.schoolYear}</Table.Cell>
-                                    <Table.Cell>{group.studentAmount}</Table.Cell>
-                                    <Table.Cell>{group.program}</Table.Cell>
+                                <Table.Row key={room.id}>
+                                    <Table.Cell>{room.name}</Table.Cell>
+                                    <Table.Cell>{room.building}</Table.Cell>
+                                    <Table.Cell>{room.description}</Table.Cell>
                                     <Table.Cell collapsing>
-                                        <Button basic primary compact icon='eye' title='Peržiūrėti' onClick={() => setActive(group.id)}></Button>
-                                        <Button basic color='black' compact icon='trash alternate' onClick={() => removeGroup(group.id)}></Button>
+                                        <Button basic primary compact icon='eye' title='Peržiūrėti' onClick={() => setActive(room.id)}></Button>
+                                        <Button basic color='black' compact icon='trash alternate' onClick={() => removeGroup(room.id)}></Button>
 
                                     </Table.Cell>
                                 </Table.Row>
@@ -96,8 +94,8 @@ export function ViewGroups() {
 
                     <Pagination
                         defaultActivePage={1}
-                        firstItem={groups.firstItem}
-                        lastItem={groups.lastItem}
+                        firstItem={rooms.firstItem}
+                        lastItem={rooms.lastItem}
                         pointing
                         totalPages={3}
                     />
