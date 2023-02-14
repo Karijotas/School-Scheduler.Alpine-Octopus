@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
 import { Button, Dropdown, Icon, Input, Pagination, Table } from 'semantic-ui-react'
-import { CreatePage } from '../../Create/CreatePage';
-import { EditObject } from './EditObject';
-import './ViewGroups.css';
+import { CreateRoom } from '../../Create/CreateRoom';
+import { EditRoom } from './EditRoom';
+
+
 
 const JSON_HEADERS = {
     'Content-Type': 'application/json'
@@ -10,21 +12,22 @@ const JSON_HEADERS = {
 
 
 export function ViewRooms() {
-
     const [active, setActive] = useState('')
 
     const [create, setCreate] = useState('')
 
+    
+
     const [rooms, setRooms] = useState([]);
 
     const fetchRooms = async () => {
-        fetch('/rooms')
+        fetch('/api/v1/rooms')
             .then(response => response.json())
             .then(jsonResponse => setRooms(jsonResponse));
     };
 
-    const removeGroup = (id) => {
-        fetch('/rooms/' + id, {
+    const removeRoom = (id) => {
+        fetch('/api/v1/rooms/' + id, {
             method: 'DELETE',
             headers: JSON_HEADERS
         }).then(fetchRooms);
@@ -41,16 +44,15 @@ export function ViewRooms() {
 
         <div>
             {create && (<div>
-                <CreatePage /></div>)}
+                <CreateRoom /></div>)}
             {active && (<div className='edit'>
-                <EditObject id={active} /><Button icon labelPosition='left' className='controls' setActive='rooms' onClick={() => setActive('')}>
-                    <Icon name='arrow left' />Atgal</Button></div>)}
+                <EditRoom id={active} /></div>)}
 
 
             {!active && !create && (
 
                 <div id='rooms'>
-                    <Input placeholder='Filtruoti pagal pavadinimą' />
+                    <Input placeholder='Filtruoti pagal klase' />
                     <Dropdown
                         button
                         className='icon'
@@ -59,17 +61,17 @@ export function ViewRooms() {
                         icon='angle down'
                         options={null}
                         search
-                        text='Filtruoti pagal mokslo metus'
+                        text='Filtruoti pagal klase'
                     />
-                    <Button>Filtruoti pagal programą</Button>
+                    <Button>Filtruoti pagal klase</Button>
 
-                    <Button icon labelPosition='left' primary className='controls' onClick={() => setCreate('new')}><Icon name='database' />Kurti naują Klasę</Button>
+                    <Button icon labelPosition='left' primary className='controls' onClick={() => setCreate('new')}><Icon name='database' />Kurti naują grupę</Button>
                     <Table selectable >
                         <Table.Header>
                             <Table.Row>
-                                <Table.HeaderCell>Klasės pavadinimas</Table.HeaderCell>
+                                <Table.HeaderCell>Klases pavadinimas</Table.HeaderCell>
                                 <Table.HeaderCell>Pastatas</Table.HeaderCell>
-                                <Table.HeaderCell>Aprasas</Table.HeaderCell>
+                                <Table.HeaderCell>Aprasymas</Table.HeaderCell>
                                 <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
@@ -81,9 +83,10 @@ export function ViewRooms() {
                                     <Table.Cell>{room.name}</Table.Cell>
                                     <Table.Cell>{room.building}</Table.Cell>
                                     <Table.Cell>{room.description}</Table.Cell>
+
                                     <Table.Cell collapsing>
                                         <Button basic primary compact icon='eye' title='Peržiūrėti' onClick={() => setActive(room.id)}></Button>
-                                        <Button basic color='black' compact icon='trash alternate' onClick={() => removeGroup(room.id)}></Button>
+                                        <Button basic color='black' compact icon='trash alternate' onClick={() => removeRoom(room.id)}></Button>
 
                                     </Table.Cell>
                                 </Table.Row>
@@ -105,5 +108,3 @@ export function ViewRooms() {
         </div>
     )
 }
-
-

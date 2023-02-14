@@ -14,7 +14,7 @@ import java.util.Optional;
 @Service
 public class RoomService {
     private final RoomRepository roomRepository;
-
+    @Autowired
     public RoomService(RoomRepository roomRepository) {
         this.roomRepository = roomRepository;
     }
@@ -32,7 +32,12 @@ public class RoomService {
     }
 
     public Room update(Long id, Room room) {
-        room.setId(id);//FIXME will improve later
+        Room existingRoom = roomRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Room doesn't exist"));
+
+        existingRoom.setName(room.getName());
+        existingRoom.setBuilding(room.getBuilding());
+        existingRoom.setDescription(room.getDescription());
 
         return roomRepository.save(room);
     }
@@ -42,7 +47,6 @@ public class RoomService {
             roomRepository.deleteById(id);
             return true;
         }
-
         return false;
     }
 }

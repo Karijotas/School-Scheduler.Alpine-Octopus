@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
-import { Button, Input, Select, Table } from 'semantic-ui-react';
-import './EditObject.css';
+import { Button, Icon, Input, Select, Table } from 'semantic-ui-react';
+import { ViewGroups } from './ViewGroups';
+
 
 
 const JSON_HEADERS = {
@@ -12,7 +12,11 @@ const JSON_HEADERS = {
 export function EditObject(props) {
 
 
-    const [active, setActive] = useState()
+    const [hide, setHide] = useState(false)
+
+    const [active, setActive] = useState(true)
+    const [error, setError] = useState();
+
 
     const yearOptions = [
         { key: 23, value: 2023, text: '2023' },
@@ -20,16 +24,16 @@ export function EditObject(props) {
         { key: 25, value: 2025, text: '2025' },
         { key: 26, value: 2026, text: '2026' },
         { key: 27, value: 2027, text: '2027' },
-        { key: 28, value: 2028, text: '2028' },        
+        { key: 28, value: 2028, text: '2028' },
     ]
 
     const shiftOptions = [
-        { key: 'r', value: 'morning', text: 'Rytas' },        
-        { key: 'v', value: 'evening', text: 'Vakaras' },        
+        { key: 'r', value: 'morning', text: 'Rytas' },
+        { key: 'v', value: 'evening', text: 'Vakaras' },
 
     ]
 
-    const [error, setError] = useState();
+    
 
 
     const [groups, setGroups] = useState({
@@ -48,6 +52,14 @@ export function EditObject(props) {
     }, [props]);
 
 
+
+
+    const applyResult = () => {
+
+        setHide(true)
+
+    }
+
     const updateGroups = () => {
         fetch('/api/v1/groups/' + props.id, {
             method: 'PATCH',
@@ -59,7 +71,7 @@ export function EditObject(props) {
             } else {
                 setError();
             }
-        })
+        }).then(applyResult)
     };
 
     const updateProperty = (property, event) => {
@@ -69,7 +81,9 @@ export function EditObject(props) {
         });
     };
 
-
+    const editThis = () => {
+        setActive(false);
+    }
     // const removeGroup = (id) => {
     //     fetch('/api/v1/groups/' + params.id, {
     //         method: 'DELETE',
@@ -79,11 +93,47 @@ export function EditObject(props) {
     // }
 
 
+    return (<div>{active && (<div >
 
-    return (<div>
-        <div className='' id='table'>
+        <Table celled color='violet'>
+            <Table.Header >
+                <Table.Row  >
+                    <Table.HeaderCell >Grupės pavadinimas "Teams"</Table.HeaderCell>
+                    <Table.HeaderCell>Mokslo metai</Table.HeaderCell>
+                    <Table.HeaderCell>Studentų skaičius</Table.HeaderCell>
+                    <Table.HeaderCell>Programa</Table.HeaderCell>
+                    <Table.HeaderCell>Pamaina</Table.HeaderCell>
+                    <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
+                    <Table.HeaderCell>Veiksmai</Table.HeaderCell>
 
-            <Table celled compact color='violet'>
+                </Table.Row>
+            </Table.Header>
+
+            <Table.Body>
+                <Table.Row  >
+                    <Table.Cell >{groups.name}</Table.Cell>
+                    <Table.Cell >{groups.schoolYear}</Table.Cell>
+                    <Table.Cell >{groups.studentAmount}</Table.Cell>
+                    <Table.Cell >{groups.program} </Table.Cell>
+                    <Table.Cell >{groups.shift}</Table.Cell>
+
+                    <Table.Cell collapsing > {groups.modifiedDate}  </Table.Cell>
+
+                    <Table.Cell collapsing ><Button onClick={editThis}>Taisyti</Button>
+                    </Table.Cell>
+
+
+                </Table.Row>
+
+            </ Table.Body >
+        </Table>
+    </div>
+
+
+    )}
+        {!active && !hide && (<div >
+
+            <Table celled color='violet'>
                 <Table.Header >
                     <Table.Row  >
                         <Table.HeaderCell >Grupės pavadinimas "Teams"</Table.HeaderCell>
@@ -101,27 +151,28 @@ export function EditObject(props) {
                     <Table.Row  >
                         <Table.Cell collapsing><Input value={groups.name} onChange={(e) => updateProperty('name', e)} />
                         </Table.Cell>
-                        <Table.Cell collapsing><Select disabled placeholder={groups.schoolYear} options={yearOptions} value={groups.schoolYear} onChange={(e) => updateProperty('schoolYear', e)} />
+                        <Table.Cell collapsing><Input placeholder={groups.schoolYear} options={yearOptions} value={groups.schoolYear} onChange={(e) => updateProperty('schoolYear', e)} />
                         </Table.Cell>
-                        <Table.Cell collapsing><Input disabled value={groups.studentAmount} onChange={(e) => updateProperty('studentAmount', e)} />
+                        <Table.Cell collapsing><Input value={groups.studentAmount} onChange={(e) => updateProperty('studentAmount', e)} />
                         </Table.Cell>
-                        <Table.Cell collapsing><Select options={shiftOptions} placeholder={groups.program} disabled value={groups.program} onChange={(e) => updateProperty('program', e)} />
+                        <Table.Cell collapsing><Input options={shiftOptions} placeholder={groups.program} value={groups.program} onChange={(e) => updateProperty('program', e)} />
                         </Table.Cell>
-                        <Table.Cell collapsing><Select disabled options={shiftOptions} placeholder={groups.shift} value={groups.shift} onChange={(e) => updateProperty('shift', e)} />
+                        <Table.Cell collapsing><Input options={shiftOptions} placeholder={groups.shift} value={groups.shift} onChange={(e) => updateProperty('shift', e)} />
                         </Table.Cell>
 
-                        <Table.Cell > {groups.modifiedDate}  </Table.Cell>
+                        <Table.Cell collapsing> {groups.modifiedDate}  </Table.Cell>
 
-                        <Table.Cell collapsing ><Button>Taisyti</Button> <Button primary onClick={updateGroups}>Save</Button>
-                        </Table.Cell>
+                        <Table.Cell collapsing ><Button primary onClick={updateGroups}>Atnaujinti</Button></Table.Cell>
 
 
                     </Table.Row>
 
                 </ Table.Body >
             </Table>
-        </div>
 
+        </div>)}
+
+        {hide && <div><ViewGroups /></div>}
 
 
 

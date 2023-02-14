@@ -1,8 +1,6 @@
 import { useState } from "react";
-import { Button, Form, Input, } from "semantic-ui-react";
-import EditMenu from "../Edit/EditMenu";
+import { Button, Form, Icon, Input, } from "semantic-ui-react";
 import { ViewGroups } from "../Edit/EditPages/ViewGroups";
-import { ObjectList } from "../Edit/ViewObject";
 
 
 const JSON_HEADERS = {
@@ -48,14 +46,14 @@ export function CreatePage() {
   const applyResult = (result) => {
     const clear = () => {
       setHide(true)
-  }
-    
-    if (result.ok) {
-        clear();
-    } else {
-        window.alert("Nepavyko sukurt: " + result.status);
     }
-};
+
+    if (result.ok) {
+      clear();
+    } else {
+      window.alert("Nepavyko sukurt: " + result.status);
+    }
+  };
 
   const createGroup = () => {
     fetch(
@@ -74,7 +72,7 @@ export function CreatePage() {
 
 
   return (<div>
-   {!hide && <div className="create-new-page">
+    {!hide && <div className="create-new-page">
       <Form >
 
         <Form.Field >
@@ -100,12 +98,12 @@ export function CreatePage() {
             <Input options={shiftOptions} placeholder='Pamaina' value={shift} onChange={(e) => setShift(e.target.value)} />
           </Form.Field>
         </Form.Group>
-       <div><Button type='submit' className="controls" primary onClick={createGroup}>Sukurti</Button></div>
-
+        <div><Button icon labelPosition="left" className="" onClick={() => setHide(true)}><Icon name="arrow left"/>Atgal</Button>
+<Button type='submit' className="controls" primary onClick={createGroup}>Sukurti</Button></div>
       </Form>
     </div>}
-    {hide && (<div><ViewGroups/></div>)}
+    {hide && (<div><ViewGroups /></div>)}
   </div>
   );
-
 }
+

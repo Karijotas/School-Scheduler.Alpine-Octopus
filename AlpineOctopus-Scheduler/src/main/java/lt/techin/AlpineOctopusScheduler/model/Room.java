@@ -1,12 +1,10 @@
 package lt.techin.AlpineOctopusScheduler.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.validation.constraints.Max;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -18,7 +16,7 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
-    @Size(min = 5, max = 40)
+    @Size(max = 40)
     private String name;
     @NotBlank
     @Size(min = 5, max = 40)
@@ -27,17 +25,34 @@ public class Room {
     private String description;
 
     @LastModifiedDate
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modifiedDate;
+
+    @CreatedDate
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createdDate;
+
+    @PrePersist
+    public void prePersist() {
+        createdDate = LocalDateTime.now();
+        modifiedDate = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        modifiedDate = LocalDateTime.now();
+    }
 
     public Room() {
     }
 
-    public Room(Long id, String name, String building, String description,LocalDateTime modifiedDate) {
+    public Room(Long id, String name, String building, String description, LocalDateTime modifiedDate, LocalDateTime createdDate) {
         this.id = id;
         this.name = name;
         this.building = building;
         this.description = description;
         this.modifiedDate = modifiedDate;
+        this.createdDate = createdDate;
     }
 
     public Long getId() {
@@ -80,17 +95,25 @@ public class Room {
         this.modifiedDate = modifiedDate;
     }
 
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Room room = (Room) o;
-        return Objects.equals(id, room.id) && Objects.equals(name, room.name) && Objects.equals(building, room.building) && Objects.equals(description, room.description) && Objects.equals(modifiedDate, room.modifiedDate);
+        return Objects.equals(id, room.id) && Objects.equals(name, room.name) && Objects.equals(building, room.building) && Objects.equals(description, room.description) && Objects.equals(modifiedDate, room.modifiedDate) && Objects.equals(createdDate, room.createdDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, building, description, modifiedDate);
+        return Objects.hash(id, name, building, description, modifiedDate, createdDate);
     }
 
     @Override
@@ -101,6 +124,7 @@ public class Room {
                 ", building='" + building + '\'' +
                 ", description='" + description + '\'' +
                 ", modifiedDate=" + modifiedDate +
+                ", createdDate=" + createdDate +
                 '}';
     }
 }
