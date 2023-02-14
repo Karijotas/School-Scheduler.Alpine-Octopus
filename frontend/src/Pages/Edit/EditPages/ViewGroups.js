@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Dropdown, Icon, Input, Pagination, Table } from 'semantic-ui-react'
-<<<<<<< HEAD
 import { CreatePage } from '../../Create/CreatePage';
 import { EditObject } from './EditObject';
-=======
->>>>>>> origin/programs
 import './ViewGroups.css';
 
 const JSON_HEADERS = {
