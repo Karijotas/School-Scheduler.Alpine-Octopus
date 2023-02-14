@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Icon, Input, Select, Table } from 'semantic-ui-react';
+import { Button,  Input, Table } from 'semantic-ui-react';
 import { ViewGroups } from './ViewGroups';
 
 
