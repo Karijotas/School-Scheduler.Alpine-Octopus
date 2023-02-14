@@ -60,10 +60,10 @@ class ProgramControllerTest {
         Set<ProgramSubjectHours> hours10 = new HashSet<>();
 
 
-        var subjectDto1 = new SubjectEntityDto(1l,"Matematika","skaiciukai");
-        var subjectDto2 = new SubjectEntityDto(2l,"FIlosofija","raideles");
-        var subjectDto3 = new SubjectEntityDto(3l,"Istorija","pasakos");
-        var subjectDto4 = new SubjectEntityDto(4l,"Javascriptas", "kodukai");
+        var subjectDto1 = new SubjectEntityDto(1l,"Matematika","skaiciukai", null, null);
+        var subjectDto2 = new SubjectEntityDto(2l,"FIlosofija","raideles", null, null);
+        var subjectDto3 = new SubjectEntityDto(3l,"Istorija","pasakos", null, null);
+        var subjectDto4 = new SubjectEntityDto(4l,"Javascriptas", "kodukai", null, null);
 
         var programDto1 = new ProgramEntityDto(1l, "Belekokio gerumo","apie viska" , null, null);
         var programDto2 = new ProgramEntityDto(2l, "Sita kieta is vis", "biski to, biski ano",  null, null);

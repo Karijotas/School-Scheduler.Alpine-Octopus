@@ -3,16 +3,16 @@ package lt.techin.AlpineOctopusScheduler.api.dto;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class SubjectEntityDto extends SubjectDto{
+public class ModuleEntityDto extends ModuleDto{
 
     private Long id;
 
-    public SubjectEntityDto(){
+    public ModuleEntityDto(){
 
     }
 
-    public SubjectEntityDto(Long id, String name, String description, LocalDateTime createdDate, LocalDateTime modifiedDate){
-        super(name, description , createdDate, modifiedDate);
+    public ModuleEntityDto(Long id, String name, String description, LocalDateTime createdDate, LocalDateTime modifiedDate){
+        super(name, description, createdDate, modifiedDate);
         this.id= id;
     }
 
@@ -29,7 +29,7 @@ public class SubjectEntityDto extends SubjectDto{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        SubjectEntityDto that = (SubjectEntityDto) o;
+        ModuleEntityDto that = (ModuleEntityDto) o;
         return Objects.equals(id, that.id);
     }
 
@@ -40,8 +40,9 @@ public class SubjectEntityDto extends SubjectDto{
 
     @Override
     public String toString() {
-        return "SubjectEntityDto{" +
+        return "ModuleEntityDto{" +
                 "id=" + id +
                 '}';
     }
 }
+

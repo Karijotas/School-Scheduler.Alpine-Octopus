@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # Created by https://www.toptal.com/developers/gitignore/api/intellij,java,maven,react,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=intellij,java,maven,react,visualstudiocode
 
@@ -196,6 +197,8 @@ sketch
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,java,maven,react,visualstudiocode
 =======
+=======
+>>>>>>> origin/subjects
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
@@ -219,4 +222,7 @@ sketch
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+<<<<<<< HEAD
 >>>>>>> 1a0601285eba9a06826238d3bdaf7c2a8ae96e70
+=======
+>>>>>>> origin/subjects

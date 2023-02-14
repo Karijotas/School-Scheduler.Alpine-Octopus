@@ -1,11 +1,9 @@
 package lt.techin.AlpineOctopusScheduler.api.dto;
 
-import org.springframework.data.annotation.LastModifiedDate;
-
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class SubjectDto {
+public class ModuleDto {
 
     private String name;
 
@@ -15,14 +13,14 @@ public class SubjectDto {
 
     private LocalDateTime modifiedDate;
 
-    public SubjectDto() {
+    public ModuleDto() {
     }
 
-    public SubjectDto(String name, String description,LocalDateTime createdDate, LocalDateTime modifiedDate ) {
+    public ModuleDto(String name, String description, LocalDateTime createdDate, LocalDateTime modifiedDate) {
         this.name = name;
         this.description = description;
         this.createdDate=createdDate;
-        this.modifiedDate = modifiedDate;
+        this.modifiedDate=modifiedDate;
 
     }
 
@@ -62,8 +60,8 @@ public class SubjectDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SubjectDto that = (SubjectDto) o;
-        return Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(createdDate, that.createdDate) && Objects.equals(modifiedDate, that.modifiedDate);
+        ModuleDto moduleDto = (ModuleDto) o;
+        return Objects.equals(name, moduleDto.name) && Objects.equals(description, moduleDto.description) && Objects.equals(createdDate, moduleDto.createdDate) && Objects.equals(modifiedDate, moduleDto.modifiedDate);
     }
 
     @Override
@@ -73,7 +71,7 @@ public class SubjectDto {
 
     @Override
     public String toString() {
-        return "SubjectDto{" +
+        return "ModuleDto{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", createdDate=" + createdDate +
@@ -81,3 +79,4 @@ public class SubjectDto {
                 '}';
     }
 }
+

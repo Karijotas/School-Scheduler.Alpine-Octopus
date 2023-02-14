@@ -3,11 +3,17 @@ package lt.techin.AlpineOctopusScheduler.api;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper;
+import lt.techin.AlpineOctopusScheduler.model.Subject;
 import lt.techin.AlpineOctopusScheduler.service.SubjectService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -21,7 +27,7 @@ import static org.springframework.http.ResponseEntity.ok;
 @RequestMapping("/api/v1/subjects")
 @Validated
 public class SubjectController {
-
+    public static Logger logger = LoggerFactory.getLogger(SubjectController.class);
     private final SubjectService subjectService;
 
     public SubjectController(SubjectService subjectService) {
@@ -31,10 +37,9 @@ public class SubjectController {
     @GetMapping
     @ResponseBody
     public List<SubjectEntityDto> getSubjects() {
-        return subjectService.getAll().stream()
+       return subjectService.getAll().stream()
                 .map(SubjectMapper::toSubjectEntityDto)
                 .collect(toList());
-        //return ResponseEntity.ok(subjectRepository.getAll());
     }
 
     @PostMapping
@@ -62,5 +67,14 @@ public class SubjectController {
 
         return ok(toSubjectDto(updatedSubject));
     }
+    @GetMapping(value = "/{subjectId}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public ResponseEntity<Subject> getSubject(@PathVariable Long subjectId) {
+        var subjectOptional = subjectService.getById(subjectId);
 
+        var responseEntity = subjectOptional
+                .map(subject -> ok(subject))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+
+        return responseEntity;
+    }
 }
