@@ -3,7 +3,10 @@ package lt.techin.AlpineOctopusScheduler.api;
 import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.*;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper;
+import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramSubjectHoursMapper;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper;
+import lt.techin.AlpineOctopusScheduler.dao.ProgramRepository;
+import lt.techin.AlpineOctopusScheduler.dao.ProgramSubjectHoursRepository;
 import lt.techin.AlpineOctopusScheduler.model.Program;
 import lt.techin.AlpineOctopusScheduler.model.ProgramSubjectHours;
 import lt.techin.AlpineOctopusScheduler.service.ProgramService;
@@ -21,6 +24,7 @@ import static java.util.stream.Collectors.toList;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper.toProgram;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper.toProgramDto;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper.toProgramEntityDto;
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramSubjectHoursMapper.*;
 import static org.springframework.http.ResponseEntity.ok;
 
 @Controller
@@ -30,24 +34,28 @@ public class ProgramController {
 
     public static Logger logger = LoggerFactory.getLogger(ProgramController.class);
     private final ProgramService programService;
+    private final ProgramSubjectHoursRepository programSubjectHoursRepository;
+    private final ProgramRepository programRepository;
 
-    public ProgramController(ProgramService programService) {
+    public ProgramController(ProgramService programService,
+                             ProgramSubjectHoursRepository programSubjectHoursRepository,
+                             ProgramRepository programRepository) {
         this.programService = programService;
+        this.programSubjectHoursRepository = programSubjectHoursRepository;
+        this.programRepository = programRepository;
     }
-
-
 
 
     @GetMapping
     @ResponseBody
-    public List<ProgramEntityDto> getSubjects() {
+    public List<ProgramEntityDto> getPrograms() {
         return programService.getAllPrograms();
     }
 
-    @GetMapping(path ="/page", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public List<ProgramDto> getPagedAllPrograms(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                              @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize)                                              {
+                                                @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
 
 
         return programService.getPagedAllPrograms(page, pageSize);
@@ -74,13 +82,22 @@ public class ProgramController {
     @GetMapping(value = "/{programId}/subjects", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public List<ProgramSubjectHoursDtoForList> getAllSubjectsInProgram(@PathVariable Long programId) {
-        return programService.getAllSubjectsInProgram(programId);
+        return programService.getAllSubjectsInProgramByProgramId(programId).stream()
+                .map(ProgramSubjectHoursMapper::toProgramSubjectHours)
+                .map(ProgramSubjectHoursMapper::toProgramSubjectHoursDtoForList)
+                .collect(toList());
     }
 
     @DeleteMapping("/{programId}")
     public ResponseEntity<Void> deleteProgram(@PathVariable Long programId) {
         logger.info("Attempt to delete Program by id: {}", programId);
-
+        List<ProgramSubjectHours> pshList = programSubjectHoursRepository.findAll().stream().filter(psh -> psh.getProgram()
+                .getId().equals(programId)).collect(toList());
+        if (!pshList.isEmpty()) {
+            for (ProgramSubjectHours psh : pshList) {
+                programSubjectHoursRepository.deleteById(psh.getId());
+            }
+        }
         boolean deleted = programService.deleteById(programId);
         if (deleted) {
             return ResponseEntity.noContent().build();
@@ -89,13 +106,22 @@ public class ProgramController {
         }
     }
 
+    @DeleteMapping("/programsSubjects/{programSubjectId}")
+    public ResponseEntity<Void> deleteProgramSubjectById(@PathVariable Long programSubjectId) {
+        logger.info("Attempt to delete Program by id: {}", programSubjectId);
 
+        boolean deleted = programService.deleteSubjectInProgramById(programSubjectId);
+        if (deleted) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
-    @DeleteMapping("/{programId}/{subjectId}")
-    public ResponseEntity<Void> deleteSubjectByIdFromProgram(@PathVariable Long programId, @RequestParam Long subjectId ) {
+    @DeleteMapping("/{programId}/subjects/{subjectId}")
+    public ResponseEntity<Void> deleteSubjectFromProgramByProgramIdSubjectIdHours(@PathVariable Long programId, @PathVariable Long subjectId, @RequestParam Integer hours) {
 
-
-        boolean deleted = programService.deleteSubjectInProgramById(programId, subjectId);
+        boolean deleted = programService.deleteSubjectInProgramById(programId, subjectId, hours);
         if (deleted) {
             return ResponseEntity.noContent().build();
         } else {
@@ -115,6 +141,13 @@ public class ProgramController {
         var updatedProgram = programService.update(programId, toProgram(programDto));
 
         return ok(toProgramDto(updatedProgram));
+    }
+
+    @PatchMapping("/programSubjects/{programSubjectId}")
+    public ResponseEntity<ProgramSubjectHoursDtoForList> updateProgramSubjectHours(@PathVariable Long programSubjectId, @RequestBody ProgramSubjectHoursDto programSubjectHoursDto) {
+        var updatedProgramSubjectHours = programService.updateProgramSubjectHours(programSubjectId, toProgramSubjectHours(programSubjectHoursDto));
+
+        return ok(toProgramSubjectHoursDtoForList(updatedProgramSubjectHours));
     }
 
     @PostMapping(value = "/{programId}/subjects/newSubjectsWithHours")
