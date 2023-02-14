@@ -12,11 +12,12 @@ const JSON_HEADERS = {
 export function ViewPrograms() {
 
     const [activeItem, setActiveItem] = useState('');
+    const [activePage, setActivePage] = useState(0)
 
     const [programs, setPrograms] = useState([]);
 
     const fetchPrograms = async () => {
-        fetch('/api/v1/programs')
+        fetch('/api/v1/programs/page?page=' + activePage)
             .then(response => response.json())
             .then(jsonResponse => setPrograms(jsonResponse));
     };
@@ -32,15 +33,14 @@ export function ViewPrograms() {
     useEffect(() => {
         fetchPrograms();
     }, []);
- 
- 
+
 
     return (<div id='programs'>
         <Input placeholder='Filtruoti pagal pavadinimą' />
-        
-        
 
-        <Button icon labelPosition='left' primary href='#/create' className='controls'><Icon name='database'/>Kurti naują programą</Button>
+
+
+        <Button icon labelPosition='left' primary href='#/create' className='controls'><Icon name='database' />Kurti naują programą</Button>
 
 
 
@@ -49,7 +49,7 @@ export function ViewPrograms() {
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell>Programos pavadinimas</Table.HeaderCell>
-                    <Table.HeaderCell>Programos aprašymas</Table.HeaderCell>                                       
+                    <Table.HeaderCell>Programos aprašymas</Table.HeaderCell>
                     <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
                     <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                 </Table.Row>
@@ -63,7 +63,7 @@ export function ViewPrograms() {
                         <Table.Cell>{program.description}</Table.Cell>
                         <Table.Cell>{program.modifiedDate}</Table.Cell>
                         <Table.Cell collapsing>
-                             <Button basic primary compact icon='eye' title='Peržiūrėti' active={activeItem === program.id} onClick={console.log('program/' +program.id)}></Button>
+                            <Button basic primary compact icon='eye' title='Peržiūrėti' active={activeItem === program.id}></Button>
                             <Button basic color='black' compact icon='trash alternate' onClick={() => removeProgram(program.id)}></Button>
 
                         </Table.Cell>
@@ -72,13 +72,11 @@ export function ViewPrograms() {
 
 
             </Table.Body>
-           
+
         </Table>
 
-        <Pagination 
-            defaultActivePage={1}
-            firstItem={programs.firstItem}
-            lastItem={programs.lastItem}
+        <Pagination
+            defaultActivePage={0}
             pointing
             totalPages={3}
         />

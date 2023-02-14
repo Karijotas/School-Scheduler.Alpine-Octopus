@@ -1,9 +1,5 @@
 package lt.techin.AlpineOctopusScheduler.service;
 
-import lt.techin.AlpineOctopusScheduler.dao.SubjectRepository;
-import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
-import lt.techin.AlpineOctopusScheduler.model.Module;
-import lt.techin.AlpineOctopusScheduler.model.Subject;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
