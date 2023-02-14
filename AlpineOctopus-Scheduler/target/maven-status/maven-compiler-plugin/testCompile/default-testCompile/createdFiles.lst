@@ -1,1 +1,5 @@
-lt/techin/AlpineOctopusScheduler/AlpineOctopusSchedulerApplicationTests.class
+lt\techin\AlpineOctopusScheduler\AlpineOctopusSchedulerApplicationTests.class
+lt\techin\AlpineOctopusScheduler\api\ProgramControllerTest$1.class
+lt\techin\AlpineOctopusScheduler\api\ProgramControllerTest.class
+lt\techin\AlpineOctopusScheduler\service\ProgramServiceTest.class
+lt\techin\AlpineOctopusScheduler\stubs\ProgramCreator.class

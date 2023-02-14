@@ -1,5 +1,13 @@
 import React from 'react'
+<<<<<<< HEAD
 import { ViewGroups } from './EditPages/ViewGroups'
+=======
+import {ViewGroups} from './EditPages/ViewGroups'
+import {ViewPrograms} from './EditPages/ViewPrograms'
+import { EditObject } from './EditPages/EditObject'
+
+
+>>>>>>> origin/programs
 // Here we should pass the selection as props, and then map the values from Backend to the tables
 // I've just done here a simple if else that is only for example, not how it should work.
 // Change/Edit this section to suit your case. 
@@ -11,16 +19,30 @@ export function ObjectList(props) {
        
               return (
             <ViewGroups />
+<<<<<<< HEAD
         ) 
         
+=======
+
+        )
+        }
+      
+>>>>>>> origin/programs
     }
 
    
 
     if (props === 'subjects') {
         return (
+<<<<<<< HEAD
             
 <p></p>
+=======
+            <p>
+<EditObject />
+            </p>
+
+>>>>>>> origin/programs
         )
     }
     if (props === 'teachers') {
@@ -49,9 +71,7 @@ export function ObjectList(props) {
     }
     if (props === 'program') {
         return (
-            <p>
-                Programos:
-            </p>
+            <ViewPrograms />
 
         )
     }

@@ -12,7 +12,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
-    #      ddl-auto: drop-and-create
+#      ddl-auto: drop-and-create
     generate-ddl: false
     properties:
       hibernate:
@@ -57,3 +57,4 @@ logging:
             BasicBinder: DEBUG
 Server:
   Port: 8083
+
