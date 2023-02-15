@@ -77,7 +77,7 @@ export function ViewPrograms() {
                         <Table.Cell>{program.modifiedDate}</Table.Cell>
                         <Table.Cell collapsing>
                             <Button basic primary compact icon='eye' title='Peržiūrėti' ></Button>
-                            <Button basic color='black' compact icon='trash alternate' onClick={() => removeProgram(program.id)}></Button>
+                            <Button basic color='black' compact  icon='trash alternate' onClick={() => removeProgram(program.id)}></Button>
 
                         </Table.Cell>
                     </Table.Row>
