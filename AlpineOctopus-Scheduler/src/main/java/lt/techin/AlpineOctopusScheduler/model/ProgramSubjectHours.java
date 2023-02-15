@@ -11,12 +11,12 @@ public class ProgramSubjectHours {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "program_id")
     @JsonIgnore
     Program program;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_id")
     Subject subject;
 
@@ -24,14 +24,6 @@ public class ProgramSubjectHours {
 
     public ProgramSubjectHours() {
     }
-
-    public ProgramSubjectHours(Long id, Program program, Subject subject, Integer subjectHours) {
-        this.id = id;
-        this.program = program;
-        this.subject = subject;
-        this.subjectHours = subjectHours;
-    }
-
     public Long getId() {
         return id;
     }

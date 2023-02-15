@@ -27,7 +27,7 @@ export function ViewGroups() {
         }).then(fetchGroups);
     }
 
-
+    
     useEffect(() => {
         fetchGroups();
     }, []);

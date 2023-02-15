@@ -21,9 +21,6 @@ root.render(
         <Route path='/create' element={<CreatePage />} />
       </Routes>
     </HashRouter>
-
-
-
   </React.StrictMode>
 );
 

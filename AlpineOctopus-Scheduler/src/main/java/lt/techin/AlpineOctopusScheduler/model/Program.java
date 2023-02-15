@@ -11,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -52,6 +53,7 @@ public class Program {
     private Set<ProgramSubjectHours> subjectHours;
 
     public Program() {
+        subjectHours = new HashSet<>();
     }
 
     public Long getId() {

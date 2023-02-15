@@ -38,11 +38,11 @@ public class ProgramService {
         return programRepository.findAll().stream().map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
-    public List<ProgramDto> getPagedAllPrograms(int page, int pageSize) {
+    public List<ProgramEntityDto> getPagedAllPrograms(int page, int pageSize) {
 
         Pageable pageable = PageRequest.of(page, pageSize);
 
-        return programRepository.findAll(pageable).stream().map(ProgramMapper::toProgramDto).collect(Collectors.toList());
+        return programRepository.findAll(pageable).stream().map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
     public Optional<Program> getById(Long id) {
@@ -50,9 +50,16 @@ public class ProgramService {
     }
 
     @Transactional(readOnly = true)
-    public List<ProgramDto> getProgramsByNameContaining(String nameText) {
+    public List<ProgramEntityDto> getProgramsByNameContaining(String nameText) {
         return programRepository.findByNameContainingIgnoreCase(nameText).stream()
-                .map(ProgramMapper::toProgramDto).collect(Collectors.toList());
+                .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProgramEntityDto> getPagedProgramsByNameContaining(String nameText, int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return programRepository.findByNameContainingIgnoreCase(nameText, pageable).stream()
+                .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
     public Program create(Program program) {

@@ -16,12 +16,11 @@ CREATE TABLE program
     CONSTRAINT pk_program PRIMARY KEY (id)
 );
 
-
 CREATE TABLE program_subject_hours
 (
     id            BIGINT AUTO_INCREMENT NOT NULL,
-    program_id    BIGINT,
-    subject_id    BIGINT,
+    program_id    BIGINT                NULL,
+    subject_id    BIGINT                NULL,
     subject_hours INT                   NOT NULL,
     CONSTRAINT pk_programsubjecthours PRIMARY KEY (id)
 );
@@ -31,4 +30,3 @@ ALTER TABLE program_subject_hours
 
 ALTER TABLE program_subject_hours
     ADD CONSTRAINT FK_PROGRAMSUBJECTHOURS_ON_SUBJECT FOREIGN KEY (subject_id) REFERENCES subject (id);
-

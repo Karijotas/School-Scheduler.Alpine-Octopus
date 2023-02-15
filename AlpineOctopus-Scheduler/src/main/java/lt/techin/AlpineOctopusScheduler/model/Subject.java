@@ -3,6 +3,7 @@ package lt.techin.AlpineOctopusScheduler.model;
 import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 @Entity
@@ -19,16 +20,9 @@ public class Subject {
     private Set<ProgramSubjectHours> subjectHour;
 
     public Subject() {
+        subjectHour = new HashSet<>();
 
     }
-
-    public Subject(Long id, String name, String description, Set<ProgramSubjectHours> subjectHour) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.subjectHour = subjectHour;
-    }
-
     public Long getId() {
         return id;
     }
