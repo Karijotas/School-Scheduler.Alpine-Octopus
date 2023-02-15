@@ -6,6 +6,7 @@ import {
   Icon,
   Pagination,
   ButtonGroup,
+  Divider,
 } from "semantic-ui-react";
 import { useState, useEffect } from "react";
 import { CreateModule } from "../../Create/CreateModule";
@@ -52,6 +53,8 @@ export function ModuleList() {
         <Icon name="database" />
         Kurti naują modulį
       </Button>
+      <Divider hidden></Divider>
+
 
       <Table selectable>
         <Table.Header>
@@ -74,6 +77,7 @@ export function ModuleList() {
           ))}
         </Table.Body>
       </Table>
+      <Divider hidden></Divider>
 
       <ButtonGroup basic compact>
             <Button onClick={() => setActivePage(activePage <= 0 ? activePage : activePage -1)} icon><Icon name="arrow left" />  </Button>

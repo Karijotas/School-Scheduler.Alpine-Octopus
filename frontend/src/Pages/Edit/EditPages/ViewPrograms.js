@@ -131,6 +131,9 @@ export function ViewPrograms() {
               ))}
             </Table.Body>
           </Table>
+
+          <Divider hidden></Divider>
+
           <ButtonGroup basic compact>
             <Button onClick={() => setActivePage(activePage <= 0 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
             {[...Array(pagecount)].map((e, i) => {
