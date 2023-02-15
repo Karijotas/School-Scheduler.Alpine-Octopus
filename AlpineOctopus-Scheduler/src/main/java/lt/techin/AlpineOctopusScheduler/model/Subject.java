@@ -1,5 +1,6 @@
 package lt.techin.AlpineOctopusScheduler.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -8,6 +9,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Subject {
@@ -31,21 +33,37 @@ public class Subject {
     @LastModifiedDate
     private LocalDateTime modifiedDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "module_id")
-    //@JoinColumn(name = "module_id", nullable = true)
-    private Module module;
+
+    @PrePersist
+    public void prePersist() {
+        createdDate = LocalDateTime.now();
+        modifiedDate = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        modifiedDate = LocalDateTime.now();
+    }
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @JoinTable(
+            name = "modules_subjects",
+            joinColumns = @JoinColumn(name = "subject_id"),
+            inverseJoinColumns = @JoinColumn(name = "module_id"))
+    private Set<Module> subjectModules;
 
     public Subject() {
 
     }
 
-    public Subject(Long id, String name, String description ,LocalDateTime createdDate, LocalDateTime modifiedDate) {
+    public Subject(Long id, String name, String description ,LocalDateTime createdDate, LocalDateTime modifiedDate, Set<Module> subjectModules) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.createdDate = createdDate;
         this.modifiedDate = modifiedDate;
+        this.subjectModules = subjectModules;
     }
 
     public Long getId() {
@@ -88,12 +106,12 @@ public class Subject {
         this.modifiedDate = modifiedDate;
     }
 
-    public Module getModule() {
-        return module;
+    public Set<Module> getSubjectModules() {
+        return subjectModules;
     }
 
-    public void setModule(Module module) {
-        this.module = module;
+    public void setSubjectModules(Set<Module> subjectModules) {
+        this.subjectModules = subjectModules;
     }
 
     @Override
@@ -101,12 +119,12 @@ public class Subject {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Subject subject = (Subject) o;
-        return Objects.equals(id, subject.id) && Objects.equals(name, subject.name) && Objects.equals(description, subject.description) && Objects.equals(createdDate, subject.createdDate) && Objects.equals(modifiedDate, subject.modifiedDate) && Objects.equals(module, subject.module);
+        return Objects.equals(id, subject.id) && Objects.equals(name, subject.name) && Objects.equals(description, subject.description) && Objects.equals(createdDate, subject.createdDate) && Objects.equals(modifiedDate, subject.modifiedDate) && Objects.equals(subjectModules, subject.subjectModules);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, createdDate, modifiedDate, module);
+        return Objects.hash(id, name, description, createdDate, modifiedDate, subjectModules);
     }
 
     @Override
@@ -117,7 +135,12 @@ public class Subject {
                 ", description='" + description + '\'' +
                 ", createdDate=" + createdDate +
                 ", modifiedDate=" + modifiedDate +
-                ", module=" + module +
+                ", subjectModules=" + subjectModules +
                 '}';
     }
 }
+
+
+
+
+

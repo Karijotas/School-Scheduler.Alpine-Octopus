@@ -1,17 +1,17 @@
 package lt.techin.AlpineOctopusScheduler.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import java.time.LocalDateTime;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Set;
+
 @Entity
 public class Module {
 
@@ -27,19 +27,24 @@ public class Module {
     @CreatedDate
     private LocalDateTime createdDate;
 
-
     @LastModifiedDate
     private LocalDateTime modifiedDate;
+
+
+    @ManyToMany (mappedBy = "subjectModules")
+    @JsonIgnore
+    private Set<Subject> modulesSubjects;
 
     public Module() {
 
     }
-    public Module(Long id, String name, String description, LocalDateTime createdDate, LocalDateTime modifiedDate) {
+    public Module(Long id, String name, String description, LocalDateTime createdDate, LocalDateTime modifiedDate,Set<Subject> modulesSubjects) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.createdDate =createdDate;
         this.modifiedDate=modifiedDate;
+        this.modulesSubjects = modulesSubjects;
     }
 
     public Long getId() {
@@ -82,17 +87,25 @@ public class Module {
         this.modifiedDate = modifiedDate;
     }
 
+    public Set<Subject> getModulesSubjects() {
+        return modulesSubjects;
+    }
+
+    public void setModulesSubjects(Set<Subject> modulesSubjects) {
+        this.modulesSubjects = modulesSubjects;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Module module = (Module) o;
-        return Objects.equals(id, module.id) && Objects.equals(name, module.name) && Objects.equals(description, module.description) && Objects.equals(createdDate, module.createdDate) && Objects.equals(modifiedDate, module.modifiedDate);
+        return Objects.equals(id, module.id) && Objects.equals(name, module.name) && Objects.equals(description, module.description) && Objects.equals(createdDate, module.createdDate) && Objects.equals(modifiedDate, module.modifiedDate) && Objects.equals(modulesSubjects, module.modulesSubjects);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, createdDate, modifiedDate);
+        return Objects.hash(id, name, description, createdDate, modifiedDate, modulesSubjects);
     }
 
     @Override
@@ -103,6 +116,7 @@ public class Module {
                 ", description='" + description + '\'' +
                 ", createdDate=" + createdDate +
                 ", modifiedDate=" + modifiedDate +
+                ", modulesSubjects=" + modulesSubjects +
                 '}';
     }
 }

@@ -1,5 +1,6 @@
 package lt.techin.AlpineOctopusScheduler.api;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper;
@@ -36,6 +37,7 @@ public class SubjectController {
 
     @GetMapping
     @ResponseBody
+    @JsonIgnore
     public List<SubjectEntityDto> getSubjects() {
        return subjectService.getAll().stream()
                 .map(SubjectMapper::toSubjectEntityDto)
