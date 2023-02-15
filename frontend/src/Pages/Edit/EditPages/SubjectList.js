@@ -37,6 +37,8 @@ export function SubjectList() {
     fetchSubjects();
   }, []);
 
+  
+
   return (
     <div id="groups">
       <Input placeholder="Filtruoti pagal pavadinimą" />

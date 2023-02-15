@@ -23,7 +23,6 @@ export function ViewPrograms() {
 
   const [active, setActive] = useState()
   const [create, setCreate] = useState('')
-  const [activeItem, setActiveItem] = useState("");
   const [nameText, setNameText] = useState("");
   const [programs, setPrograms] = useState([]);
   const [activePage, setActivePage] = useState(0);
