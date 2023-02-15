@@ -100,15 +100,12 @@ export function ViewGroups() {
 
                 <div id='groups'>
 
-                    <Input placeholder='Filtruoti pagal pavadinimą' value={nameText} onChange={(e) => setNameText(e.target.value)} />
-                    <Button icon labelPosition='left' onClick={fetchFilterGroups}><Icon name='angle double left' />Filtruoti</Button>
+                    <Input className='controls1' placeholder='Filtruoti pagal pavadinimą' value={nameText} onChange={(e) => setNameText(e.target.value)} />
 
-                    <Input placeholder='Filtruoti pagal mokslo metus' value={yearText} onChange={(e) => setYearText(e.target.value)} />
-                    <Button icon labelPosition='left' onClick={fetchYearGroups}><Icon name='angle double left' />Filtruoti</Button>
+                    <Input className='controls1' placeholder='Filtruoti pagal mokslo metus' value={yearText} onChange={(e) => setYearText(e.target.value)} />
 
                     <Input placeholder='Filtruoti pagal programą' value={programText} onChange={(e) => setProgramText(e.target.value)} />
 
-                    <Button icon labelPosition='left' onClick={fetchProgramGroups}><Icon name='angle double left' />Filtruoti</Button>
 
 
 
@@ -134,7 +131,7 @@ export function ViewGroups() {
                                     <Table.Cell>{group.name}</Table.Cell>
                                     <Table.Cell>{group.schoolYear}</Table.Cell>
                                     <Table.Cell>{group.studentAmount}</Table.Cell>
-                                    <Table.Cell>{group.program.id}</Table.Cell>
+                                    <Table.Cell>{group.programName}</Table.Cell>
                                     <Table.Cell collapsing>
                                         <Button basic primary compact icon='eye' title='Peržiūrėti' onClick={() => setActive(group.id)}></Button>
                                         <Button basic color='black' compact title='Ištrinti' icon='trash alternate' onClick={() => setOpen(true) && SetId(group.id)}></Button>

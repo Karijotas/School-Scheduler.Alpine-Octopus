@@ -5,6 +5,7 @@ import lt.techin.AlpineOctopusScheduler.api.dto.ProgramDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupsMapper;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper;
 import lt.techin.AlpineOctopusScheduler.dao.GroupsRepository;
+import lt.techin.AlpineOctopusScheduler.dao.ProgramRepository;
 import lt.techin.AlpineOctopusScheduler.model.Groups;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -21,9 +22,11 @@ import java.util.stream.Collectors;
 public class GroupService {
 
     private GroupsRepository groupsRepository;
+    private ProgramRepository programRepository;
     @Autowired
-    public GroupService(GroupsRepository groupsRepository) {
+    public GroupService(GroupsRepository groupsRepository, ProgramRepository programRepository) {
         this.groupsRepository = groupsRepository;
+        this.programRepository = programRepository;
     }
     public List<Groups> getAll() {
         return groupsRepository.findAll();
@@ -50,6 +53,7 @@ public class GroupService {
         return groupsRepository.findBySchoolYear(schoolYearText).stream()
                 .map(GroupsMapper::toGroupDto).collect(Collectors.toList());
     }
+
 
     @Transactional(readOnly = true)
     public List<GroupsDto> getGroupsByProgram(String programText) {

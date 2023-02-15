@@ -39,7 +39,7 @@ public class GroupsMapper {
         groupEntityDto.setName(groups.getName());
         groupEntityDto.setSchoolYear(groups.getSchoolYear());
         groupEntityDto.setStudentAmount(groups.getStudentAmount());
-//        groupEntityDto.setProgram(groups.getProgram());
+        groupEntityDto.setProgramName(groups.getProgram().getName());
         groupEntityDto.setShift(groups.getShift());
 
         groupEntityDto.setModifiedDate(groups.getModifiedDate());
