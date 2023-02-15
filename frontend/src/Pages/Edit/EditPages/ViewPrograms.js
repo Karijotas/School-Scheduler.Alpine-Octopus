@@ -8,6 +8,9 @@ import {
   Pagination,
   Table,
 } from "semantic-ui-react";
+import { CreateProgramPage }  from '../../Create/CreateProgramPage';
+import { EditProgramObject } from './EditProgramObject';
+import './ViewGroups.css';
 
 
 const JSON_HEADERS = {
@@ -15,6 +18,9 @@ const JSON_HEADERS = {
 };
 
 export function ViewPrograms() {
+
+  const [active, setActive] = useState()
+  const [create, setCreate] = useState('')
   const [activeItem, setActiveItem] = useState("");
   const [nameText, setNameText] = useState("");  
   const [programs, setPrograms] = useState([]);
@@ -46,7 +52,17 @@ export function ViewPrograms() {
     nameText.length > 0 ? fetchFilterPrograms() : fetchPrograms();
   }, [activePage, nameText]);
 
+  const [open, setOpen] = useState(false)
+  const [close, setClose] = useState(false)
+
   return (
+<div>
+    {create && (<div>
+      <CreateProgramPage /></div>)}
+  {active && (<div className='edit'>
+      <EditProgramObject id={active} /></div>)}
+
+  {!active && !create && (
     <div id="programs">
       <Input
         value={nameText}
@@ -91,8 +107,7 @@ export function ViewPrograms() {
                   compact
                   icon="eye"
                   title="Peržiūrėti"
-                  active={activeItem === program.id}
-                  onClick={console.log("programs/" + program.id)}
+                  onClick={() => setActive(program.id)}
                 ></Button>
                 <Button
                   basic
@@ -120,6 +135,8 @@ export function ViewPrograms() {
             
         />    */}  
 
+    </div>
+  )}
     </div>
   );
 }

@@ -1,4 +1,3 @@
-
 CREATE TABLE GROUPS (
   id BIGINT AUTO_INCREMENT NOT NULL,
    name VARCHAR(255),
@@ -23,6 +22,7 @@ CREATE TABLE SUBJECT (
 
    CONSTRAINT SUBJECT_PK PRIMARY KEY (ID)
 );
+
 CREATE TABLE program
 (
     id            BIGINT AUTO_INCREMENT NOT NULL,
@@ -32,7 +32,6 @@ CREATE TABLE program
     modified_date TIMESTAMP,
     CONSTRAINT pk_program PRIMARY KEY (id)
 );
-
 
 CREATE TABLE program_subject_hours
 (

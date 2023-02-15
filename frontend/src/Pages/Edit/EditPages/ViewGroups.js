@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Confirm, Divider, Header, Icon, Input, Label, Rail, Segment, Table } from 'semantic-ui-react'
-import { CreatePage } from '../../Create/CreatePage';
+import { Button, Confirm, Divider, Icon, Input, Table } from 'semantic-ui-react'
+import { CreateGroupPage } from '../../Create/CreateGroupPage';
 import { EditGroupObject } from './EditGroupObject';
 import './ViewGroups.css';
 
@@ -32,6 +32,7 @@ export function ViewGroups() {
     const [programText, setProgramText] = useState();
 
     const [activePage, setActivePage] = useState(0)
+
 
 
     const fetchProgramGroups = async () => {
@@ -74,7 +75,7 @@ export function ViewGroups() {
             .then(setOpen(false));
     }
 
-    
+
     useEffect(() => {
         fetchGroups();
     }, [nameText, yearText, programText, activePage]);
@@ -88,7 +89,7 @@ export function ViewGroups() {
 
         <div>
             {create && (<div>
-                <CreatePage /></div>)}
+                <CreateGroupPage /></div>)}
             {active && (<div className='edit'>
                 <EditGroupObject id={active} /></div>)}
 
@@ -97,15 +98,12 @@ export function ViewGroups() {
 
                 <div id='groups'>
 
-                    <Input placeholder='Filtruoti pagal pavadinimą' value={nameText} onChange={(e) => setNameText(e.target.value)} />
-                    <Button icon labelPosition='left' onClick={fetchFilterGroups}><Icon name='angle double left' />Filtruoti</Button>
+                    <Input className='controls1' placeholder='Filtruoti pagal pavadinimą' value={nameText} onChange={(e) => setNameText(e.target.value)} />
 
-                    <Input placeholder='Filtruoti pagal mokslo metus' value={yearText} onChange={(e) => setYearText(e.target.value)} />
-                    <Button icon labelPosition='left' onClick={fetchYearGroups}><Icon name='angle double left' />Filtruoti</Button>
+                    <Input className='controls1' placeholder='Filtruoti pagal mokslo metus' value={yearText} onChange={(e) => setYearText(e.target.value)} />
 
                     <Input placeholder='Filtruoti pagal programą' value={programText} onChange={(e) => setProgramText(e.target.value)} />
 
-                    <Button icon labelPosition='left' onClick={fetchProgramGroups}><Icon name='angle double left' />Filtruoti</Button>
 
 
 
@@ -131,10 +129,11 @@ export function ViewGroups() {
                                     <Table.Cell>{group.name}</Table.Cell>
                                     <Table.Cell>{group.schoolYear}</Table.Cell>
                                     <Table.Cell>{group.studentAmount}</Table.Cell>
-                                    <Table.Cell>{group.program.id}</Table.Cell>
+                                    <Table.Cell>{group.programName}</Table.Cell>
                                     <Table.Cell collapsing>
                                         <Button basic primary compact icon='eye' title='Peržiūrėti' onClick={() => setActive(group.id)}></Button>
-                                        <Button basic color='black' compact title='Ištrinti' icon='trash alternate' onClick={() => setOpen(true) && removeGroup(group.id)}></Button>
+                                        <Button basic color='black' compact title='Ištrinti' icon='trash alternate' onClick={() => setOpen(group.id)}></Button>
+
                                         <Confirm
                                             open={open}
                                             header='Dėmesio!'
@@ -142,7 +141,7 @@ export function ViewGroups() {
                                             cancelButton='Grįžti atgal'
                                             confirmButton="Ištrinti"
                                             onCancel={() => setOpen(false)}
-                                            onConfirm={() => removeGroup(group.id)}
+                                            onConfirm={() => removeGroup(open)}
                                             size='small'
                                         />
                                     </Table.Cell>
@@ -162,5 +161,3 @@ export function ViewGroups() {
         </div>
     )
 }
-
-
