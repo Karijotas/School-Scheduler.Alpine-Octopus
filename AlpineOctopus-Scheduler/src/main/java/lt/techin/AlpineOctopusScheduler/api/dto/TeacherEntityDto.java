@@ -1,6 +1,9 @@
 package lt.techin.AlpineOctopusScheduler.api.dto;
 
+import lt.techin.AlpineOctopusScheduler.model.Subject;
+
 import java.util.Objects;
+import java.util.Set;
 
 public class TeacherEntityDto extends TeacherDto{
 
@@ -9,8 +12,9 @@ public class TeacherEntityDto extends TeacherDto{
     public TeacherEntityDto () {
 
     }
-    public TeacherEntityDto(String name, String surname, String contactEmail, String phone, String shift) {
-        super(name, surname, contactEmail, phone, shift);
+    public TeacherEntityDto(String name, String surname, String contactEmail, String phone, String shift, Set<Subject> teachersSubjects,Long id) {
+        super(name, surname, contactEmail, phone, shift, teachersSubjects);
+        this.id = id;
     }
 
     public Long getId() {

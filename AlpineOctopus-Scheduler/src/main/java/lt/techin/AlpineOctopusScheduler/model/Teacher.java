@@ -1,7 +1,10 @@
 package lt.techin.AlpineOctopusScheduler.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Objects;
+import java.util.Set;
 
 //Mantvydas Juršys
 
@@ -27,17 +30,29 @@ public class Teacher {
     private String shift;
 // variables end
 
+    @ManyToMany (mappedBy = "subjectTeachers")
+    @JsonIgnore
+    private Set<Subject> teachersSubjects;
 
-    public Teacher() {
+    public Teacher(){}
 
+    public Teacher(Long id, String name, String surname, String loginEmail, String contactEmail, String phone, double workHoursPerWeek, String shift, Set<Subject> teachersSubjects) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.loginEmail = loginEmail;
+        this.contactEmail = contactEmail;
+        this.phone = phone;
+        this.workHoursPerWeek = workHoursPerWeek;
+        this.shift = shift;
+        this.teachersSubjects = teachersSubjects;
     }
 
-    // getters & setters
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -97,17 +112,25 @@ public class Teacher {
         this.shift = shift;
     }
 
+    public Set<Subject> getTeachersSubjects() {
+        return teachersSubjects;
+    }
+
+    public void setTeachersSubjects(Set<Subject> teachersSubjects) {
+        this.teachersSubjects = teachersSubjects;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Teacher teacher = (Teacher) o;
-        return Double.compare(teacher.workHoursPerWeek, workHoursPerWeek) == 0 && Objects.equals(id, teacher.id) && Objects.equals(name, teacher.name) && Objects.equals(surname, teacher.surname) && Objects.equals(loginEmail, teacher.loginEmail) && Objects.equals(contactEmail, teacher.contactEmail) && Objects.equals(phone, teacher.phone) && Objects.equals(shift, teacher.shift);
+        return Double.compare(teacher.workHoursPerWeek, workHoursPerWeek) == 0 && Objects.equals(id, teacher.id) && Objects.equals(name, teacher.name) && Objects.equals(surname, teacher.surname) && Objects.equals(loginEmail, teacher.loginEmail) && Objects.equals(contactEmail, teacher.contactEmail) && Objects.equals(phone, teacher.phone) && Objects.equals(shift, teacher.shift) && Objects.equals(teachersSubjects, teacher.teachersSubjects);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, surname, loginEmail, contactEmail, phone, workHoursPerWeek, shift);
+        return Objects.hash(id, name, surname, loginEmail, contactEmail, phone, workHoursPerWeek, shift, teachersSubjects);
     }
 
     @Override
@@ -121,6 +144,7 @@ public class Teacher {
                 ", phone='" + phone + '\'' +
                 ", workHoursPerWeek=" + workHoursPerWeek +
                 ", shift='" + shift + '\'' +
+                ", teachersSubjects=" + teachersSubjects +
                 '}';
     }
 }

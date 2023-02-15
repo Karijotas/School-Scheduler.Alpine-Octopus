@@ -55,12 +55,19 @@ public class Subject {
             joinColumns = @JoinColumn(name = "subject_id"),
             inverseJoinColumns = @JoinColumn(name = "room_id"))
     private Set<Room> subjectRooms;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @JoinTable(
+            name = "teachers_subjects",
+            joinColumns = @JoinColumn(name = "subject_id"),
+            inverseJoinColumns = @JoinColumn(name = "teacher_id"))
+    private Set<Teacher> subjectTeachers;
 
     public Subject() {
 
     }
 
-    public Subject(Long id, String name, String description ,LocalDateTime createdDate, LocalDateTime modifiedDate, Set<Module> subjectModules,Set<Room> subjectRooms) {
+    public Subject(Long id, String name, String description ,LocalDateTime createdDate, LocalDateTime modifiedDate, Set<Module> subjectModules,Set<Room> subjectRooms,Set<Teacher> subjectTeachers) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -68,6 +75,7 @@ public class Subject {
         this.modifiedDate = modifiedDate;
         this.subjectModules = subjectModules;
         this.subjectRooms = subjectRooms;
+        this.subjectTeachers = subjectTeachers;
     }
 
     public Long getId() {
@@ -126,17 +134,25 @@ public class Subject {
         this.subjectRooms = subjectRooms;
     }
 
+    public Set<Teacher> getSubjectTeachers() {
+        return subjectTeachers;
+    }
+
+    public void setSubjectTeachers(Set<Teacher> subjectTeachers) {
+        this.subjectTeachers = subjectTeachers;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Subject subject = (Subject) o;
-        return Objects.equals(id, subject.id) && Objects.equals(name, subject.name) && Objects.equals(description, subject.description) && Objects.equals(createdDate, subject.createdDate) && Objects.equals(modifiedDate, subject.modifiedDate) && Objects.equals(subjectModules, subject.subjectModules) && Objects.equals(subjectRooms, subject.subjectRooms);
+        return Objects.equals(id, subject.id) && Objects.equals(name, subject.name) && Objects.equals(description, subject.description) && Objects.equals(createdDate, subject.createdDate) && Objects.equals(modifiedDate, subject.modifiedDate) && Objects.equals(subjectModules, subject.subjectModules) && Objects.equals(subjectRooms, subject.subjectRooms) && Objects.equals(subjectTeachers, subject.subjectTeachers);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, createdDate, modifiedDate, subjectModules, subjectRooms);
+        return Objects.hash(id, name, description, createdDate, modifiedDate, subjectModules, subjectRooms, subjectTeachers);
     }
 
     @Override
@@ -149,6 +165,7 @@ public class Subject {
                 ", modifiedDate=" + modifiedDate +
                 ", subjectModules=" + subjectModules +
                 ", subjectRooms=" + subjectRooms +
+                ", subjectTeachers=" + subjectTeachers +
                 '}';
     }
 }

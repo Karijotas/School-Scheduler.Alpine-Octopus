@@ -16,6 +16,8 @@ public class TeacherMapper {
         teacherDto.setPhone(teacher.getPhone());
         teacherDto.setShift(teacher.getShift());
 
+
+
         return teacherDto;
     }
 
@@ -28,6 +30,7 @@ public class TeacherMapper {
         teacher.setContactEmail(teacherDto.getContactEmail());
         teacher.setPhone(teacherDto.getPhone());
         teacher.setShift(teacherDto.getShift());
+
 
         return teacher;
     }
@@ -42,6 +45,7 @@ public class TeacherMapper {
         teacherEntityDto.setContactEmail(teacher.getContactEmail());
         teacherEntityDto.setPhone(teacher.getPhone());
         teacherEntityDto.setShift(teacher.getShift());
+        teacherEntityDto.setTeachersSubjects(teacher.getTeachersSubjects());
 
         return teacherEntityDto;
     }
@@ -56,6 +60,7 @@ public class TeacherMapper {
         teacher.setContactEmail(teacherEntityDto.getContactEmail());
         teacher.setPhone(teacherEntityDto.getPhone());
         teacher.setShift(teacherEntityDto.getShift());
+        teacher.setTeachersSubjects(teacherEntityDto.getTeachersSubjects());
 
         return teacher;
     }
