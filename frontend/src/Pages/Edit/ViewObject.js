@@ -1,7 +1,10 @@
 import React from 'react'
-import {ViewGroups} from './EditPages/ViewGroups'
-import {ViewPrograms} from './EditPages/ViewPrograms'
-import { EditObject } from './EditPages/EditObject'
+import { ViewGroups } from './EditPages/ViewGroups'
+import { ViewPrograms } from './EditPages/ViewPrograms'
+import { SubjectList } from './EditPages/SubjectList'
+import { ModuleList } from './EditPages/ModuleList'
+
+
 
 
 // Here we should pass the selection as props, and then map the values from Backend to the tables
@@ -12,29 +15,23 @@ import { EditObject } from './EditPages/EditObject'
 
 export function ObjectList(props) {
     if (props === 'groups') {
-        if (props === 'groups/{$id}') {
-            return (
-                <EditObject />
-            )
-        } else {
-              return (
+        return (
             <ViewGroups />
 
         )
-        }
-      
     }
-
 
 
     if (props === 'subjects') {
-        return (
-            <p>
-<EditObject />
-            </p>
 
+        return (
+            <SubjectList />
         )
     }
+
+
+
+
     if (props === 'teachers') {
         return (
             <p>
@@ -66,12 +63,12 @@ export function ObjectList(props) {
         )
     }
     if (props === 'modules') {
-        return (
-            <p>
-                Moduliai:
-            </p>
 
+        return (
+                <ModuleList/>
         )
+
+
     }
 }
 

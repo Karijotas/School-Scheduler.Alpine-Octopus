@@ -1,9 +1,7 @@
 package lt.techin.AlpineOctopusScheduler.api.dto;
 
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lt.techin.AlpineOctopusScheduler.model.Program;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -14,11 +12,12 @@ public class GroupsDto {
     private String name;
     private Integer schoolYear;
     private Integer studentAmount;
-    private String program;
+    private Program program;
     private String shift;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
 
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modifiedDate;
 
     private String createdBy;
@@ -26,7 +25,7 @@ public class GroupsDto {
     private String modifiedBy;
     public GroupsDto(){}
 
-    public GroupsDto(String name, Integer schoolYear, Integer studentAmount, String program, String shift, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy) {
+    public GroupsDto(String name, Integer schoolYear, Integer studentAmount, Program program, String shift, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy) {
         this.name = name;
         this.schoolYear = schoolYear;
         this.studentAmount = studentAmount;
@@ -94,11 +93,11 @@ public class GroupsDto {
         this.studentAmount = studentAmount;
     }
 
-    public String getProgram() {
+    public Program getProgram() {
         return program;
     }
 
-    public void setProgram(String program) {
+    public void setProgram(Program program) {
         this.program = program;
     }
 

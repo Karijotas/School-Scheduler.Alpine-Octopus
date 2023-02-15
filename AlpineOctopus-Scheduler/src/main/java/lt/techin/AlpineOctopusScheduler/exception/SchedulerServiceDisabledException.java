@@ -8,4 +8,5 @@ public class SchedulerServiceDisabledException extends RuntimeException{
     public SchedulerServiceDisabledException(String message) {
         super(message);
     }
+
 }

@@ -146,3 +146,4 @@ public class ApiExceptionHandler {
             logger.error("All Exceptions handler: {}", exception.getMessage());
         }
 }
+

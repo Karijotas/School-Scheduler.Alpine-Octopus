@@ -6,13 +6,15 @@ spring:
     default-property-inclusion: non_null
     serialization:
       write-dates-as-timestamps: false
-    date-format: "yyyy-MM-dd HH:mm"
+    date-format: "dd-MM-yyyy HH:mm:ss"
   flyway:
     enabled: true
   jpa:
     hibernate:
       ddl-auto: none
+
 #      ddl-auto: drop-and-create
+
     generate-ddl: false
     properties:
       hibernate:
@@ -48,6 +50,7 @@ logging:
       #          core:
       #            JdbcTemplate: DEBUG
       #            StatementCreatorUtils: DEBUG
+
       hibernate:
         SQL: DEBUG
         type: TRACE
@@ -56,5 +59,7 @@ logging:
           sql:
             BasicBinder: DEBUG
 Server:
-  Port: 8084
+  Port: 8083
+
+
 

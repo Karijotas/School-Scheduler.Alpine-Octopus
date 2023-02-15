@@ -1,13 +1,21 @@
 package lt.techin.AlpineOctopusScheduler.service;
 
+import lt.techin.AlpineOctopusScheduler.api.dto.GroupsDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.ProgramDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupsMapper;
+import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper;
 import lt.techin.AlpineOctopusScheduler.dao.GroupsRepository;
 import lt.techin.AlpineOctopusScheduler.model.Groups;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class GroupService {
@@ -24,6 +32,31 @@ public class GroupService {
     public Optional<Groups> getById(Long id){
         return groupsRepository.findById(id);
     }
+
+    public List<Groups> getPagedAllGroups(int page, int pageSize) {
+
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        return groupsRepository.findAll(pageable).stream().collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<GroupsDto> getGroupsByNameContaining(String nameText) {
+        return groupsRepository.findByNameContainingIgnoreCase(nameText).stream()
+                .map(GroupsMapper::toGroupDto).collect(Collectors.toList());
+    }
+    @Transactional(readOnly = true)
+    public List<GroupsDto> getGroupsBySchoolYear(Integer schoolYearText) {
+        return groupsRepository.findBySchoolYear(schoolYearText).stream()
+                .map(GroupsMapper::toGroupDto).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<GroupsDto> getGroupsByProgram(String programText) {
+        return groupsRepository.findByProgram(programText).stream()
+                .map(GroupsMapper::toGroupDto).collect(Collectors.toList());
+    }
+
 
     public Groups create(Groups groups){
         return groupsRepository.save(groups);

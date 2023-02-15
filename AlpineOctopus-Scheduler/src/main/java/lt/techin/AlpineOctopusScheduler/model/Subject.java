@@ -1,28 +1,56 @@
 package lt.techin.AlpineOctopusScheduler.model;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+
 import java.util.HashSet;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
+
 import java.util.Objects;
 import java.util.Set;
+
 @Entity
 public class Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "Negali buti tuscias")
+    @Size(min = 5, max = 40)
     private String name;
-
+    @Size(min = 5, max = 100)
     private String description;
 
-    @OneToMany(mappedBy = "subject")
+    //    @NotBlank
+//      private Teacher teacher;
+//    @NotBlank
+//   private Room room;
+    @CreatedDate
+    private LocalDateTime createdDate;
+
+
+    @LastModifiedDate
+    private LocalDateTime modifiedDate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "module_id")
+    //@JoinColumn(name = "module_id", nullable = true)
+    private Module module;
+
+    @OneToMany(mappedBy = "program")
     @JsonIgnore
-    private Set<ProgramSubjectHours> subjectHour;
+    private Set<ProgramSubjectHours> subjectHours;
 
     public Subject() {
-        subjectHour = new HashSet<>();
+        subjectHours = new HashSet<>();
 
     }
+
     public Long getId() {
         return id;
     }
@@ -47,12 +75,28 @@ public class Subject {
         this.description = description;
     }
 
-    public Set<ProgramSubjectHours> getSubjectHour() {
-        return subjectHour;
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
     }
 
-    public void setSubjectHour(Set<ProgramSubjectHours> subjectHour) {
-        this.subjectHour = subjectHour;
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public LocalDateTime getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(LocalDateTime modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
+    public Module getModule() {
+        return module;
+    }
+
+    public void setModule(Module module) {
+        this.module = module;
     }
 
     @Override
@@ -60,11 +104,23 @@ public class Subject {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Subject subject = (Subject) o;
-        return Objects.equals(id, subject.id) && Objects.equals(name, subject.name) && Objects.equals(description, subject.description) && Objects.equals(subjectHour, subject.subjectHour);
+        return Objects.equals(id, subject.id) && Objects.equals(name, subject.name) && Objects.equals(description, subject.description) && Objects.equals(createdDate, subject.createdDate) && Objects.equals(modifiedDate, subject.modifiedDate) && Objects.equals(module, subject.module);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, subjectHour);
+        return Objects.hash(id, name, description, createdDate, modifiedDate, module);
+    }
+
+    @Override
+    public String toString() {
+        return "Subject{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", createdDate=" + createdDate +
+                ", modifiedDate=" + modifiedDate +
+                ", module=" + module +
+                '}';
     }
 }

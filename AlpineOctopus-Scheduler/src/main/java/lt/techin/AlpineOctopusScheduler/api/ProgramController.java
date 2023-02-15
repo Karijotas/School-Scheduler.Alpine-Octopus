@@ -2,6 +2,7 @@ package lt.techin.AlpineOctopusScheduler.api;
 
 import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.*;
+import lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupsMapper;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramSubjectHoursMapper;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper;
@@ -54,7 +55,9 @@ public class ProgramController {
 
     @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
+
     public List<ProgramEntityDto> getPagedAllPrograms(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
+
                                                 @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
 
 
