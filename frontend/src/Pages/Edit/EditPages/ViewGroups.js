@@ -102,7 +102,6 @@ export function ViewGroups() {
                     <Input placeholder='Filtruoti pagal programą' value={programText} onChange={(e) => setProgramText(e.target.value)} />
 
 
-    return (
 
 
 
