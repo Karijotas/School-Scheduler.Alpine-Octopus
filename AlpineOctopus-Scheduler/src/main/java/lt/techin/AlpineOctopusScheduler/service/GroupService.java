@@ -7,6 +7,7 @@ import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper;
 import lt.techin.AlpineOctopusScheduler.dao.GroupsRepository;
 import lt.techin.AlpineOctopusScheduler.dao.ProgramRepository;
 import lt.techin.AlpineOctopusScheduler.model.Groups;
+import lt.techin.AlpineOctopusScheduler.model.Program;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
@@ -63,9 +64,11 @@ public class GroupService {
 
 
     public Groups create(Groups groups, Long programId){
-        groups.setProgram( programRepository.getById(programId));
+        Program createdProgram = programRepository.findById(programId).get();
+        groups.setProgram(createdProgram);
         return groupsRepository.save(groups);
     }
+//    .getById(programId)
     public Groups update(Long id, Groups groups){
         Groups existingGroups =  groupsRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Group doesn't exist"));

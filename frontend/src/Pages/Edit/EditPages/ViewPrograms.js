@@ -73,9 +73,9 @@ export function ViewPrograms() {
       />
       {/* <Button onClick={fetchFilterPrograms}>Filtruoti</Button> */}
 
+
       <Button icon labelPosition='left' primary className='controls' onClick={() => setCreate('new')}><Icon name='database' />Kurti naują programą</Button>
                     <Divider horizontal hidden></Divider>
-
       <Table selectable>
         <Table.Header>
           <Table.Row>

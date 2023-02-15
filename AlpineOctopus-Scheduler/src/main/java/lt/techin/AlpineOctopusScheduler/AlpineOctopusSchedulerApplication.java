@@ -17,6 +17,5 @@ public class AlpineOctopusSchedulerApplication extends SpringBootServletInitiali
 
     public static void main(String[] args) {
         SpringApplication.run(AlpineOctopusSchedulerApplication.class, args);
-
     }
 }

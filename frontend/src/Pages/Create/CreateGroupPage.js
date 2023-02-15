@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> ea93b483916534d00202b3c196c9cd1acdea341c
 import React, { useEffect, useState } from "react";
 import { Button, Form, Icon, Input, Select, } from "semantic-ui-react";
 import { ViewGroups } from "../Edit/EditPages/ViewGroups";
