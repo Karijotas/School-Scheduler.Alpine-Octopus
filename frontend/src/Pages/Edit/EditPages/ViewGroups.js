@@ -68,7 +68,7 @@ export function ViewGroups() {
         fetch('/api/v1/groups/')
             .then(response => response.json())
             .then(jsonResponse => setGroupsForPaging(jsonResponse)).then(setPageCount(Math.ceil(groupsforPaging.length / 10)))
-            // .then(console.log('pages:' + pagecount));
+        // .then(console.log('pages:' + pagecount));
     };
 
     const removeGroup = (id) => {
@@ -78,6 +78,8 @@ export function ViewGroups() {
         }).then(fetchGroups)
             .then(setOpen(false));
     }
+
+
 
     useEffect(() => {
         fetchGroups();
