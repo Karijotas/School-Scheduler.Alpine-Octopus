@@ -64,11 +64,11 @@ export function ViewGroups() {
             .then(jsonResponse => setGroups(jsonResponse));
     };
 
-    const fetchSingleGroups = () => {
+    const fetchSingleGroups = async () => {
         fetch('/api/v1/groups/')
             .then(response => response.json())
-            .then(jsonResponse => setGroupsForPaging(jsonResponse)).then(setPageCount(Math.ceil(groupsforPaging.length / 10)))
-        // .then(console.log('pages:' + pagecount));
+            .then(jsonResponse => setGroupsForPaging(jsonResponse)).then(setPageCount(Math.ceil(groupsforPaging.length/10)))
+            .then(console.log('pages:' + pagecount));
     };
 
     const removeGroup = (id) => {
@@ -78,7 +78,7 @@ export function ViewGroups() {
         }).then(fetchGroups)
             .then(setOpen(false));
     }
-
+    
     const Btn = () => {
         return <ul>{Array.from(Array(pagecount), (e, i) => {
             return <Button key={i}>{i}</Button>
@@ -93,7 +93,7 @@ export function ViewGroups() {
         if (pagecount !== null) {
             fetchSingleGroups();
         }
-    }, [])
+    }, [groups])
 
     const [open, setOpen] = useState(false)
 
@@ -172,7 +172,7 @@ export function ViewGroups() {
                         {[...Array(pagecount)].map((e, i) => {
                             return <Button key={i} onClick={() => setActivePage(i)}>{i}</Button>
                         })}
-                        <Button onClick={() => setActivePage(activePage >= pagecount - 1 ? activePage : activePage + 1)} icon><Icon name="arrow right" />  </Button>
+                        <Button onClick={() => setActivePage(activePage >= pagecount -1 ? activePage : activePage + 1)} icon><Icon name="arrow right" />  </Button>
                     </ButtonGroup>
 
 

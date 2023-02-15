@@ -25,13 +25,24 @@ export function ViewPrograms() {
   const [create, setCreate] = useState('')
   const [nameText, setNameText] = useState("");
   const [programs, setPrograms] = useState([]);
+  const [groupsforPaging, setGroupsForPaging] = useState([]);
+
   const [activePage, setActivePage] = useState(0);
+  const [pagecount, setPageCount] = useState()
+
 
 
   const fetchFilterPrograms = async () => {
     fetch(`/api/v1/programs/page/starting-with/${nameText}?page=` + activePage)
       .then((response) => response.json())
       .then((jsonRespone) => setPrograms(jsonRespone));
+  };
+
+  const fetchSinglePrograms = () => {
+    fetch('/api/v1/programs')
+      .then(response => response.json())
+      .then(jsonResponse => setGroupsForPaging(jsonResponse)).then(setPageCount(Math.ceil(groupsforPaging.length / 10)))
+    // .then(console.log('pages:' + pagecount));
   };
 
 
@@ -55,6 +66,19 @@ export function ViewPrograms() {
 
   const [open, setOpen] = useState(false)
   const [close, setClose] = useState(false)
+
+
+  const Btn = () => {
+    return <ul>{Array.from(Array(pagecount), (e, i) => {
+      return <Button key={i}>{i}</Button>
+    })}</ul>
+  };
+
+  useEffect(() => {
+    if (pagecount !== null) {
+        fetchSinglePrograms();
+    }
+}, [programs])
 
   return (
     <div>
@@ -115,10 +139,10 @@ export function ViewPrograms() {
             </Table.Body>
           </Table>
           <ButtonGroup basic compact>
-            <Button onClick={() => setActivePage(activePage <= 0 ? activePage : activePage -1)} icon><Icon name="arrow left" />  </Button>
-            <Button onClick={() => setActivePage(0)}> 1 </Button>
-            <Button onClick={() => setActivePage(1)}> 2 </Button>
-            <Button onClick={() => setActivePage(2)}> 3 </Button>
+            <Button onClick={() => setActivePage(activePage <= 0 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
+            {[...Array(pagecount)].map((e, i) => {
+              return <Button key={i} onClick={() => setActivePage(i)}>{(i)}</Button>
+            })}
             <Button onClick={() => setActivePage(activePage + 1)} icon><Icon name="arrow right" />  </Button>
           </ButtonGroup>
           {/* <Pagination 
