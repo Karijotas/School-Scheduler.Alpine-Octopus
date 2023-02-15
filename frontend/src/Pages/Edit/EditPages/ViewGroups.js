@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Confirm, Divider, Icon, Input, Table } from 'semantic-ui-react'
+import { Button, ButtonGroup, Confirm, Divider, Icon, Input, Table } from 'semantic-ui-react'
 import { CreateGroupPage } from '../../Create/CreateGroupPage';
 import { EditGroupObject } from './EditGroupObject';
 import './ViewGroups.css';
@@ -149,8 +149,13 @@ export function ViewGroups() {
                     </Table>
                     <Divider hidden></Divider>
 
-                    <Button onClick={() => setActivePage(0)}>1</Button>
-                    <Button onClick={() => setActivePage(1)}>2</Button>
+                    <ButtonGroup basic compact>
+            <Button onClick={() => setActivePage(activePage <= 0 ? activePage : activePage -1)} icon><Icon name="arrow left" />  </Button>
+            <Button onClick={() => setActivePage(0)}> 1 </Button>
+            <Button onClick={() => setActivePage(1)}> 2 </Button>
+            <Button onClick={() => setActivePage(2)}> 3 </Button>
+            <Button onClick={() => setActivePage(activePage + 1)} icon><Icon name="arrow right" />  </Button>
+          </ButtonGroup>
                 </div>
             )}
 

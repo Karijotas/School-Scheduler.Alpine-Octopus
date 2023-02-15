@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button,  Input, Table } from 'semantic-ui-react';
+import { Button,  Icon,  Input, Table } from 'semantic-ui-react';
 import { ViewPrograms } from './ViewPrograms';
 
 
@@ -86,7 +86,7 @@ export function EditProgramObject(props) {
     // }
 
 
-    return (<div>{active && (<div >
+    return (<div>{active && !hide &&(<div >
 
         <Table celled color='violet'>
             <Table.Header >
@@ -115,6 +115,8 @@ export function EditProgramObject(props) {
 
             </ Table.Body >
         </Table>
+        <Button icon labelPosition="left" className="" onClick={() => setHide(true)}><Icon name="arrow left" />Atgal</Button>
+
     </div>
 
 
@@ -154,6 +156,7 @@ export function EditProgramObject(props) {
 
                 </ Table.Body >
             </Table>
+            <Button icon labelPosition="left" className="" onClick={() => setHide(true)}><Icon name="arrow left" />Atgal</Button>
 
         </div>)}
 

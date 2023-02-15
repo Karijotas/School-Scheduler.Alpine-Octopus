@@ -5,6 +5,7 @@ import {
   Input,
   Icon,
   Pagination,
+  ButtonGroup,
 } from "semantic-ui-react";
 import { useState, useEffect } from "react";
 
@@ -16,6 +17,8 @@ export function SubjectList() {
   const [subjects, setSubjects] = useState([]);
 
   const [activeItem, setActiveItem] = useState("");
+  const [activePage, setActivePage] = useState(0);
+
 
   const fetchSubjects = async () => {
     fetch("/api/v1/subjects")
@@ -71,15 +74,13 @@ export function SubjectList() {
         </Table.Body>
       </Table>
 
-      <Pagination
-        defaultActivePage={1}
-        ellipsisItem={{ content: <Icon name='ellipsis horizontal' />, icon: true }}
-        firstItem={{ content: <Icon name='angle double left' />, icon: true }}
-        lastItem={{ content: <Icon name='angle double right' />, icon: true }}
-        prevItem={{ content: <Icon name='angle left' />, icon: true }}
-        nextItem={{ content: <Icon name='angle right' />, icon: true }}
-        totalPages={3}
-      />
+      <ButtonGroup basic compact>
+            <Button onClick={() => setActivePage(activePage <= 0 ? activePage : activePage -1)} icon><Icon name="arrow left" />  </Button>
+            <Button onClick={() => setActivePage(0)}> 1 </Button>
+            <Button onClick={() => setActivePage(1)}> 2 </Button>
+            <Button onClick={() => setActivePage(2)}> 3 </Button>
+            <Button onClick={() => setActivePage(activePage + 1)} icon><Icon name="arrow right" />  </Button>
+          </ButtonGroup>
     </div>
   );
 }
