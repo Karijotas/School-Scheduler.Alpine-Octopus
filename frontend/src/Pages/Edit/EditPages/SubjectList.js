@@ -37,7 +37,7 @@ export function SubjectList() {
     fetchSubjects();
   }, []);
 
-  
+
 
   return (
     <div id="groups">
@@ -77,12 +77,12 @@ export function SubjectList() {
       </Table>
 
       <ButtonGroup basic compact>
-            <Button onClick={() => setActivePage(activePage <= 0 ? activePage : activePage -1)} icon><Icon name="arrow left" />  </Button>
-            <Button onClick={() => setActivePage(0)}> 1 </Button>
-            <Button onClick={() => setActivePage(1)}> 2 </Button>
-            <Button onClick={() => setActivePage(2)}> 3 </Button>
-            <Button onClick={() => setActivePage(activePage + 1)} icon><Icon name="arrow right" />  </Button>
-          </ButtonGroup>
+        <Button onClick={() => setActivePage(activePage <= 0 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
+        <Button onClick={() => setActivePage(0)}> 1 </Button>
+        <Button onClick={() => setActivePage(1)}> 2 </Button>
+        <Button onClick={() => setActivePage(2)}> 3 </Button>
+        <Button onClick={() => setActivePage(activePage + 1)} icon><Icon name="arrow right" />  </Button>
+      </ButtonGroup>
     </div>
   );
 }

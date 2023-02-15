@@ -42,7 +42,6 @@ export function ViewPrograms() {
     fetch('/api/v1/programs')
       .then(response => response.json())
       .then(jsonResponse => setGroupsForPaging(jsonResponse)).then(setPageCount(Math.ceil(groupsforPaging.length / 10)))
-    // .then(console.log('pages:' + pagecount));
   };
 
 
@@ -68,17 +67,11 @@ export function ViewPrograms() {
   const [close, setClose] = useState(false)
 
 
-  const Btn = () => {
-    return <ul>{Array.from(Array(pagecount), (e, i) => {
-      return <Button key={i}>{i}</Button>
-    })}</ul>
-  };
-
   useEffect(() => {
     if (pagecount !== null) {
-        fetchSinglePrograms();
+      fetchSinglePrograms();
     }
-}, [programs])
+  }, [programs])
 
   return (
     <div>
@@ -141,20 +134,10 @@ export function ViewPrograms() {
           <ButtonGroup basic compact>
             <Button onClick={() => setActivePage(activePage <= 0 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
             {[...Array(pagecount)].map((e, i) => {
-              return <Button key={i} onClick={() => setActivePage(i)}>{(i+1)}</Button>
+              return <Button key={i} onClick={() => setActivePage(i)}>{(i + 1)}</Button>
             })}
             <Button onClick={() => setActivePage(activePage + 1)} icon><Icon name="arrow right" />  </Button>
           </ButtonGroup>
-          {/* <Pagination 
-            defaultActivePage={1}
-            activePage={activePage}
-            onPageChange={onPageChange}
-            ellipsisItem={null}
-            siblingRange={1}
-            totalPages={10}          
-            
-        />    */}
-
         </div>
       )}
     </div>
