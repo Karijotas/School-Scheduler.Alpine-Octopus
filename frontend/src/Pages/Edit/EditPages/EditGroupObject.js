@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button,  Input, Table } from 'semantic-ui-react';
+import { Button, Icon, Input, Table } from 'semantic-ui-react';
 import { ViewGroups } from './ViewGroups';
 
 
@@ -91,9 +91,10 @@ export function EditGroupObject(props) {
     // }
 
 
-    return (<div>{active && (<div >
+    return (<div>{active && !hide && (<div >
 
         <Table celled color='violet'>
+            
             <Table.Header >
                 <Table.Row  >
                     <Table.HeaderCell >Grupės pavadinimas "Teams"</Table.HeaderCell>
@@ -117,6 +118,7 @@ export function EditGroupObject(props) {
 
                     <Table.Cell collapsing > {groups.modifiedDate}  </Table.Cell>
 
+
                     <Table.Cell collapsing ><Button onClick={editThis}>Taisyti</Button>
                     </Table.Cell>
 
@@ -125,6 +127,7 @@ export function EditGroupObject(props) {
 
             </ Table.Body >
         </Table>
+        <Button icon labelPosition="left" className="" onClick={() => setHide(true)}><Icon name="arrow left" />Atgal</Button>
     </div>
 
 
@@ -137,7 +140,7 @@ export function EditGroupObject(props) {
                         <Table.HeaderCell >Grupės pavadinimas "Teams"</Table.HeaderCell>
                         <Table.HeaderCell>Mokslo metai</Table.HeaderCell>
                         <Table.HeaderCell>Studentų skaičius</Table.HeaderCell>
-                        <Table.HeaderCell>Programa</Table.HeaderCell>
+                        {/* <Table.HeaderCell>Programa</Table.HeaderCell> */}
                         <Table.HeaderCell>Pamaina</Table.HeaderCell>
                         <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
                         <Table.HeaderCell>Veiksmai</Table.HeaderCell>
@@ -153,8 +156,8 @@ export function EditGroupObject(props) {
                         </Table.Cell>
                         <Table.Cell collapsing><Input value={groups.studentAmount} onChange={(e) => updateProperty('studentAmount', e)} />
                         </Table.Cell>
-                        <Table.Cell collapsing><Input options={shiftOptions} placeholder={groups.program.id} value={groups.program} onChange={(e) => updateProperty('program', e)} />
-                        </Table.Cell>
+                        {/* <Table.Cell collapsing><Input options={shiftOptions} placeholder={groups.program.id} value={groups.program} onChange={(e) => updateProperty('program', e)} /> */}
+                        {/* </Table.Cell> */}
                         <Table.Cell collapsing><Input options={shiftOptions} placeholder={groups.shift} value={groups.shift} onChange={(e) => updateProperty('shift', e)} />
                         </Table.Cell>
 
@@ -167,6 +170,7 @@ export function EditGroupObject(props) {
 
                 </ Table.Body >
             </Table>
+            <Button icon labelPosition="left" className="" onClick={() => setHide(true)}><Icon name="arrow left" />Atgal</Button>
 
         </div>)}
 

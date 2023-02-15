@@ -93,7 +93,7 @@ public class GroupsController {
     }
     @DeleteMapping("/{groupId}")
     public ResponseEntity<Void> deleteGroup(@PathVariable Long groupId) {
-        logger.info("Attempt to delete Animal by id: {}", groupId);
+        logger.info("Attempt to delete Group by id: {}", groupId);
 
         boolean deleted = groupService.deleteById(groupId);
         if (deleted) {

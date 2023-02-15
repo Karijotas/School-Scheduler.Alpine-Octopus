@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { act } from 'react-dom/test-utils';
 import { Button, Confirm, Divider, Header, Icon, Input, Label, Rail, Segment, Table } from 'semantic-ui-react'
 import { CreatePage } from '../../Create/CreatePage';
 import { EditGroupObject } from './EditGroupObject';
@@ -32,6 +33,8 @@ export function ViewGroups() {
     const [programText, setProgramText] = useState();
 
     const [activePage, setActivePage] = useState(0)
+
+    const [id, SetId] = useState('')
 
 
     const fetchProgramGroups = async () => {
@@ -134,7 +137,7 @@ export function ViewGroups() {
                                     <Table.Cell>{group.program.id}</Table.Cell>
                                     <Table.Cell collapsing>
                                         <Button basic primary compact icon='eye' title='Peržiūrėti' onClick={() => setActive(group.id)}></Button>
-                                        <Button basic color='black' compact title='Ištrinti' icon='trash alternate' onClick={() => setOpen(true) && removeGroup(group.id)}></Button>
+                                        <Button basic color='black' compact title='Ištrinti' icon='trash alternate' onClick={() => setOpen(true) && SetId(group.id)}></Button>
                                         <Confirm
                                             open={open}
                                             header='Dėmesio!'
@@ -142,7 +145,7 @@ export function ViewGroups() {
                                             cancelButton='Grįžti atgal'
                                             confirmButton="Ištrinti"
                                             onCancel={() => setOpen(false)}
-                                            onConfirm={() => removeGroup(group.id)}
+                                            onConfirm={() => removeGroup(id)}
                                             size='small'
                                         />
                                     </Table.Cell>
