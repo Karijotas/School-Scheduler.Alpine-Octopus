@@ -127,10 +127,10 @@ export function ViewGroups() {
                                     <Table.Cell>{group.name}</Table.Cell>
                                     <Table.Cell>{group.schoolYear}</Table.Cell>
                                     <Table.Cell>{group.studentAmount}</Table.Cell>
-                                    <Table.Cell>{group.program}</Table.Cell>
+                                    <Table.Cell>{group.program.id}</Table.Cell>
                                     <Table.Cell collapsing>
                                         <Button basic primary compact icon='eye' title='Peržiūrėti' onClick={() => setActive(group.id)}></Button>
-                                        <Button basic color='black' compact icon='trash alternate' onClick={() => removeGroup(group.id)}></Button>
+                                        <Button basic color='black' compact title='Ištrinti' icon='trash alternate' onClick={() => removeGroup(group.id)}></Button>
 
                                     </Table.Cell>
                                 </Table.Row>

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { Dropdown, Form, Select } from "semantic-ui-react";
-import MainMenu from "../../Components/MainMenu";
-import * as React from "react";
-=======
+
 import React, { useState } from "react";
 import { Button, Form, Icon, Input, } from "semantic-ui-react";
 import { ViewGroups } from "../Edit/EditPages/ViewGroups";
@@ -11,7 +7,7 @@ import { ViewGroups } from "../Edit/EditPages/ViewGroups";
 const JSON_HEADERS = {
   'Content-Type': 'application/json'
 };
->>>>>>> b1bf63d00a629d8538c4ace2a6ebd703f84b1c90
+
 
 
 
