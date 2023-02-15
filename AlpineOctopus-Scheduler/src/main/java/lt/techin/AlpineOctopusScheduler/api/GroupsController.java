@@ -49,11 +49,13 @@ public class GroupsController {
     }
     @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public List<Groups> getPagedAllGroups(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
+    public List<GroupsEntityDto> getPagedAllGroups(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
                                                 @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
 
 
-        return groupService.getPagedAllGroups(page, pageSize);
+        return groupService.getPagedAllGroups(page, pageSize).stream()
+                .map(GroupsMapper::toGroupEntityDto)
+                .collect(toList());
 
     }
     @GetMapping(path = "/name-filter/{nameText}")
@@ -86,14 +88,14 @@ public class GroupsController {
         return responseEntity;
     }
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE,})
-    public ResponseEntity<GroupsDto> createGroup(@RequestBody GroupsDto groupsDto){
-        var createdGroup = groupService.create(toGroup(groupsDto));
+    public ResponseEntity<GroupsDto> createGroup(@RequestBody GroupsDto groupsDto, Long programId){
+        var createdGroup = groupService.create(toGroup(groupsDto), programId);
 
         return ok(toGroupDto(createdGroup));
     }
     @DeleteMapping("/{groupId}")
     public ResponseEntity<Void> deleteGroup(@PathVariable Long groupId) {
-        logger.info("Attempt to delete Animal by id: {}", groupId);
+        logger.info("Attempt to delete Group by id: {}", groupId);
 
         boolean deleted = groupService.deleteById(groupId);
         if (deleted) {

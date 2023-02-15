@@ -5,7 +5,9 @@ import lt.techin.AlpineOctopusScheduler.api.dto.ProgramDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupsMapper;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper;
 import lt.techin.AlpineOctopusScheduler.dao.GroupsRepository;
+import lt.techin.AlpineOctopusScheduler.dao.ProgramRepository;
 import lt.techin.AlpineOctopusScheduler.model.Groups;
+import lt.techin.AlpineOctopusScheduler.model.Program;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
@@ -21,9 +23,11 @@ import java.util.stream.Collectors;
 public class GroupService {
 
     private GroupsRepository groupsRepository;
+    private ProgramRepository programRepository;
     @Autowired
-    public GroupService(GroupsRepository groupsRepository) {
+    public GroupService(GroupsRepository groupsRepository, ProgramRepository programRepository) {
         this.groupsRepository = groupsRepository;
+        this.programRepository = programRepository;
     }
     public List<Groups> getAll() {
         return groupsRepository.findAll();
@@ -51,6 +55,7 @@ public class GroupService {
                 .map(GroupsMapper::toGroupDto).collect(Collectors.toList());
     }
 
+
     @Transactional(readOnly = true)
     public List<GroupsDto> getGroupsByProgram(String programText) {
         return groupsRepository.findByProgram(programText).stream()
@@ -58,9 +63,12 @@ public class GroupService {
     }
 
 
-    public Groups create(Groups groups){
+    public Groups create(Groups groups, Long programId){
+        Program createdProgram = programRepository.findById(programId).get();
+        groups.setProgram(createdProgram);
         return groupsRepository.save(groups);
     }
+//    .getById(programId)
     public Groups update(Long id, Groups groups){
         Groups existingGroups =  groupsRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Group doesn't exist"));

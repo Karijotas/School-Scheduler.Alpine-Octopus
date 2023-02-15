@@ -71,17 +71,8 @@ export function ViewPrograms() {
       />
       {/* <Button onClick={fetchFilterPrograms}>Filtruoti</Button> */}
 
-      <Button
-        icon
-        labelPosition="left"
-        primary
-        href="#/create"
-        className="controls"
-      >
-        <Icon name="database" />
-        Kurti naują programą
-      </Button>
-
+      
+      <Button icon labelPosition='left' primary className='controls'><Icon name='database' />Kurti naują programą</Button>
 
       <Table selectable>
         <Table.Header>

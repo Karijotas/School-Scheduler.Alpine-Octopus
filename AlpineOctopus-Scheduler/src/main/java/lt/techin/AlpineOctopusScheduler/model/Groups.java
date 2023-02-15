@@ -26,7 +26,6 @@ public class Groups {
     private Integer schoolYear;
     @NotNull
     private Integer studentAmount;
-    @NotBlank
     @ManyToOne
     private Program program;
     @NotBlank

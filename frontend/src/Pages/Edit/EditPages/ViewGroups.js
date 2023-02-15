@@ -47,8 +47,6 @@ export function ViewGroups() {
     };
 
 
-
-
     const fetchFilterGroups = async () => {
         fetch('/api/v1/groups/name-filter/' + nameText)
             .then(response => response.json())
@@ -81,7 +79,6 @@ export function ViewGroups() {
     }, [nameText, yearText, programText, activePage]);
 
     const [open, setOpen] = useState(false)
-    const [close, setClose] = useState(false)
 
 
     return (
