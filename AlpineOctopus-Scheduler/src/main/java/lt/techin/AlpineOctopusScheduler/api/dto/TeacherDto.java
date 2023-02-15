@@ -72,7 +72,7 @@ public class TeacherDto {
     public void setShift(String shift) {
         this.shift = shift;
     }
-
+    @JsonIgnore
     public Set<Subject> getTeachersSubjects() {
         return teachersSubjects;
     }

@@ -86,7 +86,7 @@ public class SubjectDto {
     public void setSubjectRooms(Set<Room> subjectRooms) {
         this.subjectRooms = subjectRooms;
     }
-
+    @JsonIgnore
     public Set<Teacher> getSubjectTeachers() {
         return subjectTeachers;
     }

@@ -15,6 +15,7 @@ public class TeacherMapper {
         teacherDto.setContactEmail(teacher.getContactEmail());
         teacherDto.setPhone(teacher.getPhone());
         teacherDto.setShift(teacher.getShift());
+        teacherDto.setTeachersSubjects(teacher.getTeachersSubjects());
 
 
 
@@ -30,6 +31,7 @@ public class TeacherMapper {
         teacher.setContactEmail(teacherDto.getContactEmail());
         teacher.setPhone(teacherDto.getPhone());
         teacher.setShift(teacherDto.getShift());
+        teacher.setTeachersSubjects(teacherDto.getTeachersSubjects());
 
 
         return teacher;

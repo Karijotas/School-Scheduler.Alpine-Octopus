@@ -1,13 +1,19 @@
 package lt.techin.AlpineOctopusScheduler.service;
 
+import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper;
 import lt.techin.AlpineOctopusScheduler.dao.SubjectRepository;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Module;
 import lt.techin.AlpineOctopusScheduler.model.Subject;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SubjectService {
@@ -22,8 +28,25 @@ public class SubjectService {
         return subjectRepository.findAll();
     }
 
+    public List<SubjectEntityDto> getPagedAllSubjects(int page, int pageSize) {
+
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        return subjectRepository.findAll(pageable).stream().map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
+    }
+
+
+
     public Optional<Subject> getById(Long id) {
         return subjectRepository.findById(id);
+    }
+
+
+    @Transactional(readOnly = true)
+    public List<SubjectEntityDto> getPagedSubjectsByNameContaining(String nameText, int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return subjectRepository.findByNameContainingIgnoreCase(nameText, pageable).stream()
+                .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
     }
 
     public Subject create(Subject subject) {
