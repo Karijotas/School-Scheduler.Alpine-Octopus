@@ -1,5 +1,6 @@
 package lt.techin.AlpineOctopusScheduler.api;
 
+import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.RoomDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.RoomEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.RoomMapper;
@@ -73,6 +74,23 @@ public class RoomController {
 //            new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
         return ResponseEntity.notFound().build();
+    }
+    @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<RoomEntityDto> getPagedAllRooms(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                      @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+
+
+        return roomService.getPagedAllPrograms(page, pageSize);
+
+    }
+    @GetMapping(path = "page/starting-with/{nameText}")
+    @ApiOperation(value = "Get Paged Programs starting with", notes = "Returns list of Programs starting with passed String")
+    @ResponseBody
+    public List<RoomEntityDto> getPagedProgramsByNameContaining(@PathVariable String nameText,
+                                                                   @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                                   @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+        return roomService.getPagedRoomsByNameContaining(nameText, page, pageSize);
     }
 
 
