@@ -16,8 +16,6 @@ import java.util.Objects;
 
 @Entity
 public class Groups {
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,7 +27,8 @@ public class Groups {
     @NotNull
     private Integer studentAmount;
     @NotBlank
-    private String program;
+    @ManyToOne
+    private Program program;
     @NotBlank
     private String shift;
 
@@ -129,11 +128,11 @@ public class Groups {
         this.studentAmount = studentAmount;
     }
 
-    public String getProgram() {
+    public Program getProgram() {
         return program;
     }
 
-    public void setProgram(String program) {
+    public void setProgram(Program program) {
         this.program = program;
     }
 

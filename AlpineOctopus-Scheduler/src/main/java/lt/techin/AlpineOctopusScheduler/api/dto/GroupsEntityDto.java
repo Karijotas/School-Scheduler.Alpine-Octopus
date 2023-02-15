@@ -1,5 +1,7 @@
 package lt.techin.AlpineOctopusScheduler.api.dto;
 
+import lt.techin.AlpineOctopusScheduler.model.Program;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -9,7 +11,7 @@ public class GroupsEntityDto extends GroupsDto {
 
     public GroupsEntityDto() {
     }
-    public GroupsEntityDto(String name, Integer schoolYear, Integer studentAmount, String program, String shift, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy, Long id) {
+    public GroupsEntityDto(String name, Integer schoolYear, Integer studentAmount, Program program, String shift, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy, Long id) {
         super(name, schoolYear, studentAmount, program, shift, createdDate, modifiedDate, createdBy, modifiedBy);
         this.id = id;
     }
