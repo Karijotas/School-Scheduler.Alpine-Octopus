@@ -12,7 +12,6 @@ public class GroupsDto {
     private String name;
     private Integer schoolYear;
     private Integer studentAmount;
-    private Program program;
     private String shift;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
@@ -92,14 +91,6 @@ public class GroupsDto {
         this.studentAmount = studentAmount;
     }
 
-    public Program getProgram() {
-        return program;
-    }
-
-    public void setProgram(Program program) {
-        this.program = program;
-    }
-
     public String getShift() {
         return shift;
     }
@@ -113,12 +104,12 @@ public class GroupsDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GroupsDto groupsDto = (GroupsDto) o;
-        return Objects.equals(getName(), groupsDto.getName()) && Objects.equals(getSchoolYear(), groupsDto.getSchoolYear()) && Objects.equals(getStudentAmount(), groupsDto.getStudentAmount()) && Objects.equals(getProgram(), groupsDto.getProgram()) && Objects.equals(getShift(), groupsDto.getShift());
+        return Objects.equals(getName(), groupsDto.getName()) && Objects.equals(getSchoolYear(), groupsDto.getSchoolYear()) && Objects.equals(getStudentAmount(), groupsDto.getStudentAmount()) &&  Objects.equals(getShift(), groupsDto.getShift());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getSchoolYear(), getStudentAmount(), getProgram(), getShift());
+        return Objects.hash(getName(), getSchoolYear(), getStudentAmount(), getShift());
     }
 
     @Override
@@ -127,7 +118,6 @@ public class GroupsDto {
                 "name='" + name + '\'' +
                 ", schoolYear=" + schoolYear +
                 ", studentAmount=" + studentAmount +
-                ", program='" + program + '\'' +
                 ", shift='" + shift + '\'' +
                 '}';
     }

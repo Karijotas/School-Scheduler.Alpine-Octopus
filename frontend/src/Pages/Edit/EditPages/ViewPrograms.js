@@ -7,6 +7,7 @@ import {
   Input,
   Pagination,
   Table,
+  Divider,
 } from "semantic-ui-react";
 import { CreateProgramPage }  from '../../Create/CreateProgramPage';
 import { EditProgramObject } from './EditProgramObject';
@@ -56,6 +57,7 @@ export function ViewPrograms() {
   const [close, setClose] = useState(false)
 
   return (
+
 <div>
     {create && (<div>
       <CreateProgramPage /></div>)}
@@ -71,17 +73,8 @@ export function ViewPrograms() {
       />
       {/* <Button onClick={fetchFilterPrograms}>Filtruoti</Button> */}
 
-      <Button
-        icon
-        labelPosition="left"
-        primary
-        href="#/create"
-        className="controls"
-      >
-        <Icon name="database" />
-        Kurti naują programą
-      </Button>
-
+      <Button icon labelPosition='left' primary className='controls' onClick={() => setCreate('new')}><Icon name='database' />Kurti naują programą</Button>
+                    <Divider horizontal hidden></Divider>
 
       <Table selectable>
         <Table.Header>
