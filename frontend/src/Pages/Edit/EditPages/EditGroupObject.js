@@ -163,7 +163,8 @@ export function EditGroupObject(props) {
 
                         <Table.Cell collapsing> {groups.modifiedDate}  </Table.Cell>
 
-                        <Table.Cell collapsing ><Button primary onClick={updateGroups}>Atnaujinti</Button></Table.Cell>
+                        <Table.Cell collapsing ><Button onClick={() => setActive(true)}>Atšaukti</Button><Button primary onClick={updateGroups}>Atnaujinti</Button>
+                        </Table.Cell>
 
 
                     </Table.Row>
