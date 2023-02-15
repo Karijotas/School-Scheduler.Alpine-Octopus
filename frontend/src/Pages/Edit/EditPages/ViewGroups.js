@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Divider, Header, Icon, Input, Label, Rail, Segment, Table } from 'semantic-ui-react'
+import { Button, Confirm, Divider, Header, Icon, Input, Label, Rail, Segment, Table } from 'semantic-ui-react'
 import { CreatePage } from '../../Create/CreatePage';
 import { EditGroupObject } from './EditGroupObject';
 import './ViewGroups.css';
@@ -70,13 +70,17 @@ export function ViewGroups() {
         fetch('/api/v1/groups/' + id, {
             method: 'DELETE',
             headers: JSON_HEADERS
-        }).then(fetchGroups);
+        }).then(fetchGroups)
+            .then(setOpen(false));
     }
 
 
     useEffect(() => {
         fetchGroups();
     }, [nameText, yearText, programText, activePage]);
+
+    const [open, setOpen] = useState(false)
+    const [close, setClose] = useState(false)
 
 
     return (
@@ -130,8 +134,17 @@ export function ViewGroups() {
                                     <Table.Cell>{group.program.id}</Table.Cell>
                                     <Table.Cell collapsing>
                                         <Button basic primary compact icon='eye' title='Peržiūrėti' onClick={() => setActive(group.id)}></Button>
-                                        <Button basic color='black' compact title='Ištrinti' icon='trash alternate' onClick={() => removeGroup(group.id)}></Button>
-
+                                        <Button basic color='black' compact title='Ištrinti' icon='trash alternate' onClick={() => setOpen(true) && removeGroup(group.id)}></Button>
+                                        <Confirm
+                                            open={open}
+                                            header='Dėmesio!'
+                                            content='Ar tikrai norite ištrinti?'
+                                            cancelButton='Grįžti atgal'
+                                            confirmButton="Ištrinti"
+                                            onCancel={() => setOpen(false)}
+                                            onConfirm={() => removeGroup(group.id)}
+                                            size='small'
+                                        />
                                     </Table.Cell>
                                 </Table.Row>
                             ))}
