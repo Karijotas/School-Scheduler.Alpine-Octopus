@@ -1,5 +1,6 @@
 package lt.techin.AlpineOctopusScheduler.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -15,8 +16,6 @@ import java.util.Objects;
 
 @Entity
 public class Groups {
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,17 +26,19 @@ public class Groups {
     private Integer schoolYear;
     @NotNull
     private Integer studentAmount;
-    @NotBlank
-    private String program;
+    @ManyToOne
+    private Program program;
     @NotBlank
     private String shift;
 
     //private Shift shift;
     @CreatedDate
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
 
 
     @LastModifiedDate
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modifiedDate;
 
     @CreatedBy
@@ -126,11 +127,11 @@ public class Groups {
         this.studentAmount = studentAmount;
     }
 
-    public String getProgram() {
+    public Program getProgram() {
         return program;
     }
 
-    public void setProgram(String program) {
+    public void setProgram(Program program) {
         this.program = program;
     }
 

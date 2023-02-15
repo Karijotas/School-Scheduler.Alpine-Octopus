@@ -5,7 +5,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
 public class ErrorFieldMapper {
-
     public static ErrorFieldDto toErrorFieldDto(ObjectError objectError) {
         var errorFieldDto = new ErrorFieldDto();
 

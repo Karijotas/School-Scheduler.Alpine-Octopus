@@ -1,7 +1,9 @@
 package lt.techin.AlpineOctopusScheduler.api;
 
+import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.GroupsDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.GroupsEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.ProgramDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupsMapper;
 import lt.techin.AlpineOctopusScheduler.dao.GroupsRepository;
 import lt.techin.AlpineOctopusScheduler.model.Groups;
@@ -45,6 +47,35 @@ public class GroupsController {
                 .map(GroupsMapper::toGroupEntityDto)
                 .collect(toList());
     }
+    @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<GroupsEntityDto> getPagedAllGroups(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
+                                                @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+
+
+        return groupService.getPagedAllGroups(page, pageSize).stream()
+                .map(GroupsMapper::toGroupEntityDto)
+                .collect(toList());
+
+    }
+    @GetMapping(path = "/name-filter/{nameText}")
+    @ApiOperation(value = "Get Programs starting with", notes = "Returns list of Programs starting with passed String")
+    @ResponseBody
+    public List<GroupsDto> getGroupsByNameContaining(@PathVariable String nameText) {
+        return groupService.getGroupsByNameContaining(nameText);
+    }
+    @GetMapping(path = "/year-filter/{schoolYearText}")
+    @ApiOperation(value = "Get Programs starting with", notes = "Returns list of Programs starting with passed String")
+    @ResponseBody
+    public List<GroupsDto> getGroupsBySchoolYear(@PathVariable Integer schoolYearText) {
+        return groupService.getGroupsBySchoolYear(schoolYearText);
+    }
+    @GetMapping(path = "/program-filter/{programText}")
+    @ApiOperation(value = "Get Programs starting with", notes = "Returns list of Programs starting with passed String")
+    @ResponseBody
+    public List<GroupsDto> getGroupsByProgram(@PathVariable String programText) {
+        return groupService.getGroupsByProgram(programText);
+    }
 
     @GetMapping(value = "/{groupId}", produces = {MediaType.APPLICATION_JSON_VALUE,})
     public ResponseEntity<Groups> getGroup(@PathVariable Long groupId) {
@@ -57,14 +88,14 @@ public class GroupsController {
         return responseEntity;
     }
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE,})
-    public ResponseEntity<GroupsDto> createGroup(@RequestBody GroupsDto groupsDto){
-        var createdGroup = groupService.create(toGroup(groupsDto));
+    public ResponseEntity<GroupsDto> createGroup(@RequestBody GroupsDto groupsDto, Long programId){
+        var createdGroup = groupService.create(toGroup(groupsDto), programId);
 
         return ok(toGroupDto(createdGroup));
     }
     @DeleteMapping("/{groupId}")
     public ResponseEntity<Void> deleteGroup(@PathVariable Long groupId) {
-        logger.info("Attempt to delete Animal by id: {}", groupId);
+        logger.info("Attempt to delete Group by id: {}", groupId);
 
         boolean deleted = groupService.deleteById(groupId);
         if (deleted) {

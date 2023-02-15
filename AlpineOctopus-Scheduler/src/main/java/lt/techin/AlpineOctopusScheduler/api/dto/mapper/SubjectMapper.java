@@ -18,6 +18,7 @@ public class SubjectMapper {
         subjectDto.setSubjectRooms(subject.getSubjectRooms());
         subjectDto.setSubjectTeachers(subject.getSubjectTeachers());
 
+
         return subjectDto;
     }
 
@@ -48,6 +49,7 @@ public class SubjectMapper {
         subjectEntityDto.setSubjectRooms(subject.getSubjectRooms());
         subjectEntityDto.setSubjectTeachers(subject.getSubjectTeachers());
 
+
         return subjectEntityDto;
     }
 
@@ -62,6 +64,7 @@ public class SubjectMapper {
         subject.setSubjectModules(subjectEntityDto.getSubjectModules());
         subject.setSubjectRooms(subjectEntityDto.getSubjectRooms());
         subject.setSubjectTeachers(subjectEntityDto.getSubjectTeachers());
+
 
         return subject;
     }

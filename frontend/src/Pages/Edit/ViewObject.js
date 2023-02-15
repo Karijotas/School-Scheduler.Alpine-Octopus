@@ -1,10 +1,12 @@
 import React from 'react'
-import { EditObject } from './EditPages/EditObject'
-import { ModuleList } from './EditPages/ModuleList'
-import { SubjectList } from './EditPages/SubjectList'
 import { ViewGroups } from './EditPages/ViewGroups'
-import { EditSubject } from './EditSubject'
 import {ViewRooms} from './EditPages/ViewRooms'
+import { ViewPrograms } from './EditPages/ViewPrograms'
+import { SubjectList } from './EditPages/SubjectList'
+import { ModuleList } from './EditPages/ModuleList'
+
+
+
 
 // Here we should pass the selection as props, and then map the values from Backend to the tables
 // I've just done here a simple if else that is only for example, not how it should work.
@@ -12,35 +14,24 @@ import {ViewRooms} from './EditPages/ViewRooms'
 // Best is to create a new file for your implementation based on this one, and later we will refactor and merge the best options
 // One could just pass the newly created file here, after return
 export function ObjectList(props) {
-
     if (props === 'groups') {
-        if (props === 'groups/{$id}') {
-            return (
-                <EditObject />
-            )
-        } else {
-              return (
+        return (
             <ViewGroups />
-        )
-        }
-    }
 
+        )
+    }
 
 
     if (props === 'subjects') {
-        if (props === 'subjects/{$id}') {
-            return (
-                <EditSubject />
-            )
-        } else {
-              return (
-                <SubjectList />
+
+        return (
+            <SubjectList />
         )
-        }
-      
     }
-      
-    
+
+
+
+
     if (props === 'teachers') {
         return (
             <p>
@@ -65,23 +56,17 @@ export function ObjectList(props) {
     }
     if (props === 'program') {
         return (
-            <p>
-                Programos:
-            </p>
+            <ViewPrograms />
 
         )
     }
     if (props === 'modules') {
-        if (props === 'modules/{$id}') {
-            return (
-                <EditSubject />
-            )
-        } else {
-              return (
-                <ModuleList />
+
+        return (
+                <ModuleList/>
         )
-        }
-      
+
+
     }
 }
 

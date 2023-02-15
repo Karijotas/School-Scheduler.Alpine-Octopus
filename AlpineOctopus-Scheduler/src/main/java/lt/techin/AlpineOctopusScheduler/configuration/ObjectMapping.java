@@ -5,7 +5,6 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import java.time.format.DateTimeFormatter;
 
 
@@ -13,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 public class ObjectMapping {
 
     private static final String dateFormat = "yyyy-MM-dd";
-    private static final String dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+    private static final String dateTimeFormat = "yyyy-MM-dd-HH:mm:ss";
 
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer jsonCustomizer() {

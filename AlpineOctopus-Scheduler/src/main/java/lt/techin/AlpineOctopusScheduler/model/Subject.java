@@ -5,9 +5,13 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+
+import java.util.HashSet;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+
 import java.util.Objects;
 import java.util.Set;
 
@@ -63,7 +67,12 @@ public class Subject {
             inverseJoinColumns = @JoinColumn(name = "teacher_id"))
     private Set<Teacher> subjectTeachers;
 
+    @OneToMany(mappedBy = "program")
+    @JsonIgnore
+    private Set<ProgramSubjectHours> subjectHours;
+
     public Subject() {
+        subjectHours = new HashSet<>();
 
     }
 
@@ -169,6 +178,7 @@ public class Subject {
                 '}';
     }
 }
+
 
 
 

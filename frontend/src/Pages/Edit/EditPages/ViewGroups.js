@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Dropdown, Icon, Input, Pagination, Table } from 'semantic-ui-react'
-import { CreatePage } from '../../Create/CreatePage';
-import { EditObject } from './EditObject';
+import { Button, Confirm, Divider, Icon, Input, Table } from 'semantic-ui-react'
+import { CreateGroupPage } from '../../Create/CreateGroupPage';
+import { EditGroupObject } from './EditGroupObject';
 import './ViewGroups.css';
 
 const JSON_HEADERS = {
@@ -10,15 +10,57 @@ const JSON_HEADERS = {
 
 
 export function ViewGroups() {
+    // const yearOptions = [
+    //     { key: 23, value: 2023, text: '2023' },
+    //     { key: 24, value: 2024, text: '2024' },
+    //     { key: 25, value: 2025, text: '2025' },
+    //     { key: 26, value: 2026, text: '2026' },
+    //     { key: 27, value: 2027, text: '2027' },
+    //     { key: 28, value: 2028, text: '2028' },
+    // ]
 
-    const [active, setActive] = useState('')
+    const [active, setActive] = useState()
 
     const [create, setCreate] = useState('')
 
     const [groups, setGroups] = useState([]);
 
+    const [nameText, setNameText] = useState('')
+
+    const [yearText, setYearText] = useState();
+
+    const [programText, setProgramText] = useState();
+
+    const [activePage, setActivePage] = useState(0)
+
+
+
+    const fetchProgramGroups = async () => {
+        fetch('/api/v1/groups/program-filter/' + programText)
+            .then(response => response.json())
+            .then(jsonResponse => setGroups(jsonResponse));
+    };
+    const fetchYearGroups = async () => {
+        fetch('/api/v1/groups/year-filter/' + yearText)
+            .then(response => response.json())
+            .then(jsonResponse => setGroups(jsonResponse));
+    };
+
+
+    const fetchFilterGroups = async () => {
+        fetch('/api/v1/groups/name-filter/' + nameText)
+            .then(response => response.json())
+            .then(jsonResponse => setGroups(jsonResponse));
+    };
+
     const fetchGroups = async () => {
-        fetch('/api/v1/groups')
+        fetch('/api/v1/groups/page?page=' + activePage)
+            .then(response => response.json())
+            .then(jsonResponse => setGroups(jsonResponse));
+    };
+
+    const fetchSingleGroups = async () => {
+        fetch('/api/v1/groups/')
             .then(response => response.json())
             .then(jsonResponse => setGroups(jsonResponse));
     };
@@ -27,13 +69,16 @@ export function ViewGroups() {
         fetch('/api/v1/groups/' + id, {
             method: 'DELETE',
             headers: JSON_HEADERS
-        }).then(fetchGroups);
+        }).then(fetchGroups)
+            .then(setOpen(false));
     }
 
 
     useEffect(() => {
         fetchGroups();
-    }, []);
+    }, [nameText, yearText, programText, activePage]);
+
+    const [open, setOpen] = useState(false)
 
 
     return (
@@ -41,28 +86,29 @@ export function ViewGroups() {
 
         <div>
             {create && (<div>
-                <CreatePage /></div>)}
+                <CreateGroupPage /></div>)}
             {active && (<div className='edit'>
-                <EditObject id={active} /></div>)}
+                <EditGroupObject id={active} /></div>)}
 
 
             {!active && !create && (
 
                 <div id='groups'>
-                    <Input placeholder='Filtruoti pagal pavadinimą' />
-                    <Dropdown
-                        button
-                        className='icon'
-                        floating
-                        labeled
-                        icon='angle down'
-                        options={null}
-                        search
-                        text='Filtruoti pagal mokslo metus'
-                    />
-                    <Button>Filtruoti pagal programą</Button>
+
+                    <Input className='controls1' placeholder='Filtruoti pagal pavadinimą' value={nameText} onChange={(e) => setNameText(e.target.value)} />
+
+                    <Input className='controls1' placeholder='Filtruoti pagal mokslo metus' value={yearText} onChange={(e) => setYearText(e.target.value)} />
+
+                    <Input placeholder='Filtruoti pagal programą' value={programText} onChange={(e) => setProgramText(e.target.value)} />
+
+
+    return (
+
+
 
                     <Button icon labelPosition='left' primary className='controls' onClick={() => setCreate('new')}><Icon name='database' />Kurti naują grupę</Button>
+                    <Divider horizontal hidden></Divider>
+
                     <Table selectable >
                         <Table.Header>
                             <Table.Row>
@@ -81,30 +127,35 @@ export function ViewGroups() {
                                     <Table.Cell>{group.name}</Table.Cell>
                                     <Table.Cell>{group.schoolYear}</Table.Cell>
                                     <Table.Cell>{group.studentAmount}</Table.Cell>
-                                    <Table.Cell>{group.program}</Table.Cell>
+                                    <Table.Cell>{group.programName}</Table.Cell>
                                     <Table.Cell collapsing>
                                         <Button basic primary compact icon='eye' title='Peržiūrėti' onClick={() => setActive(group.id)}></Button>
-                                        <Button basic color='black' compact icon='trash alternate' onClick={() => removeGroup(group.id)}></Button>
+                                        <Button basic color='black' compact title='Ištrinti' icon='trash alternate' onClick={() => setOpen(group.id)}></Button>
 
+                                        <Confirm
+                                            open={open}
+                                            header='Dėmesio!'
+                                            content='Ar tikrai norite ištrinti?'
+                                            cancelButton='Grįžti atgal'
+                                            confirmButton="Ištrinti"
+                                            onCancel={() => setOpen(false)}
+                                            onConfirm={() => removeGroup(open)}
+                                            size='small'
+                                        />
                                     </Table.Cell>
                                 </Table.Row>
                             ))}
                         </Table.Body>
 
                     </Table>
+                    <Divider hidden></Divider>
 
-                    <Pagination
-                        defaultActivePage={1}
-                        firstItem={groups.firstItem}
-                        lastItem={groups.lastItem}
-                        pointing
-                        totalPages={3}
-                    />
+                    <Button onClick={() => setActivePage(0)}>1</Button>
+                    <Button onClick={() => setActivePage(1)}>2</Button>
                 </div>
             )}
+
 
         </div>
     )
 }
-
-

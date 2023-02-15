@@ -1,5 +1,6 @@
 package lt.techin.AlpineOctopusScheduler.api;
 
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import lt.techin.AlpineOctopusScheduler.api.dto.ErrorDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ErrorFieldDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ErrorFieldMapper;
@@ -144,5 +145,5 @@ public class ApiExceptionHandler {
         public void handleAllExceptions(Exception exception) {
             logger.error("All Exceptions handler: {}", exception.getMessage());
         }
+}
 
-    }

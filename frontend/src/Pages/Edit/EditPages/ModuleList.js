@@ -3,12 +3,10 @@ import {
   Button,
   Table,
   Input,
-  Dropdown,
   Icon,
   Pagination,
 } from "semantic-ui-react";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { CreateModule } from "../../Create/CreateModule";
 
 const JSON_HEADERS = {

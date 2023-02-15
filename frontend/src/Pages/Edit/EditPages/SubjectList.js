@@ -3,12 +3,10 @@ import {
   Button,
   Table,
   Input,
-  Dropdown,
   Icon,
   Pagination,
 } from "semantic-ui-react";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -64,24 +62,24 @@ export function SubjectList() {
             <Table.Row key={subject.id}>
               <Table.Cell>{subject.name}</Table.Cell>
               <Table.Cell collapsing>
-                             <Button basic primary compact icon='eye' title='Peržiūrėti' active={activeItem === subjects.id} onClick={console.log('subjects/' +subject.id)}></Button>
-                            <Button basic color='black' compact icon='trash alternate' onClick={() => removeSubject(subject.id)}></Button>
+                <Button basic primary compact icon='eye' title='Peržiūrėti'></Button>
+                <Button basic color='black' compact icon='trash alternate' onClick={() => removeSubject(subject.id)}></Button>
 
-                        </Table.Cell>
+              </Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>
       </Table>
 
       <Pagination
-    defaultActivePage={1}
-    ellipsisItem={{ content: <Icon name='ellipsis horizontal' />, icon: true }}
-    firstItem={{ content: <Icon name='angle double left' />, icon: true }}
-    lastItem={{ content: <Icon name='angle double right' />, icon: true }}
-    prevItem={{ content: <Icon name='angle left' />, icon: true }}
-    nextItem={{ content: <Icon name='angle right' />, icon: true }}
-    totalPages={3}
-  />
+        defaultActivePage={1}
+        ellipsisItem={{ content: <Icon name='ellipsis horizontal' />, icon: true }}
+        firstItem={{ content: <Icon name='angle double left' />, icon: true }}
+        lastItem={{ content: <Icon name='angle double right' />, icon: true }}
+        prevItem={{ content: <Icon name='angle left' />, icon: true }}
+        nextItem={{ content: <Icon name='angle right' />, icon: true }}
+        totalPages={3}
+      />
     </div>
   );
 }

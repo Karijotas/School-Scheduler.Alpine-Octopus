@@ -6,9 +6,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import EditMenu from './Pages/Edit/EditMenu';
-import { EditObject } from './Pages/Edit/EditPages/EditObject';
-import { CreatePage } from './Pages/Create/CreatePage';
-import { CreateModule } from './Pages/Create/CreateModule';
+
 
 
 
@@ -19,16 +17,8 @@ root.render(
       <Routes>
         <Route path='/' element={<App />} />
         <Route path='/edit' element={<EditMenu />} />
-        <Route path='/groups/edit/:id' element={<EditObject />} />
-        <Route path='/create' element={<CreatePage />} />
-        <Route path='/CreateNewModule' element={<CreateModule />} />
-      
-
       </Routes>
     </HashRouter>
-
-
-
   </React.StrictMode>
 );
 
