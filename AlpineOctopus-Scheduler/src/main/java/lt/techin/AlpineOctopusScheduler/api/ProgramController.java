@@ -55,7 +55,9 @@ public class ProgramController {
 
     @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public List<ProgramDto> getPagedAllPrograms(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
+
+    public List<ProgramEntityDto> getPagedAllPrograms(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
+
                                                 @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
 
 
@@ -66,9 +68,19 @@ public class ProgramController {
     @GetMapping(path = "/starting-with/{nameText}")
     @ApiOperation(value = "Get Programs starting with", notes = "Returns list of Programs starting with passed String")
     @ResponseBody
-    public List<ProgramDto> getProgramsByNameContaining(@PathVariable String nameText) {
+    public List<ProgramEntityDto> getProgramsByNameContaining(@PathVariable String nameText) {
         return programService.getProgramsByNameContaining(nameText);
     }
+
+    @GetMapping(path = "page/starting-with/{nameText}")
+    @ApiOperation(value = "Get Paged Programs starting with", notes = "Returns list of Programs starting with passed String")
+    @ResponseBody
+    public List<ProgramEntityDto> getPagedProgramsByNameContaining(@PathVariable String nameText,
+                                                                   @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                                   @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+        return programService.getPagedProgramsByNameContaining(nameText, page, pageSize);
+    }
+
 
     @GetMapping(value = "/{programId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Program> getProgram(@PathVariable Long programId) {
@@ -138,10 +150,10 @@ public class ProgramController {
     }
 
     @PatchMapping("/{programId}")
-    public ResponseEntity<ProgramDto> updateProgram(@PathVariable Long programId, @RequestBody ProgramDto programDto) {
+    public ResponseEntity<ProgramEntityDto> updateProgram(@PathVariable Long programId, @RequestBody ProgramDto programDto) {
         var updatedProgram = programService.update(programId, toProgram(programDto));
 
-        return ok(toProgramDto(updatedProgram));
+        return ok(toProgramEntityDto(updatedProgram));
     }
 
     @PatchMapping("/programSubjects/{programSubjectId}")

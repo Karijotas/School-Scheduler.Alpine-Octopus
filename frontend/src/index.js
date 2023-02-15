@@ -18,9 +18,6 @@ root.render(
         <Route path='/edit' element={<EditMenu />} />
       </Routes>
     </HashRouter>
-
-
-
   </React.StrictMode>
 );
 

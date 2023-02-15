@@ -72,14 +72,14 @@ class ProgramControllerTest {
         var programDto5 = new ProgramEntityDto(5l, "Nuobodoka", "apie kaminus",  null, null);
         var programDto6 = new ProgramEntityDto(6l, "Pirmunams", "programavimo visokie dalykeliai",  null, null);
 
-        var programSubjectHours1 = new ProgramSubjectHours(1l , toProgram(programDto1) , toSubject(subjectDto2), 20);
-        var programSubjectHours2 = new ProgramSubjectHours(2l , toProgram(programDto1), toSubject(subjectDto1),24);
-        var programSubjectHours3 = new ProgramSubjectHours(3l , toProgram(programDto2), toSubject(subjectDto4), 40);
-        var programSubjectHours4 = new ProgramSubjectHours(4l , toProgram(programDto2), toSubject(subjectDto3), 10);
-        var programSubjectHours5 = new ProgramSubjectHours(5l , toProgram(programDto3), toSubject(subjectDto1), 8);
-        var programSubjectHours6 = new ProgramSubjectHours(6l , toProgram(programDto4), toSubject(subjectDto2), 44);
-        var programSubjectHours7 = new ProgramSubjectHours(7l , toProgram(programDto5), toSubject(subjectDto2), 2);
-        var programSubjectHours8 = new ProgramSubjectHours(8l , toProgram(programDto5), toSubject(subjectDto2), 18);
+//        var programSubjectHours1 = new ProgramSubjectHours(1l , toProgram(programDto1) , toSubject(subjectDto2), 20);
+//        var programSubjectHours2 = new ProgramSubjectHours(2l , toProgram(programDto1), toSubject(subjectDto1),24);
+//        var programSubjectHours3 = new ProgramSubjectHours(3l , toProgram(programDto2), toSubject(subjectDto4), 40);
+//        var programSubjectHours4 = new ProgramSubjectHours(4l , toProgram(programDto2), toSubject(subjectDto3), 10);
+//        var programSubjectHours5 = new ProgramSubjectHours(5l , toProgram(programDto3), toSubject(subjectDto1), 8);
+//        var programSubjectHours6 = new ProgramSubjectHours(6l , toProgram(programDto4), toSubject(subjectDto2), 44);
+//        var programSubjectHours7 = new ProgramSubjectHours(7l , toProgram(programDto5), toSubject(subjectDto2), 2);
+//        var programSubjectHours8 = new ProgramSubjectHours(8l , toProgram(programDto5), toSubject(subjectDto2), 18);
 
 
 

@@ -1,13 +1,19 @@
 package lt.techin.AlpineOctopusScheduler.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+
+import java.util.HashSet;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Subject {
@@ -36,16 +42,13 @@ public class Subject {
     //@JoinColumn(name = "module_id", nullable = true)
     private Module module;
 
+    @OneToMany(mappedBy = "program")
+    @JsonIgnore
+    private Set<ProgramSubjectHours> subjectHours;
+
     public Subject() {
+        subjectHours = new HashSet<>();
 
-    }
-
-    public Subject(Long id, String name, String description ,LocalDateTime createdDate, LocalDateTime modifiedDate) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.createdDate = createdDate;
-        this.modifiedDate = modifiedDate;
     }
 
     public Long getId() {

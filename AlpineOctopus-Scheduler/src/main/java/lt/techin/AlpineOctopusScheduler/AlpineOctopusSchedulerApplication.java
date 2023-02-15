@@ -7,14 +7,16 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 
 
 @SpringBootApplication
+
 public class AlpineOctopusSchedulerApplication extends SpringBootServletInitializer {
 
-	@Override
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(AlpineOctopusSchedulerApplication.class);
-	}
-	public static void main(String[] args) {
-		SpringApplication.run(AlpineOctopusSchedulerApplication.class, args);
-	}
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(AlpineOctopusSchedulerApplication.class);
+    }
 
+    public static void main(String[] args) {
+        SpringApplication.run(AlpineOctopusSchedulerApplication.class, args);
+
+    }
 }

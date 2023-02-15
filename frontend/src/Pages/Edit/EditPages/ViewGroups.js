@@ -158,5 +158,3 @@ export function ViewGroups() {
         </div>
     )
 }
-
-
