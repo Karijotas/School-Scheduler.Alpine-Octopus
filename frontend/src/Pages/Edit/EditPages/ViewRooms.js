@@ -52,20 +52,9 @@ export function ViewRooms() {
             {!active && !create && (
 
                 <div id='rooms'>
-                    <Input placeholder='Filtruoti pagal klase' />
-                    <Dropdown
-                        button
-                        className='icon'
-                        floating
-                        labeled
-                        icon='angle down'
-                        options={null}
-                        search
-                        text='Filtruoti pagal klase'
-                    />
-                    <Button>Filtruoti pagal klase</Button>
+                    <Input placeholder='Klase/Pastatas' />
 
-                    <Button icon labelPosition='left' primary className='controls' onClick={() => setCreate('new')}><Icon name='database' />Kurti naują grupę</Button>
+                    <Button icon labelPosition='left' primary className='controls' onClick={() => setCreate('new')}><Icon name='database' />Kurti naują klasę</Button>
                     <Table selectable >
                         <Table.Header>
                             <Table.Row>

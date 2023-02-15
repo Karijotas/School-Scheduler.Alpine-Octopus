@@ -32,14 +32,15 @@ public class RoomService {
     }
 
     public Room update(Long id, Room room) {
-        Room existingRoom = roomRepository.findById(id)
+        var existingRoom = roomRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Room doesn't exist"));
 
         existingRoom.setName(room.getName());
         existingRoom.setBuilding(room.getBuilding());
         existingRoom.setDescription(room.getDescription());
+        existingRoom.setModifiedDate(room.getModifiedDate());
 
-        return roomRepository.save(room);
+        return roomRepository.save(existingRoom);
     }
 
     public boolean deleteById(Long id) {
