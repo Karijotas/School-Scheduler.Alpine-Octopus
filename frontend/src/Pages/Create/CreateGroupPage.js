@@ -35,7 +35,7 @@ const shiftOptions = [
 
 
 
-export function CreatePage() {
+export function CreateGroupPage() {
   // const [create, setCreate] = useState()
   const [hide, setHide] = useState(false)
   const [name, setName] = useState('');
