@@ -34,7 +34,6 @@ export function ViewPrograms() {
       .then((jsonRespones) => setPrograms(jsonRespones));
   };
 
-
   const removeProgram = (id) => {
     fetch("/api/v1/programs/" + id, {
       method: "DELETE",
