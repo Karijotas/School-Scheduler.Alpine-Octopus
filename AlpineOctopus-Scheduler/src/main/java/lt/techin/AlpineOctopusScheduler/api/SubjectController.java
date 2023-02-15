@@ -1,5 +1,7 @@
 package lt.techin.AlpineOctopusScheduler.api;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper;
@@ -41,6 +43,28 @@ public class SubjectController {
                 .map(SubjectMapper::toSubjectEntityDto)
                 .collect(toList());
     }
+
+    @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<SubjectEntityDto> getPagedAllSubjects(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                      @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+
+
+        return subjectService.getPagedAllSubjects(page, pageSize);
+
+    }
+
+    @GetMapping(path = "page/starting-with/{nameText}")
+    @ApiOperation(value = "Get Paged Subjects starting with", notes = "Returns list of Subjects starting with passed String")
+    @ResponseBody
+    public List<SubjectEntityDto> getPagedSubjectsByNameContaining(@PathVariable String nameText,
+                                                                   @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                                   @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+        return subjectService.getPagedSubjectsByNameContaining(nameText, page, pageSize);
+    }
+
+
+
 
     @PostMapping
     public ResponseEntity<SubjectDto> createSubject(@Valid @RequestBody SubjectDto subjectDto) {

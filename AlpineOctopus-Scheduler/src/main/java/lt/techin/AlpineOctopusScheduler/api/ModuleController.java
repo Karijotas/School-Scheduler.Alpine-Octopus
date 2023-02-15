@@ -1,4 +1,7 @@
 package lt.techin.AlpineOctopusScheduler.api;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiOperation;
+import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ModuleMapper;
 import lt.techin.AlpineOctopusScheduler.model.Module;
 import lt.techin.AlpineOctopusScheduler.api.dto.ModuleDto;
@@ -75,6 +78,25 @@ public class ModuleController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
 
         return responseEntity;
+    }
+
+    @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<ModuleEntityDto> getPagedAllModules(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                      @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+
+
+        return moduleService.getPagedAllModules(page, pageSize);
+
+    }
+
+    @GetMapping(path = "page/starting-with/{nameText}")
+    @ApiOperation(value = "Get Paged Modules starting with", notes = "Returns list of Modules starting with passed String")
+    @ResponseBody
+    public List<ModuleEntityDto> getPagedModulesByNameContaining(@PathVariable String nameText,
+                                                                   @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                                   @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+        return moduleService.getPagedModulesByNameContaining(nameText, page, pageSize);
     }
 }
 
