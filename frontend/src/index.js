@@ -11,6 +11,7 @@ import { CreatePage } from './Pages/Create/CreatePage';
 import { CreateModule } from './Pages/Create/CreateModule';
 
 
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -22,6 +23,7 @@ root.render(
         <Route path='/create' element={<CreatePage />} />
         <Route path='/CreateNewModule' element={<CreateModule />} />
       
+
       </Routes>
     </HashRouter>
 

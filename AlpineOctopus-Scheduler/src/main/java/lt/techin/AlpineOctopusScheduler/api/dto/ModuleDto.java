@@ -62,7 +62,7 @@ public class ModuleDto {
     public void setModifiedDate(LocalDateTime modifiedDate) {
         this.modifiedDate = modifiedDate;
     }
-    @JsonIgnore
+
     public Set<Subject> getModulesSubjects() {
         return modulesSubjects;
     }

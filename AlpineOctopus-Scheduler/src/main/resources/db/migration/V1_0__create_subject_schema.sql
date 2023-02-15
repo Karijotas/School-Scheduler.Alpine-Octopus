@@ -28,3 +28,22 @@ CREATE TABLE modules_subjects (
 ALTER TABLE modules_subjects ADD CONSTRAINT fk_modsub_on_module FOREIGN KEY (module_id) REFERENCES module (id);
 
 ALTER TABLE modules_subjects ADD CONSTRAINT fk_modsub_on_subject FOREIGN KEY (subject_id) REFERENCES subject (id);
+
+CREATE TABLE ROOM (
+  id BIGINT AUTO_INCREMENT NOT NULL,
+   name VARCHAR(255),
+   building VARCHAR(255),
+   description VARCHAR(255),
+   created_date TIMESTAMP,
+   modified_date TIMESTAMP,
+   CONSTRAINT pk_room PRIMARY KEY (id)
+);
+CREATE TABLE rooms_subjects (
+  room_id BIGINT NOT NULL,
+   subject_id BIGINT NOT NULL,
+   CONSTRAINT pk_rooms_subjects PRIMARY KEY (room_id, subject_id)
+);
+
+ALTER TABLE rooms_subjects ADD CONSTRAINT fk_roosub_on_room FOREIGN KEY (room_id) REFERENCES room (id);
+
+ALTER TABLE rooms_subjects ADD CONSTRAINT fk_roosub_on_subject FOREIGN KEY (subject_id) REFERENCES subject (id);

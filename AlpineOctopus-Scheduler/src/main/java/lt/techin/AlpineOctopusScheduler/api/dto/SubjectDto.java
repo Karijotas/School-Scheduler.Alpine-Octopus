@@ -2,6 +2,7 @@ package lt.techin.AlpineOctopusScheduler.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lt.techin.AlpineOctopusScheduler.model.Module;
+import lt.techin.AlpineOctopusScheduler.model.Room;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
@@ -19,16 +20,18 @@ public class SubjectDto {
     private LocalDateTime modifiedDate;
 
     private Set<Module> subjectModules;
+    private Set<Room> subjectRooms;
 
     public SubjectDto() {
     }
 
-    public SubjectDto(String name, String description,LocalDateTime createdDate, LocalDateTime modifiedDate,Set<Module> subjectModules ) {
+    public SubjectDto(String name, String description,LocalDateTime createdDate, LocalDateTime modifiedDate,Set<Module> subjectModules,Set<Room> subjectRooms ) {
         this.name = name;
         this.description = description;
         this.createdDate=createdDate;
         this.modifiedDate = modifiedDate;
         this.subjectModules = subjectModules;
+        this.subjectRooms = subjectRooms;
 
     }
 
@@ -71,18 +74,26 @@ public class SubjectDto {
     public void setSubjectModules(Set<Module> subjectModules) {
         this.subjectModules = subjectModules;
     }
+    @JsonIgnore
+    public Set<Room> getSubjectRooms() {
+        return subjectRooms;
+    }
+
+    public void setSubjectRooms(Set<Room> subjectRooms) {
+        this.subjectRooms = subjectRooms;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SubjectDto that = (SubjectDto) o;
-        return Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(createdDate, that.createdDate) && Objects.equals(modifiedDate, that.modifiedDate) && Objects.equals(subjectModules, that.subjectModules);
+        return Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(createdDate, that.createdDate) && Objects.equals(modifiedDate, that.modifiedDate) && Objects.equals(subjectModules, that.subjectModules) && Objects.equals(subjectRooms, that.subjectRooms);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, createdDate, modifiedDate, subjectModules);
+        return Objects.hash(name, description, createdDate, modifiedDate, subjectModules, subjectRooms);
     }
 
     @Override
@@ -93,6 +104,7 @@ public class SubjectDto {
                 ", createdDate=" + createdDate +
                 ", modifiedDate=" + modifiedDate +
                 ", subjectModules=" + subjectModules +
+                ", subjectRooms=" + subjectRooms +
                 '}';
     }
 }

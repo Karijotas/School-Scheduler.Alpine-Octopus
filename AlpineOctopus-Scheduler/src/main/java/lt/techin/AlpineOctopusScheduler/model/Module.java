@@ -32,7 +32,6 @@ public class Module {
 
 
     @ManyToMany (mappedBy = "subjectModules")
-    @JsonIgnore
     private Set<Subject> modulesSubjects;
 
     public Module() {
@@ -86,7 +85,7 @@ public class Module {
     public void setModifiedDate(LocalDateTime modifiedDate) {
         this.modifiedDate = modifiedDate;
     }
-
+    @JsonIgnore
     public Set<Subject> getModulesSubjects() {
         return modulesSubjects;
     }

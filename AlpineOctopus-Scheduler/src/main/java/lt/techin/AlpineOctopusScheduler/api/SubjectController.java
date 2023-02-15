@@ -37,7 +37,6 @@ public class SubjectController {
 
     @GetMapping
     @ResponseBody
-    @JsonIgnore
     public List<SubjectEntityDto> getSubjects() {
        return subjectService.getAll().stream()
                 .map(SubjectMapper::toSubjectEntityDto)

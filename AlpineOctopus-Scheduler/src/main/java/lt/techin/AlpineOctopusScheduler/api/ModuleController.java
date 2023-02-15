@@ -1,4 +1,5 @@
 package lt.techin.AlpineOctopusScheduler.api;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ModuleMapper;
 import lt.techin.AlpineOctopusScheduler.model.Module;
 import lt.techin.AlpineOctopusScheduler.api.dto.ModuleDto;

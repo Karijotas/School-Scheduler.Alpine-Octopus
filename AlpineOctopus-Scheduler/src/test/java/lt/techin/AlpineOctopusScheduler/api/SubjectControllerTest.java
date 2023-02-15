@@ -1,23 +1,13 @@
 //package lt.techin.AlpineOctopusScheduler.api;
 //
-//import com.fasterxml.jackson.core.type.TypeReference;
+
 //import com.fasterxml.jackson.databind.ObjectMapper;
-//import lt.techin.AlpineOctopusScheduler.api.dto.ModuleDto;
-//import lt.techin.AlpineOctopusScheduler.api.dto.SubjectDto;
-//import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
-//import lt.techin.AlpineOctopusScheduler.model.Subject;
-//import org.junit.jupiter.api.AfterEach;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-//import org.springframework.boot.test.context.SpringBootTest;
+//import lt.techin.AlpineOctopusScheduler.api.dto.RoomEntityDto;
+//import com.fasterxml.jackson.core.type.TypeReference;
+
 //import org.springframework.boot.test.mock.mockito.MockBean;
 //import org.springframework.boot.test.mock.mockito.MockBeans;
-//import org.springframework.http.MediaType;
-//import org.springframework.test.web.servlet.MockMvc;
-//import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-//
+
 //import java.util.HashSet;
 //import java.util.List;
 //import java.util.Set;
@@ -35,12 +25,6 @@
 ////    @MockBean
 ////    SubjectRepository subjectRepository;
 //
-//    @Autowired
-//    ObjectMapper objectMapper;
-//    @Autowired
-//    MockMvc mockMvc;
-//
-//    @BeforeEach
 //    public void setup() {
 //    }
 //

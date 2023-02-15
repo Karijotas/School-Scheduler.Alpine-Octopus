@@ -44,7 +44,7 @@ public class ApiExceptionHandler {
         }
 
 //    @ExceptionHandler(IOException.class)
-//    public void zooNotFoundException() {
+//    public void schedulerNotFoundException() {
 //        logger.error("IOException handler executed");
 //        //returning 404 error code
 //    }
@@ -83,18 +83,18 @@ public class ApiExceptionHandler {
         }
 
         @ExceptionHandler(SchedulerValidationException.class)
-        public ResponseEntity<ErrorDto> handleZooValidationException(HttpServletRequest request, SchedulerValidationException zooValidationException) {
-            logger.error("zooValidationException: {}, for field: {}", zooValidationException.getMessage(), zooValidationException.getField());
+        public ResponseEntity<ErrorDto> handleSchedulerValidationException(HttpServletRequest request, SchedulerValidationException schedulerValidationException) {
+            logger.error("schedulerValidationException: {}, for field: {}", schedulerValidationException.getMessage(), schedulerValidationException.getField());
 
             var errorStatus = HttpStatus.BAD_REQUEST;
 
             var errorFields = List.of(
-                    new ErrorFieldDto(zooValidationException.getField(), zooValidationException.getError(), zooValidationException.getRejectedValue())
+                    new ErrorFieldDto(schedulerValidationException.getField(), schedulerValidationException.getError(), schedulerValidationException.getRejectedValue())
             );
 
             var errorDto = new ErrorDto(request.getRequestURL().toString(),
                     errorFields,
-                    zooValidationException.getMessage(),
+                    schedulerValidationException.getMessage(),
                     errorStatus.value(),
                     errorStatus.getReasonPhrase(),
                     request.getRequestURL().toString(),
@@ -104,8 +104,8 @@ public class ApiExceptionHandler {
 
 
         @ExceptionHandler(SchedulerServiceDisabledException.class)
-        public ResponseEntity<Void> handleZooServiceDisabledException(HttpServletRequest request, SchedulerServiceDisabledException serviceDisabledException) {
-            logger.error("ZooServiceDisabledException: {}", serviceDisabledException.getMessage());
+        public ResponseEntity<Void> handleSchedulerServiceDisabledException(HttpServletRequest request, SchedulerServiceDisabledException serviceDisabledException) {
+            logger.error("SchedulerValidationException: {}", serviceDisabledException.getMessage());
 
             var errorStatus = HttpStatus.SERVICE_UNAVAILABLE;
 

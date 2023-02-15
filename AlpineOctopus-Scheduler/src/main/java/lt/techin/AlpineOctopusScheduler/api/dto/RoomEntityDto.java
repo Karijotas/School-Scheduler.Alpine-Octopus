@@ -1,22 +1,18 @@
 package lt.techin.AlpineOctopusScheduler.api.dto;
 
-import lt.techin.AlpineOctopusScheduler.model.Module;
-import lt.techin.AlpineOctopusScheduler.model.Room;
+import lt.techin.AlpineOctopusScheduler.model.Subject;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
 
-public class SubjectEntityDto extends SubjectDto{
-
+public class RoomEntityDto extends RoomDto{
     private Long id;
 
-    public SubjectEntityDto(){
-
+    public RoomEntityDto() {
     }
 
-    public SubjectEntityDto(String name, String description, LocalDateTime createdDate, LocalDateTime modifiedDate, Set<Module> subjectModules, Set<Room> subjectRooms, Long id) {
-        super(name, description, createdDate, modifiedDate, subjectModules, subjectRooms);
+    public RoomEntityDto(String name, String building, String description, Set<Subject> roomSubjects, Long id) {
+        super(name, building, description, roomSubjects);
         this.id = id;
     }
 
@@ -33,7 +29,7 @@ public class SubjectEntityDto extends SubjectDto{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        SubjectEntityDto that = (SubjectEntityDto) o;
+        RoomEntityDto that = (RoomEntityDto) o;
         return Objects.equals(id, that.id);
     }
 
@@ -44,7 +40,7 @@ public class SubjectEntityDto extends SubjectDto{
 
     @Override
     public String toString() {
-        return "SubjectEntityDto{" +
+        return "RoomEntityDto{" +
                 "id=" + id +
                 '}';
     }
