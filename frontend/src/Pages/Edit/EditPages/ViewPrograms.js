@@ -37,15 +37,13 @@ export function ViewPrograms() {
     }
 
 
-    useEffect(() => {
-        fetchPrograms();
+    useEffect(() => {   
+        nameText.length > 0 ? fetchFilterPrograms() : fetchPrograms();
     }, [activePage, nameText]);
 
 
     return (<div id='programs'>
         <Input value={nameText} onChange={(e) => setNameText(e.target.value)} />
-        <Button onClick={fetchFilterPrograms}>Filtruoti</Button>
-
         {nameText && (<div></div>)}
 
 

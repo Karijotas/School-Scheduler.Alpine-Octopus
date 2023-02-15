@@ -85,7 +85,7 @@ export default class EditMenu extends Component {
 
           </Grid.Column>
 
-          <Grid.Column stretched textAlign='left' verticalAlign='bottom' width={13}>
+          <Grid.Column stretched textAlign='left' verticalAlign='top' width={13}>
             <Segment>
 
 

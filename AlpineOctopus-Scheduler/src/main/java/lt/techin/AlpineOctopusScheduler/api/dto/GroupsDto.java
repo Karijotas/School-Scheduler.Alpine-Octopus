@@ -25,11 +25,10 @@ public class GroupsDto {
     private String modifiedBy;
     public GroupsDto(){}
 
-    public GroupsDto(String name, Integer schoolYear, Integer studentAmount, Program program, String shift, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy) {
+    public GroupsDto(String name, Integer schoolYear, Integer studentAmount, String shift, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy) {
         this.name = name;
         this.schoolYear = schoolYear;
         this.studentAmount = studentAmount;
-        this.program = program;
         this.shift = shift;
         this.createdDate = createdDate;
         this.modifiedDate = modifiedDate;

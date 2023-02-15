@@ -112,7 +112,7 @@ export function EditGroupObject(props) {
                     <Table.Cell >{groups.name}</Table.Cell>
                     <Table.Cell >{groups.schoolYear}</Table.Cell>
                     <Table.Cell >{groups.studentAmount}</Table.Cell>
-                    <Table.Cell >{groups.program} </Table.Cell>
+                    <Table.Cell >{groups.program.id} </Table.Cell>
                     <Table.Cell >{groups.shift}</Table.Cell>
 
                     <Table.Cell collapsing > {groups.modifiedDate}  </Table.Cell>
@@ -153,7 +153,7 @@ export function EditGroupObject(props) {
                         </Table.Cell>
                         <Table.Cell collapsing><Input value={groups.studentAmount} onChange={(e) => updateProperty('studentAmount', e)} />
                         </Table.Cell>
-                        <Table.Cell collapsing><Input options={shiftOptions} placeholder={groups.program} value={groups.program} onChange={(e) => updateProperty('program', e)} />
+                        <Table.Cell collapsing><Input options={shiftOptions} placeholder={groups.program.id} value={groups.program} onChange={(e) => updateProperty('program', e)} />
                         </Table.Cell>
                         <Table.Cell collapsing><Input options={shiftOptions} placeholder={groups.shift} value={groups.shift} onChange={(e) => updateProperty('shift', e)} />
                         </Table.Cell>

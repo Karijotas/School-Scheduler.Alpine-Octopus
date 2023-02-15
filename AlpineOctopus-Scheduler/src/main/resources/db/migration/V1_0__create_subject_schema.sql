@@ -1,14 +1,16 @@
+
 CREATE TABLE GROUPS (
-  ID BIGINT AUTO_INCREMENT NOT NULL,
-   NAME VARCHAR(255),
-   SCHOOL_YEAR INT,
-   STUDENT_AMOUNT INT NOT NULL,
-   SHIFT VARCHAR(255),
+  id BIGINT AUTO_INCREMENT NOT NULL,
+   name VARCHAR(255),
+   school_year INT,
+   student_amount INT NOT NULL,
+    program_id BIGINT,
+   shift VARCHAR(255),
    created_date TIMESTAMP,
    modified_date TIMESTAMP,
    created_by VARCHAR(255),
    modified_by VARCHAR(255),
-   CONSTRAINT PK_GROUP PRIMARY KEY (ID)
+   CONSTRAINT pk_groups PRIMARY KEY (id)
 );
 
 CREATE TABLE SUBJECT (
@@ -41,11 +43,25 @@ CREATE TABLE program_subject_hours
     CONSTRAINT pk_programsubjecthours PRIMARY KEY (id)
 );
 
-ALTER TABLE GROUPS ADD CONSTRAINT FK_GROUPS_ON_PROGRAM FOREIGN KEY (program_id) REFERENCES program (id);
+CREATE TABLE groups_program (
+  program_id BIGINT NOT NULL,
+   subject_hours_id BIGINT NOT NULL
+);
+
+
 
 ALTER TABLE program_subject_hours
     ADD CONSTRAINT FK_PROGRAMSUBJECTHOURS_ON_PROGRAM FOREIGN KEY (program_id) REFERENCES program (id);
 
 ALTER TABLE program_subject_hours
-    ADD CONSTRAINT FK_PROGRAMSUBJECTHOURS_ON_SUBJECT FOREIGN KEY (subject_id) REFERENCES subject (id);
 
+ADD CONSTRAINT FK_PROGRAMSUBJECTHOURS_ON_SUBJECT FOREIGN KEY (subject_id) REFERENCES subject (id);
+
+ALTER TABLE GROUPS ADD CONSTRAINT FK_GROUPS_ON_PROGRAM FOREIGN KEY (program_id) REFERENCES program (id);
+
+
+ALTER TABLE groups_program ADD CONSTRAINT uc_groups_program_program UNIQUE (program_id);
+
+ALTER TABLE groups_program ADD CONSTRAINT fk_gropro_on_groups FOREIGN KEY (subject_hours_id) REFERENCES GROUPS (id);
+
+ALTER TABLE groups_program ADD CONSTRAINT fk_gropro_on_program FOREIGN KEY (program_id) REFERENCES program (id);

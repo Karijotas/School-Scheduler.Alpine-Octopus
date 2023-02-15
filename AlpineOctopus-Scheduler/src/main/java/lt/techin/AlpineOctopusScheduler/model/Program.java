@@ -29,6 +29,9 @@ public class Program {
     @Size(min = 5, max = 100)
     private String description;
 
+    @OneToMany(mappedBy = "program")
+    private Set<Groups> groupsSet;
+
     @CreatedDate
     private LocalDateTime createdDate;
 

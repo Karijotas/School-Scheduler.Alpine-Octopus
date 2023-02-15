@@ -27,7 +27,7 @@ public class Groups {
     @NotNull
     private Integer studentAmount;
     @NotBlank
-    @OneToMany
+    @ManyToOne
     private Program program;
     @NotBlank
     private String shift;
