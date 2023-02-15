@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Button, Form, Icon, Input, } from "semantic-ui-react";
+import React, { useEffect, useState } from "react";
+import { Button, Form, Icon, Input, Select, } from "semantic-ui-react";
 import { ViewGroups } from "../Edit/EditPages/ViewGroups";
 
 
@@ -18,12 +18,6 @@ const yearOptions = [
   { key: 28, value: 2028, text: '2028' },
 ]
 
-const programOptions = [
-  { key: 'p', value: 'pirma', text: 'Pirma' },
-  { key: 'a', value: 'antra', text: 'Antra' },
-  { key: 't', value: 'trecia', text: 'Trečia' },
-  { key: 'k', value: 'ketvirta', text: 'Ketvirta' },
-]
 
 const shiftOptions = [
   { key: 'p', value: 'pirma', text: 'Pirma' },
@@ -41,8 +35,10 @@ export function CreateGroupPage() {
   const [name, setName] = useState('');
   const [schoolYear, setSchoolYear] = useState('')
   const [studentAmount, setStudentAmount] = useState('')
+  const [programs, setPrograms] = useState([])
   const [program, setProgram] = useState('')
   const [shift, setShift] = useState('')
+
   const applyResult = (result) => {
     const clear = () => {
       setHide(true)
@@ -69,6 +65,19 @@ export function CreateGroupPage() {
       })
     }).then(applyResult)
   };
+  useEffect(() => {
+    fetch('/api/v1/programs/')
+      .then((response) => response.json())
+      .then((data) =>
+        setPrograms(
+          data.map((x) => {
+            return { key: x.id, text: x.name, value: x.id };
+          })
+        )
+      );
+  }, []);
+
+
 
 
   return (<div>
@@ -91,15 +100,15 @@ export function CreateGroupPage() {
         <Form.Group widths='equal'>
           <Form.Field >
             <label>Programa</label>
-            <Input options={programOptions} placeholder='Programa' value={program} onChange={(e) => setProgram(e.target.value)} />
+            <Select options={programs} placeholder='Programa' value={program} onChange={(e) => setProgram(e.target.value)} />
           </Form.Field>
           <Form.Field >
             <label>Pamaina</label>
             <Input options={shiftOptions} placeholder='Pamaina' value={shift} onChange={(e) => setShift(e.target.value)} />
           </Form.Field>
         </Form.Group>
-        <div><Button icon labelPosition="left" className="" onClick={() => setHide(true)}><Icon name="arrow left"/>Atgal</Button>
-<Button type='submit' className="controls" primary onClick={createGroup}>Sukurti</Button></div>
+        <div><Button icon labelPosition="left" className="" onClick={() => setHide(true)}><Icon name="arrow left" />Atgal</Button>
+          <Button type='submit' className="controls" primary onClick={createGroup}>Sukurti</Button></div>
       </Form>
     </div>}
     {hide && (<div><ViewGroups /></div>)}

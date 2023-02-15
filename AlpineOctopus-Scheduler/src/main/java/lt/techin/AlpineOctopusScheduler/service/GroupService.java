@@ -62,7 +62,8 @@ public class GroupService {
     }
 
 
-    public Groups create(Groups groups){
+    public Groups create(Groups groups, Long programId){
+        groups.setProgram( programRepository.getById(programId));
         return groupsRepository.save(groups);
     }
     public Groups update(Long id, Groups groups){

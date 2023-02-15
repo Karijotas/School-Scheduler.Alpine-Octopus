@@ -33,7 +33,6 @@ export function ViewGroups() {
 
     const [activePage, setActivePage] = useState(0)
 
-    const [id, SetId] = useState('')
 
 
     const fetchProgramGroups = async () => {
@@ -46,8 +45,6 @@ export function ViewGroups() {
             .then(response => response.json())
             .then(jsonResponse => setGroups(jsonResponse));
     };
-
-
 
 
     const fetchFilterGroups = async () => {
@@ -82,7 +79,6 @@ export function ViewGroups() {
     }, [nameText, yearText, programText, activePage]);
 
     const [open, setOpen] = useState(false)
-    const [close, setClose] = useState(false)
 
 
     return (

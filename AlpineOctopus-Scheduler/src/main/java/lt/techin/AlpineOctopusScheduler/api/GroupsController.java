@@ -88,8 +88,8 @@ public class GroupsController {
         return responseEntity;
     }
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE,})
-    public ResponseEntity<GroupsDto> createGroup(@RequestBody GroupsDto groupsDto){
-        var createdGroup = groupService.create(toGroup(groupsDto));
+    public ResponseEntity<GroupsDto> createGroup(@RequestBody GroupsDto groupsDto, Long programId){
+        var createdGroup = groupService.create(toGroup(groupsDto), programId);
 
         return ok(toGroupDto(createdGroup));
     }
