@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { json, Link } from 'react-router-dom';
-import { Button, Dropdown, Icon, Input, Pagination, Table } from 'semantic-ui-react'
+import { Button,Divider, Confirm, Dropdown, Icon, Input, Pagination, Table } from 'semantic-ui-react'
 import { CreateRoom } from '../../Create/CreateRoom';
 import { EditRoom } from './EditRoom';
 
@@ -21,6 +21,8 @@ export function ViewRooms() {
     const [activePage, setActivePage] = useState(0);
     const [nameText, setNameText] = useState("");
 
+    
+
     const fetchRooms = async () => {
         fetch(`/api/v1/rooms/page?page=` + activePage)
             .then(response => response.json())
@@ -36,7 +38,7 @@ export function ViewRooms() {
         fetch('/api/v1/rooms/' + id, {
             method: 'DELETE',
             headers: JSON_HEADERS
-        }).then(fetchFilterRooms);//
+        }).then(fetchRooms).then(setOpen(false));
     }
 
 
@@ -45,7 +47,8 @@ export function ViewRooms() {
         nameText.length > 0 ? fetchFilterRooms() : fetchRooms();
              }, [activePage, nameText]);
 
-
+             const [open, setOpen] = useState(false)
+            //  const [close, setClose] = useState(false)
     return (
 
 
@@ -81,14 +84,27 @@ export function ViewRooms() {
 
                                     <Table.Cell collapsing>
                                         <Button basic primary compact icon='eye' title='Peržiūrėti' onClick={() => setActive(room.id)}></Button>
-                                        <Button basic color='black' compact icon='trash alternate' onClick={() => removeRoom(room.id)}></Button>
+                                        <Button basic color='black' compact icon='trash alternate' onClick={() => setOpen(room.id)}></Button>
+                                        <Confirm
+                                            open={open}
+                                            header='Dėmesio!'
+                                            content='Ar tikrai norite ištrinti?'
+                                            cancelButton='Grįžti atgal'
+                                            confirmButton="Ištrinti"
+                                            onCancel={() => setOpen(false)}
+                                            onConfirm={() => removeRoom(open)}
+                                            size='small'
+                                        />
 
                                     </Table.Cell>
                                 </Table.Row>
                             ))}
                         </Table.Body>
 
+                        
+
                     </Table>
+                    <Divider hidden></Divider>
                     <button onClick={()=> setActivePage(0)}> 1 </button>
                  <button onClick={()=> setActivePage(1)}> 2 </button> 
                  <button onClick={()=> setActivePage(2)}> 3 </button> 
