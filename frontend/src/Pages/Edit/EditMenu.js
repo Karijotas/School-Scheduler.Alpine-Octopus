@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Grid, Menu, Segment } from 'semantic-ui-react'
+import { Button, Grid, Icon, Menu, Segment } from 'semantic-ui-react'
 import MainMenu from '../../Components/MainMenu'
-import ObjectList from './ViewObject'
+import { ObjectList } from './ViewObject'
+import './EditPages/ViewGroups.css'
 
 export default class EditMenu extends Component {
   state = { activeItem: 'subjects' }
@@ -12,15 +13,21 @@ export default class EditMenu extends Component {
     const { activeItem } = this.state
     return (
       <div>
+        
         <MainMenu />
-        <Grid className='MainMenu'>
-          <Grid.Column width={2}>
-            <Menu fluid vertical secondary pointing>
+        
+        <Grid className='MainMenu '>
+          
+          
+          <Grid.Column width={2} id='main'>            
+
+            <Menu fluid vertical tabular className='ui centered grid'>
 
             
 
               <Menu.Item
                 name='subjects'
+                icon='book'
                 content='Dalykai'
                 active={activeItem === 'subjects'}
                 onClick={this.handleItemClick}
@@ -28,6 +35,7 @@ export default class EditMenu extends Component {
 
               <Menu.Item
                 name='teachers'
+                icon='user'
                 content='Mokytojai'
                 active={activeItem === 'teachers'}
                 onClick={this.handleItemClick}
@@ -35,6 +43,7 @@ export default class EditMenu extends Component {
 
               <Menu.Item
                 name='groups'
+                icon='users'
                 content='Grupės'
                 active={activeItem === 'groups'}
                 onClick={this.handleItemClick}
@@ -43,38 +52,40 @@ export default class EditMenu extends Component {
               <Menu.Item
                 name='shifts'
                 content='Pamainos'
+                icon='sync'
                 active={activeItem === 'shifts'}
                 onClick={this.handleItemClick}
               />
 
               <Menu.Item
-                href='#/edit'
                 name='rooms'
+                icon='warehouse'
                 content='Klasės'
                 active={activeItem === 'rooms'}
                 onClick={this.handleItemClick}
               />
 
               <Menu.Item
-                href='#/edit'
                 name='program'
+                icon='unordered list'
                 content='Programos'
                 active={activeItem === 'program'}
                 onClick={this.handleItemClick}
               />
 
               <Menu.Item
-                href='#/edit'
                 name='modules'
                 content='Moduliai'
+                icon='unordered list'
                 active={activeItem === 'modules'}
                 onClick={this.handleItemClick}
               />
 
             </Menu>
+
           </Grid.Column>
 
-          <Grid.Column stretched width={13}>
+          <Grid.Column stretched textAlign='left' verticalAlign='top' width={13}>
             <Segment>
 
 
