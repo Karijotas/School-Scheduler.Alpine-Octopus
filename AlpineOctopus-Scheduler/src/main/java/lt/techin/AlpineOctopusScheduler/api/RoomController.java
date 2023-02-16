@@ -1,5 +1,6 @@
 package lt.techin.AlpineOctopusScheduler.api;
 
+import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.RoomDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.RoomEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.RoomMapper;
@@ -74,5 +75,32 @@ public class RoomController {
         }
         return ResponseEntity.notFound().build();
     }
+    @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<RoomEntityDto> getPagedAllRooms(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                      @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+
+
+        return roomService.getPagedAllRooms(page, pageSize);
+
+    }
+    @GetMapping(path = "page/name-filter/{nameText}")
+    @ApiOperation(value = "Get Paged Programs starting with", notes = "Returns list of Programs starting with passed String")
+    @ResponseBody
+    public List<RoomEntityDto> getPagedRoomsByNameContaining(@PathVariable String nameText,
+                                                                   @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                                   @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+        return roomService.getPagedRoomsByNameContaining(nameText, page, pageSize);
+    }
+
+    @GetMapping(path = "page/building-filter/{buildingText}")
+    @ApiOperation(value = "Get Paged Programs starting with", notes = "Returns list of Programs starting with passed String")
+    @ResponseBody
+    public List<RoomEntityDto> getPagedBuildingsByNameContaining(@PathVariable String buildingText,
+                                                             @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                             @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+        return roomService.getPagedBuildingsByNameContaining(buildingText, page, pageSize);
+    }
+
 
 }

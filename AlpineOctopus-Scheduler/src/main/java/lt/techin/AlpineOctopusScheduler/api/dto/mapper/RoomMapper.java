@@ -27,14 +27,14 @@ public class RoomMapper {
 
 
     public static RoomEntityDto toRoomEntityDto(Room room) {
-        var roomDto = new RoomEntityDto();
+        var roomEntityDto = new RoomEntityDto();
 
-        roomDto.setId(room.getId());
-        roomDto.setName(room.getName());
-        roomDto.setBuilding(room.getBuilding());
-        roomDto.setDescription(room.getDescription());
+        roomEntityDto.setId(room.getId());
+        roomEntityDto.setName(room.getName());
+        roomEntityDto.setBuilding(room.getBuilding());
+        roomEntityDto.setDescription(room.getDescription());
 
-        return roomDto;
+        return roomEntityDto;
     }
 
     public static Room toRoom(RoomEntityDto roomEntityDto) {
