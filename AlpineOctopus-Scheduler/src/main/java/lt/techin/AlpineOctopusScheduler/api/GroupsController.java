@@ -52,7 +52,6 @@ public class GroupsController {
     public List<GroupsEntityDto> getPagedAllGroups(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
                                                 @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
 
-
         return groupService.getPagedAllGroups(page, pageSize).stream()
                 .map(GroupsMapper::toGroupEntityDto)
                 .collect(toList());

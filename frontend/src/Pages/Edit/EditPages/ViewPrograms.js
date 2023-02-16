@@ -5,28 +5,29 @@ import {
   ButtonGroup,
   Divider,
   Dropdown,
+  Confirm,
   Icon,
   Input,
   Pagination,
   Table,
 } from "semantic-ui-react";
-import { CreateProgramPage } from '../../Create/CreateProgramPage';
-import { EditProgramObject } from './EditProgramObject';
-import './ViewGroups.css';
-
+import { CreateProgramPage } from "../../Create/CreateProgramPage";
+import { EditProgramObject } from "./EditProgramObject";
+import "./ViewGroups.css";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
 };
 
 export function ViewPrograms() {
-
-  const [active, setActive] = useState()
-  const [create, setCreate] = useState('')
+  const [active, setActive] = useState();
+  const [create, setCreate] = useState("");
   const [nameText, setNameText] = useState("");
   const [programs, setPrograms] = useState([]);
-  const [activePage, setActivePage] = useState(0);
+  const [groupsforPaging, setGroupsForPaging] = useState([]);
 
+  const [activePage, setActivePage] = useState(0);
+  const [pagecount, setPageCount] = useState();
 
   const fetchFilterPrograms = async () => {
     fetch(`/api/v1/programs/page/starting-with/${nameText}?page=` + activePage)
@@ -34,6 +35,13 @@ export function ViewPrograms() {
       .then((jsonRespone) => setPrograms(jsonRespone));
   };
 
+  const fetchSinglePrograms = () => {
+    fetch("/api/v1/programs")
+      .then((response) => response.json())
+      .then((jsonResponse) => setGroupsForPaging(jsonResponse))
+      .then(setPageCount(Math.ceil(groupsforPaging.length / 10)));
+    // .then(console.log('pages:' + pagecount));
+  };
 
   const fetchPrograms = async () => {
     fetch(`/api/v1/programs/page?page=` + activePage)
@@ -45,23 +53,46 @@ export function ViewPrograms() {
     fetch("/api/v1/programs/" + id, {
       method: "DELETE",
       headers: JSON_HEADERS,
-    }).then(fetchPrograms);
+    }).then(fetchPrograms)
+         .then(setOpen(false));
   };
-
 
   useEffect(() => {
     nameText.length > 0 ? fetchFilterPrograms() : fetchPrograms();
   }, [activePage, nameText]);
 
-  const [open, setOpen] = useState(false)
-  const [close, setClose] = useState(false)
+  const [open, setOpen] = useState(false);
+  const [close, setClose] = useState(false);
+ 
+
+  const Btn = () => {
+    return (
+      <ul>
+        {Array.from(Array(pagecount), (e, i) => {
+          return <Button key={i}>{i}</Button>;
+        })}
+      </ul>
+    );
+  };
+
+  useEffect(() => {
+    if (pagecount !== null) {
+      fetchSinglePrograms();
+    }
+  }, [programs]);
 
   return (
     <div>
-      {create && (<div>
-        <CreateProgramPage /></div>)}
-      {active && (<div className='edit'>
-        <EditProgramObject id={active} /></div>)}
+      {create && (
+        <div>
+          <CreateProgramPage />
+        </div>
+      )}
+      {active && (
+        <div className="edit">
+          <EditProgramObject id={active} />
+        </div>
+      )}
 
       {!active && !create && (
         <div id="programs">
@@ -72,8 +103,10 @@ export function ViewPrograms() {
           />
           {/* <Button onClick={fetchFilterPrograms}>Filtruoti</Button> */}
 
-
-          <Button icon labelPosition='left' primary className='controls'><Icon name='database' />Kurti naują programą</Button>
+          <Button icon labelPosition="left" primary className="controls">
+            <Icon name="database" />
+            Kurti naują programą
+          </Button>
           <Divider horizontal hidden></Divider>
 
           <Table selectable>
@@ -85,7 +118,6 @@ export function ViewPrograms() {
                 <Table.HeaderCell>Veiksmai</Table.HeaderCell>
               </Table.Row>
             </Table.Header>
-
 
             <Table.Body>
               {programs.map((program) => (
@@ -106,20 +138,47 @@ export function ViewPrograms() {
                       basic
                       color="black"
                       compact
+                      title="Ištrinti"
                       icon="trash alternate"
-                      onClick={() => removeProgram(program.id)}
+                      onClick={() => setOpen(program.id)}
                     ></Button>
+
+                    <Confirm
+                      open={open}
+                      header="Dėmesio!"
+                      content="Ar tikrai norite ištrinti?"
+                      cancelButton="Grįžti atgal"
+                      confirmButton="Ištrinti"
+                      onCancel={() => setOpen(false)}
+                      onConfirm={() => removeProgram(open)}
+                      size="small"
+                    />
                   </Table.Cell>
                 </Table.Row>
               ))}
             </Table.Body>
           </Table>
+          <Divider hidden></Divider>
+
           <ButtonGroup basic compact>
-            <Button onClick={() => setActivePage(activePage <= 0 ? activePage : activePage -1)} icon><Icon name="arrow left" />  </Button>
-            <Button onClick={() => setActivePage(0)}> 1 </Button>
-            <Button onClick={() => setActivePage(1)}> 2 </Button>
-            <Button onClick={() => setActivePage(2)}> 3 </Button>
-            <Button onClick={() => setActivePage(activePage + 1)} icon><Icon name="arrow right" />  </Button>
+            <Button
+              onClick={() =>
+                setActivePage(activePage <= 0 ? activePage : activePage - 1)
+              }
+              icon
+            >
+              <Icon name="arrow left" />{" "}
+            </Button>
+            {[...Array(pagecount)].map((e, i) => {
+              return (
+                <Button key={i} onClick={() => setActivePage(i)}>
+                  {i + 1}
+                </Button>
+              );
+            })}
+            <Button onClick={() => setActivePage(activePage + 1)} icon>
+              <Icon name="arrow right" />{" "}
+            </Button>
           </ButtonGroup>
           {/* <Pagination 
             defaultActivePage={1}
@@ -130,7 +189,6 @@ export function ViewPrograms() {
             totalPages={10}          
             
         />    */}
-
         </div>
       )}
     </div>
