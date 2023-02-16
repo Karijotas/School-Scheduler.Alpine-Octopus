@@ -7,7 +7,9 @@ import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramSubjectHoursMapper;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper;
 import lt.techin.AlpineOctopusScheduler.dao.ProgramRepository;
+import lt.techin.AlpineOctopusScheduler.dao.ProgramSubjectHourListRepository;
 import lt.techin.AlpineOctopusScheduler.dao.ProgramSubjectHoursRepository;
+import lt.techin.AlpineOctopusScheduler.dao.SubjectRepository;
 import lt.techin.AlpineOctopusScheduler.model.Program;
 import lt.techin.AlpineOctopusScheduler.model.ProgramSubjectHours;
 import lt.techin.AlpineOctopusScheduler.service.ProgramService;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -37,13 +40,19 @@ public class ProgramController {
     private final ProgramService programService;
     private final ProgramSubjectHoursRepository programSubjectHoursRepository;
     private final ProgramRepository programRepository;
+    private final SubjectRepository subjectRepository;
+    private final ProgramSubjectHourListRepository programSubjectHourListRepository;
 
     public ProgramController(ProgramService programService,
                              ProgramSubjectHoursRepository programSubjectHoursRepository,
-                             ProgramRepository programRepository) {
+                             ProgramRepository programRepository,
+                             SubjectRepository subjectRepository,
+                             ProgramSubjectHourListRepository programSubjectHourListRepository) {
         this.programService = programService;
         this.programSubjectHoursRepository = programSubjectHoursRepository;
         this.programRepository = programRepository;
+        this.subjectRepository = subjectRepository;
+        this.programSubjectHourListRepository = programSubjectHourListRepository;
     }
 
 
@@ -64,6 +73,8 @@ public class ProgramController {
         return programService.getPagedAllPrograms(page, pageSize);
 
     }
+
+
 
     @GetMapping(path = "/starting-with/{nameText}")
     @ApiOperation(value = "Get Programs starting with", notes = "Returns list of Programs starting with passed String")
@@ -172,7 +183,8 @@ public class ProgramController {
     @PostMapping(value = "/{programId}/subjects/newSubjectsWithHoursList")
     @ResponseBody
     public List<ProgramSubjectHoursDtoForList> addAllSubjectsAndHoursToProgram(@PathVariable Long programId, @RequestBody List<ProgramSubjectHoursForCreate> programSubjectHoursForCreateList){
-       programSubjectHoursForCreateList.forEach(sh -> programService
+
+        programSubjectHoursForCreateList.forEach(sh -> programService
                .addSubjectAndHoursToProgram(programId, sh.getSubjectId(), sh.getSubjectHour()));
 
                return programService.getAllSubjectsInProgramByProgramId(programId).stream()
@@ -180,5 +192,6 @@ public class ProgramController {
                 .map(ProgramSubjectHoursMapper::toProgramSubjectHoursDtoForList)
                 .collect(toList());
     }
+
 
 }

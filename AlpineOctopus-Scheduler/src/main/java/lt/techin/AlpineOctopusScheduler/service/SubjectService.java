@@ -1,8 +1,8 @@
 package lt.techin.AlpineOctopusScheduler.service;
 
+import lt.techin.AlpineOctopusScheduler.dao.ProgramRepository;
 import lt.techin.AlpineOctopusScheduler.dao.SubjectRepository;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
-import lt.techin.AlpineOctopusScheduler.model.Module;
 import lt.techin.AlpineOctopusScheduler.model.Subject;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +13,15 @@ import java.util.Optional;
 public class SubjectService {
 
     private final SubjectRepository subjectRepository;
+    private final ProgramRepository programRepository;
 
-    public SubjectService(SubjectRepository subjectRepository) {
+
+
+    public SubjectService(SubjectRepository subjectRepository,
+                          ProgramRepository programRepository) {
         this.subjectRepository = subjectRepository;
+        this.programRepository = programRepository;
+
     }
 
     public List<Subject> getAll() {
@@ -51,4 +57,6 @@ public class SubjectService {
 
         return false;
     }
+
+
 }
