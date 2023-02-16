@@ -46,14 +46,14 @@ public class GroupService {
     }
 
     @Transactional(readOnly = true)
-    public List<GroupsDto> getGroupsByNameContaining(String nameText) {
+    public List<GroupsEntityDto> getGroupsByNameContaining(String nameText) {
         return groupsRepository.findByNameContainingIgnoreCase(nameText).stream()
-                .map(GroupsMapper::toGroupDto).collect(Collectors.toList());
+                .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
     }
     @Transactional(readOnly = true)
-    public List<GroupsDto> getGroupsBySchoolYear(Integer schoolYearText) {
+    public List<GroupsEntityDto> getGroupsBySchoolYear(Integer schoolYearText) {
         return groupsRepository.findBySchoolYear(schoolYearText).stream()
-                .map(GroupsMapper::toGroupDto).collect(Collectors.toList());
+                .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
     }
 
 
