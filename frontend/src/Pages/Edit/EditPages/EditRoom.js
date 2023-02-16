@@ -79,9 +79,9 @@ export function EditRoom(props) {
         <Table celled color='violet'>
             <Table.Header >
                 <Table.Row  >
-                    <Table.HeaderCell >Klases pavadinimas</Table.HeaderCell>
+                    <Table.HeaderCell >Klasės pavadinimas</Table.HeaderCell>
                     <Table.HeaderCell>Pastatas</Table.HeaderCell>
-                    <Table.HeaderCell>Aprasymas</Table.HeaderCell>
+                    <Table.HeaderCell>Aprašymas</Table.HeaderCell>
                     <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
                     <Table.HeaderCell>Veiksmai</Table.HeaderCell>
 
@@ -114,9 +114,9 @@ export function EditRoom(props) {
             <Table celled color='violet'>
                 <Table.Header >
                     <Table.Row  >
-                        <Table.HeaderCell >Klases pavadinimas</Table.HeaderCell>
+                        <Table.HeaderCell >Klasės pavadinimas</Table.HeaderCell>
                         <Table.HeaderCell>Pastatas</Table.HeaderCell>
-                        <Table.HeaderCell>Aprasymas</Table.HeaderCell>
+                        <Table.HeaderCell>Aprašymas</Table.HeaderCell>
                         <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
                         <Table.HeaderCell>Veiksmai</Table.HeaderCell>
 

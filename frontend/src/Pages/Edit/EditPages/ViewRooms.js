@@ -20,6 +20,7 @@ export function ViewRooms() {
 //
     const [activePage, setActivePage] = useState(0);
     const [nameText, setNameText] = useState("");
+    const [buildingText, setBuildingText] = useState("");
 
     
 
@@ -29,11 +30,17 @@ export function ViewRooms() {
             .then(jsonResponse => setRooms(jsonResponse));
     };
     const fetchFilterRooms = async () => {
-               fetch(`/api/v1/rooms/page/starting-with/${nameText}?page=` + activePage)
+               fetch(`/api/v1/rooms/page/name-filter/${nameText}?page=` + activePage)
                  .then((response) => response.json())
                  .then((jsonRespone) => setRooms(jsonRespone));
              };
-
+    
+             const fetchBuildingRoons = async () => {
+                fetch(`/api/v1/rooms/page/building-filter/${buildingText}?page=` + activePage)
+                  .then((response) => response.json())
+                  .then((jsonRespone) => setRooms(jsonRespone));
+              };
+            
     const removeRoom = (id) => {
         fetch('/api/v1/rooms/' + id, {
             method: 'DELETE',
@@ -43,12 +50,13 @@ export function ViewRooms() {
 
 
     useEffect(() => {
-        // fetchRooms();
-        nameText.length > 0 ? fetchFilterRooms() : fetchRooms();
-             }, [activePage, nameText]);
+         fetchRooms();
+        // nameText.length > 0 ? fetchFilterRooms() : fetchRooms();
+             }, [activePage, nameText,buildingText]);
 
              const [open, setOpen] = useState(false)
             //  const [close, setClose] = useState(false)
+
     return (
 
 
@@ -60,16 +68,16 @@ export function ViewRooms() {
             {!active && !create && (
 
                 <div id='rooms'>
-                    <Input value={nameText} onChange={(e) => setNameText(e.target.value)} placeholder='Klase/Pastatas' />
+                    <Input value={nameText} onChange={(e) => setNameText(e.target.value)} placeholder='Klasė/Pastatas' />
                     
 
                     <Button icon labelPosition='left' primary className='controls' onClick={() => setCreate('new')}><Icon name='database' />Kurti naują klasę</Button>
                     <Table selectable >
                         <Table.Header>
                             <Table.Row>
-                                <Table.HeaderCell>Klases pavadinimas</Table.HeaderCell>
+                                <Table.HeaderCell>Klasės pavadinimas</Table.HeaderCell>
                                 <Table.HeaderCell>Pastatas</Table.HeaderCell>
-                                <Table.HeaderCell>Aprasymas</Table.HeaderCell>
+                                <Table.HeaderCell>Aprašymas</Table.HeaderCell>
                                 <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
