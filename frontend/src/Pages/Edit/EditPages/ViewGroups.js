@@ -112,7 +112,6 @@ export function ViewGroups() {
     const [open, setOpen] = useState(false)
 
 
-    const activate = false;
 
 
     return (
@@ -186,7 +185,7 @@ export function ViewGroups() {
                     <ButtonGroup basic compact>
                         <Button onClick={() => setActivePage(activePage <= 0 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
                         {[...Array(pagecount)].map((e, i) => {
-                            return <Button key={i} active={activePage === i ? true : false} onClick={() => setActivePage(i) && activate(true)}>{i + 1}</Button>
+                            return <Button key={i} active={activePage === i ? true : false} onClick={() => setActivePage(i) }>{i + 1}</Button>
                         })}
                         <Button onClick={() => setActivePage(activePage >= pagecount - 1 ? activePage : activePage + 1)} icon><Icon name="arrow right" />  </Button>
                     </ButtonGroup>
