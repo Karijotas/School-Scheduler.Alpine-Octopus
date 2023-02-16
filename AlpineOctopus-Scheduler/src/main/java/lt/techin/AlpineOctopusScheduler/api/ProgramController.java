@@ -111,6 +111,13 @@ public class ProgramController {
                 .map(ProgramSubjectHoursMapper::toProgramSubjectHoursDtoForList)
                 .collect(toList());
     }
+    @GetMapping(value = "/{programId}/subjects/hours", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public Integer getSumOfHoursByProgramId(@PathVariable Long programId) {
+        int sumOfHours = 0;
+        return sumOfHours = programService.getAllSubjectsInProgramByProgramId(programId).stream()
+                .map(ProgramSubjectHoursDto::getSubjectHours).reduce(0, Integer::sum);
+    }
 
     @DeleteMapping("/{programId}")
     public ResponseEntity<Void> deleteProgram(@PathVariable Long programId) {

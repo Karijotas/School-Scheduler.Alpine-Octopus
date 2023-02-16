@@ -25,6 +25,7 @@ export function EditProgramObject(props) {
   const [subjectsInProgram, setSubjectsInProgram] = useState([]);
   const [subject, setSubject] = useState("");
   const [subjectHours, setSubjectHours] = useState("");
+  const [totalHours, setTotalHours] = useState("");
 
   const subjectOptions = [
     { key: 23, value: 2023, text: "2023" },
@@ -58,6 +59,13 @@ export function EditProgramObject(props) {
      .then(setSubjectsInProgram);
   }, [props]);
 
+  useEffect(() => {
+    fetch(`/api/v1/programs/${props.id}/subjects/hours`)
+      .then((response) => response.json())
+     .then(setTotalHours);
+  }, [props]);
+
+  
   useEffect(() => {
     fetch("/api/v1/subjects/")
       .then((response) => response.json())
@@ -154,7 +162,7 @@ export function EditProgramObject(props) {
                     ))}
                     <Table.Row>
                     <Table.Cell><h5>Programos valandų skaičius:</h5></Table.Cell> 
-                    <Table.Cell><h5>84 val.</h5></Table.Cell>
+                    <Table.Cell><h5>{totalHours} val.</h5></Table.Cell>
                          </Table.Row>
                   </Table.Body>
           </Table>

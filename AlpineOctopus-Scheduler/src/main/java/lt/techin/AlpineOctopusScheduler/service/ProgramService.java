@@ -117,6 +117,7 @@ public class ProgramService {
     }
 
 
+
     public List<ProgramSubjectHoursDto> getAllSubjectsInProgramByProgramId(Long id) {
         List<String> subjectList = programRepository.GetSubjectsAndHoursInProgram(id);
         List<ProgramSubjectHoursDto> programSubjectHoursDto = new ArrayList<>();
