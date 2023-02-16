@@ -40,14 +40,14 @@ public class ProgramSubjectHoursMapper {
         return programSubjectHoursDtoForList;
     }
 
-    public static ProgramSubjectHourListDto  toProgramSubjectHourListDto(ProgramSubjectHoursList programSubjectHoursList, ProgramSubjectHoursForCreate programSubjectHoursForCreate){
-        var programSubjectHourListDto = new ProgramSubjectHourListDto(programSubjectHoursForCreate);
-
-        programSubjectHourListDto.setId(programSubjectHoursList.getId());
-        programSubjectHourListDto.setSubjectHourList();
-
-        return programSubjectHourListDto;
-    }
+//    public static ProgramSubjectHourListDto  toProgramSubjectHourListDto(ProgramSubjectHoursList programSubjectHoursList, ProgramSubjectHoursForCreate programSubjectHoursForCreate){
+//        var programSubjectHourListDto = new ProgramSubjectHourListDto(programSubjectHoursForCreate);
+//
+//        programSubjectHourListDto.setId(programSubjectHoursList.getId());
+//        programSubjectHourListDto.setSubjectHourList();
+//
+//        return programSubjectHourListDto;
+//    }
 
     public static ProgramSubjectHoursList toProgramSubjectHourList(ProgramSubjectHourListDto programSubjectHoursListDto){
        var programSubjectHoursList = new ProgramSubjectHoursList();

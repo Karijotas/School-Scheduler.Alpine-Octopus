@@ -111,51 +111,7 @@ export function CreateProgramPage() {
                 />
               </Form.Field>
             </Form.Group>
-            <Grid>
-              <Grid.Row>
-                <Grid.Column width={8}>
-                  <List divided verticalAlign="middle">
-                    <List.Item>                      
-                      <Form.Group widths="equal">
-                        <Form.Field>
-                          <label>Dalykas</label>
-                          <Select
-                            options={subjects}
-                            placeholder="Subject"
-                            value={subject}
-                            onChange={(e) => setSubject(e.target.value)}
-                          />
-                        </Form.Field>
-                      </Form.Group>
-                      <List.Content>                                                
-                        <Input placeholder="Valandų skaičius"
-                  value={subjectHours}
-                  onChange={(e) => setSubjectHours(e.target.value)} />
-                      </List.Content>
-                      <List.Content floated="right">
-                        <Button>Pridėti</Button>
-                      </List.Content>
-                    </List.Item>
-                  </List>
-                </Grid.Column>
-                <Grid.Column width={8}>
-                  <List divided verticalAlign="middle">
-                    <List.Item>                                            
-                      <List.Content>Lena</List.Content>
-                    </List.Item>
-                    <List.Item>                      
-                      <List.Content>Lindsay</List.Content>
-                    </List.Item>
-                    <List.Item>                      
-                      <List.Content>Mark</List.Content>
-                    </List.Item>
-                    <List.Item>                      
-                      <List.Content>Molly</List.Content>
-                    </List.Item>
-                  </List>
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
+            
             <div>
               <Button
                 icon
