@@ -143,9 +143,9 @@ export function ViewGroups() {
                     <Table selectable >
                         <Table.Header>
                             <Table.Row>
-                                <Table.HeaderCell>Grupės pavadinimas "Teams"</Table.HeaderCell>
-                                <Table.HeaderCell>Mokslo metai</Table.HeaderCell>
-                                <Table.HeaderCell>Studentų skaičius</Table.HeaderCell>
+                                <Table.HeaderCell>Mokytojo vardas</Table.HeaderCell>
+                                <Table.HeaderCell>Teams vartotojo vardas</Table.HeaderCell>
+                                <Table.HeaderCell>Kontaktinis</Table.HeaderCell>
                                 <Table.HeaderCell>Programa</Table.HeaderCell>
                                 <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                             </Table.Row>

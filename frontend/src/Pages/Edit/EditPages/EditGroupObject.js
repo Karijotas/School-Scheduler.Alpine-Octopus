@@ -131,7 +131,7 @@ export function EditGroupObject(props) {
                     <Table.Cell >{groups.name}</Table.Cell>
                     <Table.Cell >{groups.schoolYear}</Table.Cell>
                     <Table.Cell >{groups.studentAmount}</Table.Cell>
-                    <Table.Cell >{groups.program.id} </Table.Cell>
+                    <Table.Cell >{groups.program.name} </Table.Cell>
                     <Table.Cell >{groups.shift}</Table.Cell>
 
                     <Table.Cell collapsing > {groups.modifiedDate}  </Table.Cell>

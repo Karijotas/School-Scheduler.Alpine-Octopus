@@ -33,7 +33,7 @@ export function ViewGroups() {
 
     const [programText, setProgramText] = useState('');
 
-    const [activePage, setActivePage] = useState(1)
+    const [activePage, setActivePage] = useState(0)
 
     const [pagecount, setPageCount] = useState()
 
@@ -112,6 +112,8 @@ export function ViewGroups() {
     const [open, setOpen] = useState(false)
 
 
+    const activate = false;
+
 
     return (
 
@@ -125,11 +127,11 @@ export function ViewGroups() {
 
             {!active && !create && (
 
-                <div id='groups'>
+                <div id='groups' >
 
                     <Input className='controls1' placeholder='Filtruoti pagal pavadinimą' value={nameText} onChange={(e) => setNameText(e.target.value)} />
 
-                    <Input className='controls1' placeholder='Filtruoti pagal mokslo metus' value={yearText} onChange={(e) => setYearText(e.target.value)} />
+                    <Input className='controls1' placeholder='Filtruoti pagal metus' value={yearText} onChange={(e) => setYearText(e.target.value)} />
 
                     <Input placeholder='Filtruoti pagal programą' value={programText} onChange={(e) => setProgramText(e.target.value)} />
 
@@ -184,11 +186,10 @@ export function ViewGroups() {
                     <ButtonGroup basic compact>
                         <Button onClick={() => setActivePage(activePage <= 0 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
                         {[...Array(pagecount)].map((e, i) => {
-                            return <Button key={i} onClick={() => setActivePage(i)}>{i + 1}</Button>
+                            return <Button key={i} active={activePage === i ? true : false} onClick={() => setActivePage(i) && activate(true)}>{i + 1}</Button>
                         })}
                         <Button onClick={() => setActivePage(activePage >= pagecount - 1 ? activePage : activePage + 1)} icon><Icon name="arrow right" />  </Button>
                     </ButtonGroup>
-
 
                 </div>
             )}
