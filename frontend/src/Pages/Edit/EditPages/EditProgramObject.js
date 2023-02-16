@@ -107,12 +107,12 @@ export function EditProgramObject(props) {
 
                     <Table.Cell collapsing > {programs.modifiedDate}  </Table.Cell>
 
-                    <Table.Cell collapsing ><Button onClick={editThis}>Taisyti</Button>
+                    <Table.Cell collapsing ><Button onClick={editThis}>Redaguoti</Button>
                     </Table.Cell>
 
 
                 </Table.Row>
-
+                
             </ Table.Body >
         </Table>
         <Button icon labelPosition="left" className="" onClick={() => setHide(true)}><Icon name="arrow left" />Atgal</Button>

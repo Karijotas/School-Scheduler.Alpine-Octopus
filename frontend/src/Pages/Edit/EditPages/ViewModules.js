@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button, ButtonGroup, Confirm, Divider, Icon, Input, Table } from 'semantic-ui-react'
-import { CreateGroupPage } from '../../Create/CreateGroupPage';
-import { EditGroupObject } from './EditGroupObject';
 import { EditModuleObject } from './EditModuleObject';
+import { CreateModulePage } from '../../Create/CreateModulePage';
 import './ViewGroups.css';
 
 const JSON_HEADERS = {
@@ -70,7 +69,7 @@ export function ViewModules() {
 
         <div>
             {create && (<div>
-                <CreateGroupPage /></div>)}
+                <CreateModulePage /></div>)}
             {active && (<div className='edit'>
                 <EditModuleObject id={active} /></div>)}
 

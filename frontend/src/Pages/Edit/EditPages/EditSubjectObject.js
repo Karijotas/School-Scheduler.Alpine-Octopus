@@ -96,7 +96,7 @@ export function EditSubjectObject(props) {
                     <Table.Cell >{subjects.subjectModules}</Table.Cell>
                     <Table.Cell >{subjects.description}</Table.Cell>
                     <Table.Cell collapsing > {subjects.modifiedDate}  </Table.Cell>
-                    <Table.Cell collapsing ><Button onClick={editThis}>Taisyti</Button>
+                    <Table.Cell collapsing ><Button onClick={editThis}>Redaguoti</Button>
                     </Table.Cell>
 
 
@@ -141,14 +141,14 @@ export function EditSubjectObject(props) {
 
                         <Table.Cell collapsing> {subjects.modifiedDate}  </Table.Cell>
 
-                        <Table.Cell collapsing ><Button primary onClick={updateSubjects}>Atnaujinti</Button></Table.Cell>
+                        <Table.Cell collapsing ><Button onClick={() => setActive(true)}>Atšaukti</Button><Button primary onClick={updateSubjects}>Atnaujinti</Button></Table.Cell>
 
 
                     </Table.Row>
 
                 </ Table.Body >
             </Table>
-            <Button icon labelPosition="left" className="" onClick={() => setHide(true)}><Icon name="arrow left" />Atgal</Button>
+            <Button icon labelPosition="left" className="" onClick={() => setHide(true)}><Icon name="arrow left" />Atgal į sarašą</Button>
 
         </div>)}
 

@@ -3,6 +3,7 @@ package lt.techin.AlpineOctopusScheduler.api;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lt.techin.AlpineOctopusScheduler.api.dto.RoomDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.RoomEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.TeacherDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.RoomMapper;
 import lt.techin.AlpineOctopusScheduler.model.Room;
 import lt.techin.AlpineOctopusScheduler.service.RoomService;
@@ -20,6 +21,7 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.RoomMapper.toRoom;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.RoomMapper.toRoomDto;
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.TeacherMapper.toTeacherDto;
 import static org.springframework.http.ResponseEntity.ok;
 
 @Controller
@@ -74,6 +76,13 @@ public class RoomController {
 //            new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/subjects/{moduleId}")
+    public ResponseEntity<RoomDto> addSubjectToRoom(@PathVariable Long roomId, @RequestBody Long subjectId) {
+        var updatedRoom = roomService.addSubjectToRoom(roomId, subjectId);
+
+        return ok(toRoomDto(updatedRoom));
     }
 
 }

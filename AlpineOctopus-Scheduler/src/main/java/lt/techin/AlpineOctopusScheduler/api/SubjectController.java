@@ -105,4 +105,18 @@ public class SubjectController {
 
         return ok(toSubjectDto(updatedSubject));
     }
+
+    @PutMapping("/teachers/{subjectId}")
+    public ResponseEntity<SubjectDto> addTeacherToSubject(@PathVariable Long subjectId, @RequestBody Long teacherId) {
+        var updatedSubject = subjectService.addTeacherToSubject(subjectId, teacherId);
+
+        return ok(toSubjectDto(updatedSubject));
+    }
+
+    @PutMapping("/rooms/{subjectId}")
+    public ResponseEntity<SubjectDto> addRoomToSubject(@PathVariable Long subjectId, @RequestBody Long roomId) {
+        var updatedSubject = subjectService.addRoomToSubject(subjectId, roomId);
+
+        return ok(toSubjectDto(updatedSubject));
+    }
 }

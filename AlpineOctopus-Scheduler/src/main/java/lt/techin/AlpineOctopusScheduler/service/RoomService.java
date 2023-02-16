@@ -1,7 +1,10 @@
 package lt.techin.AlpineOctopusScheduler.service;
 
 import lt.techin.AlpineOctopusScheduler.dao.RoomRepository;
+import lt.techin.AlpineOctopusScheduler.dao.SubjectRepository;
+import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Room;
+import lt.techin.AlpineOctopusScheduler.model.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -10,13 +13,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class RoomService {
     private final RoomRepository roomRepository;
+
+    private final SubjectRepository subjectRepository;
     @Autowired
-    public RoomService(RoomRepository roomRepository) {
+    public RoomService(RoomRepository roomRepository, SubjectRepository subjectRepository) {
         this.roomRepository = roomRepository;
+        this.subjectRepository = subjectRepository;
     }
 
     public List<Room> getAll() {
@@ -48,5 +55,21 @@ public class RoomService {
             return true;
         }
         return false;
+    }
+
+    public Room addSubjectToRoom(Long roomId, Long subjectId) {
+        var existingRoom = roomRepository.findById(roomId)
+                .orElseThrow(() -> new SchedulerValidationException("Room does not exist",
+                        "id", "Room not found", roomId.toString()));
+
+        var existingSubject = subjectRepository.findById(subjectId)
+                .orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
+                        "id", "Subject not found", subjectId.toString()));
+
+        Set<Subject> existingSubjectList = existingRoom.getRoomSubjects();
+        existingSubjectList.add(existingSubject);
+        existingRoom.setRoomSubjects(existingSubjectList);
+
+        return roomRepository.save(existingRoom);
     }
 }
