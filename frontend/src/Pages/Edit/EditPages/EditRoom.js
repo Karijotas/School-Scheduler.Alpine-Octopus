@@ -74,7 +74,7 @@ export function EditRoom(props) {
     // }
 
 
-    return (<div>{active && (<div >
+    return (<div>{active && !hide &&(<div >
 
         <Table celled color='violet'>
             <Table.Header >
@@ -104,7 +104,7 @@ export function EditRoom(props) {
 
             </ Table.Body >
         </Table>
-        {/* <Button icon labelPosition="left" className="" onClick={() => setHide(true)}><Icon name="arrow left" />Atgal</Button> bugas */}
+         <Button icon labelPosition="left" className="" onClick={() => setHide(true)}><Icon name="arrow left" />Atgal</Button>
     </div>
 
 

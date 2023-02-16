@@ -35,11 +35,6 @@ export function ViewRooms() {
                  .then((jsonRespone) => setRooms(jsonRespone));
              };
     
-             const fetchBuildingRoons = async () => {
-                fetch(`/api/v1/rooms/page/building-filter/${buildingText}?page=` + activePage)
-                  .then((response) => response.json())
-                  .then((jsonRespone) => setRooms(jsonRespone));
-              };
             
     const removeRoom = (id) => {
         fetch('/api/v1/rooms/' + id, {
@@ -48,11 +43,26 @@ export function ViewRooms() {
         }).then(fetchRooms).then(setOpen(false));
     }
 
+    const fetchBuildingRooms = async () => {
+        fetch(`/api/v1/rooms/page/building-filter/${buildingText}?page=` + activePage)
+          .then((response) => response.json())
+          .then((jsonRespone) => setRooms(jsonRespone));
+      };
+
 
     useEffect(() => {
-         fetchRooms();
-        // nameText.length > 0 ? fetchFilterRooms() : fetchRooms();
-             }, [activePage, nameText,buildingText]);
+         //fetchRooms();
+         if (nameText.length ===0 && buildingText.length === 0){
+            fetchRooms();
+         } else if (nameText.length > 0 && buildingText.length === 0){
+            fetchFilterRooms();
+         } else {
+            fetchBuildingRooms();
+         }
+          //nameText.length > 0 ? fetchFilterRooms() : fetchRooms();
+        //  buildingText.length > 0 ? fetchBuildingRooms() : fetchRooms();
+
+             }, [activePage, nameText, buildingText]);
 
              const [open, setOpen] = useState(false)
             //  const [close, setClose] = useState(false)
@@ -68,7 +78,9 @@ export function ViewRooms() {
             {!active && !create && (
 
                 <div id='rooms'>
-                    <Input value={nameText} onChange={(e) => setNameText(e.target.value)} placeholder='Klasė/Pastatas' />
+                    <Input value={nameText} onChange={(e) => setNameText(e.target.value)} placeholder='Klasė' />
+                    <Input value={buildingText} onChange={(e) => setBuildingText(e.target.value)} placeholder="Pastatas"/>
+
                     
 
                     <Button icon labelPosition='left' primary className='controls' onClick={() => setCreate('new')}><Icon name='database' />Kurti naują klasę</Button>
