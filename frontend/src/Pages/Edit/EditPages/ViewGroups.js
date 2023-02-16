@@ -85,10 +85,21 @@ export function ViewGroups() {
 
 
     useEffect(() => {
-
-        // nameText.length > 0 ? fetchFilterGroups() : fetchGroups();
-        // yearText.length > 0 ? fetchYearGroups() : fetchGroups();
-        programText.length > 0 ? fetchProgramGroups() : fetchGroups();
+        if (nameText.length === 0 && yearText.length === 0 && programText.length === 0) {
+            fetchGroups();
+        } else if (nameText.length > 0) {
+            setProgramText('')
+            setYearText('')
+            fetchFilterGroups();
+        } else if (yearText.length > 0) {
+            setNameText('')
+            setProgramText('')
+            fetchYearGroups();
+        } else if (programText.length > 0) {
+            setNameText('')
+            setYearText('')
+            fetchProgramGroups();
+        }
 
 
     }, [nameText, yearText, programText, activePage]);

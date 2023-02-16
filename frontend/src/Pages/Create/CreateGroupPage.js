@@ -97,7 +97,7 @@ export function CreateGroupPage() {
             <Input placeholder='Studentų skaičius' value={studentAmount} onChange={(e) => setStudentAmount(e.target.value)} />
           </Form.Field> </Form.Group>
         <Form.Group widths='equal'>
-          <Form.Field >
+          <Form.Field>
             <label>Programa</label>
             <Select options={programs} placeholder='Programa' onClose={() => console.log(programId)} onChange={(e, data) => setProgramId(data.value)} />
 
