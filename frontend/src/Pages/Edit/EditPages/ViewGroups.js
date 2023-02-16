@@ -101,7 +101,6 @@ export function ViewGroups() {
             fetchProgramGroups();
         }
 
-
     }, [nameText, yearText, programText, activePage]);
 
     useEffect(() => {
@@ -183,7 +182,7 @@ export function ViewGroups() {
                     <Divider hidden></Divider>
 
                     <ButtonGroup basic compact>
-                        <Button onClick={() => setActivePage(activePage <= 1 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
+                        <Button onClick={() => setActivePage(activePage <= 0 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
                         {[...Array(pagecount)].map((e, i) => {
                             return <Button key={i} onClick={() => setActivePage(i)}>{i + 1}</Button>
                         })}
