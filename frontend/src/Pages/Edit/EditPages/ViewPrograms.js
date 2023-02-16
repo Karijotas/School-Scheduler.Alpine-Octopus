@@ -114,8 +114,7 @@ export function ViewPrograms() {
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell>Programos pavadinimas</Table.HeaderCell>
-                <Table.HeaderCell>Programos aprašymas</Table.HeaderCell>
-                <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
+                
                 <Table.HeaderCell>Veiksmai</Table.HeaderCell>
               </Table.Row>
             </Table.Header>
@@ -124,8 +123,7 @@ export function ViewPrograms() {
               {programs.map((program) => (
                 <Table.Row key={program.id}>
                   <Table.Cell>{program.name}</Table.Cell>
-                  <Table.Cell>{program.description}</Table.Cell>
-                  <Table.Cell>{program.modifiedDate}</Table.Cell>
+                  
                   <Table.Cell collapsing>
                     <Button
                       basic
