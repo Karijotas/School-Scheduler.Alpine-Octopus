@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button,  Icon,  Input, Table } from 'semantic-ui-react';
+import { Button,  Icon,  Input, Table, List } from 'semantic-ui-react';
 import { ViewModules } from './ViewModules';
 
 
@@ -93,7 +93,10 @@ export function EditModuleObject(props) {
             <Table.Body>
                 <Table.Row  >
                     <Table.Cell >{modules.name}</Table.Cell>
-                    <Table.Cell >{modules.modulesSubjects}</Table.Cell>
+                    <Table.Cell >
+                    <List bulleted>
+                      <List.Item>{module.modulesSubjects}</List.Item>
+                    </List></Table.Cell>
                     <Table.Cell >{modules.description}</Table.Cell>
                     <Table.Cell collapsing > {modules.modifiedDate}  </Table.Cell>
                     <Table.Cell collapsing ><Button onClick={editThis}>Redaguoti</Button>

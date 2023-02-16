@@ -11,6 +11,7 @@ import lt.techin.AlpineOctopusScheduler.model.Module;
 import lt.techin.AlpineOctopusScheduler.model.Room;
 import lt.techin.AlpineOctopusScheduler.model.Subject;
 import lt.techin.AlpineOctopusScheduler.model.Teacher;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -80,13 +81,13 @@ public class SubjectService {
         return subjectRepository.save(existingSubject);
     }
 
-    public boolean deleteById(Long id) {
-        if (subjectRepository.existsById(id)) {
+    public Boolean deleteById(Long id){
+        try{
             subjectRepository.deleteById(id);
             return true;
+        } catch (EmptyResultDataAccessException e){
+            return false;
         }
-
-        return false;
     }
 
     public Subject addModuleToSubject(Long subjectId, Long moduleId) {
@@ -136,4 +137,8 @@ public class SubjectService {
 
         return subjectRepository.save(existingSubject);
     }
+
+  public Set<Module> getAllModulesById (Long subjectId){
+        return subjectRepository.findById(subjectId).get().getSubjectModules();
+  }
 }

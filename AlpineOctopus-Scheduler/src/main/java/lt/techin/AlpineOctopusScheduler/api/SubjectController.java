@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper;
+import lt.techin.AlpineOctopusScheduler.model.Module;
 import lt.techin.AlpineOctopusScheduler.model.Subject;
 import lt.techin.AlpineOctopusScheduler.service.SubjectService;
 import org.slf4j.Logger;
@@ -19,6 +20,7 @@ import java.time.LocalDateTime;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper.toSubject;
@@ -44,6 +46,11 @@ public class SubjectController {
                 .collect(toList());
     }
 
+    @GetMapping(value ="/{subjectId}/modules")
+    @ResponseBody
+    public Set<Module> getAllModulesById(@PathVariable Long subjectId) {
+        return subjectService.getAllModulesById(subjectId);
+    }
     @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public List<SubjectEntityDto> getPagedAllSubjects(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
@@ -119,4 +126,8 @@ public class SubjectController {
 
         return ok(toSubjectDto(updatedSubject));
     }
+
+
+
+
 }

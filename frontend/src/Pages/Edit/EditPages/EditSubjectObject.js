@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button,  Icon,  Input, Table } from 'semantic-ui-react';
+import { Button,  Icon,  Input, Table,List } from 'semantic-ui-react';
 import { ViewSubjects } from './ViewSubjects';
 
 
@@ -93,7 +93,12 @@ export function EditSubjectObject(props) {
             <Table.Body>
                 <Table.Row  >
                     <Table.Cell >{subjects.name}</Table.Cell>
-                    <Table.Cell >{subjects.subjectModules}</Table.Cell>
+                    <Table.Cell >
+                    <List bulleted>
+                      <List.Item>
+                        {subjects.subjectModules}
+                        </List.Item>
+                    </List></Table.Cell>
                     <Table.Cell >{subjects.description}</Table.Cell>
                     <Table.Cell collapsing > {subjects.modifiedDate}  </Table.Cell>
                     <Table.Cell collapsing ><Button onClick={editThis}>Redaguoti</Button>

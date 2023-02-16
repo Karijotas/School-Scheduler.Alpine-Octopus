@@ -1,6 +1,8 @@
 package lt.techin.AlpineOctopusScheduler.api;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import io.swagger.annotations.ApiOperation;
+
 import lt.techin.AlpineOctopusScheduler.api.dto.RoomDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.RoomEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherDto;
@@ -77,6 +79,24 @@ public class RoomController {
         }
         return ResponseEntity.notFound().build();
     }
+    @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<RoomEntityDto> getPagedAllRooms(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                      @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+
+
+        return roomService.getPagedAllPrograms(page, pageSize);
+
+    }
+    @GetMapping(path = "page/starting-with/{nameText}")
+    @ApiOperation(value = "Get Paged Programs starting with", notes = "Returns list of Programs starting with passed String")
+    @ResponseBody
+    public List<RoomEntityDto> getPagedProgramsByNameContaining(@PathVariable String nameText,
+                                                                   @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                                   @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+        return roomService.getPagedRoomsByNameContaining(nameText, page, pageSize);
+    }
+
 
     @PutMapping("/subjects/{moduleId}")
     public ResponseEntity<RoomDto> addSubjectToRoom(@PathVariable Long roomId, @RequestBody Long subjectId) {

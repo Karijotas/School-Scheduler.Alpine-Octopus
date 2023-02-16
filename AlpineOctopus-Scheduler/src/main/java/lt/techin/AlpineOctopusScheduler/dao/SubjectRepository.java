@@ -14,4 +14,5 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
 
     List<Subject> findByNameContainingIgnoreCase(String nameText, Pageable pageable);
 
+
 }

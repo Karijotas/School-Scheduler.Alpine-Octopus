@@ -21,7 +21,7 @@ public class Room {
     @Size(max = 40)
     private String name;
     @NotBlank
-    @Size(min = 5, max = 40)
+    @Size(max = 40)
     private String building;
     @Size(max = 100)
     private String description;

@@ -22,6 +22,8 @@ export function ViewSubjects() {
   const [create, setCreate] = useState("");
   const [nameText, setNameText] = useState("");
   const [subjects, setSubjects] = useState([]);
+  const [modules, setModules] = useState([]);
+  const [subjectId, setSubjectId] = useState("");
 
   const [subjectsforPaging, setSubjectsForPaging] = useState([]);
 
@@ -41,6 +43,11 @@ export function ViewSubjects() {
       .then(setPageCount(Math.ceil(subjectsforPaging.length / 10)));
   };
 
+  const fetchModules = async () => {
+    fetch(`/api/v1/subjects/${subjectId}/modules`)
+      .then((response) => response.json())
+      .then((jsonRespones) => setModules(jsonRespones));
+  };
   const fetchSubjects = async () => {
     fetch(`/api/v1/subjects/page?page=` + activePage)
       .then((response) => response.json())
@@ -111,15 +118,16 @@ export function ViewSubjects() {
             </Table.Header>
 
             <Table.Body>
-              {subjects.map((subject) => (
+              {subjects.map((subject) => (             
+
                 <Table.Row key={subject.id}>
                   <Table.Cell>{subject.name}</Table.Cell>
                   <Table.Cell> 
-                    {/* <List bulleted>
-                      <List.Item> */}
-                        {subject.subjectModules}
-                        {/* </List.Item>
-                    </List> */}
+                    <List bulleted>                    
+                     <List.Item>
+                        {module.name}
+                        </List.Item>                    
+                    </List>
                   </Table.Cell>
                   <Table.Cell collapsing>
                     <Button
