@@ -190,13 +190,16 @@ export function EditProgramObject(props) {
                   />
                 </Table.Cell>
                 <Table.Cell  collapsing>
+                  <Form>
                   <TextArea
                     style={{ minHeight: 100, minWidth: 200 }}
                     placeholder={programs.description}
+                    value={programs.description}
                     /*options={yearOptions} value={groups.schoolYear} */ onChange={(
                       e
                     ) => updateProperty("description", e)}
                   />
+                  </Form>
                 </Table.Cell>
                 {/* <Table.Cell collapsing><Input value={groups.studentAmount} onChange={(e) => updateProperty('studentAmount', e)} />
                         </Table.Cell>
