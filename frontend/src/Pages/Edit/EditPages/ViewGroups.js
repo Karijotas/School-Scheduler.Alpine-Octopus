@@ -50,8 +50,6 @@ export function ViewGroups() {
             .then(response => response.json())
             .then(jsonResponse => setGroups(jsonResponse));
     };
-
-
     const fetchFilterGroups = async () => {
         fetch('/api/v1/groups/name-filter/' + nameText)
             .then(response => response.json())

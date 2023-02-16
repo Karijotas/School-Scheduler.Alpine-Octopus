@@ -26,10 +26,6 @@ public class Subject {
     @Size(min = 5, max = 100)
     private String description;
 
-    //    @NotBlank
-//      private Teacher teacher;
-//    @NotBlank
-//   private Room room;
     @CreatedDate
     private LocalDateTime createdDate;
 
@@ -37,10 +33,39 @@ public class Subject {
     @LastModifiedDate
     private LocalDateTime modifiedDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "module_id")
-    //@JoinColumn(name = "module_id", nullable = true)
-    private Module module;
+
+    @PrePersist
+    public void prePersist() {
+        createdDate = LocalDateTime.now();
+        modifiedDate = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        modifiedDate = LocalDateTime.now();
+    }
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @JoinTable(
+            name = "modules_subjects",
+            joinColumns = @JoinColumn(name = "subject_id"),
+            inverseJoinColumns = @JoinColumn(name = "module_id"))
+    private Set<Module> subjectModules;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @JoinTable(
+            name = "rooms_subjects",
+            joinColumns = @JoinColumn(name = "subject_id"),
+            inverseJoinColumns = @JoinColumn(name = "room_id"))
+    private Set<Room> subjectRooms;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @JoinTable(
+            name = "teachers_subjects",
+            joinColumns = @JoinColumn(name = "subject_id"),
+            inverseJoinColumns = @JoinColumn(name = "teacher_id"))
+    private Set<Teacher> subjectTeachers;
 
     @OneToMany(mappedBy = "program")
     @JsonIgnore
@@ -49,6 +74,17 @@ public class Subject {
     public Subject() {
         subjectHours = new HashSet<>();
 
+    }
+
+    public Subject(Long id, String name, String description ,LocalDateTime createdDate, LocalDateTime modifiedDate, Set<Module> subjectModules,Set<Room> subjectRooms,Set<Teacher> subjectTeachers) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
+        this.subjectModules = subjectModules;
+        this.subjectRooms = subjectRooms;
+        this.subjectTeachers = subjectTeachers;
     }
 
     public Long getId() {
@@ -91,12 +127,28 @@ public class Subject {
         this.modifiedDate = modifiedDate;
     }
 
-    public Module getModule() {
-        return module;
+    public Set<Module> getSubjectModules() {
+        return subjectModules;
     }
 
-    public void setModule(Module module) {
-        this.module = module;
+    public void setSubjectModules(Set<Module> subjectModules) {
+        this.subjectModules = subjectModules;
+    }
+
+    public Set<Room> getSubjectRooms() {
+        return subjectRooms;
+    }
+
+    public void setSubjectRooms(Set<Room> subjectRooms) {
+        this.subjectRooms = subjectRooms;
+    }
+
+    public Set<Teacher> getSubjectTeachers() {
+        return subjectTeachers;
+    }
+
+    public void setSubjectTeachers(Set<Teacher> subjectTeachers) {
+        this.subjectTeachers = subjectTeachers;
     }
 
     @Override
@@ -104,12 +156,12 @@ public class Subject {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Subject subject = (Subject) o;
-        return Objects.equals(id, subject.id) && Objects.equals(name, subject.name) && Objects.equals(description, subject.description) && Objects.equals(createdDate, subject.createdDate) && Objects.equals(modifiedDate, subject.modifiedDate) && Objects.equals(module, subject.module);
+        return Objects.equals(id, subject.id) && Objects.equals(name, subject.name) && Objects.equals(description, subject.description) && Objects.equals(createdDate, subject.createdDate) && Objects.equals(modifiedDate, subject.modifiedDate) && Objects.equals(subjectModules, subject.subjectModules) && Objects.equals(subjectRooms, subject.subjectRooms) && Objects.equals(subjectTeachers, subject.subjectTeachers);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, createdDate, modifiedDate, module);
+        return Objects.hash(id, name, description, createdDate, modifiedDate, subjectModules, subjectRooms, subjectTeachers);
     }
 
     @Override
@@ -120,7 +172,15 @@ public class Subject {
                 ", description='" + description + '\'' +
                 ", createdDate=" + createdDate +
                 ", modifiedDate=" + modifiedDate +
-                ", module=" + module +
+                ", subjectModules=" + subjectModules +
+                ", subjectRooms=" + subjectRooms +
+                ", subjectTeachers=" + subjectTeachers +
                 '}';
     }
 }
+
+
+
+
+
+

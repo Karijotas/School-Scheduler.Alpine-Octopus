@@ -36,17 +36,9 @@ export function ViewPrograms() {
   };
 
   const fetchSinglePrograms = () => {
-<<<<<<< HEAD
     fetch('/api/v1/programs')
       .then(response => response.json())
       .then(jsonResponse => setGroupsForPaging(jsonResponse)).then(setPageCount(Math.ceil(groupsforPaging.length / 10)))
-=======
-    fetch("/api/v1/programs")
-      .then((response) => response.json())
-      .then((jsonResponse) => setGroupsForPaging(jsonResponse))
-      .then(setPageCount(Math.ceil(groupsforPaging.length / 10)));
-    // .then(console.log('pages:' + pagecount));
->>>>>>> origin/leftovers
   };
 
   const fetchPrograms = async () => {
@@ -153,10 +145,6 @@ export function ViewPrograms() {
               ))}
             </Table.Body>
           </Table>
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/leftovers
           <Divider hidden></Divider>
 
           <ButtonGroup basic compact>
@@ -164,37 +152,15 @@ export function ViewPrograms() {
               onClick={() =>
                 setActivePage(activePage <= 0 ? activePage : activePage - 1)
               }
-              icon
-            >
-              <Icon name="arrow left" />{" "}
+              icon><Icon name="arrow left" />{" "}
             </Button>
             {[...Array(pagecount)].map((e, i) => {
-<<<<<<< HEAD
               return <Button key={i} onClick={() => setActivePage(i)}>{(i + 1)}</Button>
-=======
-              return (
-                <Button key={i} onClick={() => setActivePage(i)}>
-                  {i + 1}
-                </Button>
-              );
->>>>>>> origin/leftovers
             })}
             <Button onClick={() => setActivePage(activePage + 1)} icon>
               <Icon name="arrow right" />{" "}
             </Button>
           </ButtonGroup>
-<<<<<<< HEAD
-=======
-          {/* <Pagination 
-            defaultActivePage={1}
-            activePage={activePage}
-            onPageChange={onPageChange}
-            ellipsisItem={null}
-            siblingRange={1}
-            totalPages={10}          
-            
-        />    */}
->>>>>>> origin/leftovers
         </div>
       )}
     </div>

@@ -15,6 +15,7 @@ spring:
 
 #      ddl-auto: drop-and-create
 
+
     generate-ddl: false
     properties:
       hibernate:
@@ -50,6 +51,7 @@ logging:
       #          core:
       #            JdbcTemplate: DEBUG
       #            StatementCreatorUtils: DEBUG
+
 
       hibernate:
         SQL: DEBUG

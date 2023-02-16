@@ -38,7 +38,7 @@ export function CreateGroupPage() {
   const [schoolYear, setSchoolYear] = useState('')
   const [studentAmount, setStudentAmount] = useState('')
   const [programs, setPrograms] = useState([])
-  const [program, setProgram] = useState('')
+  const [programId, setProgramId] = useState(1)
   const [shift, setShift] = useState('')
 
   const applyResult = (result) => {
@@ -55,14 +55,13 @@ export function CreateGroupPage() {
 
   const createGroup = () => {
     fetch(
-      '/api/v1/groups', {
+      '/api/v1/groups?programId=' + programId, {
       method: 'POST',
       headers: JSON_HEADERS,
       body: JSON.stringify({
         name,
         schoolYear,
         studentAmount,
-        program,
         shift,
       })
     }).then(applyResult)
@@ -78,8 +77,6 @@ export function CreateGroupPage() {
         )
       );
   }, []);
-
-
 
 
   return (<div>
@@ -102,7 +99,8 @@ export function CreateGroupPage() {
         <Form.Group widths='equal'>
           <Form.Field >
             <label>Programa</label>
-            <Select options={programs} placeholder='Programa' value={program} onChange={(e) => setProgram(e.target.value)} />
+            <Select options={programs} placeholder='Programa' onClose={() => console.log(programId)} onChange={(e, data) => setProgramId(data.value)} />
+
           </Form.Field>
           <Form.Field >
             <label>Pamaina</label>

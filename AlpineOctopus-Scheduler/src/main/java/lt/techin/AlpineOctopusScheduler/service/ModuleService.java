@@ -1,11 +1,19 @@
 package lt.techin.AlpineOctopusScheduler.service;
+import lt.techin.AlpineOctopusScheduler.api.dto.ModuleEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ModuleMapper;
+import lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Module;
 import lt.techin.AlpineOctopusScheduler.dao.ModuleRepository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ModuleService {
@@ -54,6 +62,20 @@ public class ModuleService {
         }
 
         return false;
+    }
+
+    @Transactional(readOnly = true)
+    public List<ModuleEntityDto> getPagedModulesByNameContaining(String nameText, int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return moduleRepository.findByNameContainingIgnoreCase(nameText, pageable).stream()
+                .map(ModuleMapper::toModuleEntityDto).collect(Collectors.toList());
+    }
+
+    public List<ModuleEntityDto> getPagedAllModules(int page, int pageSize) {
+
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        return moduleRepository.findAll(pageable).stream().map(ModuleMapper::toModuleEntityDto).collect(Collectors.toList());
     }
 }
 
