@@ -95,6 +95,7 @@ export function ViewPrograms() {
       )}
 
       {!active && !create && (
+
         <div id="programs">
           <Input
             value={nameText}
@@ -103,7 +104,7 @@ export function ViewPrograms() {
           />
           {/* <Button onClick={fetchFilterPrograms}>Filtruoti</Button> */}
 
-          <Button icon labelPosition="left" primary className="controls">
+          <Button icon labelPosition="left" primary className="controls" onClick={() => setCreate('new')}>
             <Icon name="database" />
             Kurti naują programą
           </Button>
