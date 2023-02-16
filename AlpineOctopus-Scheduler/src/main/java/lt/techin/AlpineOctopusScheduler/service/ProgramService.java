@@ -89,6 +89,9 @@ public class ProgramService {
         return existingProgramSubjectHours;
     }
 
+
+
+
     public boolean deleteById(Long id) {
         try {
             programRepository.deleteById(id);
@@ -165,6 +168,5 @@ public class ProgramService {
         var newProgramSubjectHoursDto = new ProgramSubjectHoursDto(existingProgram, existingSubject, subjectHours);
         return programSubjectHoursRepository.save(toProgramSubjectHours(newProgramSubjectHoursDto));
     }
-
 
 }

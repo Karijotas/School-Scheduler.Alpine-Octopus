@@ -21,6 +21,8 @@ export function CreateProgramPage() {
   const [hide, setHide] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [subjects, setSubjects] = useState([]);
+  const [subject, setSubject] = useState('');
 
   const applyResult = (result) => {
     const clear = () => {
@@ -40,11 +42,16 @@ export function CreateProgramPage() {
       headers: JSON_HEADERS,
       body: JSON.stringify({
         name,
-        description,
+        description,        
       }),
     }).then(applyResult);
   };
 
+  const addSubjectHours = () => {
+    fetch("/api/v1/programs/{programId}/subjects/newSubjectsWithHours", {
+      
+    })
+  }
   return (
     <div>
       {!hide && (

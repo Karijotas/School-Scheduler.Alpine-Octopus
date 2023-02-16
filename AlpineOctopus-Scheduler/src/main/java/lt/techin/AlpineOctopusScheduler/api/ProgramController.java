@@ -169,5 +169,16 @@ public class ProgramController {
         return programService.addSubjectAndHoursToProgram(programId, subjectId, subjectHours);
     }
 
+    @PostMapping(value = "/{programId}/subjects/newSubjectsWithHoursList")
+    @ResponseBody
+    public List<ProgramSubjectHoursDtoForList> addAllSubjectsAndHoursToProgram(@PathVariable Long programId, @RequestBody List<ProgramSubjectHoursForCreate> programSubjectHoursForCreateList){
+       programSubjectHoursForCreateList.forEach(sh -> programService
+               .addSubjectAndHoursToProgram(programId, sh.getSubjectId(), sh.getSubjectHour()));
+
+               return programService.getAllSubjectsInProgramByProgramId(programId).stream()
+                .map(ProgramSubjectHoursMapper::toProgramSubjectHours)
+                .map(ProgramSubjectHoursMapper::toProgramSubjectHoursDtoForList)
+                .collect(toList());
+    }
 
 }
