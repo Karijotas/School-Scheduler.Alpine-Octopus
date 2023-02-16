@@ -117,7 +117,7 @@ export function EditProgramObject(props) {
               <Table.Row>
                 <Table.HeaderCell>Programos pavadinimas</Table.HeaderCell>
                 <Table.HeaderCell>Aprašymas</Table.HeaderCell>
-                <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
+                <Table.HeaderCell>Paskutinis atnaujinimas</Table.HeaderCell>
                 <Table.HeaderCell>Veiksmai</Table.HeaderCell>
               </Table.Row>
             </Table.Header>
@@ -134,6 +134,29 @@ export function EditProgramObject(props) {
                 </Table.Cell>
               </Table.Row>
             </Table.Body>
+          </Table>
+          <Divider hidden/>
+          <Table>
+          <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell width={6}>Programos dalykai</Table.HeaderCell>
+                <Table.HeaderCell width={8}></Table.HeaderCell>
+                </Table.Row>
+            </Table.Header>
+          <Table.Body>
+                    {subjectsInProgram.map((subject) => (
+                      <Table.Row key={subject.id}>
+                        <Table.Cell>{subject.subject.name}</Table.Cell>
+                        <Table.Cell>{subject.subjectHours} val.</Table.Cell>
+                        
+                        
+                      </Table.Row>
+                    ))}
+                    <Table.Row>
+                    <Table.Cell><h5>Programos valandų skaičius:</h5></Table.Cell> 
+                    <Table.Cell><h5>84 val.</h5></Table.Cell>
+                         </Table.Row>
+                  </Table.Body>
           </Table>
           <Button
             icon
