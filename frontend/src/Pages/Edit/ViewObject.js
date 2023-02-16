@@ -2,8 +2,8 @@ import React from 'react'
 import { ViewGroups } from './EditPages/ViewGroups'
 import {ViewRooms} from './EditPages/ViewRooms'
 import { ViewPrograms } from './EditPages/ViewPrograms'
-import { SubjectList } from './EditPages/SubjectList'
-import { ModuleList } from './EditPages/ModuleList'
+import { ViewSubjects } from './EditPages/ViewSubjects'
+import { ViewModules } from './EditPages/ViewModules'
 
 
 
@@ -25,7 +25,7 @@ export function ObjectList(props) {
     if (props === 'subjects') {
 
         return (
-            <SubjectList />
+            <ViewSubjects />
         )
     }
 
@@ -63,7 +63,7 @@ export function ObjectList(props) {
     if (props === 'modules') {
 
         return (
-                <ModuleList/>
+                <ViewModules/>
         )
 
 

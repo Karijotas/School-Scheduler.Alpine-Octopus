@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button,  Icon,  Input, Table } from 'semantic-ui-react';
-import { ViewPrograms } from './ViewPrograms';
+import { ViewModules } from './ViewModules';
+import { ViewSubjects } from './ViewSubjects';
 
 
 
@@ -9,39 +10,29 @@ const JSON_HEADERS = {
 };
 
 
-export function EditProgramObject(props) {
+export function EditModuleObject(props) {
 
 
     const [hide, setHide] = useState(false)
 
     const [active, setActive] = useState(true)
-
-    const subjectOptions = [
-        { key: 23, value: 2023, text: '2023' },
-        { key: 24, value: 2024, text: '2024' },
-        { key: 25, value: 2025, text: '2025' },
-        { key: 26, value: 2026, text: '2026' },
-        { key: 27, value: 2027, text: '2027' },
-        { key: 28, value: 2028, text: '2028' },
-    ]
     
 
     const [error, setError] = useState();
 
 
-    const [programs, setPrograms] = useState({
+    const [modules, setModules] = useState({
         name: '',
-        schoolYear: '',
-        studentAmount: '',
-        program: '',
-        shift: '',
+        modulesSubjects: '',
+        description: '',
+        createdDate: '',
         modifiedDate: '',
     });
 
     useEffect(() => {
-        fetch('/api/v1/programs/' + props.id)
+        fetch('/api/v1/modules/' + props.id)
             .then(response => response.json())
-            .then(setPrograms);
+            .then(setModules);
     }, [props]);
 
 
@@ -53,11 +44,11 @@ export function EditProgramObject(props) {
 
     }
 
-    const updatePrograms = () => {
-        fetch('/api/v1/programs/' + props.id, {
+    const updateModules = () => {
+        fetch('/api/v1/modules/' + props.id, {
             method: 'PATCH',
             headers: JSON_HEADERS,
-            body: JSON.stringify(programs)
+            body: JSON.stringify(modules)
         }).then(result => {
             if (!result.ok) {
                 setError('Update failed');
@@ -68,8 +59,8 @@ export function EditProgramObject(props) {
     };
 
     const updateProperty = (property, event) => {
-        setPrograms({
-            ...programs,
+        setModules({
+            ...modules,
             [property]: event.target.value
         });
     };
@@ -91,7 +82,8 @@ export function EditProgramObject(props) {
         <Table celled color='violet'>
             <Table.Header >
                 <Table.Row  >
-                    <Table.HeaderCell>Programos pavadinimas</Table.HeaderCell>
+                    <Table.HeaderCell>Modulio pavadinimas</Table.HeaderCell>
+                    <Table.HeaderCell>Modulio dalykai</Table.HeaderCell>
                     <Table.HeaderCell>Aprašymas</Table.HeaderCell>                   
                     <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
                     <Table.HeaderCell>Veiksmai</Table.HeaderCell>
@@ -101,12 +93,10 @@ export function EditProgramObject(props) {
 
             <Table.Body>
                 <Table.Row  >
-                    <Table.Cell >{programs.name}</Table.Cell>
-                    <Table.Cell >{programs.description}</Table.Cell>
-                    
-
-                    <Table.Cell collapsing > {programs.modifiedDate}  </Table.Cell>
-
+                    <Table.Cell >{modules.name}</Table.Cell>
+                    <Table.Cell >{modules.modulesSubjects}</Table.Cell>
+                    <Table.Cell >{modules.description}</Table.Cell>
+                    <Table.Cell collapsing > {modules.modifiedDate}  </Table.Cell>
                     <Table.Cell collapsing ><Button onClick={editThis}>Taisyti</Button>
                     </Table.Cell>
 
@@ -126,7 +116,8 @@ export function EditProgramObject(props) {
             <Table celled color='violet'>
                 <Table.Header >
                     <Table.Row  >
-                    <Table.HeaderCell>Programos pavadinimas</Table.HeaderCell>
+                    <Table.HeaderCell>Modulio pavadinimas</Table.HeaderCell>
+                    <Table.HeaderCell>Modulio dalykai</Table.HeaderCell>
                     <Table.HeaderCell>Aprašymas</Table.HeaderCell>                   
                     <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
                     <Table.HeaderCell>Veiksmai</Table.HeaderCell>
@@ -136,9 +127,11 @@ export function EditProgramObject(props) {
 
                 <Table.Body>
                     <Table.Row  >
-                        <Table.Cell collapsing><Input value={programs.name} onChange={(e) => updateProperty('name', e)} />
+                        <Table.Cell collapsing><Input value={modules.name} onChange={(e) => updateProperty('name', e)} />
                         </Table.Cell>
-                        <Table.Cell collapsing><Input placeholder={programs.description} /*options={yearOptions} value={groups.schoolYear} */onChange={(e) => updateProperty('description', e)} />
+                        <Table.Cell collapsing><Input value={modules.modulesSubjects} onChange={(e) => updateProperty('modulesSubjects', e)} />
+                        </Table.Cell>
+                        <Table.Cell collapsing><Input placeholder={modules.description} /*options={yearOptions} value={groups.schoolYear} */onChange={(e) => updateProperty('description', e)} />
                         </Table.Cell>
                         {/* <Table.Cell collapsing><Input value={groups.studentAmount} onChange={(e) => updateProperty('studentAmount', e)} />
                         </Table.Cell>
@@ -147,9 +140,9 @@ export function EditProgramObject(props) {
                         <Table.Cell collapsing><Input options={shiftOptions} placeholder={groups.shift} value={groups.shift} onChange={(e) => updateProperty('shift', e)} /> */}
                         {/* </Table.Cell> */}
 
-                        <Table.Cell collapsing> {programs.modifiedDate}  </Table.Cell>
+                        <Table.Cell collapsing> {modules.modifiedDate}  </Table.Cell>
 
-                        <Table.Cell collapsing ><Button primary onClick={updatePrograms}>Atnaujinti</Button></Table.Cell>
+                        <Table.Cell collapsing ><Button primary onClick={updateModules}>Atnaujinti</Button></Table.Cell>
 
 
                     </Table.Row>
@@ -160,7 +153,7 @@ export function EditProgramObject(props) {
 
         </div>)}
 
-        {hide && <div><ViewPrograms /></div>}
+        {hide && <div><ViewModules /></div>}
 
 
 

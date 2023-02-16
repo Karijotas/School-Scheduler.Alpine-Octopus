@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Button,
+  ButtonGroup,
+  Divider,
   Dropdown,
   Icon,
   Input,
   Pagination,
   Table,
 } from "semantic-ui-react";
-import { CreateProgramPage }  from '../../Create/CreateProgramPage';
+import { CreateProgramPage } from '../../Create/CreateProgramPage';
 import { EditProgramObject } from './EditProgramObject';
 import './ViewGroups.css';
 
@@ -21,16 +23,25 @@ export function ViewPrograms() {
 
   const [active, setActive] = useState()
   const [create, setCreate] = useState('')
-  const [activeItem, setActiveItem] = useState("");
-  const [nameText, setNameText] = useState("");  
+  const [nameText, setNameText] = useState("");
   const [programs, setPrograms] = useState([]);
-  const [activePage, setActivePage] = useState(0); 
+  const [groupsforPaging, setGroupsForPaging] = useState([]);
+
+  const [activePage, setActivePage] = useState(0);
+  const [pagecount, setPageCount] = useState()
+
 
 
   const fetchFilterPrograms = async () => {
     fetch(`/api/v1/programs/page/starting-with/${nameText}?page=` + activePage)
       .then((response) => response.json())
       .then((jsonRespone) => setPrograms(jsonRespone));
+  };
+
+  const fetchSinglePrograms = () => {
+    fetch('/api/v1/programs')
+      .then(response => response.json())
+      .then(jsonResponse => setGroupsForPaging(jsonResponse)).then(setPageCount(Math.ceil(groupsforPaging.length / 10)))
   };
 
 
@@ -47,87 +58,91 @@ export function ViewPrograms() {
     }).then(fetchPrograms);
   };
 
- 
-  useEffect(() => {   
+
+  useEffect(() => {
     nameText.length > 0 ? fetchFilterPrograms() : fetchPrograms();
   }, [activePage, nameText]);
 
   const [open, setOpen] = useState(false)
   const [close, setClose] = useState(false)
 
+
+  useEffect(() => {
+    if (pagecount !== null) {
+      fetchSinglePrograms();
+    }
+  }, [programs])
+
   return (
-<div>
-    {create && (<div>
-      <CreateProgramPage /></div>)}
-  {active && (<div className='edit'>
-      <EditProgramObject id={active} /></div>)}
+    <div>
+      {create && (<div>
+        <CreateProgramPage /></div>)}
+      {active && (<div className='edit'>
+        <EditProgramObject id={active} /></div>)}
 
-  {!active && !create && (
-    <div id="programs">
-      <Input
-        value={nameText}
-        onChange={(e) => setNameText(e.target.value)}
-        placeholder="Ieškoti pagal pavadinimą"
-      />
-      {/* <Button onClick={fetchFilterPrograms}>Filtruoti</Button> */}
-
-      
-      <Button icon labelPosition='left' primary className='controls'><Icon name='database' />Kurti naują programą</Button>
-
-      <Table selectable>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell>Programos pavadinimas</Table.HeaderCell>
-            <Table.HeaderCell>Programos aprašymas</Table.HeaderCell>
-            <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
-            <Table.HeaderCell>Veiksmai</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
+      {!active && !create && (
+        <div id="programs">
+          <Input
+            value={nameText}
+            onChange={(e) => setNameText(e.target.value)}
+            placeholder="Ieškoti pagal pavadinimą"
+          />
+          {/* <Button onClick={fetchFilterPrograms}>Filtruoti</Button> */}
 
 
-        <Table.Body>
-          {programs.map((program) => (
-            <Table.Row key={program.id}>
-              <Table.Cell>{program.name}</Table.Cell>
-              <Table.Cell>{program.description}</Table.Cell>
-              <Table.Cell>{program.modifiedDate}</Table.Cell>
-              <Table.Cell collapsing>
-                <Button
-                  basic
-                  primary
-                  compact
-                  icon="eye"
-                  title="Peržiūrėti"
-                  onClick={() => setActive(program.id)}
-                ></Button>
-                <Button
-                  basic
-                  color="black"
-                  compact
-                  icon="trash alternate"
-                  onClick={() => removeProgram(program.id)}
-                ></Button>
-              </Table.Cell>
-            </Table.Row>
-          ))}
-        </Table.Body>
-      </Table>
-      <button onClick={()=> setActivePage(0)}> 1 </button>
-              <button onClick={()=> setActivePage(1)}> 2 </button> 
-              <button onClick={()=> setActivePage(2)}> 3 </button> 
-              <button onClick={()=> setActivePage(3)}> 4 </button>      
-      {/* <Pagination 
-            defaultActivePage={1}
-            activePage={activePage}
-            onPageChange={onPageChange}
-            ellipsisItem={null}
-            siblingRange={1}
-            totalPages={10}          
-            
-        />    */}  
+          <Button icon labelPosition='left' primary className='controls'><Icon name='database' />Kurti naują programą</Button>
+          <Divider horizontal hidden></Divider>
 
-    </div>
-  )}
+          <Table selectable>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell>Programos pavadinimas</Table.HeaderCell>
+                <Table.HeaderCell>Programos aprašymas</Table.HeaderCell>
+                <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
+                <Table.HeaderCell>Veiksmai</Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
+
+
+            <Table.Body>
+              {programs.map((program) => (
+                <Table.Row key={program.id}>
+                  <Table.Cell>{program.name}</Table.Cell>
+                  <Table.Cell>{program.description}</Table.Cell>
+                  <Table.Cell>{program.modifiedDate}</Table.Cell>
+                  <Table.Cell collapsing>
+                    <Button
+                      basic
+                      primary
+                      compact
+                      icon="eye"
+                      title="Peržiūrėti"
+                      onClick={() => setActive(program.id)}
+                    ></Button>
+                    <Button
+                      basic
+                      color="black"
+                      compact
+                      icon="trash alternate"
+                      onClick={() => removeProgram(program.id)}
+                    ></Button>
+                  </Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
+
+          <Divider hidden></Divider>
+
+          <ButtonGroup basic compact>
+            <Button onClick={() => setActivePage(activePage <= 0 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
+            {[...Array(pagecount)].map((e, i) => {
+              return <Button key={i} onClick={() => setActivePage(i)}>{(i + 1)}</Button>
+            })}
+            <Button onClick={() => setActivePage(activePage + 1)} icon><Icon name="arrow right" />  </Button>
+          </ButtonGroup>
+        </div>
+      )}
     </div>
   );
 }

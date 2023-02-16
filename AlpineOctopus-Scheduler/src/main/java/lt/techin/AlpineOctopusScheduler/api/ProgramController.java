@@ -65,14 +65,14 @@ public class ProgramController {
 
     }
 
-    @GetMapping(path = "/starting-with/{nameText}")
+    @GetMapping(path = "/name-filter/{nameText}")
     @ApiOperation(value = "Get Programs starting with", notes = "Returns list of Programs starting with passed String")
     @ResponseBody
     public List<ProgramEntityDto> getProgramsByNameContaining(@PathVariable String nameText) {
         return programService.getProgramsByNameContaining(nameText);
     }
 
-    @GetMapping(path = "page/starting-with/{nameText}")
+    @GetMapping(path = "page/name-filter/{nameText}")
     @ApiOperation(value = "Get Paged Programs starting with", notes = "Returns list of Programs starting with passed String")
     @ResponseBody
     public List<ProgramEntityDto> getPagedProgramsByNameContaining(@PathVariable String nameText,

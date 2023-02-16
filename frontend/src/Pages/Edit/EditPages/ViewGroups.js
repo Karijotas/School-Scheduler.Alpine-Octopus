@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Confirm, Divider, Icon, Input, Table } from 'semantic-ui-react'
+import { Button, ButtonGroup, Confirm, Divider, Icon, Input, Pagination, Table } from 'semantic-ui-react'
 import { CreateGroupPage } from '../../Create/CreateGroupPage';
 import { EditGroupObject } from './EditGroupObject';
 import './ViewGroups.css';
@@ -24,6 +24,8 @@ export function ViewGroups() {
     const [create, setCreate] = useState('')
 
     const [groups, setGroups] = useState([]);
+    const [groupsforPaging, setGroupsForPaging] = useState([]);
+
 
     const [nameText, setNameText] = useState('')
 
@@ -32,6 +34,9 @@ export function ViewGroups() {
     const [programText, setProgramText] = useState();
 
     const [activePage, setActivePage] = useState(0)
+
+    const [pagecount, setPageCount] = useState()
+
 
 
 
@@ -62,7 +67,8 @@ export function ViewGroups() {
     const fetchSingleGroups = async () => {
         fetch('/api/v1/groups/')
             .then(response => response.json())
-            .then(jsonResponse => setGroups(jsonResponse));
+            .then(jsonResponse => setGroupsForPaging(jsonResponse)).then(setPageCount(Math.ceil(groupsforPaging.length / 10)))
+        // .then(console.log('pages:' + pagecount));
     };
 
     const removeGroup = (id) => {
@@ -74,11 +80,19 @@ export function ViewGroups() {
     }
 
 
+
     useEffect(() => {
         fetchGroups();
     }, [nameText, yearText, programText, activePage]);
 
+    useEffect(() => {
+        if (pagecount !== null) {
+            fetchSingleGroups();
+        }
+    }, [groups])
+
     const [open, setOpen] = useState(false)
+
 
 
     return (
@@ -149,8 +163,15 @@ export function ViewGroups() {
                     </Table>
                     <Divider hidden></Divider>
 
-                    <Button onClick={() => setActivePage(0)}>1</Button>
-                    <Button onClick={() => setActivePage(1)}>2</Button>
+                    <ButtonGroup basic compact>
+                        <Button onClick={() => setActivePage(activePage <= 0 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
+                        {[...Array(pagecount)].map((e, i) => {
+                            return <Button key={i} onClick={() => setActivePage(i)}>{i + 1}</Button>
+                        })}
+                        <Button onClick={() => setActivePage(activePage >= pagecount - 1 ? activePage : activePage + 1)} icon><Icon name="arrow right" />  </Button>
+                    </ButtonGroup>
+
+
                 </div>
             )}
 

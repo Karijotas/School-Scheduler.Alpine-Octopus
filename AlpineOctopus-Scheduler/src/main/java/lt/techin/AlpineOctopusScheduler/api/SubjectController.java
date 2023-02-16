@@ -49,12 +49,11 @@ public class SubjectController {
     public List<SubjectEntityDto> getPagedAllSubjects(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
                                                       @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
 
-
         return subjectService.getPagedAllSubjects(page, pageSize);
 
     }
 
-    @GetMapping(path = "page/starting-with/{nameText}")
+    @GetMapping(path = "page/name-filter/{nameText}")
     @ApiOperation(value = "Get Paged Subjects starting with", notes = "Returns list of Subjects starting with passed String")
     @ResponseBody
     public List<SubjectEntityDto> getPagedSubjectsByNameContaining(@PathVariable String nameText,
@@ -62,8 +61,6 @@ public class SubjectController {
                                                                    @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
         return subjectService.getPagedSubjectsByNameContaining(nameText, page, pageSize);
     }
-
-
 
 
     @PostMapping
@@ -100,5 +97,12 @@ public class SubjectController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
 
         return responseEntity;
+    }
+
+    @PutMapping("/modules/{subjectId}")
+    public ResponseEntity<SubjectDto> addModuleToSubject(@PathVariable Long subjectId, @RequestBody Long moduleId) {
+        var updatedSubject = subjectService.addModuleToSubject(subjectId, moduleId);
+
+        return ok(toSubjectDto(updatedSubject));
     }
 }

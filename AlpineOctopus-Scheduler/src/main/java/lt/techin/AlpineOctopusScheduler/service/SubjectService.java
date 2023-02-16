@@ -2,6 +2,7 @@ package lt.techin.AlpineOctopusScheduler.service;
 
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper;
+import lt.techin.AlpineOctopusScheduler.dao.ModuleRepository;
 import lt.techin.AlpineOctopusScheduler.dao.SubjectRepository;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Module;
@@ -13,15 +14,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class SubjectService {
 
     private final SubjectRepository subjectRepository;
+    private final ModuleRepository moduleRepository;
 
-    public SubjectService(SubjectRepository subjectRepository) {
+    public SubjectService(SubjectRepository subjectRepository, ModuleRepository moduleRepository) {
         this.subjectRepository = subjectRepository;
+        this.moduleRepository = moduleRepository;
     }
 
     public List<Subject> getAll() {
@@ -73,5 +77,21 @@ public class SubjectService {
         }
 
         return false;
+    }
+
+    public Subject addModuleToSubject(Long subjectId, Long moduleId) {
+        var existingSubject = subjectRepository.findById(subjectId)
+                .orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
+                        "id", "Subject not found", subjectId.toString()));
+
+        var existingModule = moduleRepository.findById(moduleId)
+                .orElseThrow(() -> new SchedulerValidationException("Module does not exist",
+                        "id", "Module not found", moduleId.toString()));
+
+        Set<Module> existingModuleList = existingSubject.getSubjectModules();
+        existingModuleList.add(existingModule);
+        existingSubject.setSubjectModules(existingModuleList);
+
+        return subjectRepository.save(existingSubject);
     }
 }
