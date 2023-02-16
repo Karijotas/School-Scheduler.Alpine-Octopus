@@ -38,7 +38,7 @@ export function CreateGroupPage() {
   const [schoolYear, setSchoolYear] = useState('')
   const [studentAmount, setStudentAmount] = useState('')
   const [programs, setPrograms] = useState([])
-  const [programId, setProgramId] = useState(1)
+  const [programId, setProgramId] = useState()
   const [shift, setShift] = useState('')
 
   const applyResult = (result) => {

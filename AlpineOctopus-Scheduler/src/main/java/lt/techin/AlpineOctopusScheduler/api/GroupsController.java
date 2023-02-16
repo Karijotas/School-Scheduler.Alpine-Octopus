@@ -72,7 +72,7 @@ public class GroupsController {
     @GetMapping(path = "/program-filter/{programText}")
     @ApiOperation(value = "Get Programs starting with", notes = "Returns list of Programs starting with passed String")
     @ResponseBody
-    public List<GroupsDto> getGroupsByProgram(@PathVariable String programText) {
+    public List<GroupsEntityDto> getGroupsByProgram(@PathVariable String programText) {
         return groupService.getGroupsByProgram(programText);
     }
 
@@ -110,8 +110,8 @@ public class GroupsController {
         return ok(toGroupDto(updatedGroup));
     }
     @PatchMapping("/{groupId}")
-    public ResponseEntity<GroupsDto> updateGroup(@PathVariable Long groupId, @RequestBody GroupsDto groupsDto) {
-        var updatedGroup = groupService.update(groupId, toGroup(groupsDto));
+    public ResponseEntity<GroupsDto> updateGroup(@PathVariable Long groupId, @RequestBody GroupsDto groupsDto, Long programId) {
+        var updatedGroup = groupService.update(groupId, toGroup(groupsDto), programId);
 
         return ok(toGroupDto(updatedGroup));
     }
