@@ -52,7 +52,7 @@ export function EditGroupObject(props) {
         fetch('/api/v1/groups/' + props.id)
             .then(response => response.json())
             .then(setGroups);
-    }, [props]);
+    }, [props, active]);
 
 
 
