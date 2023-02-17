@@ -4,6 +4,8 @@ import {
   Button,
   ButtonGroup,
   Divider,
+  Dropdown,
+  Confirm,
   Icon,
   Input,
   Table,
@@ -49,7 +51,8 @@ export function ViewPrograms() {
     fetch("/api/v1/programs/" + id, {
       method: "DELETE",
       headers: JSON_HEADERS,
-    }).then(fetchPrograms);
+    }).then(fetchPrograms)
+         .then(setOpen(false));
   };
 
   useEffect(() => {
@@ -58,6 +61,7 @@ export function ViewPrograms() {
 
   const [open, setOpen] = useState(false);
   const [close, setClose] = useState(false);
+ 
 
   useEffect(() => {
     if (pagecount !== null) {
@@ -79,6 +83,7 @@ export function ViewPrograms() {
       )}
 
       {!active && !create && (
+
         <div id="programs">
           <Input
             value={nameText}
@@ -103,8 +108,7 @@ export function ViewPrograms() {
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell>Programos pavadinimas</Table.HeaderCell>
-                <Table.HeaderCell>Programos aprašymas</Table.HeaderCell>
-                <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
+                
                 <Table.HeaderCell>Veiksmai</Table.HeaderCell>
               </Table.Row>
             </Table.Header>
@@ -113,8 +117,7 @@ export function ViewPrograms() {
               {programs.map((program) => (
                 <Table.Row key={program.id}>
                   <Table.Cell>{program.name}</Table.Cell>
-                  <Table.Cell>{program.description}</Table.Cell>
-                  <Table.Cell>{program.modifiedDate}</Table.Cell>
+                  
                   <Table.Cell collapsing>
                     <Button
                       basic
@@ -128,15 +131,26 @@ export function ViewPrograms() {
                       basic
                       color="black"
                       compact
+                      title="Ištrinti"
                       icon="trash alternate"
-                      onClick={() => removeProgram(program.id)}
+                      onClick={() => setOpen(program.id)}
                     ></Button>
+
+                    <Confirm
+                      open={open}
+                      header="Dėmesio!"
+                      content="Ar tikrai norite ištrinti?"
+                      cancelButton="Grįžti atgal"
+                      confirmButton="Ištrinti"
+                      onCancel={() => setOpen(false)}
+                      onConfirm={() => removeProgram(open)}
+                      size="small"
+                    />
                   </Table.Cell>
                 </Table.Row>
               ))}
             </Table.Body>
           </Table>
-
           <Divider hidden></Divider>
 
           <ButtonGroup basic compact>

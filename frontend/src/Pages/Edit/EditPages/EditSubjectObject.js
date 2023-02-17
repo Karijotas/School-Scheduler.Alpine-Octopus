@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button,  Icon,  Input, Table,List } from 'semantic-ui-react';
+import { Button,  Icon,  Input, Table,Divider } from 'semantic-ui-react';
 import { ViewSubjects } from './ViewSubjects';
 
 const JSON_HEADERS = {
@@ -8,10 +8,11 @@ const JSON_HEADERS = {
 
 export function EditSubjectObject(props) {
 
-
+const [modulesInSubjects, setModulesInSubjects] = useState([]);
     const [hide, setHide] = useState(false)
     const [active, setActive] = useState(true)
     const [error, setError] = useState();
+    const [subjectId, setSubjectId] = useState("");
     const [subjects, setSubjects] = useState({
         name: '',
         subjectModules: '',
@@ -31,6 +32,12 @@ export function EditSubjectObject(props) {
         setHide(true)
 
     }
+
+    const fetchModulesInSubject = async () => {
+        fetch(`/api/v1/subjects/${subjectId}/modules`)
+            .then(response => response.json())
+            .then(jsonResponse => setModulesInSubjects(jsonResponse));
+    };
 
     const updateSubjects = () => {
         fetch('/api/v1/subjects/' + props.id, {
@@ -91,6 +98,24 @@ export function EditSubjectObject(props) {
 
             </ Table.Body >
         </Table>
+
+        <Divider hidden />
+          <Table>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell width={6}>Yra šiuose moduliuose:</Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
+              {modulesInSubjects.map((module) => (
+                <Table.Row key={module.id}>
+                  <Table.Cell>{module.module.name}</Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
+
+
         <Button icon labelPosition="left" className="" onClick={() => setHide(true)}><Icon name="arrow left" />Atgal</Button>
 
     </div>

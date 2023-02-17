@@ -1,14 +1,21 @@
 package lt.techin.AlpineOctopusScheduler.service;
 
+
+import lt.techin.AlpineOctopusScheduler.dao.ProgramRepository;
+
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper;
+
 import lt.techin.AlpineOctopusScheduler.dao.ModuleRepository;
 import lt.techin.AlpineOctopusScheduler.dao.RoomRepository;
+
 import lt.techin.AlpineOctopusScheduler.dao.SubjectRepository;
 import lt.techin.AlpineOctopusScheduler.dao.TeacherRepository;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
+
 import lt.techin.AlpineOctopusScheduler.model.Module;
 import lt.techin.AlpineOctopusScheduler.model.Room;
+
 import lt.techin.AlpineOctopusScheduler.model.Subject;
 import lt.techin.AlpineOctopusScheduler.model.Teacher;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -26,17 +33,22 @@ import java.util.stream.Collectors;
 public class SubjectService {
 
     private final SubjectRepository subjectRepository;
+
     private final ModuleRepository moduleRepository;
 
     private final TeacherRepository teacherRepository;
 
     private final RoomRepository roomRepository;
 
-    public SubjectService(SubjectRepository subjectRepository, ModuleRepository moduleRepository, TeacherRepository teacherRepository, RoomRepository roomRepository) {
+    private final ProgramRepository programRepository;
+
+
+    public SubjectService(SubjectRepository subjectRepository, ModuleRepository moduleRepository, TeacherRepository teacherRepository, RoomRepository roomRepository, ProgramRepository programRepository) {
         this.subjectRepository = subjectRepository;
         this.moduleRepository = moduleRepository;
         this.teacherRepository = teacherRepository;
         this.roomRepository = roomRepository;
+        this.programRepository = programRepository;
     }
 
     public List<Subject> getAll() {

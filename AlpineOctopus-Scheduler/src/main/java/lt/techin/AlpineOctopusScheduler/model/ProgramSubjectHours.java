@@ -24,6 +24,14 @@ public class ProgramSubjectHours {
 
     public ProgramSubjectHours() {
     }
+
+    public ProgramSubjectHours(Long id, Program program, Subject subject, Integer subjectHours) {
+        this.id = id;
+        this.program = program;
+        this.subject = subject;
+        this.subjectHours = subjectHours;
+    }
+
     public Long getId() {
         return id;
     }
