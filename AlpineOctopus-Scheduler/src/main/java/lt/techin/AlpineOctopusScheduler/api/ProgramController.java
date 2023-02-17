@@ -149,8 +149,8 @@ public class ProgramController {
         }
     }
 
-    @DeleteMapping("/{programId}/subjects/{subjectId}")
-    public ResponseEntity<Void> deleteSubjectFromProgramByProgramIdSubjectIdHours(@PathVariable Long programId, @PathVariable Long subjectId, @RequestParam Integer hours) {
+    @DeleteMapping("/{programId}/subjects/{subjectId}/{hours}")
+    public ResponseEntity<Void> deleteSubjectFromProgramByProgramIdSubjectIdHours(@PathVariable Long programId, @PathVariable Long subjectId, @PathVariable Integer hours) {
 
         boolean deleted = programService.deleteSubjectInProgramById(programId, subjectId, hours);
         if (deleted) {

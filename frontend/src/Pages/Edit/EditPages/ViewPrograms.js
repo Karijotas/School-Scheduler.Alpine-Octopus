@@ -178,16 +178,7 @@ export function ViewPrograms() {
             <Button onClick={() => setActivePage(activePage + 1)} icon>
               <Icon name="arrow right" />{" "}
             </Button>
-          </ButtonGroup>
-          {/* <Pagination 
-            defaultActivePage={1}
-            activePage={activePage}
-            onPageChange={onPageChange}
-            ellipsisItem={null}
-            siblingRange={1}
-            totalPages={10}          
-            
-        />    */}
+          </ButtonGroup>         
         </div>
       )}
     </div>

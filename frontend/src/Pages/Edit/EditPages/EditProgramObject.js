@@ -26,6 +26,7 @@ export function EditProgramObject(props) {
   const [subject, setSubject] = useState("");
   const [subjectHours, setSubjectHours] = useState("");
   const [totalHours, setTotalHours] = useState("");
+ 
 
   const subjectOptions = [
     { key: 23, value: 2023, text: "2023" },
@@ -40,10 +41,7 @@ export function EditProgramObject(props) {
 
   const [programs, setPrograms] = useState({
     name: "",
-    schoolYear: "",
-    studentAmount: "",
-    program: "",
-    shift: "",
+    description: "",
     modifiedDate: "",
   });
 
@@ -65,6 +63,13 @@ export function EditProgramObject(props) {
      .then(setTotalHours);
   }, [props]);
 
+  const removeSubject = (programId, subjectId, hours) => {
+    fetch(`/api/v1/programs/${programId}/subjects/${subjectId}/${hours}`, {
+      method: "DELETE",
+      headers: JSON_HEADERS,
+    }).then(props = programId);
+         
+  };
   
   useEffect(() => {
     fetch("/api/v1/subjects/")
@@ -116,6 +121,8 @@ export function EditProgramObject(props) {
   //     .then(() => window.location = listUrl);
   // }
 
+
+
   return (
     <div>
       {active && !hide && (
@@ -138,7 +145,7 @@ export function EditProgramObject(props) {
                 <Table.Cell collapsing> {programs.modifiedDate} </Table.Cell>
 
                 <Table.Cell collapsing>
-                  <Button onClick={editThis}>Taisyti</Button>
+                  <Button onClick={editThis}>Redaguoti</Button>
                 </Table.Cell>
               </Table.Row>
             </Table.Body>
@@ -273,7 +280,7 @@ export function EditProgramObject(props) {
                             compact
                             icon="remove"
                             title="Pašalinti"
-                            onClick={() => setActive(subject.id)}
+                            onClick={() => removeSubject(props.id, subject.subject.id, subject.subjectHours, )}
                           ></Button>
                         </Table.Cell>
                         
@@ -281,7 +288,7 @@ export function EditProgramObject(props) {
                     ))}
                     <Table.Row>
                     <Table.Cell><h5>Programos valandų skaičius:</h5></Table.Cell> 
-                    <Table.Cell><h5>84 val.</h5></Table.Cell>
+                    <Table.Cell><h5>{totalHours} val.</h5></Table.Cell>
                          </Table.Row>
                   </Table.Body>
                 </Table.Cell>
