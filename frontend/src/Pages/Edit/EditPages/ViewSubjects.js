@@ -1,96 +1,100 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import {
   Button,
   ButtonGroup,
-  Divider,
-  Dropdown,
   Confirm,
+  Divider,
   Icon,
   Input,
   Table,
 } from "semantic-ui-react";
-import { CreateProgramPage } from "../../Create/CreateProgramPage";
-import { EditProgramObject } from "./EditProgramObject";
+import { EditSubjectObject } from "./EditSubjectObject";
+import { CreateGroupPage } from "../../Create/CreateGroupPage";
 import "./ViewGroups.css";
+import "./FilterSize.css";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
 };
 
-export function ViewPrograms() {
+export function ViewSubjects() {
   const [active, setActive] = useState();
   const [create, setCreate] = useState("");
   const [nameText, setNameText] = useState("");
-  const [programs, setPrograms] = useState([]);
-  const [groupsforPaging, setGroupsForPaging] = useState([]);
+  const [subjects, setSubjects] = useState([]);
+  const [modules, setModules] = useState([]);
+  const [subjectId, setSubjectId] = useState("");
+
+  const [subjectsforPaging, setSubjectsForPaging] = useState([]);
 
   const [activePage, setActivePage] = useState(0);
   const [pagecount, setPageCount] = useState();
 
-  const fetchFilterPrograms = async () => {
-    fetch(`/api/v1/programs/page/starting-with/${nameText}?page=` + activePage)
+  const fetchFilterSubjects = async () => {
+    fetch(`/api/v1/subjects/page/name-filter/${nameText}?page=` + activePage)
       .then((response) => response.json())
-      .then((jsonRespone) => setPrograms(jsonRespone));
+      .then((jsonRespone) => setSubjects(jsonRespone));
   };
 
-  const fetchSinglePrograms = () => {
-    fetch("/api/v1/programs")
+  const fetchSingleSubjects = () => {
+    fetch("/api/v1/subjects")
       .then((response) => response.json())
-      .then((jsonResponse) => setGroupsForPaging(jsonResponse))
-      .then(setPageCount(Math.ceil(groupsforPaging.length / 10)));
+      .then((jsonResponse) => setSubjectsForPaging(jsonResponse))
+      .then(setPageCount(Math.ceil(subjectsforPaging.length / 10)));
   };
 
-  const fetchPrograms = async () => {
-    fetch(`/api/v1/programs/page?page=` + activePage)
+  const fetchModules = async () => {
+    fetch(`/api/v1/subjects/${subjectId}/modules`)
       .then((response) => response.json())
-      .then((jsonRespones) => setPrograms(jsonRespones));
+      .then((jsonRespones) => setModules(jsonRespones));
+  };
+  const fetchSubjects = async () => {
+    fetch(`/api/v1/subjects/page?page=` + activePage)
+      .then((response) => response.json())
+      .then((jsonRespones) => setSubjects(jsonRespones));
   };
 
-  const removeProgram = (id) => {
-    fetch("/api/v1/programs/" + id, {
+  const removeSubject = (id) => {
+    fetch("/api/v1/subjects/" + id, {
       method: "DELETE",
       headers: JSON_HEADERS,
-    }).then(fetchPrograms)
-         .then(setOpen(false));
+    }).then(fetchSubjects);
   };
 
   useEffect(() => {
-    nameText.length > 0 ? fetchFilterPrograms() : fetchPrograms();
+    nameText.length > 0 ? fetchFilterSubjects() : fetchSubjects();
   }, [activePage, nameText]);
 
   const [open, setOpen] = useState(false);
   const [close, setClose] = useState(false);
- 
 
   useEffect(() => {
     if (pagecount !== null) {
-      fetchSinglePrograms();
+      fetchSingleSubjects();
     }
-  }, [programs]);
+  }, [subjects]);
 
   return (
     <div>
       {create && (
         <div>
-          <CreateProgramPage />
+          <CreateGroupPage />
         </div>
       )}
       {active && (
         <div className="edit">
-          <EditProgramObject id={active} />
+          <EditSubjectObject id={active} />
         </div>
       )}
 
       {!active && !create && (
-
-        <div id="programs">
+        <div id="subjects">
           <Input
+            className="controls1"
+            placeholder="Filtruoti pagal pavadinimą"
             value={nameText}
             onChange={(e) => setNameText(e.target.value)}
-            placeholder="Ieškoti pagal pavadinimą"
           />
-          {/* <Button onClick={fetchFilterPrograms}>Filtruoti</Button> */}
 
           <Button
             icon
@@ -100,24 +104,22 @@ export function ViewPrograms() {
             onClick={() => setCreate("new")}
           >
             <Icon name="database" />
-            Kurti naują programą
+            Kurti naują dalyką
           </Button>
           <Divider horizontal hidden></Divider>
 
           <Table selectable>
             <Table.Header>
               <Table.Row>
-                <Table.HeaderCell>Programos pavadinimas</Table.HeaderCell>
-                
+                <Table.HeaderCell>Dalyko pavadinimas</Table.HeaderCell>
                 <Table.HeaderCell>Veiksmai</Table.HeaderCell>
               </Table.Row>
             </Table.Header>
 
             <Table.Body>
-              {programs.map((program) => (
-                <Table.Row key={program.id}>
-                  <Table.Cell>{program.name}</Table.Cell>
-                  
+              {subjects.map((subject) => (
+                <Table.Row key={subject.id}>
+                  <Table.Cell>{subject.name}</Table.Cell>
                   <Table.Cell collapsing>
                     <Button
                       basic
@@ -125,7 +127,7 @@ export function ViewPrograms() {
                       compact
                       icon="eye"
                       title="Peržiūrėti"
-                      onClick={() => setActive(program.id)}
+                      onClick={() => setActive(subject.id)}
                     ></Button>
                     <Button
                       basic
@@ -133,7 +135,7 @@ export function ViewPrograms() {
                       compact
                       title="Ištrinti"
                       icon="trash alternate"
-                      onClick={() => setOpen(program.id)}
+                      onClick={() => setOpen(subject.id)}
                     ></Button>
 
                     <Confirm
@@ -143,7 +145,7 @@ export function ViewPrograms() {
                       cancelButton="Grįžti atgal"
                       confirmButton="Ištrinti"
                       onCancel={() => setOpen(false)}
-                      onConfirm={() => removeProgram(open)}
+                      onConfirm={() => removeSubject(open)}
                       size="small"
                     />
                   </Table.Cell>
@@ -169,7 +171,14 @@ export function ViewPrograms() {
                 </Button>
               );
             })}
-            <Button onClick={() => setActivePage(activePage + 1)} icon>
+            <Button
+              onClick={() =>
+                setActivePage(
+                  activePage >= pagecount - 1 ? activePage : activePage + 1
+                )
+              }
+              icon
+            >
               <Icon name="arrow right" />{" "}
             </Button>
           </ButtonGroup>
@@ -178,3 +187,9 @@ export function ViewPrograms() {
     </div>
   );
 }
+
+
+
+
+
+

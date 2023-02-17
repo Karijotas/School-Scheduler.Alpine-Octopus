@@ -2,12 +2,15 @@ package lt.techin.AlpineOctopusScheduler.service;
 
 import lt.techin.AlpineOctopusScheduler.api.dto.*;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper;
+import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramSubjectHoursMapper;
 import lt.techin.AlpineOctopusScheduler.dao.ProgramRepository;
+import lt.techin.AlpineOctopusScheduler.dao.ProgramSubjectHourListRepository;
 import lt.techin.AlpineOctopusScheduler.dao.ProgramSubjectHoursRepository;
 import lt.techin.AlpineOctopusScheduler.dao.SubjectRepository;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Program;
 import lt.techin.AlpineOctopusScheduler.model.ProgramSubjectHours;
+import lt.techin.AlpineOctopusScheduler.model.ProgramSubjectHoursList;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import org.springframework.data.domain.PageRequest;
@@ -19,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramSubjectHoursMapper.toProgramSubjectHours;
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramSubjectHoursMapper.*;
 
 @Service
 public class ProgramService {
@@ -28,10 +31,13 @@ public class ProgramService {
     private final SubjectRepository subjectRepository;
     private final ProgramSubjectHoursRepository programSubjectHoursRepository;
 
-    public ProgramService(ProgramRepository programRepository, SubjectRepository subjectRepository, ProgramSubjectHoursRepository programSubjectHoursRepository) {
+    private final ProgramSubjectHourListRepository programSubjectHourListRepository;
+
+    public ProgramService(ProgramRepository programRepository, SubjectRepository subjectRepository, ProgramSubjectHoursRepository programSubjectHoursRepository, ProgramSubjectHourListRepository programSubjectHourListRepository) {
         this.programRepository = programRepository;
         this.subjectRepository = subjectRepository;
         this.programSubjectHoursRepository = programSubjectHoursRepository;
+        this.programSubjectHourListRepository = programSubjectHourListRepository;
     }
 
     public List<ProgramEntityDto> getAllPrograms() {
@@ -89,6 +95,9 @@ public class ProgramService {
         return existingProgramSubjectHours;
     }
 
+
+
+
     public boolean deleteById(Long id) {
         try {
             programRepository.deleteById(id);
@@ -108,17 +117,19 @@ public class ProgramService {
     }
 
 
-    public List<ProgramSubjectHoursDto> getAllSubjectsInProgramByProgramId(Long id) {
+
+    public List<ProgramSubjectHours> getAllSubjectsInProgramByProgramId(Long id) {
         List<String> subjectList = programRepository.GetSubjectsAndHoursInProgram(id);
-        List<ProgramSubjectHoursDto> programSubjectHoursDto = new ArrayList<>();
+        List<ProgramSubjectHours> programSubjectHoursList = new ArrayList<>();
         for (String s : subjectList) {
             String[] subjectHours = s.split(",");
-            programSubjectHoursDto
-                    .add(new ProgramSubjectHoursDto(programRepository.findById(id).get(),
-                            subjectRepository.findById(Long.parseLong(subjectHours[0])).get(),
-                            Integer.parseInt(subjectHours[1])));
+            ProgramSubjectHours newPsh = toProgramSubjectHours(new ProgramSubjectHoursDto(programRepository.findById(id).get(),
+                    subjectRepository.findById(Long.parseLong(subjectHours[0])).get(),
+                    Integer.parseInt(subjectHours[1])));
+            programSubjectHoursList
+                    .add(newPsh);
         }
-        return programSubjectHoursDto;
+        return programSubjectHoursList;
     }
 //    @Transactional
 //    public boolean deleteSubjectInProgramById(Long programId, Long subjectId){
@@ -165,6 +176,20 @@ public class ProgramService {
         var newProgramSubjectHoursDto = new ProgramSubjectHoursDto(existingProgram, existingSubject, subjectHours);
         return programSubjectHoursRepository.save(toProgramSubjectHours(newProgramSubjectHoursDto));
     }
+    public ProgramSubjectHoursList addSubjectAndHourForCreate (Long subjectId, Integer hour){
 
+        var programSubjectHourNew  = new ProgramSubjectHoursForCreate(subjectId, hour);
 
+        var programSubjectHourListDtoNew = new ProgramSubjectHourListDto(programSubjectHourNew);
+        return programSubjectHourListRepository.save(toProgramSubjectHourList(programSubjectHourListDtoNew));
+    }
+
+    public List<ProgramSubjectHoursList> findAllSubjectAndHourForCreate (){
+        return programSubjectHourListRepository.findAll();
+    }
+
+//    public boolean deleteAllSubjectsForCreate(){
+//
+//        return programSubjectHourListRepository.deleteAll();
+//    }
 }

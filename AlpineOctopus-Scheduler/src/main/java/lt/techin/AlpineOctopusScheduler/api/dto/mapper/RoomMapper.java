@@ -34,6 +34,7 @@ public class RoomMapper {
         roomEntityDto.setBuilding(room.getBuilding());
         roomEntityDto.setDescription(room.getDescription());
 
+
         return roomEntityDto;
     }
 

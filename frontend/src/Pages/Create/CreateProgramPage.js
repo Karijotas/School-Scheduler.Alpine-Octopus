@@ -1,5 +1,15 @@
-import React, { useState } from "react";
-import { Button, Form, Icon, Input } from "semantic-ui-react";
+import React, { useState, useEffect } from "react";
+import {
+  Button,
+  Form,
+  Icon,
+  Input,
+  Image,
+  Grid,
+  TextArea,
+  List,
+  Select,
+} from "semantic-ui-react";
 
 import { ViewPrograms } from "../Edit/EditPages/ViewPrograms";
 
@@ -21,6 +31,11 @@ export function CreateProgramPage() {
   const [hide, setHide] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [subjects, setSubjects] = useState([]);
+  const [subject, setSubject] = useState("");
+  const [subjectHours, setSubjectHours] = [];
+  const [error, setError] = useState();
+  const [hours, setHours] = useState("");
 
   const applyResult = (result) => {
     const clear = () => {
@@ -45,6 +60,7 @@ export function CreateProgramPage() {
     }).then(applyResult);
   };
 
+ 
   return (
     <div>
       {!hide && (
@@ -61,14 +77,15 @@ export function CreateProgramPage() {
             <Form.Group widths="equal">
               <Form.Field>
                 <label>Aprašymas</label>
-                <Input
-                  options={yearOptions}
+                <TextArea
                   placeholder="Aprašymas"
+                  style={{ minHeight: 100 }}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 />
               </Form.Field>
             </Form.Group>
+            
             <div>
               <Button
                 icon

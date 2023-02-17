@@ -1,23 +1,13 @@
 package lt.techin.AlpineOctopusScheduler.dao;
 
-import lt.techin.AlpineOctopusScheduler.api.dto.ProgramDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.ProgramSubjectHoursDtoForList;
-import lt.techin.AlpineOctopusScheduler.api.dto.ProgramsDtoForSearch;
-import lt.techin.AlpineOctopusScheduler.api.dto.SubjectDto;
 import lt.techin.AlpineOctopusScheduler.model.Program;
-import lt.techin.AlpineOctopusScheduler.model.Subject;
-import org.hibernate.annotations.SQLUpdate;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import javax.transaction.Transactional;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 
 @Repository

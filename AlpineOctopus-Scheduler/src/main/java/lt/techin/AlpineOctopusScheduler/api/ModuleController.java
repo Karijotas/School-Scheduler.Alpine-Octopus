@@ -1,11 +1,13 @@
 package lt.techin.AlpineOctopusScheduler.api;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiOperation;
+import lt.techin.AlpineOctopusScheduler.api.dto.SubjectDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ModuleMapper;
 import lt.techin.AlpineOctopusScheduler.model.Module;
 import lt.techin.AlpineOctopusScheduler.api.dto.ModuleDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ModuleEntityDto;
+import lt.techin.AlpineOctopusScheduler.model.Subject;
 import lt.techin.AlpineOctopusScheduler.service.ModuleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,12 +19,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import javax.validation.Valid;
 
 import static java.util.stream.Collectors.toList;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ModuleMapper.toModule;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ModuleMapper.toModuleDto;
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper.toSubjectDto;
 import static org.springframework.http.ResponseEntity.ok;
 
 @Controller
@@ -43,6 +47,12 @@ public class ModuleController {
         return moduleService.getAll().stream()
                 .map(ModuleMapper::toModuleEntityDto)
                 .collect(toList());
+    }
+
+    @GetMapping(value ="/{moduleId}/subjects")
+    @ResponseBody
+    public Set<Subject> getAllSubjectsById(@PathVariable Long moduleId) {
+        return moduleService.getAllSubjectsById(moduleId);
     }
 
     @PostMapping("/CreateNewModule")
@@ -90,13 +100,20 @@ public class ModuleController {
 
     }
 
-    @GetMapping(path = "page/starting-with/{nameText}")
+    @GetMapping(path = "page/name-filter/{nameText}")
     @ApiOperation(value = "Get Paged Modules starting with", notes = "Returns list of Modules starting with passed String")
     @ResponseBody
     public List<ModuleEntityDto> getPagedModulesByNameContaining(@PathVariable String nameText,
                                                                    @RequestParam(value = "page", defaultValue = "0", required = false) int page,
                                                                    @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
         return moduleService.getPagedModulesByNameContaining(nameText, page, pageSize);
+    }
+
+    @PutMapping("/subjects/{moduleId}")
+    public ResponseEntity<ModuleDto> addSubjectToModule(@PathVariable Long moduleId, @RequestBody Long subjectId) {
+        var updatedModule = moduleService.addSubjectToModule(moduleId, subjectId);
+
+        return ok(toModuleDto(updatedModule));
     }
 }
 

@@ -1,35 +1,28 @@
-
 import React, { useEffect, useState } from "react";
-import { Button, Form, Icon, Input, Select, } from "semantic-ui-react";
+import { Button, Form, Icon, Input, Select } from "semantic-ui-react";
 import { ViewGroups } from "../Edit/EditPages/ViewGroups";
 
-
 const JSON_HEADERS = {
-  'Content-Type': 'application/json'
+  "Content-Type": "application/json",
 };
 
 
 
-
 const yearOptions = [
-  { key: 23, value: 2023, text: '2023' },
-  { key: 24, value: 2024, text: '2024' },
-  { key: 25, value: 2025, text: '2025' },
-  { key: 26, value: 2026, text: '2026' },
-  { key: 27, value: 2027, text: '2027' },
-  { key: 28, value: 2028, text: '2028' },
-]
-
+  { key: 23, value: 2023, text: "2023" },
+  { key: 24, value: 2024, text: "2024" },
+  { key: 25, value: 2025, text: "2025" },
+  { key: 26, value: 2026, text: "2026" },
+  { key: 27, value: 2027, text: "2027" },
+  { key: 28, value: 2028, text: "2028" },
+];
 
 const shiftOptions = [
-  { key: 'p', value: 'pirma', text: 'Pirma' },
-  { key: 'a', value: 'antra', text: 'Antra' },
-  { key: 't', value: 'trecia', text: 'Trečia' },
-  { key: 'k', value: 'ketvirta', text: 'Ketvirta' },
-
-]
-
-
+  { key: "p", value: "pirma", text: "Pirma" },
+  { key: "a", value: "antra", text: "Antra" },
+  { key: "t", value: "trecia", text: "Trečia" },
+  { key: "k", value: "ketvirta", text: "Ketvirta" },
+];
 
 export function CreateGroupPage() {
   // const [create, setCreate] = useState()
@@ -43,8 +36,8 @@ export function CreateGroupPage() {
 
   const applyResult = (result) => {
     const clear = () => {
-      setHide(true)
-    }
+      setHide(true);
+    };
 
     if (result.ok) {
       clear();
@@ -63,11 +56,11 @@ export function CreateGroupPage() {
         schoolYear,
         studentAmount,
         shift,
-      })
-    }).then(applyResult)
+      }),
+    }).then(applyResult);
   };
   useEffect(() => {
-    fetch('/api/v1/programs/')
+    fetch("/api/v1/programs/")
       .then((response) => response.json())
       .then((data) =>
         setPrograms(
@@ -115,4 +108,3 @@ export function CreateGroupPage() {
   </div>
   );
 }
-
