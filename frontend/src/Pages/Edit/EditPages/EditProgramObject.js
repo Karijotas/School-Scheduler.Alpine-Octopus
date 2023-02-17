@@ -27,6 +27,8 @@ export function EditProgramObject(props) {
   const [subjectHours, setSubjectHours] = useState("");
   const [totalHours, setTotalHours] = useState("");
   const [subjectId, setSubjectId] = useState("");
+  const [programName, setProgramName] = useState("");
+  const [programDescription, setProgramDescription] = useState("");
  
 
   const subjectOptions = [
@@ -113,9 +115,12 @@ export function EditProgramObject(props) {
     fetch('/api/v1/programs/' + props.id, {
       method: "PATCH",
       headers: JSON_HEADERS,
-      body: JSON.stringify(programs),
+      body: JSON.stringify({
+
+      }),
     })
-      .then((result) => {
+    .then(console.log(programs))
+      .then(result => {
         if (!result.ok) {
           setError("Update failed");
         } else {
@@ -223,7 +228,7 @@ export function EditProgramObject(props) {
                 <Table.Cell  collapsing>
                   <Input
                     value={programs.name}
-                    onChange={(e) => updateProperty("name", e)}
+                    onChange={(e, data) => ((updateProperty('name', e)), (setProgramName(data)))}
                   />
                 </Table.Cell>
                 <Table.Cell  collapsing>
@@ -232,11 +237,13 @@ export function EditProgramObject(props) {
                     style={{ minHeight: 100, minWidth: 200 }}
                     placeholder={programs.description}
                     value={programs.description}
-                    /*options={yearOptions} value={groups.schoolYear} */ onChange={(
-                      e
-                    ) => updateProperty("description", e)}
+                    /*options={yearOptions} value={groups.schoolYear} */ 
+                    onChange={(e) => updateProperty('description', e)}
                   />
                   </Form>
+                  {console.log(programs.description)}
+                  {console.log(programs.description)}
+                  {console.log(programs.id)}
                 </Table.Cell>
                 {/* <Table.Cell collapsing><Input value={groups.studentAmount} onChange={(e) => updateProperty('studentAmount', e)} />
                         </Table.Cell>
