@@ -105,11 +105,10 @@ public class ProgramController {
 
     @GetMapping(value = "/{programId}/subjects", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public List<ProgramSubjectHoursDtoForList> getAllSubjectsInProgram(@PathVariable Long programId) {
-        return programService.getAllSubjectsInProgramByProgramId(programId).stream()
-                .map(ProgramSubjectHoursMapper::toProgramSubjectHoursDtoForList)
-                .collect(toList());
+    public List<ProgramSubjectHours> getAllSubjectsInProgram(@PathVariable Long programId) {
+        return programService.getAllSubjectsInProgramByProgramId(programId);
     }
+
     @GetMapping(value = "/{programId}/subjects/hours", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public Integer getSumOfHoursByProgramId(@PathVariable Long programId) {
