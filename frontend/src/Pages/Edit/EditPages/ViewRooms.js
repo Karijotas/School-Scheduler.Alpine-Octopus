@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, Divider, ButtonGroup, Confirm, Icon, Input, Table } from 'semantic-ui-react'
 import { CreateRoom } from '../../Create/CreateRoom';
 import { EditRoom } from './EditRoom';
-import './ViewGroups.css';
+import './ViewGroups.css'; 
 
 
 
@@ -17,7 +17,7 @@ export function ViewRooms() {
     const [create, setCreate] = useState('')
 
     const [rooms, setRooms] = useState([]);
-    //
+//
     const [activePage, setActivePage] = useState(0);
     const [nameText, setNameText] = useState("");
     const [buildingText, setBuildingText] = useState("");
@@ -32,11 +32,12 @@ export function ViewRooms() {
             .then(response => response.json())
             .then(jsonResponse => setRooms(jsonResponse));
     };
+
     const fetchFilterRooms = async () => {
-        fetch(`/api/v1/rooms/page/name-filter/${nameText}?page=` + activePage)
-            .then((response) => response.json())
-            .then((jsonRespone) => setRooms(jsonRespone));
-    };
+               fetch(`/api/v1/rooms/page/name-filter/${nameText}?page=` + activePage)
+                 .then((response) => response.json())
+                 .then((jsonRespone) => setRooms(jsonRespone));
+             };
 
 
     const removeRoom = (id) => {
@@ -48,11 +49,11 @@ export function ViewRooms() {
 
     const fetchBuildingRooms = async () => {
         fetch(`/api/v1/rooms/page/building-filter/${buildingText}?page=` + activePage)
-            .then((response) => response.json())
-            .then((jsonRespone) => setRooms(jsonRespone));
-    };
+          .then((response) => response.json())
+          .then((jsonRespone) => setRooms(jsonRespone));
+      };
 
-    const fetchSingleRooms = async () => {
+      const fetchSingleRooms = async () => {
         fetch('/api/v1/rooms/')
             .then(response => response.json())
             .then(jsonResponse => setRoomsForPaging(jsonResponse))
@@ -62,14 +63,14 @@ export function ViewRooms() {
 
     useEffect(() => {
 
-        if (nameText.length === 0 && buildingText.length === 0) {
+         if (nameText.length === 0 && buildingText.length === 0){
             fetchRooms();
-        } else {
+         } else {
             nameText.length > 0 ? fetchFilterRooms() : fetchBuildingRooms();
             nameText.length > 0 ? setBuildingText('') : setNameText('');
             buildingText.length > 0 ? setNameText('') : setBuildingText('');
 
-        }
+         }
         //  else if (buildingText.length > 0){
         //     setNameText('')
         //     fetchBuildingRooms();  
@@ -86,21 +87,21 @@ export function ViewRooms() {
         //     setNameText('')
         //     fetchBuildingRooms();
         //  }
-        //nameText.length > 0 ? fetchFilterRooms() : fetchRooms();
+          //nameText.length > 0 ? fetchFilterRooms() : fetchRooms();
         //  buildingText.length > 0 ? fetchBuildingRooms() : fetchRooms();
 
-    }, [activePage, nameText, buildingText]);
+             }, [activePage, nameText, buildingText]);
 
-    useEffect(() => {
-        if (pagecount !== null) {
-            fetchSingleRooms();
-        }
-    }, [rooms])
+             useEffect(() => {
+                if (pagecount !== null) {
+                    fetchSingleRooms();
+                }
+            }, [rooms])
 
 
-    const [open, setOpen] = useState(false)
+             const [open, setOpen] = useState(false)
 
-    //  const [close, setClose] = useState(false)
+
 
     return (
 
@@ -114,7 +115,7 @@ export function ViewRooms() {
 
                 <div id='rooms'>
                     <Input className='controls1' value={nameText} onChange={(e) => setNameText(e.target.value)} placeholder='Filtruoti pagal klasę' />
-                    <Input className='controls1' value={buildingText} onChange={(e) => setBuildingText(e.target.value)} placeholder="Filtruoti pagal pastatą" />
+                    <Input className='controls1' value={buildingText} onChange={(e) => setBuildingText(e.target.value)} placeholder="Filtruoti pagal pastatą"/>
 
 
 
@@ -163,7 +164,7 @@ export function ViewRooms() {
                     <ButtonGroup basic compact>
                         <Button onClick={() => setActivePage(activePage <= 0 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
                         {[...Array(pagecount)].map((e, i) => {
-                            return <Button key={i} active={activePage === i ? true : false} onClick={() => setActivePage(i)}>{i + 1}</Button>
+                            return <Button key={i} active={activePage === i ? true : false} onClick={() => setActivePage(i) }>{i + 1}</Button>
                         })}
                         <Button onClick={() => setActivePage(activePage >= pagecount - 1 ? activePage : activePage + 1)} icon><Icon name="arrow right" />  </Button>
                     </ButtonGroup>
