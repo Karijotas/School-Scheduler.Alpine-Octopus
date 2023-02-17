@@ -7,6 +7,7 @@ import java.util.Objects;
 
 public class ProgramSubjectHoursDto {
 
+    private Long id;
     private Program program;
 
     private Subject subject;
@@ -20,6 +21,14 @@ public class ProgramSubjectHoursDto {
         this.program = program;
         this.subject = subject;
         this.subjectHours = subjectHours;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Program getProgram() {
@@ -38,7 +47,7 @@ public class ProgramSubjectHoursDto {
         this.subject = subject;
     }
 
-    public int getSubjectHours() {
+    public Integer getSubjectHours() {
         return subjectHours;
     }
 
@@ -51,18 +60,19 @@ public class ProgramSubjectHoursDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProgramSubjectHoursDto that = (ProgramSubjectHoursDto) o;
-        return subjectHours == that.subjectHours && Objects.equals(program, that.program) && Objects.equals(subject, that.subject);
+        return Objects.equals(id, that.id) && Objects.equals(program, that.program) && Objects.equals(subject, that.subject) && Objects.equals(subjectHours, that.subjectHours);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(program, subject, subjectHours);
+        return Objects.hash(id, program, subject, subjectHours);
     }
 
     @Override
     public String toString() {
         return "ProgramSubjectHoursDto{" +
-                "program=" + program +
+                "id=" + id +
+                ", program=" + program +
                 ", subject=" + subject +
                 ", subjectHours=" + subjectHours +
                 '}';

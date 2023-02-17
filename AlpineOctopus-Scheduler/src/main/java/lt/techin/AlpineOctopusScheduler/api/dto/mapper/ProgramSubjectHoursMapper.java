@@ -10,6 +10,7 @@ public class ProgramSubjectHoursMapper {
     public static ProgramSubjectHoursDto toProgramSubjectHoursDto(ProgramSubjectHours programSubjectHours) {
         var programSubjectHoursDto = new ProgramSubjectHoursDto();
 
+        programSubjectHoursDto.setId(programSubjectHours.getId());
         programSubjectHoursDto.setProgram(programSubjectHours.getProgram());
         programSubjectHoursDto.setSubject(programSubjectHours.getSubject());
         programSubjectHoursDto.setSubjectHours(programSubjectHours.getSubjectHours());
@@ -32,7 +33,7 @@ public class ProgramSubjectHoursMapper {
     public static ProgramSubjectHoursDtoForList toProgramSubjectHoursDtoForList(ProgramSubjectHours programSubjectHours) {
         var programSubjectHoursDtoForList = new ProgramSubjectHoursDtoForList();
 
-        programSubjectHoursDtoForList.setId(programSubjectHoursDtoForList.getId());
+        programSubjectHoursDtoForList.setId(programSubjectHours.getId());
         programSubjectHoursDtoForList.setSubject(programSubjectHours.getSubject());
         programSubjectHoursDtoForList.setSubjectHours(programSubjectHours.getSubjectHours());
 

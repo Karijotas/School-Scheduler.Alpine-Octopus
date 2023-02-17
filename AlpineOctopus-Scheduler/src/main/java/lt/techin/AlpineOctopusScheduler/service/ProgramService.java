@@ -118,17 +118,17 @@ public class ProgramService {
 
 
 
-    public List<ProgramSubjectHoursDto> getAllSubjectsInProgramByProgramId(Long id) {
+    public List<ProgramSubjectHours> getAllSubjectsInProgramByProgramId(Long id) {
         List<String> subjectList = programRepository.GetSubjectsAndHoursInProgram(id);
-        List<ProgramSubjectHoursDto> programSubjectHoursDto = new ArrayList<>();
+        List<ProgramSubjectHours> programSubjectHours = new ArrayList<>();
         for (String s : subjectList) {
             String[] subjectHours = s.split(",");
-            programSubjectHoursDto
-                    .add(new ProgramSubjectHoursDto(programRepository.findById(id).get(),
+            programSubjectHours
+                    .add(toProgramSubjectHours(new ProgramSubjectHoursDto(programRepository.findById(id).get(),
                             subjectRepository.findById(Long.parseLong(subjectHours[0])).get(),
-                            Integer.parseInt(subjectHours[1])));
+                            Integer.parseInt(subjectHours[1]))));
         }
-        return programSubjectHoursDto;
+        return programSubjectHours;
     }
 //    @Transactional
 //    public boolean deleteSubjectInProgramById(Long programId, Long subjectId){

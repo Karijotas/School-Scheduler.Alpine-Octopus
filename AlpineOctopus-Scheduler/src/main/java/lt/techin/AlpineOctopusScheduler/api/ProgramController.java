@@ -107,7 +107,6 @@ public class ProgramController {
     @ResponseBody
     public List<ProgramSubjectHoursDtoForList> getAllSubjectsInProgram(@PathVariable Long programId) {
         return programService.getAllSubjectsInProgramByProgramId(programId).stream()
-                .map(ProgramSubjectHoursMapper::toProgramSubjectHours)
                 .map(ProgramSubjectHoursMapper::toProgramSubjectHoursDtoForList)
                 .collect(toList());
     }
@@ -116,7 +115,7 @@ public class ProgramController {
     public Integer getSumOfHoursByProgramId(@PathVariable Long programId) {
         int sumOfHours = 0;
         return sumOfHours = programService.getAllSubjectsInProgramByProgramId(programId).stream()
-                .map(ProgramSubjectHoursDto::getSubjectHours).reduce(0, Integer::sum);
+                .map(ProgramSubjectHours::getSubjectHours).reduce(0, Integer::sum);
     }
 
     @DeleteMapping("/{programId}")
@@ -193,9 +192,7 @@ public class ProgramController {
 
         programSubjectHoursForCreateList.forEach(sh -> programService
                .addSubjectAndHoursToProgram(programId, sh.getSubjectId(), sh.getSubjectHour()));
-
                return programService.getAllSubjectsInProgramByProgramId(programId).stream()
-                .map(ProgramSubjectHoursMapper::toProgramSubjectHours)
                 .map(ProgramSubjectHoursMapper::toProgramSubjectHoursDtoForList)
                 .collect(toList());
     }
