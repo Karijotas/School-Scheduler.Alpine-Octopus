@@ -1,5 +1,16 @@
 INSERT INTO MODULE (NAME,DESCRIPTION,CREATED_DATE, MODIFIED_DATE) VALUES
     ('Tinklapiai','tinklalapiu kurimas naudojant kelias programas','2023-02-15 00:36:54.344','2023-02-16 00:36:54.344'),
     ('Technologijos','spring ir react pamokeles','2023-02-15 00:36:54.344','2023-02-16 00:36:54.344'),
-    ('Testavimas','rankinis ir automatinis','2023-02-15 00:36:54.344','2023-02-16 00:36:54.344'),
-    ('Testavimas','rankinis ir automatinis','2023-02-15 00:36:54.344','2023-02-16 00:36:54.344');
+    ('Kuno kultura','palakstykite vaikai','2023-02-15 00:36:54.344','2023-02-16 00:36:54.344'),
+    ('Kino kritika','hmmmm','2023-02-15 00:36:54.344','2023-02-16 00:36:54.344'),
+    ('Joga','ommmmm','2023-02-15 00:36:54.344','2023-02-16 00:36:54.344'),
+    ('Muzika','lalalaaaaa','2023-02-15 00:36:54.344','2023-02-16 00:36:54.344'),
+    ('Architektura','ojojojoj','2023-02-15 00:36:54.344','2023-02-16 00:36:54.344'),
+    ('Pedagogika','cha cha cha','2023-02-15 00:36:54.344','2023-02-16 00:36:54.344'),
+    ('Sunu dresura','jo jo ','2023-02-15 00:36:54.344','2023-02-16 00:36:54.344'),
+    ('Kalbos','Laba diena','2023-02-15 00:36:54.344','2023-02-16 00:36:54.344'),
+    ('Vadyba','hmmmm','2023-02-15 00:36:54.344','2023-02-16 00:36:54.344'),
+    ('Istorija','ilgai ir laimingai','2023-02-15 00:36:54.344','2023-02-16 00:36:54.344'),
+    ('Geografija','aplink pasauli','2023-02-15 00:36:54.344','2023-02-16 00:36:54.344'),
+    ('Fizika','desniai ir panasiai','2023-02-15 00:36:54.344','2023-02-16 00:36:54.344'),
+    ('Matematika','aukstoji ir zemoji','2023-02-15 00:36:54.344','2023-02-16 00:36:54.344');
