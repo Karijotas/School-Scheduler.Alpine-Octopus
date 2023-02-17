@@ -47,15 +47,15 @@ export function CreateRoom() {
       <Form >
 
         <Form.Field >
-          <label>Klasės pavadinimas</label>
-          <input placeholder='Klasės pavadinimas' value={name} onChange={(e) => setName(e.target.value)} />
+          <label>Klases pavadinimas</label>
+          <input placeholder='Klases grupės pavadinimas' value={name} onChange={(e) => setName(e.target.value)} />
         </Form.Field>
         <Form.Field >
           <label>Pastatas</label>
           <input placeholder='Pastatas' value={building} onChange={(e) => setBuilding(e.target.value)} />
         </Form.Field>
         <Form.Field >
-          <label>Aprašymas</label>
+          <label>Aprasymas</label>
           <input placeholder='Aprasymas' value={description} onChange={(e) => setDescription(e.target.value)} />
         </Form.Field>
         <div><Button icon labelPosition="left" className="" onClick={() => setHide(true)}><Icon name="arrow left"/>Atgal</Button>

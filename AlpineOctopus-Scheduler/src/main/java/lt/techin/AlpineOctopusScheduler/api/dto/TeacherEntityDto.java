@@ -12,11 +12,10 @@ public class TeacherEntityDto extends TeacherDto{
     public TeacherEntityDto () {
 
     }
-    public TeacherEntityDto(String name, String surname, String contactEmail, String phone, String shift, Set<Subject> teachersSubjects,Long id) {
-        super(name, surname, contactEmail, phone, shift, teachersSubjects);
+    public TeacherEntityDto(String name, String surname, String loginEmail, String contactEmail, double workHoursPerWeek, String phone, String shift, Set<Subject> teachersSubjects, Long id) {
+        super(name, surname, loginEmail, contactEmail, workHoursPerWeek, phone, shift, teachersSubjects);
         this.id = id;
     }
-
     public Long getId() {
         return id;
     }

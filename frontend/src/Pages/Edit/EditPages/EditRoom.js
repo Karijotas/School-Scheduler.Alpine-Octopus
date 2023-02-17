@@ -18,7 +18,6 @@ export function EditRoom(props) {
 
     const [error, setError] = useState();
 
-
     const [rooms, setRooms] = useState({
         name: '',
         building: '',
@@ -38,6 +37,7 @@ export function EditRoom(props) {
     const applyResult = () => {
 
         setHide(true)
+        
 
     }
 
@@ -65,23 +65,18 @@ export function EditRoom(props) {
     const editThis = () => {
         setActive(false);
     }
-    // const removeGroup = (id) => {
-    //     fetch('/api/v1/groups/' + params.id, {
-    //         method: 'DELETE',
-    //         headers: JSON_HEADERS
-    //     })
-    //     .then(() => window.location = listUrl);
-    // }
+    
+    
 
 
-    return (<div>{active && (<div >
+    return (<div>{active && !hide &&(<div >
 
         <Table celled color='violet'>
             <Table.Header >
                 <Table.Row  >
-                    <Table.HeaderCell >Klases pavadinimas</Table.HeaderCell>
+                    <Table.HeaderCell >Klasės pavadinimas</Table.HeaderCell>
                     <Table.HeaderCell>Pastatas</Table.HeaderCell>
-                    <Table.HeaderCell>Aprasymas</Table.HeaderCell>
+                    <Table.HeaderCell>Aprašymas</Table.HeaderCell>
                     <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
                     <Table.HeaderCell>Veiksmai</Table.HeaderCell>
 
@@ -96,7 +91,7 @@ export function EditRoom(props) {
 
                     <Table.Cell collapsing > {rooms.modifiedDate}  </Table.Cell>
 
-                    <Table.Cell collapsing ><Button onClick={editThis}>Taisyti</Button>
+                    <Table.Cell collapsing ><Button onClick={editThis}>Redaguoti</Button>
                     </Table.Cell>
 
 
@@ -104,7 +99,7 @@ export function EditRoom(props) {
 
             </ Table.Body >
         </Table>
-        {/* <Button icon labelPosition="left" className="" onClick={() => setHide(true)}><Icon name="arrow left" />Atgal</Button> bugas */}
+         <Button icon labelPosition="left" className="" onClick={() => setHide(true)}><Icon name="arrow left" />Atgal</Button>
     </div>
 
 
@@ -114,9 +109,9 @@ export function EditRoom(props) {
             <Table celled color='violet'>
                 <Table.Header >
                     <Table.Row  >
-                        <Table.HeaderCell >Klases pavadinimas</Table.HeaderCell>
+                        <Table.HeaderCell >Klasės pavadinimas</Table.HeaderCell>
                         <Table.HeaderCell>Pastatas</Table.HeaderCell>
-                        <Table.HeaderCell>Aprasymas</Table.HeaderCell>
+                        <Table.HeaderCell>Aprašymas</Table.HeaderCell>
                         <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
                         <Table.HeaderCell>Veiksmai</Table.HeaderCell>
 
@@ -133,14 +128,17 @@ export function EditRoom(props) {
                         </Table.Cell>
                         <Table.Cell collapsing> {rooms.modifiedDate}  </Table.Cell>
 
-                        <Table.Cell collapsing ><Button primary onClick={updateRooms}>Atnaujinti</Button>
-                        <Button icon labelPosition="left" className="" onClick={() => setHide(true)}><Icon name="arrow left"/>Atgal</Button></Table.Cell>
+                        <Table.Cell collapsing >
+                            <Button onClick={() => setActive(true)}>Atšaukti</Button>
+                            <Button primary onClick={updateRooms}>Atnaujinti</Button>
+                        </Table.Cell>
 
                         
                         
                     </Table.Row>
                     
                 </ Table.Body >
+                
             </Table>
 
         </div>)}
@@ -152,4 +150,3 @@ export function EditRoom(props) {
     </div>
     )
 }
-

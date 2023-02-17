@@ -1,15 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { json, Link } from "react-router-dom";
-import {
-  Button,
-  Divider,
-  Confirm,
-  Icon,
-  Input,
-  Table,
-} from "semantic-ui-react";
-import { CreateRoom } from "../../Create/CreateRoom";
-import { EditRoom } from "./EditRoom";
+import React, { useEffect, useState } from 'react'
+import { Button, Divider, ButtonGroup, Confirm, Icon, Input, Table } from 'semantic-ui-react'
+import { CreateRoom } from '../../Create/CreateRoom';
+import { EditRoom } from './EditRoom';
+import './ViewGroups.css'; 
+
+
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",

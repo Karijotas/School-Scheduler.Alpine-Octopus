@@ -11,7 +11,6 @@ public class RoomMapper {
         roomDto.setName(room.getName());
         roomDto.setBuilding(room.getBuilding());
         roomDto.setDescription(room.getDescription());
-        roomDto.setRoomSubjects(room.getRoomSubjects());
 
         return roomDto;
     }
@@ -22,7 +21,6 @@ public class RoomMapper {
         room.setName(roomDto.getName());
         room.setBuilding(roomDto.getBuilding());
         room.setDescription(roomDto.getDescription());
-        room.setRoomSubjects(roomDto.getRoomSubjects());
 
         return room;
     }
@@ -35,7 +33,6 @@ public class RoomMapper {
         roomEntityDto.setName(room.getName());
         roomEntityDto.setBuilding(room.getBuilding());
         roomEntityDto.setDescription(room.getDescription());
-        roomEntityDto.setRoomSubjects(room.getRoomSubjects());
 
 
         return roomEntityDto;
@@ -48,7 +45,6 @@ public class RoomMapper {
         room.setName(roomEntityDto.getName());
         room.setBuilding(roomEntityDto.getBuilding());
         room.setDescription(roomEntityDto.getDescription());
-        room.setRoomSubjects(roomEntityDto.getRoomSubjects());
 
         return room;
     }

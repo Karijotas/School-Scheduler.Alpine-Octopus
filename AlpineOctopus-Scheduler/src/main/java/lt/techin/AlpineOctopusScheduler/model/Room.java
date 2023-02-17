@@ -1,7 +1,6 @@
 package lt.techin.AlpineOctopusScheduler.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -10,7 +9,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 public class Room {
@@ -33,12 +31,6 @@ public class Room {
     @CreatedDate
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
-
-
-    @ManyToMany (mappedBy = "subjectRooms")
-    @JsonIgnore
-    private Set<Subject> roomSubjects;
-
 
     @PrePersist
     public void prePersist() {
@@ -111,25 +103,17 @@ public class Room {
         this.createdDate = createdDate;
     }
 
-    public Set<Subject> getRoomSubjects() {
-        return roomSubjects;
-    }
-
-    public void setRoomSubjects(Set<Subject> roomSubjects) {
-        this.roomSubjects = roomSubjects;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Room room = (Room) o;
-        return Objects.equals(id, room.id) && Objects.equals(name, room.name) && Objects.equals(building, room.building) && Objects.equals(description, room.description) && Objects.equals(modifiedDate, room.modifiedDate) && Objects.equals(createdDate, room.createdDate) && Objects.equals(roomSubjects, room.roomSubjects);
+        return Objects.equals(id, room.id) && Objects.equals(name, room.name) && Objects.equals(building, room.building) && Objects.equals(description, room.description) && Objects.equals(modifiedDate, room.modifiedDate) && Objects.equals(createdDate, room.createdDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, building, description, modifiedDate, createdDate, roomSubjects);
+        return Objects.hash(id, name, building, description, modifiedDate, createdDate);
     }
 
     @Override
@@ -141,7 +125,6 @@ public class Room {
                 ", description='" + description + '\'' +
                 ", modifiedDate=" + modifiedDate +
                 ", createdDate=" + createdDate +
-                ", roomSubjects=" + roomSubjects +
                 '}';
     }
 }

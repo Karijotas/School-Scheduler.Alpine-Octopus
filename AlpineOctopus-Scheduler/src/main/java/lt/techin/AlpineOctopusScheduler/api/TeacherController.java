@@ -2,9 +2,14 @@ package lt.techin.AlpineOctopusScheduler.api;
 
 //Mantvydas Juršys
 
+<<<<<<< HEAD
+import lt.techin.AlpineOctopusScheduler.api.dto.GroupsEntityDto;
+=======
 import lt.techin.AlpineOctopusScheduler.api.dto.ModuleDto;
+>>>>>>> main
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupsMapper;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.TeacherMapper;
 import lt.techin.AlpineOctopusScheduler.model.Teacher;
 import lt.techin.AlpineOctopusScheduler.service.TeacherService;
@@ -42,6 +47,15 @@ public class TeacherController {
     @ResponseBody
     public List<TeacherEntityDto> getTeachers() {
         return teacherService.getAll().stream()
+                .map(TeacherMapper::toTeacherEntityDto)
+                .collect(toList());
+    }
+
+    @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<TeacherEntityDto> getPagedAllTeachers(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
+                                                   @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+        return teacherService.getPagedAllTeachers(page, pageSize).stream()
                 .map(TeacherMapper::toTeacherEntityDto)
                 .collect(toList());
     }
