@@ -181,10 +181,10 @@ public class ProgramController {
         return ok(toProgramSubjectHoursDtoForList(updatedProgramSubjectHours));
     }
 
-    @PostMapping(value = "/{programId}/subjects/newSubjectsWithHours")
+    @PostMapping(value = "/{programId}/subjects/{subjectId}/{hours}/newSubjectsWithHours")
     @ResponseBody
-    public ProgramSubjectHours addSubjectAndHoursToProgram(@PathVariable Long programId, @RequestParam Integer subjectHours, @RequestParam Long subjectId) {
-        return programService.addSubjectAndHoursToProgram(programId, subjectId, subjectHours);
+    public ProgramSubjectHours addSubjectAndHoursToProgram(@PathVariable Long programId, @PathVariable Integer hours,@PathVariable Long subjectId) {
+        return programService.addSubjectAndHoursToProgram(programId, subjectId, hours);
     }
 
     @PostMapping(value = "/{programId}/subjects/newSubjectsWithHoursList")

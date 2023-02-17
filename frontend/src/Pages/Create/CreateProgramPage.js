@@ -60,33 +60,7 @@ export function CreateProgramPage() {
     }).then(applyResult);
   };
 
-  useEffect(() => {
-  fetch("/api/v1/subjects/")
-      .then((response) => response.json())
-      .then((data) =>
-        setSubjects(
-          data.map((x) => {
-            return { key: x.id, text: x.name, value: x.id };
-          })
-        )
-      );
-  }, []);
-
-  const addSubjectHours = () => {
-    fetch("/api/v1/programs/{programId}/subjects/newSubjectsWithHours", {
-      method: "PATCH",
-      headers: JSON_HEADERS,
-      body: JSON.stringify(subjectHours),
-    })
-      .then((result) => {
-        if (!result.ok) {
-          setError("Update failed");
-        } else {
-          setError();
-        }
-      })
-      .then(applyResult);
-  };
+ 
   return (
     <div>
       {!hide && (

@@ -39,12 +39,13 @@ export function EditProgramObject(props) {
 
   const [error, setError] = useState();
 
-  const [programs, setPrograms] = useState({
+  const [programs, setPrograms] = useState({    
     name: "",
     description: "",
     modifiedDate: "",
   });
 
+ 
   useEffect(() => {
     fetch("/api/v1/programs/" + props.id)
       .then((response) => response.json())
@@ -55,7 +56,7 @@ export function EditProgramObject(props) {
     fetch(`/api/v1/programs/${props.id}/subjects`)
       .then((response) => response.json())
      .then(setSubjectsInProgram);
-  }, [props]);
+  }, [props, totalHours]);
 
   useEffect(() => {
     fetch(`/api/v1/programs/${props.id}/subjects/hours`)
@@ -67,9 +68,22 @@ export function EditProgramObject(props) {
     fetch(`/api/v1/programs/${programId}/subjects/${subjectId}/${hours}`, {
       method: "DELETE",
       headers: JSON_HEADERS,
-    }).then(props = programId);
+    }).then(setTotalHours(totalHours - hours));
          
   };
+
+  const addSubjectAndHours = (programId, subjectId, hours) => {
+  fetch(`/api/v1/programs/${programId}/subjects/${subjectId}/${hours}/newSubjectsWithHours`, {
+    method: "POST",
+    header: JSON_HEADERS,
+    body: JSON.stringify({
+      programId,
+      subject,
+      subjectHours,
+    }),
+  }).then(setTotalHours(totalHours + subjectHours));
+};
+ 
   
   useEffect(() => {
     fetch("/api/v1/subjects/")
@@ -86,6 +100,8 @@ export function EditProgramObject(props) {
   const applyResult = () => {
     setHide(true);
   };
+
+  
 
   const updatePrograms = () => {
     fetch("/api/v1/programs/" + props.id, {
@@ -249,7 +265,7 @@ export function EditProgramObject(props) {
                             options={subjects}
                             placeholder="Subject"
                             value={subject}
-                            onChange={(e) => setSubject(e.target.value)}
+                            onChange={(e) => setSubject(e.target.value.id)}
                           />
                         </Form.Field>
                       </Form.Group>
@@ -263,7 +279,7 @@ export function EditProgramObject(props) {
                       </List.Content>
                       <Divider hidden />
                       <List.Content floated="left">
-                        <Button>Pridėti</Button>
+                        <Button onClick={() => addSubjectAndHours(props.id, subject, subjectHours)}>Pridėti</Button>
                       </List.Content>
                     </List.Item>
                   </List>
