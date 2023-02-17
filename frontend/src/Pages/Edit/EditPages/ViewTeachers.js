@@ -9,7 +9,7 @@ const JSON_HEADERS = {
 };
 
 
-export function ViewGroups() {
+export function ViewTeachers() {
     // const yearOptions = [
     //     { key: 23, value: 2023, text: '2023' },
     //     { key: 24, value: 2024, text: '2024' },
@@ -127,11 +127,11 @@ export function ViewGroups() {
 
                 <div id='groups'>
 
-                    <Input className='controls1' placeholder='Filtruoti pagal pavadinimą' value={nameText} onChange={(e) => setNameText(e.target.value)} />
+                    <Input className='controls1' placeholder='Filtruoti pagal vardą' value={nameText} onChange={(e) => setNameText(e.target.value)} />
 
-                    <Input className='controls1' placeholder='Filtruoti pagal mokslo metus' value={yearText} onChange={(e) => setYearText(e.target.value)} />
+                    <Input className='controls1' placeholder='Filtruoti pagal dalykus' value={yearText} onChange={(e) => setYearText(e.target.value)} />
 
-                    <Input placeholder='Filtruoti pagal programą' value={programText} onChange={(e) => setProgramText(e.target.value)} />
+                    <Input placeholder='Filtruoti pagal pamainas' value={programText} onChange={(e) => setProgramText(e.target.value)} />
 
 
 
@@ -145,9 +145,10 @@ export function ViewGroups() {
                             <Table.Row>
                                 <Table.HeaderCell>Mokytojo vardas</Table.HeaderCell>
                                 <Table.HeaderCell>Teams vartotojo vardas</Table.HeaderCell>
-                                <Table.HeaderCell>Kontaktinis</Table.HeaderCell>
-                                <Table.HeaderCell>Programa</Table.HeaderCell>
-                                <Table.HeaderCell>Veiksmai</Table.HeaderCell>
+                                <Table.HeaderCell>Kontaktinis email (optional)</Table.HeaderCell>
+                                <Table.HeaderCell>Kontaktinis telefonas (optional)</Table.HeaderCell>
+                                <Table.HeaderCell>Valandos per savaitę</Table.HeaderCell>
+                                <Table.HeaderCell>Dalykai</Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
 
@@ -159,6 +160,8 @@ export function ViewGroups() {
                                     <Table.Cell>{group.schoolYear}</Table.Cell>
                                     <Table.Cell>{group.studentAmount}</Table.Cell>
                                     <Table.Cell>{group.programName}</Table.Cell>
+                                    <Table.Cell>dalykas</Table.Cell>
+
                                     <Table.Cell collapsing>
                                         <Button basic primary compact icon='eye' title='Peržiūrėti' onClick={() => setActive(group.id)}></Button>
                                         <Button basic color='black' compact title='Ištrinti' icon='trash alternate' onClick={() => setOpen(group.id)}></Button>

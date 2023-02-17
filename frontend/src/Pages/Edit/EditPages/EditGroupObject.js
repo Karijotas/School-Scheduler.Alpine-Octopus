@@ -59,7 +59,7 @@ export function EditGroupObject(props) {
 
     const applyResult = () => {
 
-        setHide(true)
+        setActive(true)
 
     }
 
@@ -137,7 +137,7 @@ export function EditGroupObject(props) {
                     <Table.Cell collapsing > {groups.modifiedDate}  </Table.Cell>
 
 
-                    <Table.Cell collapsing ><Button onClick={editThis}>Taisyti</Button>
+                    <Table.Cell collapsing ><Button onClick={editThis}>Redaguoti</Button>
                     </Table.Cell>
 
 
@@ -194,7 +194,7 @@ export function EditGroupObject(props) {
 
                 </ Table.Body >
             </Table>
-            <Button icon labelPosition="left" className="" onClick={() => setHide(true)}><Icon name="arrow left" />Atgal</Button>
+            {/* <Button icon labelPosition="left" className="" onClick={() => setHide(true)}><Icon name="arrow left" />Atgal</Button> */}
 
 
         </div>)}

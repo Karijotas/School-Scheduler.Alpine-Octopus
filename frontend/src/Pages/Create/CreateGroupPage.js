@@ -90,7 +90,7 @@ export function CreateGroupPage() {
         <Form.Group widths='equal'>
           <Form.Field >
             <label>Mokslo metai</label>
-            <Input options={yearOptions} placeholder='Mokslo metai' value={schoolYear} onChange={(e) => setSchoolYear(e.target.value)} />
+            <Input  options={yearOptions} placeholder='Mokslo metai' value={schoolYear} onChange={(e) => setSchoolYear(e.target.value)} />
           </Form.Field>
           <Form.Field >
             <label>Studentų skaičius</label>

@@ -31,6 +31,8 @@ export function ViewGroups() {
 
     const [yearText, setYearText] = useState('');
 
+    const [year, setYear] = useState(true);
+
     const [programText, setProgramText] = useState('');
 
     const [activePage, setActivePage] = useState(0)
@@ -87,11 +89,13 @@ export function ViewGroups() {
     useEffect(() => {
         if (nameText.length === 0 && yearText.length === 0 && programText.length === 0) {
             fetchGroups();
+            // setYearText('2023')
         } else if (nameText.length > 0) {
             setProgramText('')
             setYearText('')
             fetchFilterGroups();
         } else if (yearText.length > 0) {
+
             setNameText('')
             setProgramText('')
             fetchYearGroups();
@@ -99,7 +103,9 @@ export function ViewGroups() {
             setNameText('')
             setYearText('')
             fetchProgramGroups();
-        }
+        } 
+        
+      
 
     }, [nameText, yearText, programText, activePage]);
 
@@ -129,8 +135,7 @@ export function ViewGroups() {
                 <div id='groups' >
 
                     <Input className='controls1' placeholder='Filtruoti pagal pavadinimą' value={nameText} onChange={(e) => setNameText(e.target.value)} />
-
-                    <Input className='controls1' placeholder='Filtruoti pagal metus' value={yearText} onChange={(e) => setYearText(e.target.value)} />
+                    <Input type='number' value={yearText} className='controls1' onChange={(e) => setYearText(e.target.value)} />
 
                     <Input placeholder='Filtruoti pagal programą' value={programText} onChange={(e) => setProgramText(e.target.value)} />
 
