@@ -18,7 +18,6 @@ export function EditRoom(props) {
 
     const [error, setError] = useState();
 
-
     const [rooms, setRooms] = useState({
         name: '',
         building: '',
@@ -38,6 +37,7 @@ export function EditRoom(props) {
     const applyResult = () => {
 
         setHide(true)
+        
 
     }
 
@@ -65,13 +65,8 @@ export function EditRoom(props) {
     const editThis = () => {
         setActive(false);
     }
-    // const removeGroup = (id) => {
-    //     fetch('/api/v1/groups/' + params.id, {
-    //         method: 'DELETE',
-    //         headers: JSON_HEADERS
-    //     })
-    //     .then(() => window.location = listUrl);
-    // }
+    
+    
 
 
     return (<div>{active && !hide &&(<div >
@@ -133,7 +128,9 @@ export function EditRoom(props) {
                         </Table.Cell>
                         <Table.Cell collapsing> {rooms.modifiedDate}  </Table.Cell>
 
-                        <Table.Cell collapsing ><Button onClick={() => setActive(true)}>Atšaukti</Button><Button primary onClick={updateRooms}>Atnaujinti</Button>
+                        <Table.Cell collapsing >
+                            <Button onClick={() => setActive(true)}>Atšaukti</Button>
+                            <Button primary onClick={updateRooms}>Atnaujinti</Button>
                         </Table.Cell>
 
                         

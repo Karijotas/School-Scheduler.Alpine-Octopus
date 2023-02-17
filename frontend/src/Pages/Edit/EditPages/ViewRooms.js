@@ -32,6 +32,7 @@ export function ViewRooms() {
             .then(response => response.json())
             .then(jsonResponse => setRooms(jsonResponse));
     };
+    
     const fetchFilterRooms = async () => {
                fetch(`/api/v1/rooms/page/name-filter/${nameText}?page=` + activePage)
                  .then((response) => response.json())
@@ -100,7 +101,7 @@ export function ViewRooms() {
 
              const [open, setOpen] = useState(false)
 
-            //  const [close, setClose] = useState(false)
+            
 
     return (
 
@@ -113,8 +114,8 @@ export function ViewRooms() {
             {!active && !create && (
 
                 <div id='rooms'>
-                    <Input className='controls1' value={nameText} onChange={(e) => setNameText(e.target.value)} placeholder='Filtruoti pagal Klasė' />
-                    <Input className='controls1' value={buildingText} onChange={(e) => setBuildingText(e.target.value)} placeholder="Filtruoti pagal Pastatą"/>
+                    <Input className='controls1' value={nameText} onChange={(e) => setNameText(e.target.value)} placeholder='Filtruoti pagal klasę' />
+                    <Input className='controls1' value={buildingText} onChange={(e) => setBuildingText(e.target.value)} placeholder="Filtruoti pagal pastatą"/>
 
                     
 
