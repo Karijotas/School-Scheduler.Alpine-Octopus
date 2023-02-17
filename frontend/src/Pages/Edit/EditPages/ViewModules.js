@@ -106,7 +106,6 @@ export function ViewModules() {
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell>Modulio pavadinimas</Table.HeaderCell>
-                <Table.HeaderCell>Dalyko pavadinimas</Table.HeaderCell>
                 <Table.HeaderCell>Veiksmai</Table.HeaderCell>
               </Table.Row>
             </Table.Header>
@@ -115,17 +114,6 @@ export function ViewModules() {
               {modules.map((module) => (
                 <Table.Row key={module.id}>
                   <Table.Cell>{module.name}</Table.Cell>
-                  <Table.Cell>
-                    {/* <List bulleted>
-                    {module.modulesSubjects.map((subject) => (
-                        <List.Item key={subject.id}>
-                            {subject.name}
-                        </List.Item>
-                    )
-                    )}
-                      
-                    </List> */}
-                  </Table.Cell>
                   <Table.Cell collapsing>
                     <Button
                       basic

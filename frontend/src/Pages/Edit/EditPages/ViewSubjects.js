@@ -8,6 +8,7 @@ import {
   Input,
   Table,
   List,
+  Segment
 } from "semantic-ui-react";
 import { EditSubjectObject } from "./EditSubjectObject";
 import { CreateGroupPage } from "../../Create/CreateGroupPage";
@@ -89,7 +90,7 @@ export function ViewSubjects() {
 
       {!active && !create && (
         <div id="subjects">
-          <Input 
+          <Input
             className="controls1"
             placeholder="Filtruoti pagal pavadinimą"
             value={nameText}
@@ -112,23 +113,14 @@ export function ViewSubjects() {
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell>Dalyko pavadinimas</Table.HeaderCell>
-                <Table.HeaderCell>Modulio pavadinimas</Table.HeaderCell>
                 <Table.HeaderCell>Veiksmai</Table.HeaderCell>
               </Table.Row>
             </Table.Header>
 
             <Table.Body>
-              {subjects.map((subject) => (             
-
+              {subjects.map((subject) => (
                 <Table.Row key={subject.id}>
                   <Table.Cell>{subject.name}</Table.Cell>
-                  <Table.Cell> 
-                    <List bulleted>                    
-                     <List.Item>
-                        {module.name}
-                        </List.Item>                    
-                    </List>
-                  </Table.Cell>
                   <Table.Cell collapsing>
                     <Button
                       basic
@@ -196,3 +188,9 @@ export function ViewSubjects() {
     </div>
   );
 }
+
+
+
+
+
+

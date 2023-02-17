@@ -7,6 +7,7 @@ import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ModuleMapper;
 import lt.techin.AlpineOctopusScheduler.model.Module;
 import lt.techin.AlpineOctopusScheduler.api.dto.ModuleDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ModuleEntityDto;
+import lt.techin.AlpineOctopusScheduler.model.Subject;
 import lt.techin.AlpineOctopusScheduler.service.ModuleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -45,6 +47,12 @@ public class ModuleController {
         return moduleService.getAll().stream()
                 .map(ModuleMapper::toModuleEntityDto)
                 .collect(toList());
+    }
+
+    @GetMapping(value ="/{moduleId}/subjects")
+    @ResponseBody
+    public Set<Subject> getAllSubjectsById(@PathVariable Long moduleId) {
+        return moduleService.getAllSubjectsById(moduleId);
     }
 
     @PostMapping("/CreateNewModule")

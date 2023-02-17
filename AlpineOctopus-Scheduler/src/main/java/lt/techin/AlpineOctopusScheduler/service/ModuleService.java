@@ -101,6 +101,10 @@ public class ModuleService {
         return moduleRepository.save(existingModule);
     }
 
+    public Set<Subject> getAllSubjectsById (Long moduleId){
+        return moduleRepository.findById(moduleId).get().getModulesSubjects();
+    }
+
 //    public boolean deleteSubjectFromModuleById(Long moduleId, Long subjectId) {
 //        var existingModule = moduleRepository.findById(moduleId)
 //                .orElseThrow(() -> new SchedulerValidationException("Module does not exist",
