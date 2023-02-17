@@ -4,10 +4,8 @@ import {
   Button,
   Divider,
   Confirm,
-  Dropdown,
   Icon,
   Input,
-  Pagination,
   Table,
 } from "semantic-ui-react";
 import { CreateRoom } from "../../Create/CreateRoom";

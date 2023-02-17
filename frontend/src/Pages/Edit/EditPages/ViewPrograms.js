@@ -4,33 +4,27 @@ import {
   Button,
   ButtonGroup,
   Divider,
-  Dropdown,
   Icon,
   Input,
-  Pagination,
   Table,
 } from "semantic-ui-react";
-import { CreateProgramPage } from '../../Create/CreateProgramPage';
-import { EditProgramObject } from './EditProgramObject';
-import './ViewGroups.css';
-
+import { CreateProgramPage } from "../../Create/CreateProgramPage";
+import { EditProgramObject } from "./EditProgramObject";
+import "./ViewGroups.css";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
 };
 
 export function ViewPrograms() {
-
-  const [active, setActive] = useState()
-  const [create, setCreate] = useState('')
+  const [active, setActive] = useState();
+  const [create, setCreate] = useState("");
   const [nameText, setNameText] = useState("");
   const [programs, setPrograms] = useState([]);
   const [groupsforPaging, setGroupsForPaging] = useState([]);
 
   const [activePage, setActivePage] = useState(0);
-  const [pagecount, setPageCount] = useState()
-
-
+  const [pagecount, setPageCount] = useState();
 
   const fetchFilterPrograms = async () => {
     fetch(`/api/v1/programs/page/starting-with/${nameText}?page=` + activePage)
@@ -39,11 +33,11 @@ export function ViewPrograms() {
   };
 
   const fetchSinglePrograms = () => {
-    fetch('/api/v1/programs')
-      .then(response => response.json())
-      .then(jsonResponse => setGroupsForPaging(jsonResponse)).then(setPageCount(Math.ceil(groupsforPaging.length / 10)))
+    fetch("/api/v1/programs")
+      .then((response) => response.json())
+      .then((jsonResponse) => setGroupsForPaging(jsonResponse))
+      .then(setPageCount(Math.ceil(groupsforPaging.length / 10)));
   };
-
 
   const fetchPrograms = async () => {
     fetch(`/api/v1/programs/page?page=` + activePage)
@@ -58,40 +52,51 @@ export function ViewPrograms() {
     }).then(fetchPrograms);
   };
 
-
   useEffect(() => {
     nameText.length > 0 ? fetchFilterPrograms() : fetchPrograms();
   }, [activePage, nameText]);
 
-  const [open, setOpen] = useState(false)
-  const [close, setClose] = useState(false)
-
+  const [open, setOpen] = useState(false);
+  const [close, setClose] = useState(false);
 
   useEffect(() => {
     if (pagecount !== null) {
       fetchSinglePrograms();
     }
-  }, [programs])
+  }, [programs]);
 
   return (
     <div>
-      {create && (<div>
-        <CreateProgramPage /></div>)}
-      {active && (<div className='edit'>
-        <EditProgramObject id={active} /></div>)}
+      {create && (
+        <div>
+          <CreateProgramPage />
+        </div>
+      )}
+      {active && (
+        <div className="edit">
+          <EditProgramObject id={active} />
+        </div>
+      )}
 
       {!active && !create && (
         <div id="programs">
           <Input
             value={nameText}
-            className="controls1"
             onChange={(e) => setNameText(e.target.value)}
             placeholder="Ieškoti pagal pavadinimą"
           />
           {/* <Button onClick={fetchFilterPrograms}>Filtruoti</Button> */}
 
-
-          <Button icon labelPosition='left' primary className='controls'><Icon name='database' />Kurti naują programą</Button>
+          <Button
+            icon
+            labelPosition="left"
+            primary
+            className="controls"
+            onClick={() => setCreate("new")}
+          >
+            <Icon name="database" />
+            Kurti naują programą
+          </Button>
           <Divider horizontal hidden></Divider>
 
           <Table selectable>
@@ -103,7 +108,6 @@ export function ViewPrograms() {
                 <Table.HeaderCell>Veiksmai</Table.HeaderCell>
               </Table.Row>
             </Table.Header>
-
 
             <Table.Body>
               {programs.map((program) => (
@@ -136,11 +140,24 @@ export function ViewPrograms() {
           <Divider hidden></Divider>
 
           <ButtonGroup basic compact>
-            <Button onClick={() => setActivePage(activePage <= 0 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
+            <Button
+              onClick={() =>
+                setActivePage(activePage <= 0 ? activePage : activePage - 1)
+              }
+              icon
+            >
+              <Icon name="arrow left" />{" "}
+            </Button>
             {[...Array(pagecount)].map((e, i) => {
-              return <Button key={i} onClick={() => setActivePage(i)}>{(i + 1)}</Button>
+              return (
+                <Button key={i} onClick={() => setActivePage(i)}>
+                  {i + 1}
+                </Button>
+              );
             })}
-            <Button onClick={() => setActivePage(activePage + 1)} icon><Icon name="arrow right" />  </Button>
+            <Button onClick={() => setActivePage(activePage + 1)} icon>
+              <Icon name="arrow right" />{" "}
+            </Button>
           </ButtonGroup>
         </div>
       )}
