@@ -1,158 +1,187 @@
-import React, { useEffect, useState } from 'react'
-import { json, Link } from 'react-router-dom';
-import { Button,Divider, Confirm, Dropdown, Icon, Input, Pagination, Table } from 'semantic-ui-react'
-import { CreateRoom } from '../../Create/CreateRoom';
-import { EditRoom } from './EditRoom';
-
-
+import React, { useEffect, useState } from "react";
+import { json, Link } from "react-router-dom";
+import {
+  Button,
+  Divider,
+  Confirm,
+  Dropdown,
+  Icon,
+  Input,
+  Pagination,
+  Table,
+} from "semantic-ui-react";
+import { CreateRoom } from "../../Create/CreateRoom";
+import { EditRoom } from "./EditRoom";
 
 const JSON_HEADERS = {
-    'Content-Type': 'application/json'
+  "Content-Type": "application/json",
 };
 
-
 export function ViewRooms() {
-    const [active, setActive] = useState('')
+  const [active, setActive] = useState("");
 
-    const [create, setCreate] = useState('')
+  const [create, setCreate] = useState("");
 
-    const [rooms, setRooms] = useState([]);
-//
-    const [activePage, setActivePage] = useState(0);
-    const [nameText, setNameText] = useState("");
+  const [rooms, setRooms] = useState([]);
+  //
+  const [activePage, setActivePage] = useState(0);
+  const [nameText, setNameText] = useState("");
 
-    
+  const fetchRooms = async () => {
+    fetch(`/api/v1/rooms/page?page=` + activePage)
+      .then((response) => response.json())
+      .then((jsonResponse) => setRooms(jsonResponse));
+  };
+  const fetchFilterRooms = async () => {
+    fetch(`/api/v1/rooms/page/starting-with/${nameText}?page=` + activePage)
+      .then((response) => response.json())
+      .then((jsonRespone) => setRooms(jsonRespone));
+  };
 
-    const fetchRooms = async () => {
-        fetch(`/api/v1/rooms/page?page=` + activePage)
-            .then(response => response.json())
-            .then(jsonResponse => setRooms(jsonResponse));
-    };
-    const fetchFilterRooms = async () => {
-               fetch(`/api/v1/rooms/page/starting-with/${nameText}?page=` + activePage)
-                 .then((response) => response.json())
-                 .then((jsonRespone) => setRooms(jsonRespone));
-             };
+  const removeRoom = (id) => {
+    fetch("/api/v1/rooms/" + id, {
+      method: "DELETE",
+      headers: JSON_HEADERS,
+    })
+      .then(fetchRooms)
+      .then(setOpen(false));
+  };
 
-    const removeRoom = (id) => {
-        fetch('/api/v1/rooms/' + id, {
-            method: 'DELETE',
-            headers: JSON_HEADERS
-        }).then(fetchRooms).then(setOpen(false));
-    }
+  useEffect(() => {
+    // fetchRooms();
+    nameText.length > 0 ? fetchFilterRooms() : fetchRooms();
+  }, [activePage, nameText]);
 
-
-    useEffect(() => {
-        // fetchRooms();
-        nameText.length > 0 ? fetchFilterRooms() : fetchRooms();
-             }, [activePage, nameText]);
-
-             const [open, setOpen] = useState(false)
-            //  const [close, setClose] = useState(false)
-    return (
-
-
+  const [open, setOpen] = useState(false);
+  //  const [close, setClose] = useState(false)
+  return (
+    <div>
+      {create && (
         <div>
-            {create && (<div><CreateRoom /></div>)}
-                
-            {active && (<div className='edit'><EditRoom id={active} /></div>)}
-                
-            {!active && !create && (
+          <CreateRoom />
+        </div>
+      )}
 
-                <div id='rooms'>
-                    <Input value={nameText} onChange={(e) => setNameText(e.target.value)} placeholder='Klase/Pastatas' />
-                    
+      {active && (
+        <div className="edit">
+          <EditRoom id={active} />
+        </div>
+      )}
 
-                    <Button icon labelPosition='left' primary className='controls' onClick={() => setCreate('new')}><Icon name='database' />Kurti naują klasę</Button>
-                    <Table selectable >
-                        <Table.Header>
-                            <Table.Row>
-                                <Table.HeaderCell>Klases pavadinimas</Table.HeaderCell>
-                                <Table.HeaderCell>Pastatas</Table.HeaderCell>
-                                <Table.HeaderCell>Aprasymas</Table.HeaderCell>
-                                <Table.HeaderCell>Veiksmai</Table.HeaderCell>
-                            </Table.Row>
-                        </Table.Header>
+      {!active && !create && (
+        <div id="rooms">
+          <Input
+          className="controls1"
+            value={nameText}
+            onChange={(e) => setNameText(e.target.value)}
+            placeholder="Klase/Pastatas"
+          />
 
-                        <Table.Body>
-                            {rooms.map(room => (
+          <Button
+            icon
+            labelPosition="left"
+            primary
+            className="controls"
+            onClick={() => setCreate("new")}
+          >
+            <Icon name="database" />
+            Kurti naują klasę
+          </Button>
+          <Table selectable>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell>Klases pavadinimas</Table.HeaderCell>
+                <Table.HeaderCell>Pastatas</Table.HeaderCell>
+                <Table.HeaderCell>Aprasymas</Table.HeaderCell>
+                <Table.HeaderCell>Veiksmai</Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
 
-                                <Table.Row key={room.id}>
-                                    <Table.Cell>{room.name}</Table.Cell>
-                                    <Table.Cell>{room.building}</Table.Cell>
-                                    <Table.Cell>{room.description}</Table.Cell>
+            <Table.Body>
+              {rooms.map((room) => (
+                <Table.Row key={room.id}>
+                  <Table.Cell>{room.name}</Table.Cell>
+                  <Table.Cell>{room.building}</Table.Cell>
+                  <Table.Cell>{room.description}</Table.Cell>
 
-                                    <Table.Cell collapsing>
-                                        <Button basic primary compact icon='eye' title='Peržiūrėti' onClick={() => setActive(room.id)}></Button>
-                                        <Button basic color='black' compact icon='trash alternate' onClick={() => setOpen(room.id)}></Button>
-                                        <Confirm
-                                            open={open}
-                                            header='Dėmesio!'
-                                            content='Ar tikrai norite ištrinti?'
-                                            cancelButton='Grįžti atgal'
-                                            confirmButton="Ištrinti"
-                                            onCancel={() => setOpen(false)}
-                                            onConfirm={() => removeRoom(open)}
-                                            size='small'
-                                        />
+                  <Table.Cell collapsing>
+                    <Button
+                      basic
+                      primary
+                      compact
+                      icon="eye"
+                      title="Peržiūrėti"
+                      onClick={() => setActive(room.id)}
+                    ></Button>
+                    <Button
+                      basic
+                      color="black"
+                      compact
+                      icon="trash alternate"
+                      onClick={() => setOpen(room.id)}
+                    ></Button>
+                    <Confirm
+                      open={open}
+                      header="Dėmesio!"
+                      content="Ar tikrai norite ištrinti?"
+                      cancelButton="Grįžti atgal"
+                      confirmButton="Ištrinti"
+                      onCancel={() => setOpen(false)}
+                      onConfirm={() => removeRoom(open)}
+                      size="small"
+                    />
+                  </Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
+          <Divider hidden></Divider>
+          <button onClick={() => setActivePage(0)}> 1 </button>
+          <button onClick={() => setActivePage(1)}> 2 </button>
+          <button onClick={() => setActivePage(2)}> 3 </button>
+          <button onClick={() => setActivePage(3)}> 4 </button>
 
-                                    </Table.Cell>
-                                </Table.Row>
-                            ))}
-                        </Table.Body>
-
-                        
-
-                    </Table>
-                    <Divider hidden></Divider>
-                    <button onClick={()=> setActivePage(0)}> 1 </button>
-                 <button onClick={()=> setActivePage(1)}> 2 </button> 
-                 <button onClick={()=> setActivePage(2)}> 3 </button> 
-                 <button onClick={()=> setActivePage(3)}> 4 </button>
-
-                    {/* <Pagination
+          {/* <Pagination
                         defaultActivePage={1}
                         firstItem={rooms.firstItem}
                         lastItem={rooms.lastItem}
                         pointing
                         totalPages={3}
                     /> */}
-                </div>
-            )}
-
         </div>
-    )
+      )}
+    </div>
+  );
 }
 // export function ViewRooms() {
 //     const [activeItem, setActiveItem] = useState("");
-//     const [nameText, setNameText] = useState("");  
+//     const [nameText, setNameText] = useState("");
 //     const [rooms, setRooms] = useState([]);
-//     const [activePage, setActivePage] = useState(0); 
-  
+//     const [activePage, setActivePage] = useState(0);
+
 //     const fetchFilterRooms = async () => {
 //       fetch(`/api/v1/rooms/page/starting-with/${nameText}?page=` + activePage)
 //         .then((response) => response.json())
 //         .then((jsonRespone) => setRooms(jsonRespone));
 //     };
-  
+
 //     const fetchRooms = async () => {
 //       fetch(`/api/v1/rooms/page?page=` + activePage)
 //         .then((response) => response.json())
 //         .then((jsonRespones) => setRooms(jsonRespones));
 //     };
-  
+
 //     const removeRoom = (id) => {
 //       fetch("/api/v1/rooms/" + id, {
 //         method: "DELETE",
 //         headers: JSON_HEADERS,
 //       }).then(fetchFilterRooms);
 //     };
-  
-   
-//     useEffect(() => {   
+
+//     useEffect(() => {
 //       nameText.length > 0 ? fetchFilterRooms() : fetchRooms();
 //     }, [activePage, nameText]);
-  
+
 //     return (
 //       <div id="rooms">
 //         <Input
@@ -161,7 +190,7 @@ export function ViewRooms() {
 //           placeholder="Ieškoti pagal pavadinimą"
 //         />
 //         {/* <Button onClick={fetchFilterRooms}>Filtruoti</Button> */}
-  
+
 //         <Button
 //           icon
 //           labelPosition="left"
@@ -172,7 +201,7 @@ export function ViewRooms() {
 //           <Icon name="database" />
 //           Kurti naują klasę
 //         </Button>
-  
+
 //         <Table selectable>
 //           <Table.Header>
 //             <Table.Row>
@@ -183,7 +212,7 @@ export function ViewRooms() {
 //               <Table.HeaderCell>Veiksmai</Table.HeaderCell>
 //             </Table.Row>
 //           </Table.Header>
-  
+
 //           <Table.Body>
 //             {rooms.map((room) => (
 //               <Table.Row key={room.id}>
@@ -214,18 +243,18 @@ export function ViewRooms() {
 //           </Table.Body>
 //         </Table>
 //         <button onClick={()=> setActivePage(0)}> 1 </button>
-//                 <button onClick={()=> setActivePage(1)}> 2 </button> 
-//                 <button onClick={()=> setActivePage(2)}> 3 </button> 
-//                 <button onClick={()=> setActivePage(3)}> 4 </button>      
-//         {/* <Pagination 
+//                 <button onClick={()=> setActivePage(1)}> 2 </button>
+//                 <button onClick={()=> setActivePage(2)}> 3 </button>
+//                 <button onClick={()=> setActivePage(3)}> 4 </button>
+//         {/* <Pagination
 //               defaultActivePage={1}
 //               activePage={activePage}
 //               onPageChange={onPageChange}
 //               ellipsisItem={null}
 //               siblingRange={1}
-//               totalPages={10}          
-              
-//           />    */}  
+//               totalPages={10}
+
+//           />    */}
 //       </div>
 //     );
 //   }

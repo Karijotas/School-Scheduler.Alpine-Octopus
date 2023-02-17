@@ -7,12 +7,11 @@ import {
   Icon,
   Input,
   Table,
-  List,
-  Segment
 } from "semantic-ui-react";
 import { EditSubjectObject } from "./EditSubjectObject";
 import { CreateGroupPage } from "../../Create/CreateGroupPage";
 import "./ViewGroups.css";
+import "./FilterSize.css";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",

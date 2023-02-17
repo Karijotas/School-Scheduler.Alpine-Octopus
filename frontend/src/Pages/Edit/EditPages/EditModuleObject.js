@@ -82,7 +82,6 @@ export function EditModuleObject(props) {
             <Table.Header >
                 <Table.Row  >
                     <Table.HeaderCell>Modulio pavadinimas</Table.HeaderCell>
-                    <Table.HeaderCell>Modulio dalykai</Table.HeaderCell>
                     <Table.HeaderCell>Aprašymas</Table.HeaderCell>                   
                     <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
                     <Table.HeaderCell>Veiksmai</Table.HeaderCell>
@@ -93,10 +92,6 @@ export function EditModuleObject(props) {
             <Table.Body>
                 <Table.Row  >
                     <Table.Cell >{modules.name}</Table.Cell>
-                    <Table.Cell >
-                    <List bulleted>
-                      <List.Item>{module.modulesSubjects}</List.Item>
-                    </List></Table.Cell>
                     <Table.Cell >{modules.description}</Table.Cell>
                     <Table.Cell collapsing > {modules.modifiedDate}  </Table.Cell>
                     <Table.Cell collapsing ><Button onClick={editThis}>Redaguoti</Button>
@@ -119,7 +114,6 @@ export function EditModuleObject(props) {
                 <Table.Header >
                     <Table.Row  >
                     <Table.HeaderCell>Modulio pavadinimas</Table.HeaderCell>
-                    <Table.HeaderCell>Modulio dalykai</Table.HeaderCell>
                     <Table.HeaderCell>Aprašymas</Table.HeaderCell>                   
                     <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
                     <Table.HeaderCell>Veiksmai</Table.HeaderCell>
@@ -130,8 +124,6 @@ export function EditModuleObject(props) {
                 <Table.Body>
                     <Table.Row  >
                         <Table.Cell collapsing><Input value={modules.name} onChange={(e) => updateProperty('name', e)} />
-                        </Table.Cell>
-                        <Table.Cell collapsing><Input value={modules.modulesSubjects} onChange={(e) => updateProperty('modulesSubjects', e)} />
                         </Table.Cell>
                         <Table.Cell collapsing><Input placeholder={modules.description} /*options={yearOptions} value={groups.schoolYear} */onChange={(e) => updateProperty('description', e)} />
                         </Table.Cell>

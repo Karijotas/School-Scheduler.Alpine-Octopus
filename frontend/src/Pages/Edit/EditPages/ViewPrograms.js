@@ -84,6 +84,7 @@ export function ViewPrograms() {
         <div id="programs">
           <Input
             value={nameText}
+            className="controls1"
             onChange={(e) => setNameText(e.target.value)}
             placeholder="Ieškoti pagal pavadinimą"
           />
