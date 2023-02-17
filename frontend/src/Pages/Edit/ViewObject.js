@@ -36,7 +36,7 @@ export function ObjectList(props) {
     if (props === 'teachers') {
         return (
             <p>
-                <ViewTeachers/>
+                {/* <ViewTeachers/> */}
             </p>
 
         )
