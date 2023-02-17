@@ -96,7 +96,7 @@ export function EditRoom(props) {
 
                     <Table.Cell collapsing > {rooms.modifiedDate}  </Table.Cell>
 
-                    <Table.Cell collapsing ><Button onClick={editThis}>Taisyti</Button>
+                    <Table.Cell collapsing ><Button onClick={editThis}>Redaguoti</Button>
                     </Table.Cell>
 
 
@@ -143,7 +143,7 @@ export function EditRoom(props) {
                 </ Table.Body >
                 
             </Table>
-<Button icon labelPosition="left" className="" onClick={() => setHide(true)}><Icon name="arrow left"/>Atgal</Button>
+
         </div>)}
 
         {hide && <div><ViewRooms /></div>}

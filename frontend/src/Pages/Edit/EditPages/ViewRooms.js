@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, Divider, ButtonGroup, Confirm, Icon, Input, Table } from 'semantic-ui-react'
 import { CreateRoom } from '../../Create/CreateRoom';
 import { EditRoom } from './EditRoom';
+import './ViewRoom.css'; 
 
 
 
@@ -112,12 +113,13 @@ export function ViewRooms() {
             {!active && !create && (
 
                 <div id='rooms'>
-                    <Input value={nameText} onChange={(e) => setNameText(e.target.value)} placeholder='Klasė' />
-                    <Input value={buildingText} onChange={(e) => setBuildingText(e.target.value)} placeholder="Pastatas"/>
+                    <Input className='controls1' value={nameText} onChange={(e) => setNameText(e.target.value)} placeholder='Filtruoti pagal Klasė' />
+                    <Input className='controls1' value={buildingText} onChange={(e) => setBuildingText(e.target.value)} placeholder="Filtruoti pagal Pastatą"/>
 
                     
 
                     <Button icon labelPosition='left' primary className='controls' onClick={() => setCreate('new')}><Icon name='database' />Kurti naują klasę</Button>
+                    <Divider horizontal hidden></Divider>
                     <Table selectable >
                         <Table.Header>
                             <Table.Row>
