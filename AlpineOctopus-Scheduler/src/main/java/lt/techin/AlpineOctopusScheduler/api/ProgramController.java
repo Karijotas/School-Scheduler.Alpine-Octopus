@@ -166,10 +166,10 @@ public class ProgramController {
     }
 
     @PatchMapping("/{programId}")
-    public ResponseEntity<ProgramEntityDto> updateProgram(@PathVariable Long programId, @RequestBody ProgramDto programDto) {
+    public ResponseEntity<ProgramDto> updateProgram(@PathVariable Long programId, @RequestBody ProgramDto programDto) {
         var updatedProgram = programService.update(programId, toProgram(programDto));
 
-        return ok(toProgramEntityDto(updatedProgram));
+        return ok(toProgramDto(updatedProgram));
     }
 
     @PatchMapping("/programSubjects/{programSubjectId}")
