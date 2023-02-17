@@ -1,96 +1,94 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import {
   Button,
   ButtonGroup,
-  Divider,
-  Dropdown,
   Confirm,
+  Divider,
   Icon,
   Input,
   Table,
+  List
 } from "semantic-ui-react";
-import { CreateProgramPage } from "../../Create/CreateProgramPage";
-import { EditProgramObject } from "./EditProgramObject";
+import { EditModuleObject } from "./EditModuleObject";
+import { CreateModulePage } from "../../Create/CreateModulePage";
 import "./ViewGroups.css";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
 };
 
-export function ViewPrograms() {
+export function ViewModules() {
   const [active, setActive] = useState();
   const [create, setCreate] = useState("");
   const [nameText, setNameText] = useState("");
-  const [programs, setPrograms] = useState([]);
-  const [groupsforPaging, setGroupsForPaging] = useState([]);
+  const [modules, setModules] = useState([]);
+
+  const [modulesforPaging, setModulesForPaging] = useState([]);
 
   const [activePage, setActivePage] = useState(0);
   const [pagecount, setPageCount] = useState();
 
-  const fetchFilterPrograms = async () => {
-    fetch(`/api/v1/programs/page/starting-with/${nameText}?page=` + activePage)
+  const fetchFilterModules = async () => {
+    fetch(`/api/v1/modules/page/name-filter/${nameText}?page=` + activePage)
       .then((response) => response.json())
-      .then((jsonRespone) => setPrograms(jsonRespone));
+      .then((jsonRespone) => setModules(jsonRespone));
+    
   };
 
-  const fetchSinglePrograms = () => {
-    fetch("/api/v1/programs")
+  const fetchSingleModules = () => {
+    fetch("/api/v1/modules")
       .then((response) => response.json())
-      .then((jsonResponse) => setGroupsForPaging(jsonResponse))
-      .then(setPageCount(Math.ceil(groupsforPaging.length / 10)));
+      .then((jsonResponse) => setModulesForPaging(jsonResponse))
+      .then(setPageCount(Math.ceil(modulesforPaging.length / 10)));
   };
 
-  const fetchPrograms = async () => {
-    fetch(`/api/v1/programs/page?page=` + activePage)
+  const fetchModules = async () => {
+    fetch(`/api/v1/modules/page?page=` + activePage)
       .then((response) => response.json())
-      .then((jsonRespones) => setPrograms(jsonRespones));
+      .then((jsonRespones) => setModules(jsonRespones));
   };
 
-  const removeProgram = (id) => {
-    fetch("/api/v1/programs/" + id, {
+  const removeModule = (id) => {
+    fetch("/api/v1/modules/" + id, {
       method: "DELETE",
       headers: JSON_HEADERS,
-    }).then(fetchPrograms)
-         .then(setOpen(false));
+    }).then(fetchModules);
   };
 
   useEffect(() => {
-    nameText.length > 0 ? fetchFilterPrograms() : fetchPrograms();
+    nameText.length > 0 ? fetchFilterModules() : fetchModules();
   }, [activePage, nameText]);
 
   const [open, setOpen] = useState(false);
   const [close, setClose] = useState(false);
- 
 
   useEffect(() => {
     if (pagecount !== null) {
-      fetchSinglePrograms();
+      fetchSingleModules();
     }
-  }, [programs]);
+  }, [modules]);
 
   return (
     <div>
       {create && (
         <div>
-          <CreateProgramPage />
+          <CreateModulePage />
         </div>
       )}
       {active && (
         <div className="edit">
-          <EditProgramObject id={active} />
+          <EditModuleObject id={active} />
         </div>
       )}
 
       {!active && !create && (
-
-        <div id="programs">
+        <div id="modules">
           <Input
+            className="controls1"
+            placeholder="Filtruoti pagal pavadinimą"
             value={nameText}
             onChange={(e) => setNameText(e.target.value)}
-            placeholder="Ieškoti pagal pavadinimą"
           />
-          {/* <Button onClick={fetchFilterPrograms}>Filtruoti</Button> */}
 
           <Button
             icon
@@ -100,24 +98,22 @@ export function ViewPrograms() {
             onClick={() => setCreate("new")}
           >
             <Icon name="database" />
-            Kurti naują programą
+            Kurti naują modulį
           </Button>
           <Divider horizontal hidden></Divider>
 
           <Table selectable>
             <Table.Header>
               <Table.Row>
-                <Table.HeaderCell>Programos pavadinimas</Table.HeaderCell>
-                
+                <Table.HeaderCell>Modulio pavadinimas</Table.HeaderCell>
                 <Table.HeaderCell>Veiksmai</Table.HeaderCell>
               </Table.Row>
             </Table.Header>
 
             <Table.Body>
-              {programs.map((program) => (
-                <Table.Row key={program.id}>
-                  <Table.Cell>{program.name}</Table.Cell>
-                  
+              {modules.map((module) => (
+                <Table.Row key={module.id}>
+                  <Table.Cell>{module.name}</Table.Cell>
                   <Table.Cell collapsing>
                     <Button
                       basic
@@ -125,7 +121,7 @@ export function ViewPrograms() {
                       compact
                       icon="eye"
                       title="Peržiūrėti"
-                      onClick={() => setActive(program.id)}
+                      onClick={() => setActive(module.id)}
                     ></Button>
                     <Button
                       basic
@@ -133,7 +129,7 @@ export function ViewPrograms() {
                       compact
                       title="Ištrinti"
                       icon="trash alternate"
-                      onClick={() => setOpen(program.id)}
+                      onClick={() => setOpen(module.id)}
                     ></Button>
 
                     <Confirm
@@ -143,7 +139,7 @@ export function ViewPrograms() {
                       cancelButton="Grįžti atgal"
                       confirmButton="Ištrinti"
                       onCancel={() => setOpen(false)}
-                      onConfirm={() => removeProgram(open)}
+                      onConfirm={() => removeModule(open)}
                       size="small"
                     />
                   </Table.Cell>
@@ -169,7 +165,14 @@ export function ViewPrograms() {
                 </Button>
               );
             })}
-            <Button onClick={() => setActivePage(activePage + 1)} icon>
+            <Button
+              onClick={() =>
+                setActivePage(
+                  activePage >= pagecount - 1 ? activePage : activePage + 1
+                )
+              }
+              icon
+            >
               <Icon name="arrow right" />{" "}
             </Button>
           </ButtonGroup>

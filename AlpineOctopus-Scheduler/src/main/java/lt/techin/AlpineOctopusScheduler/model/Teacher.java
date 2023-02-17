@@ -1,8 +1,14 @@
 package lt.techin.AlpineOctopusScheduler.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
 
@@ -16,19 +22,28 @@ public class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
     private String surname;
     private String loginEmail;
     private String contactEmail;
     private String phone;
     private double workHoursPerWeek;
-
-    //@ManyToMany(mappedBy = subjectEntity)
-    //private List<String> subjectsList;
-
     private String shift;
-// variables end
+
+    @CreatedDate
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createdDate;
+
+
+    @LastModifiedDate
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime modifiedDate;
+
+    @CreatedBy
+    private String createdBy;
+
+    @LastModifiedBy
+    private String modifiedBy;
 
     @ManyToMany (mappedBy = "subjectTeachers")
     @JsonIgnore
@@ -36,16 +51,36 @@ public class Teacher {
 
     public Teacher(){}
 
-    public Teacher(Long id, String name, String surname, String loginEmail, String contactEmail, String phone, double workHoursPerWeek, String shift, Set<Subject> teachersSubjects) {
-        this.id = id;
-        this.name = name;
-        this.surname = surname;
-        this.loginEmail = loginEmail;
-        this.contactEmail = contactEmail;
-        this.phone = phone;
-        this.workHoursPerWeek = workHoursPerWeek;
-        this.shift = shift;
-        this.teachersSubjects = teachersSubjects;
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public LocalDateTime getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(LocalDateTime modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
     }
 
     public Long getId() {
@@ -125,12 +160,12 @@ public class Teacher {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Teacher teacher = (Teacher) o;
-        return Double.compare(teacher.workHoursPerWeek, workHoursPerWeek) == 0 && Objects.equals(id, teacher.id) && Objects.equals(name, teacher.name) && Objects.equals(surname, teacher.surname) && Objects.equals(loginEmail, teacher.loginEmail) && Objects.equals(contactEmail, teacher.contactEmail) && Objects.equals(phone, teacher.phone) && Objects.equals(shift, teacher.shift) && Objects.equals(teachersSubjects, teacher.teachersSubjects);
+        return Double.compare(teacher.getWorkHoursPerWeek(), getWorkHoursPerWeek()) == 0 && Objects.equals(getId(), teacher.getId()) && Objects.equals(getName(), teacher.getName()) && Objects.equals(getSurname(), teacher.getSurname()) && Objects.equals(getLoginEmail(), teacher.getLoginEmail()) && Objects.equals(getContactEmail(), teacher.getContactEmail()) && Objects.equals(getPhone(), teacher.getPhone()) && Objects.equals(getShift(), teacher.getShift()) && Objects.equals(getCreatedDate(), teacher.getCreatedDate()) && Objects.equals(getModifiedDate(), teacher.getModifiedDate()) && Objects.equals(getCreatedBy(), teacher.getCreatedBy()) && Objects.equals(getModifiedBy(), teacher.getModifiedBy()) && Objects.equals(getTeachersSubjects(), teacher.getTeachersSubjects());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, surname, loginEmail, contactEmail, phone, workHoursPerWeek, shift, teachersSubjects);
+        return Objects.hash(getId(), getName(), getSurname(), getLoginEmail(), getContactEmail(), getPhone(), getWorkHoursPerWeek(), getShift(), getCreatedDate(), getModifiedDate(), getCreatedBy(), getModifiedBy(), getTeachersSubjects());
     }
 
     @Override
@@ -144,6 +179,10 @@ public class Teacher {
                 ", phone='" + phone + '\'' +
                 ", workHoursPerWeek=" + workHoursPerWeek +
                 ", shift='" + shift + '\'' +
+                ", createdDate=" + createdDate +
+                ", modifiedDate=" + modifiedDate +
+                ", createdBy='" + createdBy + '\'' +
+                ", modifiedBy='" + modifiedBy + '\'' +
                 ", teachersSubjects=" + teachersSubjects +
                 '}';
     }

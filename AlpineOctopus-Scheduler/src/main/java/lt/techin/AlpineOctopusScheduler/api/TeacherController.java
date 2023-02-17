@@ -2,6 +2,7 @@ package lt.techin.AlpineOctopusScheduler.api;
 
 //Mantvydas Juršys
 
+import lt.techin.AlpineOctopusScheduler.api.dto.ModuleDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.TeacherMapper;
@@ -19,6 +20,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ModuleMapper.toModuleDto;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.TeacherMapper.toTeacher;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.TeacherMapper.toTeacherDto;
 import static org.springframework.http.ResponseEntity.ok;
@@ -77,5 +79,12 @@ public class TeacherController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
 
         return responseEntity;
+    }
+
+    @PutMapping("/subjects/{moduleId}")
+    public ResponseEntity<TeacherDto> addSubjectToTeacher(@PathVariable Long teacherId, @RequestBody Long subjectId) {
+        var updatedTeacher = teacherService.addSubjectToTeacher(teacherId, subjectId);
+
+        return ok(toTeacherDto(updatedTeacher));
     }
 }

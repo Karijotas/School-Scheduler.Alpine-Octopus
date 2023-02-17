@@ -19,6 +19,7 @@ public class SubjectMapper {
         subjectDto.setSubjectTeachers(subject.getSubjectTeachers());
 
 
+
         return subjectDto;
     }
 
@@ -32,6 +33,7 @@ public class SubjectMapper {
         subject.setSubjectModules(subjectDto.getSubjectModules());
         subject.setSubjectRooms(subjectDto.getSubjectRooms());
         subject.setSubjectTeachers(subjectDto.getSubjectTeachers());
+
 
         return subject;
     }

@@ -67,7 +67,7 @@ export default class EditMenu extends Component {
 
               <Menu.Item
                 name='program'
-                icon='unordered list'
+                icon='file alternate'
                 content='Programos'
                 active={activeItem === 'program'}
                 onClick={this.handleItemClick}

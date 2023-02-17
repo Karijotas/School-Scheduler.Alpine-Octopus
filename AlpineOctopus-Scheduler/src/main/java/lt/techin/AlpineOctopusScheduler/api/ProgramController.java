@@ -7,7 +7,9 @@ import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramSubjectHoursMapper;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper;
 import lt.techin.AlpineOctopusScheduler.dao.ProgramRepository;
+import lt.techin.AlpineOctopusScheduler.dao.ProgramSubjectHourListRepository;
 import lt.techin.AlpineOctopusScheduler.dao.ProgramSubjectHoursRepository;
+import lt.techin.AlpineOctopusScheduler.dao.SubjectRepository;
 import lt.techin.AlpineOctopusScheduler.model.Program;
 import lt.techin.AlpineOctopusScheduler.model.ProgramSubjectHours;
 import lt.techin.AlpineOctopusScheduler.service.ProgramService;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -37,13 +40,19 @@ public class ProgramController {
     private final ProgramService programService;
     private final ProgramSubjectHoursRepository programSubjectHoursRepository;
     private final ProgramRepository programRepository;
+    private final SubjectRepository subjectRepository;
+    private final ProgramSubjectHourListRepository programSubjectHourListRepository;
 
     public ProgramController(ProgramService programService,
                              ProgramSubjectHoursRepository programSubjectHoursRepository,
-                             ProgramRepository programRepository) {
+                             ProgramRepository programRepository,
+                             SubjectRepository subjectRepository,
+                             ProgramSubjectHourListRepository programSubjectHourListRepository) {
         this.programService = programService;
         this.programSubjectHoursRepository = programSubjectHoursRepository;
         this.programRepository = programRepository;
+        this.subjectRepository = subjectRepository;
+        this.programSubjectHourListRepository = programSubjectHourListRepository;
     }
 
 
@@ -66,13 +75,14 @@ public class ProgramController {
     }
 
     @GetMapping(path = "/starting-with/{nameText}")
+
     @ApiOperation(value = "Get Programs starting with", notes = "Returns list of Programs starting with passed String")
     @ResponseBody
     public List<ProgramEntityDto> getProgramsByNameContaining(@PathVariable String nameText) {
         return programService.getProgramsByNameContaining(nameText);
     }
 
-    @GetMapping(path = "page/starting-with/{nameText}")
+    @GetMapping(path = "page/name-filter/{nameText}")
     @ApiOperation(value = "Get Paged Programs starting with", notes = "Returns list of Programs starting with passed String")
     @ResponseBody
     public List<ProgramEntityDto> getPagedProgramsByNameContaining(@PathVariable String nameText,
@@ -94,11 +104,16 @@ public class ProgramController {
 
     @GetMapping(value = "/{programId}/subjects", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public List<ProgramSubjectHoursDtoForList> getAllSubjectsInProgram(@PathVariable Long programId) {
-        return programService.getAllSubjectsInProgramByProgramId(programId).stream()
-                .map(ProgramSubjectHoursMapper::toProgramSubjectHours)
-                .map(ProgramSubjectHoursMapper::toProgramSubjectHoursDtoForList)
-                .collect(toList());
+    public List<ProgramSubjectHours> getAllSubjectsInProgram(@PathVariable Long programId) {
+        return programService.getAllSubjectsInProgramByProgramId(programId);
+    }
+
+    @GetMapping(value = "/{programId}/subjects/hours", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public Integer getSumOfHoursByProgramId(@PathVariable Long programId) {
+        int sumOfHours = 0;
+        return sumOfHours = programService.getAllSubjectsInProgramByProgramId(programId).stream()
+                .map(ProgramSubjectHours::getSubjectHours).reduce(0, Integer::sum);
     }
 
     @DeleteMapping("/{programId}")
@@ -131,8 +146,8 @@ public class ProgramController {
         }
     }
 
-    @DeleteMapping("/{programId}/subjects/{subjectId}")
-    public ResponseEntity<Void> deleteSubjectFromProgramByProgramIdSubjectIdHours(@PathVariable Long programId, @PathVariable Long subjectId, @RequestParam Integer hours) {
+    @DeleteMapping("/{programId}/subjects/{subjectId}/{hours}")
+    public ResponseEntity<Void> deleteSubjectFromProgramByProgramIdSubjectIdHours(@PathVariable Long programId, @PathVariable Long subjectId, @PathVariable Integer hours) {
 
         boolean deleted = programService.deleteSubjectInProgramById(programId, subjectId, hours);
         if (deleted) {
@@ -163,10 +178,21 @@ public class ProgramController {
         return ok(toProgramSubjectHoursDtoForList(updatedProgramSubjectHours));
     }
 
-    @PostMapping(value = "/{programId}/subjects/newSubjectsWithHours")
+    @PostMapping(value = "/{programId}/subjects/{subjectId}/{hours}/newSubjectsWithHours")
     @ResponseBody
-    public ProgramSubjectHours addSubjectAndHoursToProgram(@PathVariable Long programId, @RequestParam Integer subjectHours, @RequestParam Long subjectId) {
-        return programService.addSubjectAndHoursToProgram(programId, subjectId, subjectHours);
+    public ProgramSubjectHours addSubjectAndHoursToProgram(@PathVariable Long programId, @PathVariable Integer hours,@PathVariable Long subjectId) {
+        return programService.addSubjectAndHoursToProgram(programId, subjectId, hours);
+    }
+
+    @PostMapping(value = "/{programId}/subjects/newSubjectsWithHoursList")
+    @ResponseBody
+    public List<ProgramSubjectHoursDtoForList> addAllSubjectsAndHoursToProgram(@PathVariable Long programId, @RequestBody List<ProgramSubjectHoursForCreate> programSubjectHoursForCreateList){
+
+        programSubjectHoursForCreateList.forEach(sh -> programService
+               .addSubjectAndHoursToProgram(programId, sh.getSubjectId(), sh.getSubjectHour()));
+               return programService.getAllSubjectsInProgramByProgramId(programId).stream()
+                .map(ProgramSubjectHoursMapper::toProgramSubjectHoursDtoForList)
+                .collect(toList());
     }
 
 

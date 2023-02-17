@@ -9,7 +9,7 @@ const JSON_HEADERS = {
 };
 
 
-export function ViewGroups() {
+export function ViewTeachers() {
     // const yearOptions = [
     //     { key: 23, value: 2023, text: '2023' },
     //     { key: 24, value: 2024, text: '2024' },
@@ -31,11 +31,9 @@ export function ViewGroups() {
 
     const [yearText, setYearText] = useState('');
 
-    const [year, setYear] = useState(true);
-
     const [programText, setProgramText] = useState('');
 
-    const [activePage, setActivePage] = useState(0)
+    const [activePage, setActivePage] = useState(1)
 
     const [pagecount, setPageCount] = useState()
 
@@ -89,13 +87,11 @@ export function ViewGroups() {
     useEffect(() => {
         if (nameText.length === 0 && yearText.length === 0 && programText.length === 0) {
             fetchGroups();
-            // setYearText('2023')
         } else if (nameText.length > 0) {
             setProgramText('')
             setYearText('')
             fetchFilterGroups();
         } else if (yearText.length > 0) {
-
             setNameText('')
             setProgramText('')
             fetchYearGroups();
@@ -103,9 +99,7 @@ export function ViewGroups() {
             setNameText('')
             setYearText('')
             fetchProgramGroups();
-        } 
-        
-      
+        }
 
     }, [nameText, yearText, programText, activePage]);
 
@@ -116,7 +110,6 @@ export function ViewGroups() {
     }, [groups])
 
     const [open, setOpen] = useState(false)
-
 
 
 
@@ -132,12 +125,13 @@ export function ViewGroups() {
 
             {!active && !create && (
 
-                <div id='groups' >
+                <div id='groups'>
 
-                    <Input className='controls1' placeholder='Filtruoti pagal pavadinimą' value={nameText} onChange={(e) => setNameText(e.target.value)} />
-                    <Input type='number' value={yearText} className='controls1' onChange={(e) => setYearText(e.target.value)} />
+                    <Input className='controls1' placeholder='Filtruoti pagal vardą' value={nameText} onChange={(e) => setNameText(e.target.value)} />
 
-                    <Input placeholder='Filtruoti pagal programą' value={programText} onChange={(e) => setProgramText(e.target.value)} />
+                    <Input className='controls1' placeholder='Filtruoti pagal dalykus' value={yearText} onChange={(e) => setYearText(e.target.value)} />
+
+                    <Input placeholder='Filtruoti pagal pamainas' value={programText} onChange={(e) => setProgramText(e.target.value)} />
 
 
 
@@ -149,11 +143,12 @@ export function ViewGroups() {
                     <Table selectable >
                         <Table.Header>
                             <Table.Row>
-                                <Table.HeaderCell>Grupės pavadinimas "Teams"</Table.HeaderCell>
-                                <Table.HeaderCell>Mokslo metai</Table.HeaderCell>
-                                <Table.HeaderCell>Studentų skaičius</Table.HeaderCell>
-                                <Table.HeaderCell>Programa</Table.HeaderCell>
-                                <Table.HeaderCell>Veiksmai</Table.HeaderCell>
+                                <Table.HeaderCell>Mokytojo vardas</Table.HeaderCell>
+                                <Table.HeaderCell>Teams vartotojo vardas</Table.HeaderCell>
+                                <Table.HeaderCell>Kontaktinis email (optional)</Table.HeaderCell>
+                                <Table.HeaderCell>Kontaktinis telefonas (optional)</Table.HeaderCell>
+                                <Table.HeaderCell>Valandos per savaitę</Table.HeaderCell>
+                                <Table.HeaderCell>Dalykai</Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
 
@@ -165,6 +160,8 @@ export function ViewGroups() {
                                     <Table.Cell>{group.schoolYear}</Table.Cell>
                                     <Table.Cell>{group.studentAmount}</Table.Cell>
                                     <Table.Cell>{group.programName}</Table.Cell>
+                                    <Table.Cell>dalykas</Table.Cell>
+
                                     <Table.Cell collapsing>
                                         <Button basic primary compact icon='eye' title='Peržiūrėti' onClick={() => setActive(group.id)}></Button>
                                         <Button basic color='black' compact title='Ištrinti' icon='trash alternate' onClick={() => setOpen(group.id)}></Button>
@@ -190,10 +187,11 @@ export function ViewGroups() {
                     <ButtonGroup basic compact>
                         <Button onClick={() => setActivePage(activePage <= 0 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
                         {[...Array(pagecount)].map((e, i) => {
-                            return <Button key={i} active={activePage === i ? true : false} onClick={() => setActivePage(i) }>{i + 1}</Button>
+                            return <Button key={i} onClick={() => setActivePage(i)}>{i + 1}</Button>
                         })}
                         <Button onClick={() => setActivePage(activePage >= pagecount - 1 ? activePage : activePage + 1)} icon><Icon name="arrow right" />  </Button>
                     </ButtonGroup>
+
 
                 </div>
             )}

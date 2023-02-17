@@ -43,7 +43,7 @@ export function EditRoom(props) {
 
     const updateRooms = () => {
         fetch('/api/v1/rooms/' + props.id, {
-            method: 'PATCH',
+            method: 'PUT',
             headers: JSON_HEADERS,
             body: JSON.stringify(rooms)
         }).then(result => {
@@ -104,6 +104,7 @@ export function EditRoom(props) {
 
             </ Table.Body >
         </Table>
+        {/* <Button icon labelPosition="left" className="" onClick={() => setHide(true)}><Icon name="arrow left" />Atgal</Button> bugas */}
     </div>
 
 
@@ -130,15 +131,15 @@ export function EditRoom(props) {
                         </Table.Cell>
                         <Table.Cell collapsing><Input value={rooms.description} onChange={(e) => updateProperty('description', e)} />
                         </Table.Cell>
-                        
-
                         <Table.Cell collapsing> {rooms.modifiedDate}  </Table.Cell>
 
-                        <Table.Cell collapsing ><Button primary onClick={updateRooms}>Atnaujinti</Button></Table.Cell>
+                        <Table.Cell collapsing ><Button primary onClick={updateRooms}>Atnaujinti</Button>
+                        <Button icon labelPosition="left" className="" onClick={() => setHide(true)}><Icon name="arrow left"/>Atgal</Button></Table.Cell>
 
-
+                        
+                        
                     </Table.Row>
-
+                    
                 </ Table.Body >
             </Table>
 
