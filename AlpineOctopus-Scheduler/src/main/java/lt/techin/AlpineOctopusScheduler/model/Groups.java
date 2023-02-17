@@ -22,7 +22,7 @@ public class Groups {
 
     @NotBlank
     private String name;
-    @NotBlank
+    @NotNull
     @Min(value = 2023, message = "School year should not be less than year the application was made")
     private Integer schoolYear;
     @NotNull
