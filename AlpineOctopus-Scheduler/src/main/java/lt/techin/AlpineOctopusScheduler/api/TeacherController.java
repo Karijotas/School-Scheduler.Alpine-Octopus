@@ -2,11 +2,8 @@ package lt.techin.AlpineOctopusScheduler.api;
 
 //Mantvydas Juršys
 
-<<<<<<< HEAD
 import lt.techin.AlpineOctopusScheduler.api.dto.GroupsEntityDto;
-=======
 import lt.techin.AlpineOctopusScheduler.api.dto.ModuleDto;
->>>>>>> main
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupsMapper;

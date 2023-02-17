@@ -101,12 +101,10 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;inlay.hints&quot;,
     &quot;spring.configuration.checksum&quot;: &quot;dd5969d8c89564cbf8d5b95640e086b1&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
-=======
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true"
->>>>>>> main
   }
 }]]></component>
   <component name="RunAnythingCache">

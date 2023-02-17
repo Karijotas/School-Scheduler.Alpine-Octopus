@@ -1,16 +1,11 @@
+
 package lt.techin.AlpineOctopusScheduler.service;
 
-<<<<<<< HEAD
 import lt.techin.AlpineOctopusScheduler.api.dto.RoomDto;
-=======
->>>>>>> main
 import lt.techin.AlpineOctopusScheduler.api.dto.RoomEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.RoomMapper;
 import lt.techin.AlpineOctopusScheduler.dao.RoomRepository;
-import lt.techin.AlpineOctopusScheduler.dao.SubjectRepository;
-import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Room;
-import lt.techin.AlpineOctopusScheduler.model.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -21,35 +16,14 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
-<<<<<<< HEAD
 import java.util.stream.Collectors;
-=======
-import java.util.Set;
-import java.util.stream.Collectors;
-
->>>>>>> main
 
 @Service
 public class RoomService {
     private final RoomRepository roomRepository;
-
-    private final SubjectRepository subjectRepository;
     @Autowired
-    public RoomService(RoomRepository roomRepository, SubjectRepository subjectRepository) {
+    public RoomService(RoomRepository roomRepository) {
         this.roomRepository = roomRepository;
-        this.subjectRepository = subjectRepository;
-    }
-    public List<RoomEntityDto> getPagedAllPrograms(int page, int pageSize) {
-
-        Pageable pageable = PageRequest.of(page, pageSize);
-
-        return roomRepository.findAll(pageable).stream().map(RoomMapper::toRoomEntityDto).collect(Collectors.toList());
-    }
-    @Transactional(readOnly = true)
-    public List<RoomEntityDto> getPagedRoomsByNameContaining(String nameText, int page, int pageSize) {
-        Pageable pageable = PageRequest.of(page, pageSize);
-        return roomRepository.findByNameContainingIgnoreCase(nameText, pageable).stream()
-                .map(RoomMapper::toRoomEntityDto).collect(Collectors.toList());
     }
     public List<RoomEntityDto> getPagedAllRooms(int page, int pageSize) {
 
@@ -103,24 +77,4 @@ public class RoomService {
         }
         return false;
     }
-<<<<<<< HEAD
 }
-=======
-
-    public Room addSubjectToRoom(Long roomId, Long subjectId) {
-        var existingRoom = roomRepository.findById(roomId)
-                .orElseThrow(() -> new SchedulerValidationException("Room does not exist",
-                        "id", "Room not found", roomId.toString()));
-
-        var existingSubject = subjectRepository.findById(subjectId)
-                .orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
-                        "id", "Subject not found", subjectId.toString()));
-
-        Set<Subject> existingSubjectList = existingRoom.getRoomSubjects();
-        existingSubjectList.add(existingSubject);
-        existingRoom.setRoomSubjects(existingSubjectList);
-
-        return roomRepository.save(existingRoom);
-    }
-}
->>>>>>> main
