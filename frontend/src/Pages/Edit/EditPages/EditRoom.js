@@ -43,7 +43,7 @@ export function EditRoom(props) {
 
     const updateRooms = () => {
         fetch('/api/v1/rooms/' + props.id, {
-            method: 'PATCH',
+            method: 'PUT',
             headers: JSON_HEADERS,
             body: JSON.stringify(rooms)
         }).then(result => {
@@ -74,14 +74,14 @@ export function EditRoom(props) {
     // }
 
 
-    return (<div>{active && (<div >
+    return (<div>{active && !hide &&(<div >
 
         <Table celled color='violet'>
             <Table.Header >
                 <Table.Row  >
-                    <Table.HeaderCell >Klases pavadinimas</Table.HeaderCell>
+                    <Table.HeaderCell >Klasės pavadinimas</Table.HeaderCell>
                     <Table.HeaderCell>Pastatas</Table.HeaderCell>
-                    <Table.HeaderCell>Aprasymas</Table.HeaderCell>
+                    <Table.HeaderCell>Aprašymas</Table.HeaderCell>
                     <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
                     <Table.HeaderCell>Veiksmai</Table.HeaderCell>
 
@@ -96,7 +96,7 @@ export function EditRoom(props) {
 
                     <Table.Cell collapsing > {rooms.modifiedDate}  </Table.Cell>
 
-                    <Table.Cell collapsing ><Button onClick={editThis}>Taisyti</Button>
+                    <Table.Cell collapsing ><Button onClick={editThis}>Redaguoti</Button>
                     </Table.Cell>
 
 
@@ -104,6 +104,7 @@ export function EditRoom(props) {
 
             </ Table.Body >
         </Table>
+         <Button icon labelPosition="left" className="" onClick={() => setHide(true)}><Icon name="arrow left" />Atgal</Button>
     </div>
 
 
@@ -113,9 +114,9 @@ export function EditRoom(props) {
             <Table celled color='violet'>
                 <Table.Header >
                     <Table.Row  >
-                        <Table.HeaderCell >Klases pavadinimas</Table.HeaderCell>
+                        <Table.HeaderCell >Klasės pavadinimas</Table.HeaderCell>
                         <Table.HeaderCell>Pastatas</Table.HeaderCell>
-                        <Table.HeaderCell>Aprasymas</Table.HeaderCell>
+                        <Table.HeaderCell>Aprašymas</Table.HeaderCell>
                         <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
                         <Table.HeaderCell>Veiksmai</Table.HeaderCell>
 
@@ -130,16 +131,17 @@ export function EditRoom(props) {
                         </Table.Cell>
                         <Table.Cell collapsing><Input value={rooms.description} onChange={(e) => updateProperty('description', e)} />
                         </Table.Cell>
-                        
-
                         <Table.Cell collapsing> {rooms.modifiedDate}  </Table.Cell>
 
-                        <Table.Cell collapsing ><Button primary onClick={updateRooms}>Atnaujinti</Button></Table.Cell>
+                        <Table.Cell collapsing ><Button onClick={() => setActive(true)}>Atšaukti</Button><Button primary onClick={updateRooms}>Atnaujinti</Button>
+                        </Table.Cell>
+
 
 
                     </Table.Row>
 
                 </ Table.Body >
+
             </Table>
 
         </div>)}
