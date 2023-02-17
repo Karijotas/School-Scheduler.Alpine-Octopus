@@ -64,7 +64,7 @@ export function ObjectList(props) {
     if (props === 'modules') {
 
         return (
-                <ViewModules/>
+            <ViewModules />
         )
 
 
