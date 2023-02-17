@@ -2,24 +2,16 @@ import React, { useEffect, useState } from 'react'
 import { Button,  Icon,  Input, Table,List } from 'semantic-ui-react';
 import { ViewSubjects } from './ViewSubjects';
 
-
-
 const JSON_HEADERS = {
     'Content-Type': 'application/json'
 };
-
 
 export function EditSubjectObject(props) {
 
 
     const [hide, setHide] = useState(false)
-
     const [active, setActive] = useState(true)
-    
-
     const [error, setError] = useState();
-
-
     const [subjects, setSubjects] = useState({
         name: '',
         subjectModules: '',
@@ -33,9 +25,6 @@ export function EditSubjectObject(props) {
             .then(response => response.json())
             .then(setSubjects);
     }, [props]);
-
-
-
 
     const applyResult = () => {
 
