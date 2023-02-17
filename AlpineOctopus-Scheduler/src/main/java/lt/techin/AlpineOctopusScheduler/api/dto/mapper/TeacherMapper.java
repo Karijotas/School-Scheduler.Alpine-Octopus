@@ -12,6 +12,8 @@ public class TeacherMapper {
 
         teacherDto.setName(teacher.getName());
         teacherDto.setSurname(teacher.getSurname());
+        teacherDto.setLoginEmail(teacher.getLoginEmail());
+        teacherDto.setWorkHoursPerWeek(teacher.getWorkHoursPerWeek());
         teacherDto.setContactEmail(teacher.getContactEmail());
         teacherDto.setPhone(teacher.getPhone());
         teacherDto.setShift(teacher.getShift());
@@ -28,7 +30,9 @@ public class TeacherMapper {
 
         teacher.setName(teacherDto.getName());
         teacher.setSurname(teacherDto.getSurname());
+        teacher.setLoginEmail(teacherDto.getLoginEmail());
         teacher.setContactEmail(teacherDto.getContactEmail());
+        teacher.setWorkHoursPerWeek(teacherDto.getWorkHoursPerWeek());
         teacher.setPhone(teacherDto.getPhone());
         teacher.setShift(teacherDto.getShift());
         teacher.setTeachersSubjects(teacherDto.getTeachersSubjects());
@@ -44,7 +48,9 @@ public class TeacherMapper {
         teacherEntityDto.setId(teacher.getId());
         teacherEntityDto.setName(teacher.getName());
         teacherEntityDto.setSurname(teacher.getSurname());
+        teacherEntityDto.setLoginEmail(teacher.getLoginEmail());
         teacherEntityDto.setContactEmail(teacher.getContactEmail());
+        teacherEntityDto.setWorkHoursPerWeek(teacher.getWorkHoursPerWeek());
         teacherEntityDto.setPhone(teacher.getPhone());
         teacherEntityDto.setShift(teacher.getShift());
         teacherEntityDto.setTeachersSubjects(teacher.getTeachersSubjects());
@@ -59,7 +65,9 @@ public class TeacherMapper {
         teacher.setId(teacherEntityDto.getId());
         teacher.setName(teacherEntityDto.getName());
         teacher.setSurname(teacherEntityDto.getSurname());
+        teacher.setLoginEmail(teacherEntityDto.getLoginEmail());
         teacher.setContactEmail(teacherEntityDto.getContactEmail());
+        teacher.setWorkHoursPerWeek(teacherEntityDto.getWorkHoursPerWeek());
         teacher.setPhone(teacherEntityDto.getPhone());
         teacher.setShift(teacherEntityDto.getShift());
         teacher.setTeachersSubjects(teacherEntityDto.getTeachersSubjects());

@@ -25,10 +25,11 @@ public class SubjectDto {
 
     private Set<Teacher> subjectTeachers;
 
+
     public SubjectDto() {
     }
 
-    public SubjectDto(String name, String description,LocalDateTime createdDate, LocalDateTime modifiedDate,Set<Module> subjectModules,Set<Room> subjectRooms, Set<Teacher> subjectTeachers ) {
+    public SubjectDto(String name, String description,LocalDateTime createdDate, LocalDateTime modifiedDate,Set<Module> subjectModules,Set<Room> subjectRooms, Set<Teacher> subjectTeachers) {
         this.name = name;
         this.description = description;
         this.createdDate=createdDate;
@@ -94,6 +95,7 @@ public class SubjectDto {
     public void setSubjectTeachers(Set<Teacher> subjectTeachers) {
         this.subjectTeachers = subjectTeachers;
     }
+
 
     @Override
     public boolean equals(Object o) {

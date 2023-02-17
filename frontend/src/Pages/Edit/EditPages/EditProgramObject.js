@@ -43,7 +43,7 @@ export function EditProgramObject(props) {
 
   const [error, setError] = useState();
 
-  const [programs, setPrograms] = useState({    
+  const [programs, setPrograms] = useState({
     name: "",
     description: "",    
   });
@@ -76,7 +76,7 @@ export function EditProgramObject(props) {
   useEffect(() => {
     fetch(`/api/v1/programs/${props.id}/subjects/hours`)
       .then((response) => response.json())
-     .then(setTotalHours);
+      .then(setTotalHours);
   }, [props]);
 
   const getSubjects = (props) => { 
@@ -136,8 +136,6 @@ useEffect(() => {
 
 }
 
-  
-
   const updatePrograms = () => {
     fetch('/api/v1/programs/' + props.id, {
       method: 'PATCH',
@@ -146,8 +144,8 @@ useEffect(() => {
         programs
        ),
     })
-    .then(console.log(programs))
-      .then(result => {
+      .then(console.log(programs))
+      .then((result) => {
         if (!result.ok) {
           setError("Update failed");
         } else {
@@ -174,8 +172,6 @@ useEffect(() => {
   //     })
   //     .then(() => window.location = listUrl);
   // }
-
-
 
   return (
     <div>
@@ -204,28 +200,22 @@ useEffect(() => {
               </Table.Row>
             </Table.Body>
           </Table>
-          <Divider hidden/>
+          <Divider hidden />
           <Table>
-          <Table.Header>
+            <Table.Header>
               <Table.Row>
                 <Table.HeaderCell width={6}>Programos dalykai</Table.HeaderCell>
                 <Table.HeaderCell width={8}></Table.HeaderCell>
-                </Table.Row>
+              </Table.Row>
             </Table.Header>
-          <Table.Body>
-                    {subjectsInProgram.map((subject) => (
-                      <Table.Row key={subject.id}>
-                        <Table.Cell>{subject.subject.name}</Table.Cell>
-                        <Table.Cell>{subject.subjectHours} val.</Table.Cell>
-                        
-                        
-                      </Table.Row>
-                    ))}
-                    <Table.Row>
-                    <Table.Cell><h5>Programos valandų skaičius:</h5></Table.Cell> 
-                    <Table.Cell><h5>{totalHours} val.</h5></Table.Cell>
-                         </Table.Row>
-                  </Table.Body>
+            <Table.Body>
+              {subjectsInProgram.map((subject) => (
+                <Table.Row key={subject.id}>
+                  <Table.Cell>{subject.subject.name}</Table.Cell>
+                  <Table.Cell>{subject.subjectHours} val.</Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
           </Table>
           <Button
             icon
@@ -245,33 +235,27 @@ useEffect(() => {
               <Table.Row>
                 <Table.HeaderCell>Programos pavadinimas</Table.HeaderCell>
                 <Table.HeaderCell>Aprašymas</Table.HeaderCell>
-                <Table.HeaderCell>Paskutinis atnaujinimas</Table.HeaderCell>
-                
+                <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
+                <Table.HeaderCell>Veiksmai</Table.HeaderCell>
               </Table.Row>
             </Table.Header>
 
             <Table.Body>
               <Table.Row>
-                <Table.Cell  collapsing>
+                <Table.Cell collapsing>
                   <Input
                     value={programs.name}
                     placeholder={programs.name}
                     onChange={(e) => (updateProperty('name', e))}
                   />
                 </Table.Cell>
-                <Table.Cell  collapsing>
-                  <Form>
-                  <TextArea
-                    style={{ minHeight: 100, minWidth: 200 }}
+                <Table.Cell collapsing>
+                  <Input
                     placeholder={programs.description}
                     value={programs.description}
                     /*options={yearOptions} value={groups.schoolYear} */ 
                     onChange={(e) => (updateProperty('description', e))}
                   />
-                  </Form>
-                  {console.log(programs.description)}
-                  {console.log(programs.description)}
-                  {console.log(programs.id)}
                 </Table.Cell>
                 {/* <Table.Cell collapsing><Input value={groups.studentAmount} onChange={(e) => updateProperty('studentAmount', e)} />
                         </Table.Cell>
@@ -281,7 +265,6 @@ useEffect(() => {
                 {/* </Table.Cell> */}
 
                 <Table.Cell collapsing> {programs.modifiedDate} </Table.Cell>
-
               </Table.Row>
             </Table.Body>
           </Table>
@@ -299,14 +282,17 @@ useEffect(() => {
               <Table.Row>
                 <Table.Cell>
                   <List textAlign="center" divided verticalAlign="middle">
-                    <List.Item >
+                    <List.Item>
                       <Form.Group widths="equal">
-                        <Form.Field>                        
+                        <Form.Field>
                           <Select
                             options={subjects}
                             placeholder="Dalykai"
                             value={subject}
-                            onChange={(e, data) => (setSubject(e.target.value), setSubjectId(data.value))}
+                            onChange={(e, data) => (
+                              setSubject(e.target.value),
+                              setSubjectId(data.value)
+                            )}
                             onClose={() => console.log(subjectId)}
                           />
                         </Form.Field>
@@ -321,7 +307,17 @@ useEffect(() => {
                       </List.Content>
                       <Divider hidden />
                       <List.Content floated="left">
-                        <Button onClick={() => addSubjectAndHours(props.id, subjectId, subjectHours)}>Pridėti</Button>
+                        <Button
+                          onClick={() =>
+                            addSubjectAndHours(
+                              props.id,
+                              subjectId,
+                              subjectHours
+                            )
+                          }
+                        >
+                          Pridėti
+                        </Button>
                       </List.Content>
                     </List.Item>
                   </List>
@@ -334,20 +330,23 @@ useEffect(() => {
                         <Table.Cell>{subject.subjectHours} val.</Table.Cell>
                         <Table.Cell collapsing>
                           <Button
-                            basic                            
+                            basic
                             compact
                             icon="remove"
                             title="Pašalinti"
                             onClick={() => removeSubject(props.id, subject.subject.id, subject.subjectHours)}
                           ></Button>
                         </Table.Cell>
-                        
                       </Table.Row>
                     ))}
                     <Table.Row>
-                    <Table.Cell><h5>Programos valandų skaičius:</h5></Table.Cell> 
-                    <Table.Cell><h5>{totalHours} val.</h5></Table.Cell>
-                         </Table.Row>
+                      <Table.Cell>
+                        <h5>Programos valandų skaičius:</h5>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <h5>{totalHours} val.</h5>
+                      </Table.Cell>
+                    </Table.Row>
                   </Table.Body>
                 </Table.Cell>
               </Table.Row>
@@ -363,8 +362,8 @@ useEffect(() => {
             Atgal
           </Button>
           <Button floated="right" primary onClick={updatePrograms}>
-                    Atnaujinti
-                  </Button>
+            Atnaujinti
+          </Button>
         </div>
       )}
 
