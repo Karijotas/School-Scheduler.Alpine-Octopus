@@ -6,6 +6,7 @@ import {
   Icon,
   Pagination,
   ButtonGroup,
+  Divider,
 } from "semantic-ui-react";
 import { useState, useEffect } from "react";
 
@@ -37,7 +38,7 @@ export function SubjectList() {
     fetchSubjects();
   }, []);
 
-  
+
 
   return (
     <div id="groups">
@@ -53,6 +54,8 @@ export function SubjectList() {
         <Icon name="database" />
         Kurti naują dalyką
       </Button>
+
+      <Divider hidden></Divider>
 
       <Table selectable>
         <Table.Header>
@@ -75,14 +78,15 @@ export function SubjectList() {
           ))}
         </Table.Body>
       </Table>
+      <Divider hidden></Divider>
 
       <ButtonGroup basic compact>
-            <Button onClick={() => setActivePage(activePage <= 0 ? activePage : activePage -1)} icon><Icon name="arrow left" />  </Button>
-            <Button onClick={() => setActivePage(0)}> 1 </Button>
-            <Button onClick={() => setActivePage(1)}> 2 </Button>
-            <Button onClick={() => setActivePage(2)}> 3 </Button>
-            <Button onClick={() => setActivePage(activePage + 1)} icon><Icon name="arrow right" />  </Button>
-          </ButtonGroup>
+        <Button onClick={() => setActivePage(activePage <= 0 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
+        <Button onClick={() => setActivePage(0)}> 1 </Button>
+        <Button onClick={() => setActivePage(1)}> 2 </Button>
+        <Button onClick={() => setActivePage(2)}> 3 </Button>
+        <Button onClick={() => setActivePage(activePage + 1)} icon><Icon name="arrow right" />  </Button>
+      </ButtonGroup>
     </div>
   );
 }

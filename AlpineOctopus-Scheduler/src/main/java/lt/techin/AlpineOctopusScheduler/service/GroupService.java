@@ -1,6 +1,7 @@
 package lt.techin.AlpineOctopusScheduler.service;
 
 import lt.techin.AlpineOctopusScheduler.api.dto.GroupsDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.GroupsEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ProgramDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupsMapper;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper;
@@ -45,21 +46,22 @@ public class GroupService {
     }
 
     @Transactional(readOnly = true)
-    public List<GroupsDto> getGroupsByNameContaining(String nameText) {
+    public List<GroupsEntityDto> getGroupsByNameContaining(String nameText) {
         return groupsRepository.findByNameContainingIgnoreCase(nameText).stream()
-                .map(GroupsMapper::toGroupDto).collect(Collectors.toList());
+                .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
     }
     @Transactional(readOnly = true)
-    public List<GroupsDto> getGroupsBySchoolYear(Integer schoolYearText) {
+    public List<GroupsEntityDto> getGroupsBySchoolYear(Integer schoolYearText) {
         return groupsRepository.findBySchoolYear(schoolYearText).stream()
-                .map(GroupsMapper::toGroupDto).collect(Collectors.toList());
+                .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
     }
 
 
     @Transactional(readOnly = true)
-    public List<GroupsDto> getGroupsByProgram(String programText) {
-        return groupsRepository.findByProgram(programText).stream()
-                .map(GroupsMapper::toGroupDto).collect(Collectors.toList());
+    public List<GroupsEntityDto> getGroupsByProgram(String programText) {
+        Program createdProgram = programRepository.findByNameContainingIgnoreCase(programText).stream().findAny().get();
+        return groupsRepository.findAll().stream().filter(groups -> groups.getProgram().equals(createdProgram))
+                .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
     }
 
 
@@ -69,13 +71,14 @@ public class GroupService {
         return groupsRepository.save(groups);
     }
 //    .getById(programId)
-    public Groups update(Long id, Groups groups){
+    public Groups update(Long id, Groups groups, Long programId){
+        Program createdProgram = programRepository.findById(programId).get();
         Groups existingGroups =  groupsRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Group doesn't exist"));
 
         existingGroups.setName(groups.getName());
         existingGroups.setShift(groups.getShift());
-        existingGroups.setProgram(groups.getProgram());
+        existingGroups.setProgram(createdProgram);
         existingGroups.setSchoolYear(groups.getSchoolYear());
         existingGroups.setStudentAmount(groups.getStudentAmount());
         return groupsRepository.save(existingGroups);

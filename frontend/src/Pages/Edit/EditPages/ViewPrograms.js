@@ -36,11 +36,9 @@ export function ViewPrograms() {
   };
 
   const fetchSinglePrograms = () => {
-    fetch("/api/v1/programs")
-      .then((response) => response.json())
-      .then((jsonResponse) => setGroupsForPaging(jsonResponse))
-      .then(setPageCount(Math.ceil(groupsforPaging.length / 10)));
-    // .then(console.log('pages:' + pagecount));
+    fetch('/api/v1/programs')
+      .then(response => response.json())
+      .then(jsonResponse => setGroupsForPaging(jsonResponse)).then(setPageCount(Math.ceil(groupsforPaging.length / 10)))
   };
 
   const fetchPrograms = async () => {
@@ -64,16 +62,6 @@ export function ViewPrograms() {
   const [open, setOpen] = useState(false);
   const [close, setClose] = useState(false);
  
-
-  const Btn = () => {
-    return (
-      <ul>
-        {Array.from(Array(pagecount), (e, i) => {
-          return <Button key={i}>{i}</Button>;
-        })}
-      </ul>
-    );
-  };
 
   useEffect(() => {
     if (pagecount !== null) {
@@ -164,16 +152,10 @@ export function ViewPrograms() {
               onClick={() =>
                 setActivePage(activePage <= 0 ? activePage : activePage - 1)
               }
-              icon
-            >
-              <Icon name="arrow left" />{" "}
+              icon><Icon name="arrow left" />{" "}
             </Button>
             {[...Array(pagecount)].map((e, i) => {
-              return (
-                <Button key={i} onClick={() => setActivePage(i)}>
-                  {i + 1}
-                </Button>
-              );
+              return <Button key={i} onClick={() => setActivePage(i)}>{(i + 1)}</Button>
             })}
             <Button onClick={() => setActivePage(activePage + 1)} icon>
               <Icon name="arrow right" />{" "}

@@ -1,8 +1,11 @@
 import React from 'react'
 import { ViewGroups } from './EditPages/ViewGroups'
+import { ViewRooms } from './EditPages/ViewRooms'
 import { ViewPrograms } from './EditPages/ViewPrograms'
 import { SubjectList } from './EditPages/SubjectList'
 import { ModuleList } from './EditPages/ModuleList'
+import { ViewTeachers } from './EditPages/ViewTeachers'
+
 
 
 
@@ -12,7 +15,6 @@ import { ModuleList } from './EditPages/ModuleList'
 // Change/Edit this section to suit your case. 
 // Best is to create a new file for your implementation based on this one, and later we will refactor and merge the best options
 // One could just pass the newly created file here, after return
-
 export function ObjectList(props) {
     if (props === 'groups') {
         return (
@@ -35,7 +37,7 @@ export function ObjectList(props) {
     if (props === 'teachers') {
         return (
             <p>
-
+                <ViewTeachers/>
             </p>
 
         )
@@ -50,9 +52,7 @@ export function ObjectList(props) {
     }
     if (props === 'rooms') {
         return (
-            <p>
-                Klasės:
-            </p>
+            <ViewRooms />
 
         )
     }
@@ -65,7 +65,7 @@ export function ObjectList(props) {
     if (props === 'modules') {
 
         return (
-                <ModuleList/>
+            <ModuleList />
         )
 
 

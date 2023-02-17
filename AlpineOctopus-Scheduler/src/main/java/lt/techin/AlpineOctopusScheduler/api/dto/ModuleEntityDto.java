@@ -1,7 +1,10 @@
 package lt.techin.AlpineOctopusScheduler.api.dto;
 
+import lt.techin.AlpineOctopusScheduler.model.Subject;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Set;
 
 public class ModuleEntityDto extends ModuleDto{
 
@@ -11,9 +14,9 @@ public class ModuleEntityDto extends ModuleDto{
 
     }
 
-    public ModuleEntityDto(Long id, String name, String description, LocalDateTime createdDate, LocalDateTime modifiedDate){
-        super(name, description, createdDate, modifiedDate);
-        this.id= id;
+    public ModuleEntityDto(String name, String description, LocalDateTime createdDate, LocalDateTime modifiedDate, Set<Subject> modulesSubjects, Long id) {
+        super(name, description, createdDate, modifiedDate, modulesSubjects);
+        this.id = id;
     }
 
     public Long getId() {

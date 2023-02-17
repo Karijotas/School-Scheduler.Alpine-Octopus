@@ -24,13 +24,13 @@ const shiftOptions = [
 
 export function CreateGroupPage() {
   // const [create, setCreate] = useState()
-  const [hide, setHide] = useState(false);
-  const [name, setName] = useState("");
-  const [schoolYear, setSchoolYear] = useState("");
-  const [studentAmount, setStudentAmount] = useState("");
-  const [programs, setPrograms] = useState([]);
-  const [program, setProgram] = useState("");
-  const [shift, setShift] = useState("");
+  const [hide, setHide] = useState(false)
+  const [name, setName] = useState('');
+  const [schoolYear, setSchoolYear] = useState('')
+  const [studentAmount, setStudentAmount] = useState('')
+  const [programs, setPrograms] = useState([])
+  const [programId, setProgramId] = useState()
+  const [shift, setShift] = useState('')
 
   const applyResult = (result) => {
     const clear = () => {
@@ -45,14 +45,14 @@ export function CreateGroupPage() {
   };
 
   const createGroup = () => {
-    fetch("/api/v1/groups", {
-      method: "POST",
+    fetch(
+      '/api/v1/groups?programId=' + programId, {
+      method: 'POST',
       headers: JSON_HEADERS,
       body: JSON.stringify({
         name,
         schoolYear,
         studentAmount,
-        program,
         shift,
       }),
     }).then(applyResult);
@@ -69,85 +69,40 @@ export function CreateGroupPage() {
       );
   }, []);
 
-  return (
-    <div>
-      {!hide && (
-        <div className="create-new-page">
-          <Form>
-            <Form.Field>
-              <label>"Teams" grupės pavadinimas</label>
-              <input
-                placeholder='"Teams" grupės pavadinimas'
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </Form.Field>
-            <Form.Group widths="equal">
-              <Form.Field>
-                <label>Mokslo metai</label>
-                <Input
-                  options={yearOptions}
-                  placeholder="Mokslo metai"
-                  value={schoolYear}
-                  onChange={(e) => setSchoolYear(e.target.value)}
-                />
-              </Form.Field>
-              <Form.Field>
-                <label>Studentų skaičius</label>
-                <Input
-                  placeholder="Studentų skaičius"
-                  value={studentAmount}
-                  onChange={(e) => setStudentAmount(e.target.value)}
-                />
-              </Form.Field>{" "}
-            </Form.Group>
-            <Form.Group widths="equal">
-              <Form.Field>
-                <label>Programa</label>
-                <Select
-                  options={programs}
-                  placeholder="Programa"
-                  value={program}
-                  onChange={(e) => setProgram(e.target.value)}
-                />
-              </Form.Field>
-              <Form.Field>
-                <label>Pamaina</label>
-                <Input
-                  options={shiftOptions}
-                  placeholder="Pamaina"
-                  value={shift}
-                  onChange={(e) => setShift(e.target.value)}
-                />
-              </Form.Field>
-            </Form.Group>
-            <div>
-              <Button
-                icon
-                labelPosition="left"
-                className=""
-                onClick={() => setHide(true)}
-              >
-                <Icon name="arrow left" />
-                Atgal
-              </Button>
-              <Button
-                type="submit"
-                className="controls"
-                primary
-                onClick={createGroup}
-              >
-                Sukurti
-              </Button>
-            </div>
-          </Form>
-        </div>
-      )}
-      {hide && (
-        <div>
-          <ViewGroups />
-        </div>
-      )}
-    </div>
+
+  return (<div>
+    {!hide && <div className="create-new-page">
+      <Form >
+
+        <Form.Field >
+          <label>"Teams" grupės pavadinimas</label>
+          <input placeholder='"Teams" grupės pavadinimas' value={name} onChange={(e) => setName(e.target.value)} />
+        </Form.Field>
+        <Form.Group widths='equal'>
+          <Form.Field >
+            <label>Mokslo metai</label>
+            <Input  options={yearOptions} placeholder='Mokslo metai' value={schoolYear} onChange={(e) => setSchoolYear(e.target.value)} />
+          </Form.Field>
+          <Form.Field >
+            <label>Studentų skaičius</label>
+            <Input placeholder='Studentų skaičius' value={studentAmount} onChange={(e) => setStudentAmount(e.target.value)} />
+          </Form.Field> </Form.Group>
+        <Form.Group widths='equal'>
+          <Form.Field>
+            <label>Programa</label>
+            <Select options={programs} placeholder='Programa' onClose={() => console.log(programId)} onChange={(e, data) => setProgramId(data.value)} />
+
+          </Form.Field>
+          <Form.Field >
+            <label>Pamaina</label>
+            <Input options={shiftOptions} placeholder='Pamaina' value={shift} onChange={(e) => setShift(e.target.value)} />
+          </Form.Field>
+        </Form.Group>
+        <div><Button icon labelPosition="left" className="" onClick={() => setHide(true)}><Icon name="arrow left" />Atgal</Button>
+          <Button type='submit' className="controls" primary onClick={createGroup}>Sukurti</Button></div>
+      </Form>
+    </div>}
+    {hide && (<div><ViewGroups /></div>)}
+  </div>
   );
 }

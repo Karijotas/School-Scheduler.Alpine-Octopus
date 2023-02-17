@@ -29,9 +29,11 @@ export function ViewGroups() {
 
     const [nameText, setNameText] = useState('')
 
-    const [yearText, setYearText] = useState();
+    const [yearText, setYearText] = useState('');
 
-    const [programText, setProgramText] = useState();
+    const [year, setYear] = useState(true);
+
+    const [programText, setProgramText] = useState('');
 
     const [activePage, setActivePage] = useState(0)
 
@@ -67,9 +69,12 @@ export function ViewGroups() {
     const fetchSingleGroups = async () => {
         fetch('/api/v1/groups/')
             .then(response => response.json())
-            .then(jsonResponse => setGroupsForPaging(jsonResponse)).then(setPageCount(Math.ceil(groupsforPaging.length/10)))
-            .then(console.log('pages:' + pagecount));
+            .then(jsonResponse => setGroupsForPaging(jsonResponse))
+            .then(setPageCount(Math.ceil(groupsforPaging.length / 10)))
+        // .then(console.log('pages:' + pagecount));
     };
+
+
 
     const removeGroup = (id) => {
         fetch('/api/v1/groups/' + id, {
@@ -78,15 +83,30 @@ export function ViewGroups() {
         }).then(fetchGroups)
             .then(setOpen(false));
     }
-    
-    const Btn = () => {
-        return <ul>{Array.from(Array(pagecount), (e, i) => {
-            return <Button key={i}>{i}</Button>
-        })}</ul>
-    };
+
+
 
     useEffect(() => {
-        fetchGroups();
+        if (nameText.length === 0 && yearText.length === 0 && programText.length === 0) {
+            fetchGroups();
+            // setYearText('2023')
+        } else if (nameText.length > 0) {
+            setProgramText('')
+            setYearText('')
+            fetchFilterGroups();
+        } else if (yearText.length > 0) {
+
+            setNameText('')
+            setProgramText('')
+            fetchYearGroups();
+        } else if (programText.length > 0) {
+            setNameText('')
+            setYearText('')
+            fetchProgramGroups();
+        } 
+        
+      
+
     }, [nameText, yearText, programText, activePage]);
 
     useEffect(() => {
@@ -96,6 +116,7 @@ export function ViewGroups() {
     }, [groups])
 
     const [open, setOpen] = useState(false)
+
 
 
 
@@ -111,11 +132,10 @@ export function ViewGroups() {
 
             {!active && !create && (
 
-                <div id='groups'>
+                <div id='groups' >
 
                     <Input className='controls1' placeholder='Filtruoti pagal pavadinimą' value={nameText} onChange={(e) => setNameText(e.target.value)} />
-
-                    <Input className='controls1' placeholder='Filtruoti pagal mokslo metus' value={yearText} onChange={(e) => setYearText(e.target.value)} />
+                    <Input type='number' value={yearText} className='controls1' onChange={(e) => setYearText(e.target.value)} />
 
                     <Input placeholder='Filtruoti pagal programą' value={programText} onChange={(e) => setProgramText(e.target.value)} />
 
@@ -170,11 +190,10 @@ export function ViewGroups() {
                     <ButtonGroup basic compact>
                         <Button onClick={() => setActivePage(activePage <= 0 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
                         {[...Array(pagecount)].map((e, i) => {
-                            return <Button key={i} onClick={() => setActivePage(i)}>{i+1}</Button>
+                            return <Button key={i} active={activePage === i ? true : false} onClick={() => setActivePage(i) }>{i + 1}</Button>
                         })}
-                        <Button onClick={() => setActivePage(activePage >= pagecount -1 ? activePage : activePage + 1)} icon><Icon name="arrow right" />  </Button>
+                        <Button onClick={() => setActivePage(activePage >= pagecount - 1 ? activePage : activePage + 1)} icon><Icon name="arrow right" />  </Button>
                     </ButtonGroup>
-
 
                 </div>
             )}
