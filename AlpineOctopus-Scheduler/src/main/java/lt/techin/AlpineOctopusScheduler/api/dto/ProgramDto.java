@@ -1,5 +1,6 @@
 package lt.techin.AlpineOctopusScheduler.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper;
 import lt.techin.AlpineOctopusScheduler.model.ProgramSubjectHours;
 import lt.techin.AlpineOctopusScheduler.model.Subject;
@@ -20,8 +21,9 @@ public class ProgramDto {
 
     private String description;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modifiedDate;
 
 

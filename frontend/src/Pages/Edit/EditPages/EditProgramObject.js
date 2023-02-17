@@ -29,6 +29,8 @@ export function EditProgramObject(props) {
   const [subjectId, setSubjectId] = useState("");
   const [programName, setProgramName] = useState("");
   const [programDescription, setProgramDescription] = useState("");
+ const [program, setProgram] = useState ("");
+ const [activeBtn, setActiveBtn] = useState(0);
 
   const subjectOptions = [
     { key: 23, value: 2023, text: "2023" },
@@ -43,10 +45,21 @@ export function EditProgramObject(props) {
 
   const [programs, setPrograms] = useState({
     name: "",
-    description: "",
-    modifiedDate: "",
+    description: "",    
   });
 
+  const applyUpdateResult = (result) => {
+    const clear = () => {
+      setHide(true);
+    };
+
+    if (result.ok) {
+      clear();
+    } else {
+      window.alert("Nepavyko atnaujinti: " + result.status);
+    }
+  };
+ 
   useEffect(() => {
     fetch("/api/v1/programs/" + props.id)
       .then((response) => response.json())
@@ -56,9 +69,9 @@ export function EditProgramObject(props) {
   useEffect(() => {
     fetch(`/api/v1/programs/${props.id}/subjects`)
       .then((response) => response.json())
-      .then(setSubjectsInProgram)
-      .then(console.log(subjectsInProgram));
-  }, [props]);
+     .then(setSubjectsInProgram)
+     .then(console.log(subjectsInProgram));     
+  }, [activeBtn]);
 
   useEffect(() => {
     fetch(`/api/v1/programs/${props.id}/subjects/hours`)
@@ -66,36 +79,45 @@ export function EditProgramObject(props) {
       .then(setTotalHours);
   }, [props]);
 
+  const getSubjects = (props) => { 
+  fetch(`/api/v1/programs/${props.id}/subjects/hours`)
+      .then((response) => response.json())
+     .then(setTotalHours);
+  };
+
+useEffect(() => {
+  fetch(`/api/v1/programs/${props.id}/subjects/hours`)
+  .then((response) => response.json())
+ .then(setTotalHours);
+}, [props]);
+
+
   const removeSubject = (programId, subjectId, hours) => {
     fetch(`/api/v1/programs/${programId}/subjects/${subjectId}/${hours}`, {
       method: "DELETE",
       headers: JSON_HEADERS,
-    }).then(
-      fetch(`/api/v1/programs/${props.id}/subjects/hours`)
-        .then((response) => response.json())
-        .then(setTotalHours)
-    );
+    })
+    .then((response) => response.json())
+   .then(setTotalHours);  
+         
   };
 
   const addSubjectAndHours = (programId, subjectId, hours) => {
-    fetch(
-      `/api/v1/programs/${programId}/subjects/${subjectId}/${hours}/newSubjectsWithHours`,
-      {
-        method: "POST",
-        header: JSON_HEADERS,
-        body: JSON.stringify({
-          programId,
-          subject,
-          subjectHours,
-        }),
-      }
-    ).then(
-      fetch(`/api/v1/programs/${props.id}/subjects/hours`)
-        .then((response) => response.json())
-        .then(setTotalHours)
-    );
-  };
-
+  fetch(`/api/v1/programs/${programId}/subjects/${subjectId}/${hours}/newSubjectsWithHours`, {
+    method: "POST",
+    header: JSON_HEADERS,
+    body: JSON.stringify({
+      programId,
+      subject,
+      subjectHours,
+    }),
+  })
+  .then((response) => response.json())
+ .then(setTotalHours);
+ 
+};
+ 
+  
   useEffect(() => {
     fetch("/api/v1/subjects/")
       .then((response) => response.json())
@@ -109,14 +131,18 @@ export function EditProgramObject(props) {
   }, []);
 
   const applyResult = () => {
-    setHide(true);
-  };
+
+    setActive(true)
+
+}
 
   const updatePrograms = () => {
-    fetch("/api/v1/programs/" + props.id, {
-      method: "PATCH",
+    fetch('/api/v1/programs/' + props.id, {
+      method: 'PATCH',
       headers: JSON_HEADERS,
-      body: JSON.stringify({}),
+      body: JSON.stringify(
+        programs
+       ),
     })
       .then(console.log(programs))
       .then((result) => {
@@ -219,15 +245,16 @@ export function EditProgramObject(props) {
                 <Table.Cell collapsing>
                   <Input
                     value={programs.name}
-                    onChange={(e) => updateProperty("name", e)}
+                    placeholder={programs.name}
+                    onChange={(e) => (updateProperty('name', e))}
                   />
                 </Table.Cell>
                 <Table.Cell collapsing>
                   <Input
                     placeholder={programs.description}
-                    /*options={yearOptions} value={groups.schoolYear} */ onChange={(
-                      e
-                    ) => updateProperty("description", e)}
+                    value={programs.description}
+                    /*options={yearOptions} value={groups.schoolYear} */ 
+                    onChange={(e) => (updateProperty('description', e))}
                   />
                 </Table.Cell>
                 {/* <Table.Cell collapsing><Input value={groups.studentAmount} onChange={(e) => updateProperty('studentAmount', e)} />
@@ -307,13 +334,7 @@ export function EditProgramObject(props) {
                             compact
                             icon="remove"
                             title="Pašalinti"
-                            onClick={() =>
-                              removeSubject(
-                                props.id,
-                                subject.subject.id,
-                                subject.subjectHours
-                              )
-                            }
+                            onClick={() => removeSubject(props.id, subject.subject.id, subject.subjectHours)}
                           ></Button>
                         </Table.Cell>
                       </Table.Row>

@@ -33,9 +33,11 @@ public class Program {
     @OneToMany(mappedBy = "program")
     private Set<Groups> groupsSet;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @CreatedDate
     private LocalDateTime createdDate;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @LastModifiedDate
     private LocalDateTime modifiedDate;
 
