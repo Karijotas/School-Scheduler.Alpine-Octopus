@@ -9,7 +9,7 @@ import {
   Table,
 } from "semantic-ui-react";
 import { EditSubjectObject } from "./EditSubjectObject";
-import { CreateGroupPage } from "../../Create/CreateGroupPage";
+import { CreateSubjecPage } from "../../Create/CreateSubjectPage";
 import "./ViewGroups.css";
 import "./FilterSize.css";
 
@@ -78,7 +78,7 @@ export function ViewSubjects() {
     <div>
       {create && (
         <div>
-          <CreateGroupPage />
+          <CreateSubjecPage />
         </div>
       )}
       {active && (
