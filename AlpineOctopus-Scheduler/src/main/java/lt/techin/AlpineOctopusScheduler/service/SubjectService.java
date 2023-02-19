@@ -18,6 +18,7 @@ import lt.techin.AlpineOctopusScheduler.model.Room;
 
 import lt.techin.AlpineOctopusScheduler.model.Subject;
 import lt.techin.AlpineOctopusScheduler.model.Teacher;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -42,7 +43,7 @@ public class SubjectService {
 
     private final ProgramRepository programRepository;
 
-
+    @Autowired
     public SubjectService(SubjectRepository subjectRepository, ModuleRepository moduleRepository, TeacherRepository teacherRepository, RoomRepository roomRepository, ProgramRepository programRepository) {
         this.subjectRepository = subjectRepository;
         this.moduleRepository = moduleRepository;

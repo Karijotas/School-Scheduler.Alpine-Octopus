@@ -8,24 +8,28 @@ import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Module;
 import lt.techin.AlpineOctopusScheduler.dao.ModuleRepository;
 import lt.techin.AlpineOctopusScheduler.model.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.Table;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+
 public class ModuleService {
 
 
     private final ModuleRepository moduleRepository;
-    private final SubjectRepository subjectRepository;
 
+    private final SubjectRepository subjectRepository;
+    @Autowired
     public ModuleService(ModuleRepository moduleRepository,
                          SubjectRepository subjectRepository) {
 
@@ -85,25 +89,25 @@ public class ModuleService {
         return moduleRepository.findAll(pageable).stream().map(ModuleMapper::toModuleEntityDto).collect(Collectors.toList());
     }
 
-    public Module addSubjectToModule(Long moduleId, Long subjectId) {
-        var existingModule = moduleRepository.findById(moduleId)
-                .orElseThrow(() -> new SchedulerValidationException("Module does not exist",
-                        "id", "Module not found", moduleId.toString()));
+//    public Module addSubjectToModule(Long moduleId, Long subjectId) {
+//        var existingModule = moduleRepository.findById(moduleId)
+//                .orElseThrow(() -> new SchedulerValidationException("Module does not exist",
+//                        "id", "Module not found", moduleId.toString()));
+//
+//        var existingSubject = subjectRepository.findById(subjectId)
+//                .orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
+//                        "id", "Subject not found", subjectId.toString()));
+//
+//        Set<Subject> existingSubjectList = existingModule.getModulesSubjects();
+//        existingSubjectList.add(existingSubject);
+//        existingModule.setModulesSubjects(existingSubjectList);
+//
+//        return moduleRepository.save(existingModule);
+//    }
 
-        var existingSubject = subjectRepository.findById(subjectId)
-                .orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
-                        "id", "Subject not found", subjectId.toString()));
-
-        Set<Subject> existingSubjectList = existingModule.getModulesSubjects();
-        existingSubjectList.add(existingSubject);
-        existingModule.setModulesSubjects(existingSubjectList);
-
-        return moduleRepository.save(existingModule);
-    }
-
-    public Set<Subject> getAllSubjectsById (Long moduleId){
-        return moduleRepository.findById(moduleId).get().getModulesSubjects();
-    }
+//    public Set<Subject> getAllSubjectsById (Long moduleId){
+//        return moduleRepository.findById(moduleId).get().getModulesSubjects();
+//    }
 
 //    public boolean deleteSubjectFromModuleById(Long moduleId, Long subjectId) {
 //        var existingModule = moduleRepository.findById(moduleId)

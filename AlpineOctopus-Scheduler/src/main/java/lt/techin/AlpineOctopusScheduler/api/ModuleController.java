@@ -49,20 +49,20 @@ public class ModuleController {
                 .collect(toList());
     }
 
-    @GetMapping(value ="/{moduleId}/subjects")
-    @ResponseBody
-    public Set<Subject> getAllSubjectsById(@PathVariable Long moduleId) {
-        return moduleService.getAllSubjectsById(moduleId);
-    }
+//    @GetMapping(value ="/{moduleId}/subjects")
+//    @ResponseBody
+//    public Set<Subject> getAllSubjectsById(@PathVariable Long moduleId) {
+//        return moduleService.getAllSubjectsById(moduleId);
+//    }
 
-    @PostMapping("/CreateNewModule")
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<ModuleDto> createModule(@Valid @RequestBody ModuleDto moduleDto) {
         var createdModule = moduleService.create(toModule(moduleDto));
 
         return ok(toModuleDto(createdModule));
     }
 
-    @DeleteMapping("/{moduleId}")
+    @DeleteMapping("/delete/{moduleId}")
     public ResponseEntity<Void> deleteModule(@PathVariable Long moduleId) {
         var moduleDeleted = moduleService.deleteById(moduleId);
 
@@ -73,7 +73,7 @@ public class ModuleController {
         return ResponseEntity.notFound().build();
     }
 
-    @PutMapping("/{moduleId}")
+    @PutMapping("/update/{moduleId}")
     public ResponseEntity<ModuleDto> updateModule(@PathVariable Long moduleId, @RequestBody ModuleDto moduleDto) {
         var updatedModule = moduleService.update(moduleId, toModule(moduleDto));
 
@@ -109,11 +109,11 @@ public class ModuleController {
         return moduleService.getPagedModulesByNameContaining(nameText, page, pageSize);
     }
 
-    @PutMapping("/subjects/{moduleId}")
-    public ResponseEntity<ModuleDto> addSubjectToModule(@PathVariable Long moduleId, @RequestBody Long subjectId) {
-        var updatedModule = moduleService.addSubjectToModule(moduleId, subjectId);
-
-        return ok(toModuleDto(updatedModule));
-    }
+//    @PutMapping("/{moduleId}/subjects/{subjectId}")
+//    public ResponseEntity<ModuleDto> addSubjectToModule(@PathVariable Long moduleId, @RequestBody Long subjectId) {
+//        var updatedModule = moduleService.addSubjectToModule(moduleId, subjectId);
+//
+//        return ok(toModuleDto(updatedModule));
+//    }
 }
 

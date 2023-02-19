@@ -21,6 +21,7 @@ public class Groups {
     private Long id;
 
     @NotBlank
+    @Column(unique = true)
     private String name;
     @NotNull
     @Min(value = 2023, message = "School year should not be less than year the application was made")

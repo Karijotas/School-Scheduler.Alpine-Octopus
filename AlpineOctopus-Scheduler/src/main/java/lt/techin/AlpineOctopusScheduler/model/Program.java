@@ -22,8 +22,9 @@ public class Program {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     @Size(min = 5, max = 40)
+
     private String name;
 
     @NotBlank
@@ -32,10 +33,10 @@ public class Program {
 
     @OneToMany(mappedBy = "program")
     private Set<Groups> groupsSet;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @CreatedDate
     private LocalDateTime createdDate;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @LastModifiedDate
     private LocalDateTime modifiedDate;
 

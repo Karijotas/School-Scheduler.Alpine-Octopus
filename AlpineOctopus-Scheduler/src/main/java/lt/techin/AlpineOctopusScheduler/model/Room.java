@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -19,6 +20,7 @@ public class Room {
     private Long id;
     @NotBlank
     @Size(max = 40)
+    @Column(unique = true)
     private String name;
     @NotBlank
     @Size(max = 40)
@@ -37,7 +39,7 @@ public class Room {
 
     @ManyToMany (mappedBy = "subjectRooms")
     @JsonIgnore
-    private Set<Subject> roomSubjects;
+    private Set<Subject> roomSubjects = new HashSet<>();;
 
 
     @PrePersist

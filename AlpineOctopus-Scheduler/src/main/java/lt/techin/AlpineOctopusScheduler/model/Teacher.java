@@ -9,6 +9,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -22,6 +23,7 @@ public class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String name;
     private String surname;
     private String loginEmail;
@@ -47,7 +49,7 @@ public class Teacher {
 
     @ManyToMany (mappedBy = "subjectTeachers")
     @JsonIgnore
-    private Set<Subject> teachersSubjects;
+    private Set<Subject> teachersSubjects = new HashSet<>();;
 
     public Teacher(){}
 

@@ -1,5 +1,7 @@
 package lt.techin.AlpineOctopusScheduler.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -12,7 +14,7 @@ public class ErrorDto {
     private Integer status;
     private String error;
     private String path;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime timestamp;
 
     public ErrorDto(String url, List<ErrorFieldDto> fields, String message, Integer status, String error, String path, LocalDateTime timestamp) {

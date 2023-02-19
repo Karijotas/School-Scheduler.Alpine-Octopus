@@ -33,15 +33,22 @@ const [modulesInSubjects, setModulesInSubjects] = useState([]);
 
     }
 
-    const fetchModulesInSubject = async () => {
-        fetch(`/api/v1/subjects/${subjectId}/modules`)
-            .then(response => response.json())
-            .then(jsonResponse => setModulesInSubjects(jsonResponse));
-    };
+    // const fetchModulesInSubject = async () => {
+    //     fetch(`/api/v1/subjects/${subjectId}/modules`)
+    //         .then(response => response.json())
+    //         .then(jsonResponse => setModulesInSubjects(jsonResponse));
+    // };
+
+    useEffect(() => {
+        fetch(`/api/v1/subjects/${props.id}/modules`)
+          .then((response) => response.json())
+          .then(setModulesInSubjects)
+          .then(console.log(modulesInSubjects));
+      }, [props]);
 
     const updateSubjects = () => {
         fetch('/api/v1/subjects/' + props.id, {
-            method: 'PATCH',
+            method: 'PUT',
             headers: JSON_HEADERS,
             body: JSON.stringify(subjects)
         }).then(result => {
@@ -109,7 +116,7 @@ const [modulesInSubjects, setModulesInSubjects] = useState([]);
             <Table.Body>
               {modulesInSubjects.map((module) => (
                 <Table.Row key={module.id}>
-                  <Table.Cell>{module.module.name}</Table.Cell>
+                  <Table.Cell>{module.name}</Table.Cell>
                 </Table.Row>
               ))}
             </Table.Body>

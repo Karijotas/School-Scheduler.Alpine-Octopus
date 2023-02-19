@@ -1,5 +1,6 @@
 package lt.techin.AlpineOctopusScheduler.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -16,20 +17,22 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
+@Table(name="SUBJECT")
 public class Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank(message = "Negali buti tuscias")
     @Size(min = 5, max = 40)
+    @Column(unique = true)
     private String name;
     @Size(min = 5, max = 100)
     private String description;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @CreatedDate
     private LocalDateTime createdDate;
 
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @LastModifiedDate
     private LocalDateTime modifiedDate;
 
@@ -45,36 +48,42 @@ public class Subject {
         modifiedDate = LocalDateTime.now();
     }
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
     @JsonIgnore
     @JoinTable(
             name = "modules_subjects",
             joinColumns = @JoinColumn(name = "subject_id"),
             inverseJoinColumns = @JoinColumn(name = "module_id"))
-    private Set<Module> subjectModules;
+    private Set<Module> subjectModules = new HashSet<>();;
     @ManyToMany(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinTable(
             name = "rooms_subjects",
             joinColumns = @JoinColumn(name = "subject_id"),
             inverseJoinColumns = @JoinColumn(name = "room_id"))
-    private Set<Room> subjectRooms;
+    private Set<Room> subjectRooms = new HashSet<>();;
     @ManyToMany(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinTable(
             name = "teachers_subjects",
             joinColumns = @JoinColumn(name = "subject_id"),
             inverseJoinColumns = @JoinColumn(name = "teacher_id"))
-    private Set<Teacher> subjectTeachers;
+    private Set<Teacher> subjectTeachers = new HashSet<>();;
 
     @OneToMany(mappedBy = "program")
     @JsonIgnore
     private Set<ProgramSubjectHours> subjectHours;
 
+
+
     public Subject() {
         subjectHours = new HashSet<>();
-
     }
+
 
     public Subject(Long id, String name, String description ,LocalDateTime createdDate, LocalDateTime modifiedDate, Set<Module> subjectModules,Set<Room> subjectRooms,Set<Teacher> subjectTeachers) {
         this.id = id;
@@ -148,6 +157,7 @@ public class Subject {
     }
 
     public void setSubjectTeachers(Set<Teacher> subjectTeachers) {
+
         this.subjectTeachers = subjectTeachers;
     }
 

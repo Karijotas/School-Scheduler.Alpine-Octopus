@@ -66,8 +66,6 @@ export function ObjectList(props) {
         return (
                 <ViewModules/>
         )
-
-
     }
 }
 

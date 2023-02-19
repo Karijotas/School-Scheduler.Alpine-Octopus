@@ -17,19 +17,16 @@ export function EditModuleObject(props) {
 
   const [modules, setModules] = useState({
     name: "",
-    modulesSubjects: "",
     description: "",
     createdDate: "",
     modifiedDate: "",
   });
 
-
   const fetchSubjectsInModule = async () => {
-    fetch(`/api/v1/modules/${moduleId}/subjects`)
-        .then(response => response.json())
-        .then(jsonResponse => setSubjectsInModule(jsonResponse));
-};
-
+    fetch(`/api/v1/modules/${props.id}/subjects`)
+      .then((response) => response.json())
+      .then((jsonResponse) => setSubjectsInModule(jsonResponse));
+  };
 
   useEffect(() => {
     fetch("/api/v1/modules/" + props.id)
@@ -42,8 +39,8 @@ export function EditModuleObject(props) {
   };
 
   const updateModules = () => {
-    fetch("/api/v1/modules/" + props.id, {
-      method: "PATCH",
+    fetch("/api/v1/modules/update/" + props.id, {
+      method: "PUT",
       headers: JSON_HEADERS,
       body: JSON.stringify(modules),
     })
@@ -67,13 +64,6 @@ export function EditModuleObject(props) {
   const editThis = () => {
     setActive(false);
   };
-  // const removeGroup = (id) => {
-  //     fetch('/api/v1/groups/' + params.id, {
-  //         method: 'DELETE',
-  //         headers: JSON_HEADERS
-  //     })
-  //     .then(() => window.location = listUrl);
-  // }
 
   return (
     <div>
@@ -101,7 +91,7 @@ export function EditModuleObject(props) {
             </Table.Body>
           </Table>
 
-          <Divider hidden />
+          {/* <Divider hidden />
           <Table>
             <Table.Header>
               <Table.Row>
@@ -115,7 +105,7 @@ export function EditModuleObject(props) {
                 </Table.Row>
               ))}
             </Table.Body>
-          </Table>
+          </Table> */}
 
           <Button
             icon
@@ -151,22 +141,13 @@ export function EditModuleObject(props) {
                 <Table.Cell collapsing>
                   <Input
                     placeholder={modules.description}
-                    /*options={yearOptions} value={groups.schoolYear} */ onChange={(
-                      e
-                    ) => updateProperty("description", e)}
+                    onChange={(e) => updateProperty("description", e)}
                   />
                 </Table.Cell>
-                {/* <Table.Cell collapsing><Input value={groups.studentAmount} onChange={(e) => updateProperty('studentAmount', e)} />
-                        </Table.Cell>
-                        <Table.Cell collapsing><Input options={shiftOptions} placeholder={groups.program.id} value={groups.program} onChange={(e) => updateProperty('program', e)} />
-                        </Table.Cell>
-                        <Table.Cell collapsing><Input options={shiftOptions} placeholder={groups.shift} value={groups.shift} onChange={(e) => updateProperty('shift', e)} /> */}
-                {/* </Table.Cell> */}
-
                 <Table.Cell collapsing> {modules.modifiedDate} </Table.Cell>
 
                 <Table.Cell collapsing>
-                  <Button onClick={() => setActive(true)}>Atšaukti</Button>
+                  <Button onClick={() => setHide(true)}>Atšaukti</Button>
                   <Button primary onClick={updateModules}>
                     Atnaujinti
                   </Button>
