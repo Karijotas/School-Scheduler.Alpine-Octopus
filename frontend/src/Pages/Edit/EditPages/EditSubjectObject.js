@@ -164,7 +164,7 @@ const [modulesInSubjects, setModulesInSubjects] = useState([]);
 
                 </ Table.Body >
             </Table>
-            <Button icon labelPosition="left" className="" onClick={() => setHide(true)}><Icon name="arrow left" />Atgal į sarašą</Button>
+            {/* <Button icon labelPosition="left" className="" onClick={() => setHide(true)}><Icon name="arrow left" />Atgal į sarašą</Button> */}
 
         </div>)}
 

@@ -155,7 +155,7 @@ export function EditModuleObject(props) {
               </Table.Row>
             </Table.Body>
           </Table>
-          <Button
+          {/* <Button
             icon
             labelPosition="left"
             className=""
@@ -163,7 +163,7 @@ export function EditModuleObject(props) {
           >
             <Icon name="arrow left" />
             Atgal į sarašą
-          </Button>
+          </Button> */}
         </div>
       )}
 
