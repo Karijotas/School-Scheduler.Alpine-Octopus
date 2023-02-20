@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import { Button, Confirm, Divider, Icon, Input, Table } from 'semantic-ui-react'
-// import { CreateteacherPage } from '../../Create/CreateteacherPage';
-// import { EditteacherObject } from './EditteacherObject';
-import './ViewGroups.css';
+import React, { useEffect, useState } from 'react';
+import { Button, Confirm, Divider, Icon, Input, Table, Grid, Segment, ButtonGroup } from 'semantic-ui-react';
+import MainMenu from '../../../Components/MainMenu';
+import { EditMenu } from '../EditMenu';
+import { NavLink } from 'react-router-dom';
 
 const JSON_HEADERS = {
     'Content-Type': 'application/json'
@@ -58,58 +58,44 @@ export function ViewTeachers() {
     //         .then(jsonResponse => setTeacher(jsonResponse));
     // };
 
-    const fetchteacher = async () => {
-        fetch('/api/v1/teachers/page?page=' + activePage)
-            .then(response => response.json())
-            .then(jsonResponse => setTeacher(jsonResponse));
-    };
+    // const fetchteacher = async () => {
+    //     fetch('/api/v1/teachers/page?page=' + activePage)
+    //         .then(response => response.json())
+    //         .then(jsonResponse => setTeacher(jsonResponse));
+    // };
 
-    const fetchSingleteacher = async () => {
-        fetch('/api/v1/teachers/')
-            .then(response => response.json())
-            .then(jsonResponse => setTeacherForPaging(jsonResponse))
-            .then(setPageCount(Math.ceil(teacherforPaging.length / 10)))
-        // .then(console.log('pages:' + pagecount));
-    };
-
-
-
-    const removeTeacher = (id) => {
-        fetch('/api/v1/teacher/' + id, {
-            method: 'DELETE',
-            headers: JSON_HEADERS
-        }).then(fetchteacher)
-            .then(setOpen(false));
-    }
+    // const fetchSingleteacher = async () => {
+    //     fetch('/api/v1/teachers/')
+    //         .then(response => response.json())
+    //         .then(jsonResponse => setTeacherForPaging(jsonResponse))
+    //         .then(setPageCount(Math.ceil(teacherforPaging.length / 10)))
+    //     // .then(console.log('pages:' + pagecount));
+    // };
 
 
 
-    useEffect(() => {
-        if (nameText.length === 0 && yearText.length === 0 && programText.length === 0) {
-            fetchteacher();
-        } else if (nameText.length > 0) {
-            setProgramText('')
-            setYearText('')
-            // fetchFilterteacher();
-        } else if (yearText.length > 0) {
-            setNameText('')
-            setProgramText('')
-            // fetchYearteacher();
-        } else if (programText.length > 0) {
-            setNameText('')
-            setYearText('')
-            // fetchProgramteacher();nameText, yearText, programText,
-        }
+    // const removeTeacher = (id) => {
+    //     fetch('/api/v1/teacher/' + id, {
+    //         method: 'DELETE',
+    //         headers: JSON_HEADERS
+    //     })
+    //     // .then(fetchteacher)
+    //     //     .then(setOpen(false));
+    // }
 
-    }, []);
 
-    useEffect(() => {
-        if (pagecount !== null) {
-            fetchSingleteacher();
-        }
-    }, [teacher])
 
-    const [open, setOpen] = useState(false)
+    // useEffect(() => {
+    //    fetchSingleteacher();
+    // }, []);
+
+    // useEffect(() => {
+    //     if (pagecount !== null) {
+    //         fetchSingleteacher();
+    //     }
+    // }, [teacher])
+
+    // const [open, setOpen] = useState(false)
 
 
 
@@ -117,40 +103,49 @@ export function ViewTeachers() {
 
 
         <div>
-            {/* {create && (<div>
+            <MainMenu />
+
+            <Grid columns={2} >
+                <Grid.Column width={2} id='main'>
+                    <EditMenu />
+                </Grid.Column>
+
+                <Grid.Column textAlign='left' verticalAlign='top' width={13}>
+                    <Segment id='segment' raised color='teal'>
+                        {/* {create && (<div>
                 <CreateteacherPage /></div>)}
             {active && (<div className='edit'>
                 <EditteacherObject id={active} /></div>)} */}
 
 
-            {!active && !create && (
+                        {!active && !create && (
 
-                <div id='teacher'>
+                            <div id='teacher'>
 
-                    <Input className='controls1' placeholder='Filtruoti pagal vardą' value={nameText} onChange={(e) => setNameText(e.target.value)} />
+                                <Input className='controls1' placeholder='Filtruoti pagal vardą' value={nameText} onChange={(e) => setNameText(e.target.value)} />
 
-                    {/* <Input className='controls1' placeholder='Filtruoti pagal dalykus' value={yearText} onChange={(e) => setYearText(e.target.value)} /> */}
+                                {/* <Input className='controls1' placeholder='Filtruoti pagal dalykus' value={yearText} onChange={(e) => setYearText(e.target.value)} /> */}
 
-                    <Input placeholder='Filtruoti pagal pamainas' value={programText} onChange={(e) => setProgramText(e.target.value)} />
+                                <Input placeholder='Filtruoti pagal pamainas' value={programText} onChange={(e) => setProgramText(e.target.value)} />
 
-                    <Button icon labelPosition='left' primary className='controls' onClick={() => setCreate('new')}><Icon name='database' />Kurti naują mokytojo įrašą</Button>
-                    <Divider horizontal hidden></Divider>
+                                <Button icon labelPosition='left' primary className='controls' as={NavLink} exact to='/create/teachers'><Icon name='database' />Kurti naują mokytojo įrašą</Button>
+                                <Divider horizontal hidden></Divider>
 
-                    <Table selectable >
-                        <Table.Header>
-                            <Table.Row>
-                                <Table.HeaderCell>Mokytojo vardas</Table.HeaderCell>
-                                <Table.HeaderCell>Teams vartotojo vardas</Table.HeaderCell>
-                                <Table.HeaderCell>Kontaktinis email (optional)</Table.HeaderCell>
-                                <Table.HeaderCell>Kontaktinis telefonas (optional)</Table.HeaderCell>
-                                <Table.HeaderCell>Valandos per savaitę</Table.HeaderCell>
-                                <Table.HeaderCell>Veiksmai</Table.HeaderCell>
+                                <Table selectable >
+                                    <Table.Header>
+                                        <Table.Row>
+                                            <Table.HeaderCell>Mokytojo vardas</Table.HeaderCell>
+                                            <Table.HeaderCell>Teams vartotojo vardas</Table.HeaderCell>
+                                            <Table.HeaderCell>Kontaktinis email (optional)</Table.HeaderCell>
+                                            <Table.HeaderCell>Kontaktinis telefonas (optional)</Table.HeaderCell>
+                                            <Table.HeaderCell>Valandos per savaitę</Table.HeaderCell>
+                                            <Table.HeaderCell>Veiksmai</Table.HeaderCell>
 
-                            </Table.Row>
-                        </Table.Header>
+                                        </Table.Row>
+                                    </Table.Header>
 
-                        <Table.Body>
-                            {teacher.map(teacher => (
+                                    <Table.Body>
+                                        {/* {teacher.map(teacher => (
 
                                 <Table.Row key={teacher.id}>
                                     <Table.Cell>{teacher.name + " " + teacher.surname}</Table.Cell>
@@ -174,24 +169,27 @@ export function ViewTeachers() {
                                         />
                                     </Table.Cell>
                                 </Table.Row>
-                            ))}
-                        </Table.Body>
+                            ))} */}
+                                    </Table.Body>
 
-                    </Table>
-                    <Divider hidden></Divider>
+                                </Table>
+                                <Divider hidden></Divider>
 
-                    <Button.Group basic compact>
-                        <Button onClick={() => setActivePage(activePage <= 0 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
-                        {[...Array(pagecount)].map((e, i) => {
-                            return <Button key={i} onClick={() => setActivePage(i)}>{i + 1}</Button>
-                        })}
-                        <Button onClick={() => setActivePage(activePage >= pagecount - 1 ? activePage : activePage + 1)} icon><Icon name="arrow right" />  </Button>
-                    </Button.Group>
+                                <ButtonGroup compact basic>
+                                <Button title='Atgal' onClick={() => setActivePage(activePage <= 0 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
+                                {[...Array(pagecount)].map((e, i) => {
+                                    return <Button title={i +1} key={i} active={activePage === i ? true : false} onClick={() => setActivePage(i)}>{i + 1}</Button>
+                                })}
+                                <Button title='Pirmyn' onClick={() => setActivePage(activePage >= pagecount - 1 ? activePage : activePage + 1)} icon><Icon name="arrow right" />  </Button>
+                            </ButtonGroup>
 
 
-                </div>
-            )}
+                            </div>
+                        )}
+                    </Segment>
+                </Grid.Column>
 
+            </Grid>
 
         </div>
     )

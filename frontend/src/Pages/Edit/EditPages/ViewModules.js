@@ -6,12 +6,10 @@ import {
   Divider,
   Icon,
   Input,
-  Table,
-  List
+  Table
 } from "semantic-ui-react";
-import { EditModuleObject } from "./EditModuleObject";
 import { CreateModulePage } from "../../Create/CreateModulePage";
-import "./ViewGroups.css";
+import { EditModuleObject } from "./EditModuleObject";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -149,29 +147,13 @@ export function ViewModules() {
           </Table>
           <Divider hidden></Divider>
 
-          <ButtonGroup basic compact>
-            <Button
-              onClick={() =>
-                setActivePage(activePage <= 0 ? activePage : activePage - 1)
-              }
-              icon
-            >
-              <Icon name="arrow left" />{" "}
-            </Button>
-            {[...Array(pagecount)].map((e, i) => {
-              return <Button key={i} active={activePage === i ? true : false} onClick={() => setActivePage(i)}>{i + 1}</Button>
-            })}
-            <Button
-              onClick={() =>
-                setActivePage(
-                  activePage >= pagecount - 1 ? activePage : activePage + 1
-                )
-              }
-              icon
-            >
-              <Icon name="arrow right" />{" "}
-            </Button>
-          </ButtonGroup>
+          <ButtonGroup compact basic>
+                                <Button title='Atgal' onClick={() => setActivePage(activePage <= 0 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
+                                {[...Array(pagecount)].map((e, i) => {
+                                    return <Button title={i +1} key={i} active={activePage === i ? true : false} onClick={() => setActivePage(i)}>{i + 1}</Button>
+                                })}
+                                <Button title='Pirmyn' onClick={() => setActivePage(activePage >= pagecount - 1 ? activePage : activePage + 1)} icon><Icon name="arrow right" />  </Button>
+                            </ButtonGroup>
         </div>
       )}
     </div>

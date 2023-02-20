@@ -1,18 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import {
   Button,
-  ButtonGroup,
-  Divider,
-  Dropdown,
-  Confirm,
-  Icon,
+  ButtonGroup, Confirm, Divider, Icon,
   Input,
-  Table,
+  Table
 } from "semantic-ui-react";
 import { CreateProgramPage } from "../../Create/CreateProgramPage";
 import { EditProgramObject } from "./EditProgramObject";
-import "./ViewGroups.css";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -52,7 +46,7 @@ export function ViewPrograms() {
       method: "DELETE",
       headers: JSON_HEADERS,
     }).then(fetchPrograms)
-         .then(setOpen(false));
+      .then(setOpen(false));
   };
 
   useEffect(() => {
@@ -61,7 +55,7 @@ export function ViewPrograms() {
 
   const [open, setOpen] = useState(false);
   const [close, setClose] = useState(false);
- 
+
 
   useEffect(() => {
     if (pagecount !== null) {
@@ -108,7 +102,7 @@ export function ViewPrograms() {
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell>Programos pavadinimas</Table.HeaderCell>
-                
+
                 <Table.HeaderCell>Veiksmai</Table.HeaderCell>
               </Table.Row>
             </Table.Header>
@@ -117,7 +111,7 @@ export function ViewPrograms() {
               {programs.map((program) => (
                 <Table.Row key={program.id}>
                   <Table.Cell>{program.name}</Table.Cell>
-                  
+
                   <Table.Cell collapsing>
                     <Button
                       basic
@@ -153,21 +147,12 @@ export function ViewPrograms() {
           </Table>
           <Divider hidden></Divider>
 
-          <ButtonGroup basic compact>
-            <Button
-              onClick={() =>
-                setActivePage(activePage <= 0 ? activePage : activePage - 1)
-              }
-              icon
-            >
-              <Icon name="arrow left" />{" "}
-            </Button>
+          <ButtonGroup compact basic>
+            <Button title='Atgal' onClick={() => setActivePage(activePage <= 0 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
             {[...Array(pagecount)].map((e, i) => {
-                            return <Button key={i} active={activePage === i ? true : false} onClick={() => setActivePage(i) }>{i + 1}</Button>
-                        })}
-            <Button onClick={() => setActivePage(activePage + 1)} icon>
-              <Icon name="arrow right" />{" "}
-            </Button>
+              return <Button title={i + 1} key={i} active={activePage === i ? true : false} onClick={() => setActivePage(i)}>{i + 1}</Button>
+            })}
+            <Button title='Pirmyn' onClick={() => setActivePage(activePage >= pagecount - 1 ? activePage : activePage + 1)} icon><Icon name="arrow right" />  </Button>
           </ButtonGroup>
         </div>
       )}

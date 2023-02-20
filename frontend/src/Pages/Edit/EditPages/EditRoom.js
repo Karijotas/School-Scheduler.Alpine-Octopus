@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Button, Icon, Input, Select, Table } from 'semantic-ui-react';
+import React, { useEffect, useState } from 'react';
+import { Button, Icon, Input, Table } from 'semantic-ui-react';
 import { ViewRooms } from './ViewRooms';
 
 

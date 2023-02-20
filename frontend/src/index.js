@@ -5,7 +5,18 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { HashRouter, Route, Routes } from 'react-router-dom';
-import EditMenu from './Pages/Edit/EditMenu';
+import { EditMenu } from './Pages/Edit/EditMenu';
+import { ViewGroups } from './Pages/Edit/Groups/ViewGroups.js';
+import { ViewSubjects } from './Pages/Edit/Subjects/ViewSubjects';
+import { ViewTeachers } from './Pages/Edit/EditPages/ViewTeachers'
+import { ViewRooms } from './Pages/Edit/EditPages/ViewRooms';
+import { ViewPrograms } from './Pages/Edit/EditPages/ViewPrograms';
+import { ViewModules } from './Pages/Edit/EditPages/ViewModules';
+import { EditGroupObject } from './Pages/Edit/Groups/EditGroupObject';
+import { EditSubjectObject } from './Pages/Edit/Subjects/EditSubjectObject';
+import { CreateGroupPage } from './Pages/Edit/Groups/CreateGroupPage';
+import { CreateSubjecPage } from './Pages/Edit/Subjects/CreateSubjectPage';
+
 
 
 
@@ -16,7 +27,35 @@ root.render(
     <HashRouter>
       <Routes>
         <Route path='/' element={<App />} />
-        <Route path='/edit' element={<EditMenu />} />
+        {/* EDIT MENU ROUTES */}
+
+        {/* Subjects routes: */}
+        <Route path='/view/subjects' element={<ViewSubjects />} />
+        <Route path='/view/subjects/edit/:id' element={<EditSubjectObject/>}/>
+        <Route path='/create/subjects' element={<CreateSubjecPage/>} />
+
+        {/* Teachers routes: */}
+        <Route path='/view/teachers' element={<ViewTeachers />} />
+
+        {/* Groups routes: */}
+        <Route path='/view/groups' element={<ViewGroups />} />
+        <Route path='/view/groups/edit/:id' element={<EditGroupObject />} />
+        <Route path='/create/groups' element={<CreateGroupPage/>} />
+
+        {/* Shifts routes: */}
+        <Route path='/view/shifts' element={<EditMenu />} />
+
+        {/* Rooms routes: */}
+        <Route path='/view/rooms' element={<ViewRooms />} />
+
+        {/* Programs routes: */}
+        <Route path='/view/programs' element={<ViewPrograms />} />
+
+        {/* Modules routes: */}
+        <Route path='/view/modules' element={<ViewModules />} />
+
+
+
       </Routes>
     </HashRouter>
   </React.StrictMode>

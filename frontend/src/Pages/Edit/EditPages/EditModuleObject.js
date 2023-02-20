@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Icon, Input, Table, Divider } from "semantic-ui-react";
+import { Button, Icon, Input, Table } from "semantic-ui-react";
 import { ViewModules } from "./ViewModules";
 
 const JSON_HEADERS = {
@@ -155,15 +155,7 @@ export function EditModuleObject(props) {
               </Table.Row>
             </Table.Body>
           </Table>
-          {/* <Button
-            icon
-            labelPosition="left"
-            className=""
-            onClick={() => setHide(true)}
-          >
-            <Icon name="arrow left" />
-            Atgal į sarašą
-          </Button> */}
+          
         </div>
       )}
 
