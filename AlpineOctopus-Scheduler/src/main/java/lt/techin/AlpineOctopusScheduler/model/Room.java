@@ -53,15 +53,6 @@ public class Room {
     public Room() {
     }
 
-    public Room(Long id, String name, String building, String description, LocalDateTime modifiedDate, LocalDateTime createdDate) {
-        this.id = id;
-        this.name = name;
-        this.building = building;
-        this.description = description;
-        this.modifiedDate = modifiedDate;
-        this.createdDate = createdDate;
-    }
-
     public Long getId() {
         return id;
     }
@@ -94,6 +85,14 @@ public class Room {
         this.description = description;
     }
 
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
     public LocalDateTime getModifiedDate() {
         return modifiedDate;
     }
@@ -115,23 +114,11 @@ public class Room {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Room room = (Room) o;
-        return Objects.equals(id, room.id) && Objects.equals(name, room.name) && Objects.equals(building, room.building) && Objects.equals(description, room.description) && Objects.equals(modifiedDate, room.modifiedDate) && Objects.equals(createdDate, room.createdDate);
+        return Objects.equals(id, room.id) && Objects.equals(name, room.name) && Objects.equals(building, room.building) && Objects.equals(description, room.description) && Objects.equals(deleted, room.deleted) && Objects.equals(modifiedDate, room.modifiedDate) && Objects.equals(createdDate, room.createdDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, building, description, modifiedDate, createdDate);
-    }
-
-    @Override
-    public String toString() {
-        return "Room{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", building='" + building + '\'' +
-                ", description='" + description + '\'' +
-                ", modifiedDate=" + modifiedDate +
-                ", createdDate=" + createdDate +
-                '}';
+        return Objects.hash(id, name, building, description, deleted, modifiedDate, createdDate);
     }
 }
