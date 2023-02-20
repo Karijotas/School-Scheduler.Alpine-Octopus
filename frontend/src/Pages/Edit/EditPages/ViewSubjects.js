@@ -9,7 +9,7 @@ import {
   Table,
 } from "semantic-ui-react";
 import { EditSubjectObject } from "./EditSubjectObject";
-import { CreateGroupPage } from "../../Create/CreateGroupPage";
+import { CreateSubjecPage } from "../../Create/CreateSubjectPage";
 import "./ViewGroups.css";
 import "./FilterSize.css";
 
@@ -78,7 +78,7 @@ export function ViewSubjects() {
     <div>
       {create && (
         <div>
-          <CreateGroupPage />
+          <CreateSubjecPage />
         </div>
       )}
       {active && (
@@ -112,6 +112,7 @@ export function ViewSubjects() {
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell>Dalyko pavadinimas</Table.HeaderCell>
+                <Table.HeaderCell>Moduliai</Table.HeaderCell>
                 <Table.HeaderCell>Veiksmai</Table.HeaderCell>
               </Table.Row>
             </Table.Header>
@@ -120,6 +121,19 @@ export function ViewSubjects() {
               {subjects.map((subject) => (
                 <Table.Row key={subject.id}>
                   <Table.Cell>{subject.name}</Table.Cell>
+                  <Table.Cell>
+                  
+                
+                  <td>
+                    {subjects.modules?.map((module) => (
+                      <li key={module.id} id={module.id}>
+                        {module.name}
+                      </li>
+                    ))}
+                  </td>
+                
+              
+                  </Table.Cell>
                   <Table.Cell collapsing>
                     <Button
                       basic

@@ -3,11 +3,18 @@ INTO
   rooms_subjects
   (room_id, subject_id)
 VALUES
-  (CAST(1 AS BIGINT), CAST(1 AS BIGINT)),
-  (CAST(1 AS BIGINT), CAST(2 AS BIGINT)),
-  (CAST(2 AS BIGINT), CAST(3 AS BIGINT)),
-  (CAST(2 AS BIGINT), CAST(4 AS BIGINT)),
-  (CAST(3 AS BIGINT), CAST(1 AS BIGINT)),
-  (CAST(3 AS BIGINT), CAST(3 AS BIGINT)),
-  (CAST(4 AS BIGINT), CAST(2 AS BIGINT)),
-  (CAST(4 AS BIGINT), CAST(4 AS BIGINT));
+(1,1),
+(1,2),
+(2,3),
+(2,4),
+(3,5),
+(3,6),
+(4,7),
+(4,8),
+(5,9),
+(5,10),
+(6,12),
+(6,11),
+(7,13),
+(8,14);
+

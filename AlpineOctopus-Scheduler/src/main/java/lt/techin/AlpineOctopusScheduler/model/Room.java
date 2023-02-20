@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
 
 @Entity
@@ -17,6 +18,7 @@ public class Room {
     private Long id;
     @NotBlank
     @Size(max = 40)
+    @Column(unique = true)
     private String name;
     @NotBlank
     @Size(max = 40)
@@ -31,6 +33,11 @@ public class Room {
     @CreatedDate
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
+
+
+    @ManyToMany (mappedBy = "subjectRooms")
+    @JsonIgnore
+    private Set<Subject> roomSubjects = new HashSet<>();;
 
     @PrePersist
     public void prePersist() {
