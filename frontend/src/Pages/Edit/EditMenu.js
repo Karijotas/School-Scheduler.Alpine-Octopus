@@ -6,11 +6,11 @@ export function EditMenu() {
 
 
   return (
-    <div>
-      <Grid columns={1}>
-        <Grid.Column  >
-          <Menu  fluid vertical secondary className='ui centered grid'>
-            <Menu.Item 
+    <div >
+      <Grid columns={1} >
+        <Grid.Column >
+          <Menu color='blue' fluid vertical secondary className='ui centered grid'>
+            <Menu.Item
               name='subjects'
               icon='book'
               content='Dalykai'

@@ -1,21 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import 'semantic-ui-css/semantic.min.css';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
 import { HashRouter, Route, Routes } from 'react-router-dom';
-import { EditMenu } from './Pages/Edit/EditMenu';
-import { ViewGroups } from './Pages/Edit/Groups/ViewGroups.js';
-import { ViewSubjects } from './Pages/Edit/Subjects/ViewSubjects';
-import { ViewTeachers } from './Pages/Edit/EditPages/ViewTeachers'
-import { ViewRooms } from './Pages/Edit/EditPages/ViewRooms';
-import { ViewPrograms } from './Pages/Edit/EditPages/ViewPrograms';
-import { ViewModules } from './Pages/Edit/EditPages/ViewModules';
-import { EditGroupObject } from './Pages/Edit/Groups/EditGroupObject';
-import { EditSubjectObject } from './Pages/Edit/Subjects/EditSubjectObject';
+import 'semantic-ui-css/semantic.min.css';
+import { ViewShifts } from './Pages/Edit/Shifts/ViewShifts';
+import App from './App';
+import './index.css';
 import { CreateGroupPage } from './Pages/Edit/Groups/CreateGroupPage';
+import { EditGroupObject } from './Pages/Edit/Groups/EditGroupObject';
+import { ViewGroups } from './Pages/Edit/Groups/ViewGroups.js';
+import { ViewModules } from './Pages/Edit/Module/ViewModules';
+import { ViewPrograms } from './Pages/Edit/Programs/ViewPrograms';
+import { ViewRooms } from './Pages/Edit/Rooms/ViewRooms';
 import { CreateSubjecPage } from './Pages/Edit/Subjects/CreateSubjectPage';
+import { EditSubjectObject } from './Pages/Edit/Subjects/EditSubjectObject';
+import { ViewSubjects } from './Pages/Edit/Subjects/ViewSubjects';
+import { ViewTeachers } from './Pages/Edit/Teachers/ViewTeachers';
+import reportWebVitals from './reportWebVitals';
 
 
 
@@ -31,8 +31,8 @@ root.render(
 
         {/* Subjects routes: */}
         <Route path='/view/subjects' element={<ViewSubjects />} />
-        <Route path='/view/subjects/edit/:id' element={<EditSubjectObject/>}/>
-        <Route path='/create/subjects' element={<CreateSubjecPage/>} />
+        <Route path='/view/subjects/edit/:id' element={<EditSubjectObject />} />
+        <Route path='/create/subjects' element={<CreateSubjecPage />} />
 
         {/* Teachers routes: */}
         <Route path='/view/teachers' element={<ViewTeachers />} />
@@ -40,10 +40,10 @@ root.render(
         {/* Groups routes: */}
         <Route path='/view/groups' element={<ViewGroups />} />
         <Route path='/view/groups/edit/:id' element={<EditGroupObject />} />
-        <Route path='/create/groups' element={<CreateGroupPage/>} />
+        <Route path='/create/groups' element={<CreateGroupPage />} />
 
         {/* Shifts routes: */}
-        <Route path='/view/shifts' element={<EditMenu />} />
+        <Route path='/view/shifts' element={<ViewShifts />} />
 
         {/* Rooms routes: */}
         <Route path='/view/rooms' element={<ViewRooms />} />

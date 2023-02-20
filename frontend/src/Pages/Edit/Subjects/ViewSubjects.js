@@ -103,6 +103,7 @@ export function ViewSubjects() {
 
                 <Button
                   icon
+                  circular
                   labelPosition="left"
                   primary
                   className="controls"

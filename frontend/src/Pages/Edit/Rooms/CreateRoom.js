@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button, Form, Icon, Input, } from "semantic-ui-react";
-import { ViewRooms } from "../Edit/EditPages/ViewRooms";
+import { ViewRooms } from "./ViewRooms";
 
 
 const JSON_HEADERS = {
@@ -58,8 +58,8 @@ export function CreateRoom() {
           <label>Aprašymas</label>
           <input placeholder='Aprasymas' value={description} onChange={(e) => setDescription(e.target.value)} />
         </Form.Field>
-        <div><Button icon labelPosition="left" className="" onClick={() => setHide(true)}><Icon name="arrow left"/>Atgal</Button>
-<Button type='submit' className="controls" primary onClick={createRoom}>Sukurti</Button></div>
+        <div><Button icon labelPosition="left" className="" onClick={() => setHide(true)}><Icon name="arrow left" />Atgal</Button>
+          <Button type='submit' className="controls" primary onClick={createRoom}>Sukurti</Button></div>
       </Form>
     </div>}
     {hide && (<div><ViewRooms /></div>)}

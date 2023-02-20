@@ -1,4 +1,3 @@
-import './App.css';
 import * as React from "react";
 import MainMenu from './Components/MainMenu';
 import Front from './Pages/FrontPage';

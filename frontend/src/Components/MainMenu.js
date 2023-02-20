@@ -20,16 +20,21 @@ export default class MainMenu extends Component {
                     content={<img alt="logo" src={logo} />}
                 />
                 <Menu.Item
+                    header
                     href='#/view/subjects'
                     name='edit'
                     content='Tvarkyti duomenis'
                 />
-                <Menu.Item disabled
+                <Menu.Item
+                    disabled
+                    header
                     name='statistics'
                     content='Statistika'
 
                 />
-                <Menu.Item disabled
+                <Menu.Item
+                    disabled
+                    header
                     // as={NavLink}
                     // exact
                     // to='/schedules'

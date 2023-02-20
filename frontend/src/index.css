@@ -29,7 +29,12 @@ code {
 }
 #segment{
   margin-left: 1vmax;
+  
   background-color: rgb(252, 252, 252);
   border-radius: 1vmin;
 }
+#table{
+  margin-top: 15vh;
+}
+
 
