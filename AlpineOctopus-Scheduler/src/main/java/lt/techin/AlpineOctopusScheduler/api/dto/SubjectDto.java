@@ -14,8 +14,9 @@ import java.util.Set;
 public class SubjectDto {
 
     private String name;
-
     private String description;
+
+    private Boolean deleted;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -29,7 +30,7 @@ public class SubjectDto {
     public SubjectDto() {
     }
 
-    public SubjectDto(String name, String description,LocalDateTime createdDate, LocalDateTime modifiedDate,Set<Module> subjectModules,Set<Room> subjectRooms, Set<Teacher> subjectTeachers) {
+    public SubjectDto(String name, String description,LocalDateTime createdDate, LocalDateTime modifiedDate,Set<Module> subjectModules,Set<Room> subjectRooms, Set<Teacher> subjectTeachers, Boolean deleted) {
         this.name = name;
         this.description = description;
         this.createdDate=createdDate;
@@ -37,6 +38,7 @@ public class SubjectDto {
         this.subjectModules = subjectModules;
         this.subjectRooms = subjectRooms;
         this.subjectTeachers = subjectTeachers;
+        this.deleted = deleted;
 
     }
 
@@ -71,7 +73,7 @@ public class SubjectDto {
     public void setModifiedDate(LocalDateTime modifiedDate) {
         this.modifiedDate = modifiedDate;
     }
-    @JsonIgnore
+
     public Set<Module> getSubjectModules() {
         return subjectModules;
     }
@@ -96,18 +98,25 @@ public class SubjectDto {
         this.subjectTeachers = subjectTeachers;
     }
 
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SubjectDto that = (SubjectDto) o;
-        return Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(createdDate, that.createdDate) && Objects.equals(modifiedDate, that.modifiedDate) && Objects.equals(subjectModules, that.subjectModules) && Objects.equals(subjectRooms, that.subjectRooms) && Objects.equals(subjectTeachers, that.subjectTeachers);
+        return Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(deleted, that.deleted) && Objects.equals(createdDate, that.createdDate) && Objects.equals(modifiedDate, that.modifiedDate) && Objects.equals(subjectModules, that.subjectModules) && Objects.equals(subjectRooms, that.subjectRooms) && Objects.equals(subjectTeachers, that.subjectTeachers);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, createdDate, modifiedDate, subjectModules, subjectRooms, subjectTeachers);
+        return Objects.hash(name, description, deleted, createdDate, modifiedDate, subjectModules, subjectRooms, subjectTeachers);
     }
 
     @Override
@@ -115,6 +124,7 @@ public class SubjectDto {
         return "SubjectDto{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", deleted=" + deleted +
                 ", createdDate=" + createdDate +
                 ", modifiedDate=" + modifiedDate +
                 ", subjectModules=" + subjectModules +
