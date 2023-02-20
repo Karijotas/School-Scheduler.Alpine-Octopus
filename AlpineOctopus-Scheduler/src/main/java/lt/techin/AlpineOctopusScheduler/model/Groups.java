@@ -33,6 +33,8 @@ public class Groups {
     @NotBlank
     private String shift;
 
+    private Boolean deleted = Boolean.FALSE;
+
     //private Shift shift;
     @CreatedDate
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

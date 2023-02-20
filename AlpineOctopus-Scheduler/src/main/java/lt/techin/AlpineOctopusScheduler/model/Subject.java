@@ -28,6 +28,8 @@ public class Subject {
     private String name;
     @Size(min = 5, max = 100)
     private String description;
+
+    private Boolean deleted = Boolean.FALSE;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @CreatedDate
     private LocalDateTime createdDate;
@@ -35,7 +37,6 @@ public class Subject {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @LastModifiedDate
     private LocalDateTime modifiedDate;
-
 
     @PrePersist
     public void prePersist() {

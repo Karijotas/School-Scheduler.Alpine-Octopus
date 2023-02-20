@@ -1,6 +1,7 @@
 package lt.techin.AlpineOctopusScheduler.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -10,6 +11,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Room {
@@ -26,6 +28,8 @@ public class Room {
     @Size(max = 100)
     private String description;
 
+    private Boolean deleted = Boolean.FALSE;
+
     @LastModifiedDate
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modifiedDate;
@@ -34,10 +38,6 @@ public class Room {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
 
-
-    @ManyToMany (mappedBy = "subjectRooms")
-    @JsonIgnore
-    private Set<Subject> roomSubjects = new HashSet<>();;
 
     @PrePersist
     public void prePersist() {

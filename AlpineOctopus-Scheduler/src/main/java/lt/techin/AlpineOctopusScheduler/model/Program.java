@@ -41,6 +41,7 @@ public class Program {
     @LastModifiedDate
     private LocalDateTime modifiedDate;
 
+    private Boolean deleted = Boolean.FALSE;
 
     @PrePersist
     public void prePersist() {

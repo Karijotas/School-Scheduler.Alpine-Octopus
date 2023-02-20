@@ -58,7 +58,8 @@ export function ViewSubjects() {
     fetch("/api/v1/subjects/" + id, {
       method: "DELETE",
       headers: JSON_HEADERS,
-    }).then(fetchSubjects);
+    }).then(fetchSubjects)
+      .then(setOpen(false));
   };
 
   useEffect(() => {
