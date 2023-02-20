@@ -85,18 +85,6 @@ public class Subject {
         subjectHours = new HashSet<>();
     }
 
-
-    public Subject(Long id, String name, String description ,LocalDateTime createdDate, LocalDateTime modifiedDate, Set<Module> subjectModules,Set<Room> subjectRooms,Set<Teacher> subjectTeachers) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.createdDate = createdDate;
-        this.modifiedDate = modifiedDate;
-        this.subjectModules = subjectModules;
-        this.subjectRooms = subjectRooms;
-        this.subjectTeachers = subjectTeachers;
-    }
-
     public Long getId() {
         return id;
     }
@@ -119,6 +107,14 @@ public class Subject {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
     public LocalDateTime getCreatedDate() {
@@ -158,8 +154,15 @@ public class Subject {
     }
 
     public void setSubjectTeachers(Set<Teacher> subjectTeachers) {
-
         this.subjectTeachers = subjectTeachers;
+    }
+
+    public Set<ProgramSubjectHours> getSubjectHours() {
+        return subjectHours;
+    }
+
+    public void setSubjectHours(Set<ProgramSubjectHours> subjectHours) {
+        this.subjectHours = subjectHours;
     }
 
     @Override
@@ -167,26 +170,12 @@ public class Subject {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Subject subject = (Subject) o;
-        return Objects.equals(id, subject.id) && Objects.equals(name, subject.name) && Objects.equals(description, subject.description) && Objects.equals(createdDate, subject.createdDate) && Objects.equals(modifiedDate, subject.modifiedDate) && Objects.equals(subjectModules, subject.subjectModules) && Objects.equals(subjectRooms, subject.subjectRooms) && Objects.equals(subjectTeachers, subject.subjectTeachers);
+        return Objects.equals(id, subject.id) && Objects.equals(name, subject.name) && Objects.equals(description, subject.description) && Objects.equals(deleted, subject.deleted) && Objects.equals(createdDate, subject.createdDate) && Objects.equals(modifiedDate, subject.modifiedDate) && Objects.equals(subjectModules, subject.subjectModules) && Objects.equals(subjectRooms, subject.subjectRooms) && Objects.equals(subjectTeachers, subject.subjectTeachers) && Objects.equals(subjectHours, subject.subjectHours);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, createdDate, modifiedDate, subjectModules, subjectRooms, subjectTeachers);
-    }
-
-    @Override
-    public String toString() {
-        return "Subject{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", createdDate=" + createdDate +
-                ", modifiedDate=" + modifiedDate +
-                ", subjectModules=" + subjectModules +
-                ", subjectRooms=" + subjectRooms +
-                ", subjectTeachers=" + subjectTeachers +
-                '}';
+        return Objects.hash(id, name, description, deleted, createdDate, modifiedDate, subjectModules, subjectRooms, subjectTeachers, subjectHours);
     }
 }
 
