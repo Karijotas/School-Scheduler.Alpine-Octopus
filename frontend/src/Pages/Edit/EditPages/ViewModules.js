@@ -32,7 +32,7 @@ export function ViewModules() {
     fetch(`/api/v1/modules/page/name-filter/${nameText}?page=` + activePage)
       .then((response) => response.json())
       .then((jsonRespone) => setModules(jsonRespone));
-    
+
   };
 
   const fetchSingleModules = () => {
@@ -159,11 +159,7 @@ export function ViewModules() {
               <Icon name="arrow left" />{" "}
             </Button>
             {[...Array(pagecount)].map((e, i) => {
-              return (
-                <Button key={i} onClick={() => setActivePage(i)}>
-                  {i + 1}
-                </Button>
-              );
+              return <Button key={i} active={activePage === i ? true : false} onClick={() => setActivePage(i)}>{i + 1}</Button>
             })}
             <Button
               onClick={() =>
