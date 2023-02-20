@@ -91,12 +91,12 @@ public class Program {
         this.description = description;
     }
 
-    public Set<ProgramSubjectHours> getSubjectHours() {
-        return subjectHours;
+    public Set<Groups> getGroupsSet() {
+        return groupsSet;
     }
 
-    public void setSubjectHours(Set<ProgramSubjectHours> subjectHours) {
-        this.subjectHours = subjectHours;
+    public void setGroupsSet(Set<Groups> groupsSet) {
+        this.groupsSet = groupsSet;
     }
 
     public LocalDateTime getCreatedDate() {
@@ -115,16 +115,40 @@ public class Program {
         this.modifiedDate = modifiedDate;
     }
 
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public Set<ProgramSubjectHours> getSubjectHours() {
+        return subjectHours;
+    }
+
+    public void setSubjectHours(Set<ProgramSubjectHours> subjectHours) {
+        this.subjectHours = subjectHours;
+    }
+
+    public Set<Groups> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(Set<Groups> groups) {
+        this.groups = groups;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Program program = (Program) o;
-        return Objects.equals(id, program.id) && Objects.equals(name, program.name) && Objects.equals(description, program.description) && Objects.equals(createdDate, program.createdDate) && Objects.equals(modifiedDate, program.modifiedDate) && Objects.equals(subjectHours, program.subjectHours);
+        return Objects.equals(id, program.id) && Objects.equals(name, program.name) && Objects.equals(description, program.description) && Objects.equals(groupsSet, program.groupsSet) && Objects.equals(createdDate, program.createdDate) && Objects.equals(modifiedDate, program.modifiedDate) && Objects.equals(deleted, program.deleted) && Objects.equals(subjectHours, program.subjectHours) && Objects.equals(groups, program.groups);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, createdDate, modifiedDate, subjectHours);
+        return Objects.hash(id, name, description, groupsSet, createdDate, modifiedDate, deleted, subjectHours, groups);
     }
 }
