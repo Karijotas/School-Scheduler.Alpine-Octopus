@@ -5,14 +5,14 @@ import lt.techin.AlpineOctopusScheduler.model.Subject;
 import java.util.Objects;
 import java.util.Set;
 
-public class RoomEntityDto extends RoomDto{
+public class RoomEntityDto extends RoomDto {
     private Long id;
 
     public RoomEntityDto() {
     }
 
-    public RoomEntityDto(String name, String building, String description, Set<Subject> roomSubjects, Long id) {
-        super(name, building, description, roomSubjects);
+    public RoomEntityDto(Long id, String name, String building, String description) {
+        super(name, building, description);
         this.id = id;
     }
 

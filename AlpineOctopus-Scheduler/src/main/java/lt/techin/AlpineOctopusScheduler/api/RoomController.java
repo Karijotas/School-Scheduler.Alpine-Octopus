@@ -1,11 +1,8 @@
 package lt.techin.AlpineOctopusScheduler.api;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.swagger.annotations.ApiOperation;
-
 import lt.techin.AlpineOctopusScheduler.api.dto.RoomDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.RoomEntityDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.TeacherDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.RoomMapper;
 import lt.techin.AlpineOctopusScheduler.model.Room;
 import lt.techin.AlpineOctopusScheduler.service.RoomService;
@@ -23,7 +20,6 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.RoomMapper.toRoom;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.RoomMapper.toRoomDto;
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.TeacherMapper.toTeacherDto;
 import static org.springframework.http.ResponseEntity.ok;
 
 @Controller
@@ -82,27 +78,29 @@ public class RoomController {
     @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public List<RoomEntityDto> getPagedAllRooms(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                                      @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+                                                @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
 
 
-        return roomService.getPagedAllPrograms(page, pageSize);
+        return roomService.getPagedAllRooms(page, pageSize);
 
     }
-    @GetMapping(path = "page/starting-with/{nameText}")
+    @GetMapping(path = "page/name-filter/{nameText}")
     @ApiOperation(value = "Get Paged Programs starting with", notes = "Returns list of Programs starting with passed String")
     @ResponseBody
-    public List<RoomEntityDto> getPagedProgramsByNameContaining(@PathVariable String nameText,
-                                                                   @RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                                                   @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+    public List<RoomEntityDto> getPagedRoomsByNameContaining(@PathVariable String nameText,
+                                                             @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                             @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
         return roomService.getPagedRoomsByNameContaining(nameText, page, pageSize);
     }
 
-
-    @PutMapping("/subjects/{moduleId}")
-    public ResponseEntity<RoomDto> addSubjectToRoom(@PathVariable Long roomId, @RequestBody Long subjectId) {
-        var updatedRoom = roomService.addSubjectToRoom(roomId, subjectId);
-
-        return ok(toRoomDto(updatedRoom));
+    @GetMapping(path = "page/building-filter/{buildingText}")
+    @ApiOperation(value = "Get Paged Programs starting with", notes = "Returns list of Programs starting with passed String")
+    @ResponseBody
+    public List<RoomEntityDto> getPagedBuildingsByNameContaining(@PathVariable String buildingText,
+                                                                 @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                                 @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+        return roomService.getPagedBuildingsByNameContaining(buildingText, page, pageSize);
     }
+
 
 }

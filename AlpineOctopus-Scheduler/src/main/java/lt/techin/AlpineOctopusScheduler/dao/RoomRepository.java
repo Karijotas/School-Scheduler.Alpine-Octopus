@@ -11,5 +11,6 @@ import java.util.List;
 public interface RoomRepository extends JpaRepository<Room,Long> {
 
     List<Room> findByNameContainingIgnoreCase(String nameText, Pageable pageable);
+    List<Room> findByBuildingContainingIgnoreCase(String buildingText,Pageable pageable);
 
 }

@@ -29,6 +29,7 @@ export function EditProgramObject(props) {
   const [subjectId, setSubjectId] = useState("");
   const [programName, setProgramName] = useState("");
   const [programDescription, setProgramDescription] = useState("");
+ 
 
   const subjectOptions = [
     { key: 23, value: 2023, text: "2023" },
@@ -41,12 +42,13 @@ export function EditProgramObject(props) {
 
   const [error, setError] = useState();
 
-  const [programs, setPrograms] = useState({
+  const [programs, setPrograms] = useState({    
     name: "",
     description: "",
     modifiedDate: "",
   });
 
+ 
   useEffect(() => {
     fetch("/api/v1/programs/" + props.id)
       .then((response) => response.json())
@@ -56,46 +58,41 @@ export function EditProgramObject(props) {
   useEffect(() => {
     fetch(`/api/v1/programs/${props.id}/subjects`)
       .then((response) => response.json())
-      .then(setSubjectsInProgram)
-      .then(console.log(subjectsInProgram));
+     .then(setSubjectsInProgram)
+     .then(console.log(subjectsInProgram));
   }, [props]);
 
   useEffect(() => {
     fetch(`/api/v1/programs/${props.id}/subjects/hours`)
       .then((response) => response.json())
-      .then(setTotalHours);
+     .then(setTotalHours);
   }, [props]);
 
   const removeSubject = (programId, subjectId, hours) => {
     fetch(`/api/v1/programs/${programId}/subjects/${subjectId}/${hours}`, {
       method: "DELETE",
       headers: JSON_HEADERS,
-    }).then(
-      fetch(`/api/v1/programs/${props.id}/subjects/hours`)
-        .then((response) => response.json())
-        .then(setTotalHours)
-    );
+    }).then(fetch(`/api/v1/programs/${props.id}/subjects/hours`)
+    .then((response) => response.json())
+   .then(setTotalHours));
+         
   };
 
   const addSubjectAndHours = (programId, subjectId, hours) => {
-    fetch(
-      `/api/v1/programs/${programId}/subjects/${subjectId}/${hours}/newSubjectsWithHours`,
-      {
-        method: "POST",
-        header: JSON_HEADERS,
-        body: JSON.stringify({
-          programId,
-          subject,
-          subjectHours,
-        }),
-      }
-    ).then(
-      fetch(`/api/v1/programs/${props.id}/subjects/hours`)
-        .then((response) => response.json())
-        .then(setTotalHours)
-    );
-  };
-
+  fetch(`/api/v1/programs/${programId}/subjects/${subjectId}/${hours}/newSubjectsWithHours`, {
+    method: "POST",
+    header: JSON_HEADERS,
+    body: JSON.stringify({
+      programId,
+      subject,
+      subjectHours,
+    }),
+  }).then(fetch(`/api/v1/programs/${props.id}/subjects/hours`)
+  .then((response) => response.json())
+ .then(setTotalHours));
+};
+ 
+  
   useEffect(() => {
     fetch("/api/v1/subjects/")
       .then((response) => response.json())
@@ -112,14 +109,18 @@ export function EditProgramObject(props) {
     setHide(true);
   };
 
+  
+
   const updatePrograms = () => {
-    fetch("/api/v1/programs/" + props.id, {
+    fetch('/api/v1/programs/' + props.id, {
       method: "PATCH",
       headers: JSON_HEADERS,
-      body: JSON.stringify({}),
+      body: JSON.stringify({
+
+      }),
     })
-      .then(console.log(programs))
-      .then((result) => {
+    .then(console.log(programs))
+      .then(result => {
         if (!result.ok) {
           setError("Update failed");
         } else {
@@ -146,6 +147,8 @@ export function EditProgramObject(props) {
   //     })
   //     .then(() => window.location = listUrl);
   // }
+
+
 
   return (
     <div>
@@ -174,22 +177,28 @@ export function EditProgramObject(props) {
               </Table.Row>
             </Table.Body>
           </Table>
-          <Divider hidden />
+          <Divider hidden/>
           <Table>
-            <Table.Header>
+          <Table.Header>
               <Table.Row>
                 <Table.HeaderCell width={6}>Programos dalykai</Table.HeaderCell>
                 <Table.HeaderCell width={8}></Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {subjectsInProgram.map((subject) => (
-                <Table.Row key={subject.id}>
-                  <Table.Cell>{subject.subject.name}</Table.Cell>
-                  <Table.Cell>{subject.subjectHours} val.</Table.Cell>
                 </Table.Row>
-              ))}
-            </Table.Body>
+            </Table.Header>
+          <Table.Body>
+                    {subjectsInProgram.map((subject) => (
+                      <Table.Row key={subject.id}>
+                        <Table.Cell>{subject.subject.name}</Table.Cell>
+                        <Table.Cell>{subject.subjectHours} val.</Table.Cell>
+                        
+                        
+                      </Table.Row>
+                    ))}
+                    <Table.Row>
+                    <Table.Cell><h5>Programos valandų skaičius:</h5></Table.Cell> 
+                    <Table.Cell><h5>{totalHours} val.</h5></Table.Cell>
+                         </Table.Row>
+                  </Table.Body>
           </Table>
           <Button
             icon
@@ -209,26 +218,32 @@ export function EditProgramObject(props) {
               <Table.Row>
                 <Table.HeaderCell>Programos pavadinimas</Table.HeaderCell>
                 <Table.HeaderCell>Aprašymas</Table.HeaderCell>
-                <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
-                <Table.HeaderCell>Veiksmai</Table.HeaderCell>
+                <Table.HeaderCell>Paskutinis atnaujinimas</Table.HeaderCell>
+                
               </Table.Row>
             </Table.Header>
 
             <Table.Body>
               <Table.Row>
-                <Table.Cell collapsing>
+                <Table.Cell  collapsing>
                   <Input
                     value={programs.name}
-                    onChange={(e) => updateProperty("name", e)}
+                    onChange={(e, data) => ((updateProperty('name', e)), (setProgramName(data)))}
                   />
                 </Table.Cell>
-                <Table.Cell collapsing>
-                  <Input
+                <Table.Cell  collapsing>
+                  <Form>
+                  <TextArea
+                    style={{ minHeight: 100, minWidth: 200 }}
                     placeholder={programs.description}
-                    /*options={yearOptions} value={groups.schoolYear} */ onChange={(
-                      e
-                    ) => updateProperty("description", e)}
+                    value={programs.description}
+                    /*options={yearOptions} value={groups.schoolYear} */ 
+                    onChange={(e) => updateProperty('description', e)}
                   />
+                  </Form>
+                  {console.log(programs.description)}
+                  {console.log(programs.description)}
+                  {console.log(programs.id)}
                 </Table.Cell>
                 {/* <Table.Cell collapsing><Input value={groups.studentAmount} onChange={(e) => updateProperty('studentAmount', e)} />
                         </Table.Cell>
@@ -238,6 +253,7 @@ export function EditProgramObject(props) {
                 {/* </Table.Cell> */}
 
                 <Table.Cell collapsing> {programs.modifiedDate} </Table.Cell>
+
               </Table.Row>
             </Table.Body>
           </Table>
@@ -255,17 +271,14 @@ export function EditProgramObject(props) {
               <Table.Row>
                 <Table.Cell>
                   <List textAlign="center" divided verticalAlign="middle">
-                    <List.Item>
+                    <List.Item >
                       <Form.Group widths="equal">
-                        <Form.Field>
+                        <Form.Field>                        
                           <Select
                             options={subjects}
                             placeholder="Dalykai"
                             value={subject}
-                            onChange={(e, data) => (
-                              setSubject(e.target.value),
-                              setSubjectId(data.value)
-                            )}
+                            onChange={(e, data) => (setSubject(e.target.value), setSubjectId(data.value))}
                             onClose={() => console.log(subjectId)}
                           />
                         </Form.Field>
@@ -280,17 +293,7 @@ export function EditProgramObject(props) {
                       </List.Content>
                       <Divider hidden />
                       <List.Content floated="left">
-                        <Button
-                          onClick={() =>
-                            addSubjectAndHours(
-                              props.id,
-                              subjectId,
-                              subjectHours
-                            )
-                          }
-                        >
-                          Pridėti
-                        </Button>
+                        <Button onClick={() => addSubjectAndHours(props.id, subjectId, subjectHours)}>Pridėti</Button>
                       </List.Content>
                     </List.Item>
                   </List>
@@ -303,29 +306,20 @@ export function EditProgramObject(props) {
                         <Table.Cell>{subject.subjectHours} val.</Table.Cell>
                         <Table.Cell collapsing>
                           <Button
-                            basic
+                            basic                            
                             compact
                             icon="remove"
                             title="Pašalinti"
-                            onClick={() =>
-                              removeSubject(
-                                props.id,
-                                subject.subject.id,
-                                subject.subjectHours
-                              )
-                            }
+                            onClick={() => removeSubject(props.id, subject.subject.id, subject.subjectHours, )}
                           ></Button>
                         </Table.Cell>
+                        
                       </Table.Row>
                     ))}
                     <Table.Row>
-                      <Table.Cell>
-                        <h5>Programos valandų skaičius:</h5>
-                      </Table.Cell>
-                      <Table.Cell>
-                        <h5>{totalHours} val.</h5>
-                      </Table.Cell>
-                    </Table.Row>
+                    <Table.Cell><h5>Programos valandų skaičius:</h5></Table.Cell> 
+                    <Table.Cell><h5>{totalHours} val.</h5></Table.Cell>
+                         </Table.Row>
                   </Table.Body>
                 </Table.Cell>
               </Table.Row>
@@ -341,8 +335,8 @@ export function EditProgramObject(props) {
             Atgal
           </Button>
           <Button floated="right" primary onClick={updatePrograms}>
-            Atnaujinti
-          </Button>
+                    Atnaujinti
+                  </Button>
         </div>
       )}
 

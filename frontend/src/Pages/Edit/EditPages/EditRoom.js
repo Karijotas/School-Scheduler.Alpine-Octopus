@@ -149,4 +149,3 @@ export function EditRoom(props) {
 
     </div>
     )
-}

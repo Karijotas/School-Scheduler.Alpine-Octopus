@@ -163,12 +163,8 @@ export function ViewPrograms() {
               <Icon name="arrow left" />{" "}
             </Button>
             {[...Array(pagecount)].map((e, i) => {
-              return (
-                <Button key={i} onClick={() => setActivePage(i)}>
-                  {i + 1}
-                </Button>
-              );
-            })}
+                            return <Button key={i} active={activePage === i ? true : false} onClick={() => setActivePage(i) }>{i + 1}</Button>
+                        })}
             <Button onClick={() => setActivePage(activePage + 1)} icon>
               <Icon name="arrow right" />{" "}
             </Button>

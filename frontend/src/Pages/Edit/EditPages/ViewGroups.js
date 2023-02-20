@@ -135,7 +135,7 @@ export function ViewGroups() {
                 <div id='groups' >
 
                     <Input className='controls1' placeholder='Filtruoti pagal pavadinimą' value={nameText} onChange={(e) => setNameText(e.target.value)} />
-                    <Input type='number' value={yearText} className='controls1' onChange={(e) => setYearText(e.target.value)} />
+                    <Input type='number'placeholder='Filtruoti pagal metus' value={yearText} className='controls1' onChange={(e) => setYearText(e.target.value)} />
 
                     <Input placeholder='Filtruoti pagal programą' value={programText} onChange={(e) => setProgramText(e.target.value)} />
 

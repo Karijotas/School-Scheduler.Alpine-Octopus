@@ -17,8 +17,7 @@ public class ProgramMapper {
 
         programDto.setName(program.getName());
         programDto.setDescription(program.getDescription());
-        programDto.setModifiedDate(program.getModifiedDate());
-        programDto.setCreatedDate(program.getCreatedDate());
+
 
         return programDto;
     }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { Button, ButtonGroup, Confirm, Divider, Icon, Input, Pagination, Table } from 'semantic-ui-react'
-import { CreateGroupPage } from '../../Create/CreateGroupPage';
-import { EditGroupObject } from './EditGroupObject';
+import { Button, Confirm, Divider, Icon, Input, Table } from 'semantic-ui-react'
+// import { CreateteacherPage } from '../../Create/CreateteacherPage';
+// import { EditteacherObject } from './EditteacherObject';
 import './ViewGroups.css';
 
 const JSON_HEADERS = {
@@ -23,8 +23,8 @@ export function ViewTeachers() {
 
     const [create, setCreate] = useState('')
 
-    const [groups, setGroups] = useState([]);
-    const [groupsforPaging, setGroupsForPaging] = useState([]);
+    const [teacher, setTeacher] = useState([]);
+    const [teacherforPaging, setTeacherForPaging] = useState([]);
 
 
     const [nameText, setNameText] = useState('')
@@ -33,52 +33,52 @@ export function ViewTeachers() {
 
     const [programText, setProgramText] = useState('');
 
-    const [activePage, setActivePage] = useState(1)
+    const [activePage, setActivePage] = useState(0)
 
     const [pagecount, setPageCount] = useState()
 
 
 
 
-    const fetchProgramGroups = async () => {
-        fetch('/api/v1/groups/program-filter/' + programText)
-            .then(response => response.json())
-            .then(jsonResponse => setGroups(jsonResponse));
-    };
-    const fetchYearGroups = async () => {
-        fetch('/api/v1/groups/year-filter/' + yearText)
-            .then(response => response.json())
-            .then(jsonResponse => setGroups(jsonResponse));
-    };
+    // const fetchProgramteacher = async () => {
+    //     fetch('/api/v1/teacher/program-filter/' + programText)
+    //         .then(response => response.json())
+    //         .then(jsonResponse => setTeacher(jsonResponse));
+    // };
+    // const fetchYearteacher = async () => {
+    //     fetch('/api/v1/teacher/year-filter/' + yearText)
+    //         .then(response => response.json())
+    //         .then(jsonResponse => setTeacher(jsonResponse));
+    // };
 
 
-    const fetchFilterGroups = async () => {
-        fetch('/api/v1/groups/name-filter/' + nameText)
+    // const fetchFilterteacher = async () => {
+    //     fetch('/api/v1/teacher/name-filter/' + nameText)
+    //         .then(response => response.json())
+    //         .then(jsonResponse => setTeacher(jsonResponse));
+    // };
+
+    const fetchteacher = async () => {
+        fetch('/api/v1/teachers/page?page=' + activePage)
             .then(response => response.json())
-            .then(jsonResponse => setGroups(jsonResponse));
+            .then(jsonResponse => setTeacher(jsonResponse));
     };
 
-    const fetchGroups = async () => {
-        fetch('/api/v1/groups/page?page=' + activePage)
+    const fetchSingleteacher = async () => {
+        fetch('/api/v1/teachers/')
             .then(response => response.json())
-            .then(jsonResponse => setGroups(jsonResponse));
-    };
-
-    const fetchSingleGroups = async () => {
-        fetch('/api/v1/groups/')
-            .then(response => response.json())
-            .then(jsonResponse => setGroupsForPaging(jsonResponse))
-            .then(setPageCount(Math.ceil(groupsforPaging.length / 10)))
+            .then(jsonResponse => setTeacherForPaging(jsonResponse))
+            .then(setPageCount(Math.ceil(teacherforPaging.length / 10)))
         // .then(console.log('pages:' + pagecount));
     };
 
 
 
-    const removeGroup = (id) => {
-        fetch('/api/v1/groups/' + id, {
+    const removeTeacher = (id) => {
+        fetch('/api/v1/teacher/' + id, {
             method: 'DELETE',
             headers: JSON_HEADERS
-        }).then(fetchGroups)
+        }).then(fetchteacher)
             .then(setOpen(false));
     }
 
@@ -86,28 +86,28 @@ export function ViewTeachers() {
 
     useEffect(() => {
         if (nameText.length === 0 && yearText.length === 0 && programText.length === 0) {
-            fetchGroups();
+            fetchteacher();
         } else if (nameText.length > 0) {
             setProgramText('')
             setYearText('')
-            fetchFilterGroups();
+            // fetchFilterteacher();
         } else if (yearText.length > 0) {
             setNameText('')
             setProgramText('')
-            fetchYearGroups();
+            // fetchYearteacher();
         } else if (programText.length > 0) {
             setNameText('')
             setYearText('')
-            fetchProgramGroups();
+            // fetchProgramteacher();nameText, yearText, programText,
         }
 
-    }, [nameText, yearText, programText, activePage]);
+    }, []);
 
     useEffect(() => {
         if (pagecount !== null) {
-            fetchSingleGroups();
+            fetchSingleteacher();
         }
-    }, [groups])
+    }, [teacher])
 
     const [open, setOpen] = useState(false)
 
@@ -117,27 +117,23 @@ export function ViewTeachers() {
 
 
         <div>
-            {create && (<div>
-                <CreateGroupPage /></div>)}
+            {/* {create && (<div>
+                <CreateteacherPage /></div>)}
             {active && (<div className='edit'>
-                <EditGroupObject id={active} /></div>)}
+                <EditteacherObject id={active} /></div>)} */}
 
 
             {!active && !create && (
 
-                <div id='groups'>
+                <div id='teacher'>
 
                     <Input className='controls1' placeholder='Filtruoti pagal vardą' value={nameText} onChange={(e) => setNameText(e.target.value)} />
 
-                    <Input className='controls1' placeholder='Filtruoti pagal dalykus' value={yearText} onChange={(e) => setYearText(e.target.value)} />
+                    {/* <Input className='controls1' placeholder='Filtruoti pagal dalykus' value={yearText} onChange={(e) => setYearText(e.target.value)} /> */}
 
                     <Input placeholder='Filtruoti pagal pamainas' value={programText} onChange={(e) => setProgramText(e.target.value)} />
 
-
-
-
-
-                    <Button icon labelPosition='left' primary className='controls' onClick={() => setCreate('new')}><Icon name='database' />Kurti naują grupę</Button>
+                    <Button icon labelPosition='left' primary className='controls' onClick={() => setCreate('new')}><Icon name='database' />Kurti naują mokytojo įrašą</Button>
                     <Divider horizontal hidden></Divider>
 
                     <Table selectable >
@@ -148,23 +144,23 @@ export function ViewTeachers() {
                                 <Table.HeaderCell>Kontaktinis email (optional)</Table.HeaderCell>
                                 <Table.HeaderCell>Kontaktinis telefonas (optional)</Table.HeaderCell>
                                 <Table.HeaderCell>Valandos per savaitę</Table.HeaderCell>
-                                <Table.HeaderCell>Dalykai</Table.HeaderCell>
+                                <Table.HeaderCell>Veiksmai</Table.HeaderCell>
+
                             </Table.Row>
                         </Table.Header>
 
                         <Table.Body>
-                            {groups.map(group => (
+                            {teacher.map(teacher => (
 
-                                <Table.Row key={group.id}>
-                                    <Table.Cell>{group.name}</Table.Cell>
-                                    <Table.Cell>{group.schoolYear}</Table.Cell>
-                                    <Table.Cell>{group.studentAmount}</Table.Cell>
-                                    <Table.Cell>{group.programName}</Table.Cell>
-                                    <Table.Cell>dalykas</Table.Cell>
-
+                                <Table.Row key={teacher.id}>
+                                    <Table.Cell>{teacher.name + " " + teacher.surname}</Table.Cell>
+                                    <Table.Cell>{teacher.loginEmail}</Table.Cell>
+                                    <Table.Cell>{teacher.contactEmail}</Table.Cell>
+                                    <Table.Cell>{teacher.phone}</Table.Cell>
+                                    <Table.Cell>{teacher.workHoursPerWeek}</Table.Cell>
                                     <Table.Cell collapsing>
-                                        <Button basic primary compact icon='eye' title='Peržiūrėti' onClick={() => setActive(group.id)}></Button>
-                                        <Button basic color='black' compact title='Ištrinti' icon='trash alternate' onClick={() => setOpen(group.id)}></Button>
+                                        <Button basic primary compact icon='eye' title='Peržiūrėti' onClick={() => setActive(teacher.id)}></Button>
+                                        <Button basic color='black' compact title='Ištrinti' icon='trash alternate' onClick={() => setOpen(teacher.id)}></Button>
 
                                         <Confirm
                                             open={open}
@@ -173,7 +169,7 @@ export function ViewTeachers() {
                                             cancelButton='Grįžti atgal'
                                             confirmButton="Ištrinti"
                                             onCancel={() => setOpen(false)}
-                                            onConfirm={() => removeGroup(open)}
+                                            onConfirm={() => removeTeacher(open)}
                                             size='small'
                                         />
                                     </Table.Cell>
@@ -184,13 +180,13 @@ export function ViewTeachers() {
                     </Table>
                     <Divider hidden></Divider>
 
-                    <ButtonGroup basic compact>
+                    <Button.Group basic compact>
                         <Button onClick={() => setActivePage(activePage <= 0 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
                         {[...Array(pagecount)].map((e, i) => {
                             return <Button key={i} onClick={() => setActivePage(i)}>{i + 1}</Button>
                         })}
                         <Button onClick={() => setActivePage(activePage >= pagecount - 1 ? activePage : activePage + 1)} icon><Icon name="arrow right" />  </Button>
-                    </ButtonGroup>
+                    </Button.Group>
 
 
                 </div>
