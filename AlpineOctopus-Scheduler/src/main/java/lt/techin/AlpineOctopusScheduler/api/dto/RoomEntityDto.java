@@ -11,8 +11,8 @@ public class RoomEntityDto extends RoomDto {
     public RoomEntityDto() {
     }
 
-    public RoomEntityDto(Long id, String name, String building, String description) {
-        super(name, building, description);
+    public RoomEntityDto(Long id, String name, String building, String description, Boolean deleted) {
+        super(name, building, description, deleted);
         this.id = id;
     }
 
