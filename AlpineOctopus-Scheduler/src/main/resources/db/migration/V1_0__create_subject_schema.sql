@@ -9,6 +9,7 @@ CREATE TABLE GROUPS (
    modified_date TIMESTAMP,
    created_by VARCHAR(255),
    modified_by VARCHAR(255),
+   DELETED BOOLEAN,
    CONSTRAINT pk_groups PRIMARY KEY (id)
 );
 
@@ -19,7 +20,7 @@ CREATE TABLE SUBJECT (
    CREATED_DATE TIMESTAMP,
    MODIFIED_DATE TIMESTAMP,
    MODULE_ID BIGINT,
-
+   DELETED BOOLEAN,
    CONSTRAINT SUBJECT_PK PRIMARY KEY (ID)
 );
 
@@ -29,7 +30,7 @@ CREATE TABLE MODULE (
    DESCRIPTION CHARACTER VARYING(255),
    CREATED_DATE TIMESTAMP,
    MODIFIED_DATE TIMESTAMP,
-
+   DELETED BOOLEAN,
    CONSTRAINT MODULE_PK PRIMARY KEY (ID)
 );
 
@@ -50,6 +51,7 @@ CREATE TABLE ROOM (
    description VARCHAR(255),
    created_date TIMESTAMP,
    modified_date TIMESTAMP,
+  DELETED BOOLEAN,
    CONSTRAINT pk_room PRIMARY KEY (id)
 );
 CREATE TABLE rooms_subjects (
@@ -75,6 +77,7 @@ CREATE TABLE teacher (
    modified_date TIMESTAMP,
    created_by VARCHAR(255),
    modified_by VARCHAR(255),
+  DELETED BOOLEAN,
    CONSTRAINT pk_teacher PRIMARY KEY (id)
 );
 
@@ -96,6 +99,7 @@ CREATE TABLE program
     description   VARCHAR(255),
     created_date  TIMESTAMP,
     modified_date TIMESTAMP,
+    DELETED BOOLEAN,
     CONSTRAINT pk_program PRIMARY KEY (id)
 );
 

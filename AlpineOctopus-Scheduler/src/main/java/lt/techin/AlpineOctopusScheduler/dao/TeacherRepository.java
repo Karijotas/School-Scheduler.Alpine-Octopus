@@ -17,4 +17,8 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long> {
 
     List<Teacher> findByNameContainingIgnoreCase(String nameText);
 
+
+    List<Teacher> findAllByOrderByDeletedAscIdAsc();
+
+
 }
