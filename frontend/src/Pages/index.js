@@ -2,20 +2,20 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css';
-import { ViewShifts } from './Pages/Edit/Shifts/ViewShifts';
+import { ViewShifts } from './Edit/Shifts/ViewShifts';
 import App from './App';
 import './index.css';
-import { CreateGroupPage } from './Pages/Edit/Groups/CreateGroupPage';
-import { EditGroupObject } from './Pages/Edit/Groups/EditGroupObject';
-import { ViewGroups } from './Pages/Edit/Groups/ViewGroups.js';
-import { ViewModules } from './Pages/Edit/Module/ViewModules';
-import { ViewPrograms } from './Pages/Edit/Programs/ViewPrograms';
-import { ViewRooms } from './Pages/Edit/Rooms/ViewRooms';
-import { CreateSubjecPage } from './Pages/Edit/Subjects/CreateSubjectPage';
-import { EditSubjectObject } from './Pages/Edit/Subjects/EditSubjectObject';
-import { ViewSubjects } from './Pages/Edit/Subjects/ViewSubjects';
-import { ViewTeachers } from './Pages/Edit/Teachers/ViewTeachers';
-import reportWebVitals from './reportWebVitals';
+import { CreateGroupPage } from './Edit/Groups/CreateGroupPage';
+import { EditGroupObject } from './Edit/Groups/EditGroupObject';
+import { ViewGroups } from './Edit/Groups/ViewGroups.js';
+import { ViewModules } from './Edit/Module/ViewModules';
+import { ViewPrograms } from './Edit/Programs/ViewPrograms';
+import { ViewRooms } from './Edit/Rooms/ViewRooms';
+import { CreateSubjecPage } from './Edit/Subjects/CreateSubjectPage';
+import { EditSubjectObject } from './Edit/Subjects/EditSubjectObject';
+import { ViewSubjects } from './Edit/Subjects/ViewSubjects';
+import { ViewTeachers } from './Edit/Teachers/ViewTeachers';
+import reportWebVitals from '../reportWebVitals';
 
 
 
