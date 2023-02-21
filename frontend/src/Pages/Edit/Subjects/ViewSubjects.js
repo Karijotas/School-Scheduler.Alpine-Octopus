@@ -8,12 +8,13 @@ import {
   Icon,
   Input,
   Segment,
-  Table
+  Table,
+  List,
 } from "semantic-ui-react";
 import MainMenu from "../../../Components/MainMenu";
 import { EditMenu } from "../EditMenu";
 import { CreateSubjecPage } from "./CreateSubjectPage";
-import { NavLink } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -31,6 +32,14 @@ export function ViewSubjects() {
 
   const [activePage, setActivePage] = useState(0);
   const [pagecount, setPageCount] = useState();
+  const [modulesInSubjects, setModulesInSubjects] = useState([]);
+  const [moduleText, setModuleText] = useState();
+
+  const fetchSubjectsBYModules = async () => {
+    fetch("/api/v1/subjects/module-filter/" + moduleText)
+      .then((response) => response.json())
+      .then((jsonResponse) => setSubjects(jsonResponse));
+  };
 
   const fetchFilterSubjects = async () => {
     fetch(`/api/v1/subjects/page/name-filter/${nameText}?page=` + activePage)
@@ -45,11 +54,11 @@ export function ViewSubjects() {
       .then(setPageCount(Math.ceil(subjectsforPaging.length / 10)));
   };
 
-  const fetchModules = async () => {
-    fetch(`/api/v1/subjects/${subjectId}/modules`)
-      .then((response) => response.json())
-      .then((jsonRespones) => setModules(jsonRespones));
-  };
+  // const fetchModules = async () => {
+  //   fetch(`/api/v1/subjects/${subjectId}/modules`)
+  //     .then((response) => response.json())
+  //     .then((jsonRespones) => setModules(jsonRespones));
+  // };
   const fetchSubjects = async () => {
     fetch(`/api/v1/subjects/page?page=` + activePage)
       .then((response) => response.json())
@@ -80,12 +89,12 @@ export function ViewSubjects() {
     <div>
       <MainMenu />
       <Grid columns={2}>
-        <Grid.Column width={2} id='main'>
-          <EditMenu active='groups' />
+        <Grid.Column width={2} id="main">
+          <EditMenu active="groups" />
         </Grid.Column>
 
-        <Grid.Column stretched textAlign='left' verticalAlign='top' width={13}>
-          <Segment id='segment' raised color='teal'>
+        <Grid.Column stretched textAlign="left" verticalAlign="top" width={13}>
+          <Segment id="segment" raised color="teal">
             {create && (
               <div>
                 <CreateSubjecPage />
@@ -96,9 +105,15 @@ export function ViewSubjects() {
               <div id="subjects">
                 <Input
                   className="controls1"
-                  placeholder="Filtruoti pagal pavadinimą"
+                  placeholder="Filtruoti pagal dalyką"
                   value={nameText}
                   onChange={(e) => setNameText(e.target.value)}
+                />
+                <Input
+                  className="controls1"
+                  value={moduleText}
+                  onChange={(e) => setModuleText(e.target.value)}
+                  placeholder="Filtruoti pagal modulį"
                 />
 
                 <Button
@@ -107,8 +122,9 @@ export function ViewSubjects() {
                   primary
                   className="controls"
                   as={NavLink}
-                  exact to='/create/subjects'>
-
+                  exact
+                  to="/create/subjects"
+                >
                   <Icon name="database" />
                   Kurti naują dalyką
                 </Button>
@@ -124,30 +140,27 @@ export function ViewSubjects() {
                   </Table.Header>
 
                   <Table.Body>
-                    {subjects.map((subject) => (
-                      <Table.Row key={subject.id}>
-                        <Table.Cell>{subject.name}</Table.Cell>
-                        <Table.Cell>
-
-
-                          <td>
-                            {subjects.modules?.map((module) => (
-                              <li key={module.id} id={module.id}>
-                                {module.name}
-                              </li>
-                            ))}
-                          </td>
-
-
-                        </Table.Cell>
-                        <Table.Cell collapsing>
+              {subjects.map((subject) => (
+                <Table.Row key={subject.id}>
+                  <Table.Cell>{subject.name}</Table.Cell>
+                  <Table.Cell>
+                    <List bulleted>
+                      {console.log(subject.subjectModules)}
+                      {subject.subjectModules.map((module) => (
+                        <List.Content key={module.id}>
+                          <List.Item>{module.name}</List.Item>
+                        </List.Content>
+                      ))}
+                    </List>
+                  </Table.Cell>
+                  <Table.Cell collapsing>
                           <Button
                             basic
                             primary
                             compact
                             icon="eye"
                             title="Peržiūrėti"
-                            href={'#/view/subjects/edit/' + subject.id}
+                            href={"#/view/subjects/edit/" + subject.id}
                             onClick={() => setActive(subject.id)}
                           ></Button>
                           <Button
@@ -177,26 +190,48 @@ export function ViewSubjects() {
                 <Divider hidden></Divider>
 
                 <ButtonGroup compact basic>
-                  <Button title='Atgal' onClick={() => setActivePage(activePage <= 0 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
+                  <Button
+                    title="Atgal"
+                    onClick={() =>
+                      setActivePage(
+                        activePage <= 0 ? activePage : activePage - 1
+                      )
+                    }
+                    icon
+                  >
+                    <Icon name="arrow left" />{" "}
+                  </Button>
                   {[...Array(pagecount)].map((e, i) => {
-                    return <Button title={i + 1} key={i} active={activePage === i ? true : false} onClick={() => setActivePage(i)}>{i + 1}</Button>
+                    return (
+                      <Button
+                        title={i + 1}
+                        key={i}
+                        active={activePage === i ? true : false}
+                        onClick={() => setActivePage(i)}
+                      >
+                        {i + 1}
+                      </Button>
+                    );
                   })}
-                  <Button title='Pirmyn' onClick={() => setActivePage(activePage >= pagecount - 1 ? activePage : activePage + 1)} icon><Icon name="arrow right" />  </Button>
+                  <Button
+                    title="Pirmyn"
+                    onClick={() =>
+                      setActivePage(
+                        activePage >= pagecount - 1
+                          ? activePage
+                          : activePage + 1
+                      )
+                    }
+                    icon
+                  >
+                    <Icon name="arrow right" />{" "}
+                  </Button>
                 </ButtonGroup>
               </div>
             )}
-
-
           </Segment>
         </Grid.Column>
-
       </Grid>
     </div>
   );
 }
-
-
-
-
-
-
