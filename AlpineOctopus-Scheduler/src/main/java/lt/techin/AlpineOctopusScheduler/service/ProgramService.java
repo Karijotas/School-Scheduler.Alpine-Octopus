@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper.toProgramEntityDto;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramSubjectHoursMapper.*;
 
 @Service
@@ -188,6 +189,39 @@ public class ProgramService {
         return programSubjectHourListRepository.findAll();
     }
 
+    public List<ProgramEntityDto> getAllAvailablePagedPrograms(int page, int pageSize){
+
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        return programRepository.findAll(pageable).stream().filter(program -> program.getDeleted().equals(Boolean.FALSE))
+                .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
+    }
+
+    public List<ProgramEntityDto> getAllAvailablePrograms(){
+        return programRepository.findAll().stream().filter(program -> program.getDeleted().equals(Boolean.FALSE))
+                .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
+    }
+
+    public List<ProgramEntityDto> getAllDeletedPrograms(){
+        return programRepository.findAll().stream().filter(program -> program.getDeleted().equals(Boolean.TRUE))
+                .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
+    }
+
+    public ProgramEntityDto restoreProgram(Long programId){
+        var existingProgram = programRepository.findById(programId).orElseThrow(() -> new SchedulerValidationException("Program does not exist",
+                "id", "Program not found", programId.toString()));
+        existingProgram.setDeleted(Boolean.FALSE);
+        programRepository.save(existingProgram);
+       return toProgramEntityDto(existingProgram);
+    }
+
+    public ProgramEntityDto deleteProgram(Long programId){
+        var existingProgram = programRepository.findById(programId).orElseThrow(() -> new SchedulerValidationException("Program does not exist",
+                "id", "Program not found", programId.toString()));
+        existingProgram.setDeleted(Boolean.TRUE);
+        programRepository.save(existingProgram);
+        return toProgramEntityDto(existingProgram);
+    }
 //    public boolean deleteAllSubjectsForCreate(){
 //
 //        return programSubjectHourListRepository.deleteAll();
