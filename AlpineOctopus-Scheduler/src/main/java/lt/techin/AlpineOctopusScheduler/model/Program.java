@@ -24,7 +24,6 @@ public class Program {
     @NotBlank
     @Column(name = "name", unique = true)
     @Size(min = 5, max = 40)
-
     private String name;
 
     @NotBlank

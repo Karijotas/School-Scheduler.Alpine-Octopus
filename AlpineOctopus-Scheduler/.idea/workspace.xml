@@ -11,6 +11,7 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/TeacherController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/TeacherController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/dto/mapper/TeacherMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/dto/mapper/TeacherMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/service/ProgramService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/service/ProgramService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/lt/techin/AlpineOctopusScheduler/api/ProgramControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/lt/techin/AlpineOctopusScheduler/api/ProgramControllerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

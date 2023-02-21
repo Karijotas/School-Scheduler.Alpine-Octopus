@@ -1,7 +1,5 @@
 
 import * as React from "react";
-import { Placeholder, Rail, Segment } from "semantic-ui-react";
-import './FrontPage.css'
 
 
 const items = [

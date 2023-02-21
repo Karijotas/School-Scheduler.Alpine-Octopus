@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Button, Form, Icon, Input, Select } from "semantic-ui-react";
-import { ViewSubjects } from "../Edit/EditPages/ViewSubjects";
+import { Button, Form, Grid, Icon, Segment, Select } from "semantic-ui-react";
+import { ViewSubjects } from "./ViewSubjects";
+import MainMenu from '../../../Components/MainMenu';
+import { EditMenu } from '../EditMenu';
+import { NavLink } from 'react-router-dom';
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -81,7 +84,15 @@ export function CreateSubjecPage() {
 
   return (
     <div>
-      {!hide && (
+     <MainMenu />
+
+<Grid columns={2} >
+  <Grid.Column width={2} id='main'>
+    <EditMenu />
+  </Grid.Column>
+
+  <Grid.Column floated='left' textAlign='left' verticalAlign='top' width={13}>
+    <Segment id='segment' raised color='teal'>
         <div className="create-new-page">
           <Form>
             <Form.Field>
@@ -101,7 +112,7 @@ export function CreateSubjecPage() {
               />
             </Form.Field>
             <Form.Group widths="equal">
-            <Form.Field>
+              <Form.Field>
                 <label>Moduliai</label>
                 <Select
                   options={modules}
@@ -134,7 +145,7 @@ export function CreateSubjecPage() {
                 icon
                 labelPosition="left"
                 className=""
-                onClick={() => setHide(true)}
+                as={NavLink} exact to='/view/subjects'
               >
                 <Icon name="arrow left" />
                 Atgal
@@ -150,12 +161,9 @@ export function CreateSubjecPage() {
             </div>
           </Form>
         </div>
-      )}
-      {hide && (
-        <div>
-          <ViewSubjects />
-        </div>
-      )}
+        </Segment>
+      </Grid.Column>
+    </Grid>
     </div>
   );
 }

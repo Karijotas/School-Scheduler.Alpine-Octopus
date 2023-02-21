@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from 'react'
-import { Button,  Icon,  Input, Table,Divider } from 'semantic-ui-react';
+import React, { useEffect, useState } from 'react';
+import { Button, Divider, Icon, Input, Table, Grid, Segment } from 'semantic-ui-react';
 import { ViewSubjects } from './ViewSubjects';
+import MainMenu from '../../../Components/MainMenu';
+import { EditMenu } from '../EditMenu';
+import { useParams } from 'react-router-dom';
 
 const JSON_HEADERS = {
     'Content-Type': 'application/json'
 };
 
-export function EditSubjectObject(props) {
+export function EditSubjectObject() {
+    const params = useParams();
 
 const [modulesInSubjects, setModulesInSubjects] = useState([]);
     const [hide, setHide] = useState(false)
@@ -19,13 +23,13 @@ const [modulesInSubjects, setModulesInSubjects] = useState([]);
         description: '',
         createdDate: '',
         modifiedDate: '',
-    });
+    }); 
 
     useEffect(() => {
-        fetch('/api/v1/subjects/' + props.id)
+        fetch('/api/v1/subjects/' + params.id)
             .then(response => response.json())
             .then(setSubjects);
-    }, [props]);
+    }, [params]);
 
     const applyResult = () => {
 
@@ -40,14 +44,14 @@ const [modulesInSubjects, setModulesInSubjects] = useState([]);
     // };
 
     useEffect(() => {
-        fetch(`/api/v1/subjects/${props.id}/modules`)
+        fetch(`/api/v1/subjects/${params.id}/modules`)
           .then((response) => response.json())
           .then(setModulesInSubjects)
           .then(console.log(modulesInSubjects));
-      }, [props]);
+      }, [params]);
 
     const updateSubjects = () => {
-        fetch('/api/v1/subjects/' + props.id, {
+        fetch('/api/v1/subjects/' + params.id, {
             method: 'PUT',
             headers: JSON_HEADERS,
             body: JSON.stringify(subjects)
@@ -79,7 +83,13 @@ const [modulesInSubjects, setModulesInSubjects] = useState([]);
     // }
 
 
-    return (<div>{active && !hide &&(<div >
+    return (<div><MainMenu />
+    <Grid columns={2}>
+        <Grid.Column width={2} id='main'>
+            <EditMenu active='groups' />
+        </Grid.Column>
+        <Grid.Column floated='left' textAlign='left' verticalAlign='top' width={13}>
+            <Segment raised color='teal'>{active && !hide &&(<div >
 
         <Table celled color='violet'>
             <Table.Header >
@@ -123,7 +133,7 @@ const [modulesInSubjects, setModulesInSubjects] = useState([]);
           </Table>
 
 
-        <Button icon labelPosition="left" className="" onClick={() => setHide(true)}><Icon name="arrow left" />Atgal</Button>
+        <Button icon labelPosition="left" className="" href='#/view/subjects'><Icon name="arrow left" />Atgal</Button>
 
     </div>
 
@@ -164,13 +174,17 @@ const [modulesInSubjects, setModulesInSubjects] = useState([]);
 
                 </ Table.Body >
             </Table>
-            <Button icon labelPosition="left" className="" onClick={() => setHide(true)}><Icon name="arrow left" />Atgal į sarašą</Button>
+            {/* <Button icon labelPosition="left" className="" onClick={() => setHide(true)}><Icon name="arrow left" />Atgal į sarašą</Button> */}
 
         </div>)}
 
         {hide && <div><ViewSubjects /></div>}
 
 
+        </Segment>
+                </Grid.Column>
+
+            </Grid>
 
     </div>
     )
