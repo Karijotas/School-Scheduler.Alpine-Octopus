@@ -1,11 +1,33 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import 'semantic-ui-css/semantic.min.css';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
 import { HashRouter, Route, Routes } from 'react-router-dom';
-import EditMenu from './Pages/Edit/EditMenu';
+import 'semantic-ui-css/semantic.min.css';
+import App from './App';
+import './index.css';
+import { CreateGroupPage } from './Pages/Edit/Groups/CreateGroupPage';
+import { EditGroupObject } from './Pages/Edit/Groups/EditGroupObject';
+import { ViewGroups } from './Pages/Edit/Groups/ViewGroups.js';
+import { ViewModules } from './Pages/Edit/Module/ViewModules';
+import { EditProgramObject } from './Pages/Edit/Programs/EditProgramObject';
+import { ViewPrograms } from './Pages/Edit/Programs/ViewPrograms';
+import { CreateRoom } from './Pages/Edit/Rooms/CreateRoom';
+import { EditRoom } from './Pages/Edit/Rooms/EditRoom';
+import { ViewRooms } from './Pages/Edit/Rooms/ViewRooms';
+import { CreateShiftPage } from './Pages/Edit/Shifts/CreateShiftPage';
+import { EditShiftObject } from './Pages/Edit/Shifts/EditShiftObject';
+import { ViewShifts } from './Pages/Edit/Shifts/ViewShifts';
+import { CreateSubjecPage } from './Pages/Edit/Subjects/CreateSubjectPage';
+import { EditSubjectObject } from './Pages/Edit/Subjects/EditSubjectObject';
+import { ViewSubjects } from './Pages/Edit/Subjects/ViewSubjects';
+import { CreateTeacher } from './Pages/Edit/Teachers/CreateTeacher';
+import { EditTeacherObject } from './Pages/Edit/Teachers/EditTeacherObject';
+import { ViewTeachers } from './Pages/Edit/Teachers/ViewTeachers';
+import { CreateProgramPage } from './Pages/Edit/Programs/CreateProgramPage';
+import { EditModuleObject } from './Pages/Edit/Module/EditModuleObject';
+import { CreateModulePage } from './Pages/Edit/Module/CreateModulePage';
+
+
+
 
 
 
@@ -16,13 +38,46 @@ root.render(
     <HashRouter>
       <Routes>
         <Route path='/' element={<App />} />
-        <Route path='/edit' element={<EditMenu />} />
+        {/* EDIT MENU ROUTES */}
+
+        {/* Subjects routes: */}
+        <Route path='/view/subjects' element={<ViewSubjects />} />
+        <Route path='/view/subjects/edit/:id' element={<EditSubjectObject />} />
+        <Route path='/create/subjects' element={<CreateSubjecPage />} />
+
+        {/* Teachers routes: */}
+        <Route path='/view/teachers' element={<ViewTeachers />} />
+        <Route path='/view/teachers/edit/:id' element={<EditTeacherObject />} />
+        <Route path='/create/teachers/' element={<CreateTeacher />} />
+
+
+        {/* Groups routes: */}
+        < Route path='/view/groups' element={<ViewGroups />} />
+        <Route path='/view/groups/edit/:id' element={<EditGroupObject />} />
+        <Route path='/create/groups' element={<CreateGroupPage />} />
+
+        {/* Shifts routes: */}
+        <Route path='/view/shifts' element={<ViewShifts />} />
+        <Route path='/view/shifts/edit/:id' element={<EditShiftObject />} />
+        <Route path='/create/shifts' element={<CreateShiftPage />} />
+
+        {/* Rooms routes: */}
+        <Route path='/view/rooms' element={<ViewRooms />} />
+        <Route path='/view/rooms/edit/:id' element={<EditRoom />} />
+        <Route path='/create/rooms' element={<CreateRoom />} />
+
+        {/* Programs routes: */}
+        <Route path='/view/programs' element={<ViewPrograms />} />
+        <Route path='/view/programs/edit/:id' element={<EditProgramObject />} />
+        <Route path='/create/programs' element={<CreateProgramPage />} />
+
+        {/* Modules routes: */}
+        <Route path='/view/modules' element={<ViewModules />} />
+        <Route path='/view/modules/edit/:id' element={<EditModuleObject />} />
+        <Route path='/create/modules' element={<CreateModulePage />} />
+
+
       </Routes>
     </HashRouter>
   </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
