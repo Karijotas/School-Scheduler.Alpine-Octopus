@@ -26,33 +26,32 @@ export function ViewShifts() {
                                 className='controls1'
                                 placeholder='Filtruoti '
                             />
-                          
+
 
 
                             <Button
-                                title='Kurti naują grupę'
-                                circular
+                                title='Kurti naują pamainą'
                                 icon
                                 labelPosition='left'
                                 primary
                                 className='controls'
                                 as={NavLink}
-                                exact to='/create/groups'>
-                                <Icon name='database' />Kurti naują grupę</Button>
+                                exact to='/create/shifts'>
+                                <Icon name='database' />Kurti naują pamainą</Button>
 
                             <Divider horizontal hidden></Divider>
                         </div>
 
 
                         <Table selectable >
-                                <Table.Header>
-                                    <Table.Row>
-                                        <Table.HeaderCell>Pamaina</Table.HeaderCell>
-                                        <Table.HeaderCell>Laikas</Table.HeaderCell>
-                                        <Table.HeaderCell>Veiksmai</Table.HeaderCell>
-                                    </Table.Row>
-                                </Table.Header>
-                                </Table>
+                            <Table.Header>
+                                <Table.Row>
+                                    <Table.HeaderCell>Pamaina</Table.HeaderCell>
+                                    <Table.HeaderCell>Laikas</Table.HeaderCell>
+                                    <Table.HeaderCell>Veiksmai</Table.HeaderCell>
+                                </Table.Row>
+                            </Table.Header>
+                        </Table>
                     </Segment>
                 </Grid.Column>
 

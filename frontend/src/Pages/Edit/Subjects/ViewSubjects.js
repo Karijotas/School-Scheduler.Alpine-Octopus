@@ -84,8 +84,8 @@ export function ViewSubjects() {
           <EditMenu active='groups' />
         </Grid.Column>
 
-        <Grid.Column  stretched textAlign='left' verticalAlign='top' width={13}>
-          <Segment id='segment'raised color='teal'>
+        <Grid.Column stretched textAlign='left' verticalAlign='top' width={13}>
+          <Segment id='segment' raised color='teal'>
             {create && (
               <div>
                 <CreateSubjecPage />
@@ -103,13 +103,12 @@ export function ViewSubjects() {
 
                 <Button
                   icon
-                  circular
                   labelPosition="left"
                   primary
                   className="controls"
                   as={NavLink}
                   exact to='/create/subjects'>
-                
+
                   <Icon name="database" />
                   Kurti naują dalyką
                 </Button>
@@ -178,12 +177,12 @@ export function ViewSubjects() {
                 <Divider hidden></Divider>
 
                 <ButtonGroup compact basic>
-                                <Button title='Atgal' onClick={() => setActivePage(activePage <= 0 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
-                                {[...Array(pagecount)].map((e, i) => {
-                                    return <Button title={i +1} key={i} active={activePage === i ? true : false} onClick={() => setActivePage(i)}>{i + 1}</Button>
-                                })}
-                                <Button title='Pirmyn' onClick={() => setActivePage(activePage >= pagecount - 1 ? activePage : activePage + 1)} icon><Icon name="arrow right" />  </Button>
-                            </ButtonGroup>
+                  <Button title='Atgal' onClick={() => setActivePage(activePage <= 0 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
+                  {[...Array(pagecount)].map((e, i) => {
+                    return <Button title={i + 1} key={i} active={activePage === i ? true : false} onClick={() => setActivePage(i)}>{i + 1}</Button>
+                  })}
+                  <Button title='Pirmyn' onClick={() => setActivePage(activePage >= pagecount - 1 ? activePage : activePage + 1)} icon><Icon name="arrow right" />  </Button>
+                </ButtonGroup>
               </div>
             )}
 

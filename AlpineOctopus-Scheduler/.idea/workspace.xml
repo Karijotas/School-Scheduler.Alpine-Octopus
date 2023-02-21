@@ -5,27 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="be4542e8-401c-4b51-a94d-0543b0658664" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../frontend/src/App.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/App.test.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Create/CreateModule.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Create/CreateModulePage.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Create/CreateProgramPage.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Create/CreateRoom.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/EditPages/EditModuleObject.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/EditPages/EditObject.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/EditPages/EditProgramObject.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/EditPages/EditProgramObjects.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/EditPages/EditRoom.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/EditPages/ViewModules.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/EditPages/ViewPrograms.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/EditPages/ViewRooms.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/EditPages/ViewTeachers.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Groups/ViewGroups.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Subjects/FilterSize.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/AlpineOctopus_Scheduler_war.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/AlpineOctopus_Scheduler_war_exploded.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/Components/MainMenu.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Components/MainMenu.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/App.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/EditMenu.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/EditMenu.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Groups/ViewGroups.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Groups/ViewGroups.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Programs/ViewPrograms.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Programs/ViewPrograms.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Rooms/ViewRooms.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Rooms/ViewRooms.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Shifts/ViewShifts.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Shifts/ViewShifts.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Subjects/ViewSubjects.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Subjects/ViewSubjects.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Teachers/ViewTeachers.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Teachers/ViewTeachers.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/FrontPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/FrontPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/index.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/index.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

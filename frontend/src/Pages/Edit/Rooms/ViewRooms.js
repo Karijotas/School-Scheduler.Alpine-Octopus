@@ -4,6 +4,7 @@ import { CreateRoom } from './CreateRoom';
 import { EditRoom } from './EditRoom';
 import MainMenu from '../../../Components/MainMenu';
 import { EditMenu } from '../EditMenu';
+import { NavLink } from 'react-router-dom';
 
 
 
@@ -14,8 +15,6 @@ const JSON_HEADERS = {
 
 export function ViewRooms() {
     const [active, setActive] = useState('')
-
-    const [create, setCreate] = useState('')
 
     const [rooms, setRooms] = useState([]);
     //
@@ -124,7 +123,8 @@ export function ViewRooms() {
 
 
 
-                            <Button circular icon labelPosition='left' primary className='controls' onClick={() => setCreate('new')}><Icon name='database' />Kurti naują klasę</Button>
+                            <Button icon labelPosition='left' primary className='controls' as={NavLink}
+                                exact to='/create/rooms'><Icon name='database' />Kurti naują klasę</Button>
                             <Divider horizontal hidden></Divider>
                             <Table selectable >
                                 <Table.Header>
@@ -145,7 +145,7 @@ export function ViewRooms() {
                                             <Table.Cell>{room.description}</Table.Cell>
 
                                             <Table.Cell collapsing>
-                                                <Button basic primary compact icon='eye' title='Peržiūrėti' onClick={() => setActive(room.id)}></Button>
+                                                <Button href={'#/view/rooms/edit/' + room.id} basic primary compact icon='eye' title='Peržiūrėti' onClick={() => setActive(room.id)}></Button>
                                                 <Button basic color='black' compact icon='trash alternate' onClick={() => setOpen(room.id)}></Button>
                                                 <Confirm
                                                     open={open}

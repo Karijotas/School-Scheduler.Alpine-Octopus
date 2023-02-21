@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Button, Icon, Input, Table } from "semantic-ui-react";
-import { ViewModules } from "./ViewModules";
+import { useParams } from 'react-router-dom';
+import { Button, Grid, Icon, Input, Segment, Table } from "semantic-ui-react";
+import MainMenu from '../../../Components/MainMenu';
+import { EditMenu } from '../EditMenu';
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
 };
 
-export function EditModuleObject(props) {
+export function EditModuleObject() {
+
+  const params = useParams();
   const [hide, setHide] = useState(false);
 
   const [active, setActive] = useState(true);
@@ -23,23 +27,23 @@ export function EditModuleObject(props) {
   });
 
   const fetchSubjectsInModule = async () => {
-    fetch(`/api/v1/modules/${props.id}/subjects`)
+    fetch(`/api/v1/modules/${params.id}/subjects`)
       .then((response) => response.json())
       .then((jsonResponse) => setSubjectsInModule(jsonResponse));
   };
 
   useEffect(() => {
-    fetch("/api/v1/modules/" + props.id)
+    fetch("/api/v1/modules/" + params.id)
       .then((response) => response.json())
       .then(setModules);
-  }, [props]);
+  }, [params]);
 
   const applyResult = () => {
     setHide(true);
   };
 
   const updateModules = () => {
-    fetch("/api/v1/modules/update/" + props.id, {
+    fetch("/api/v1/modules/update/" + params.id, {
       method: "PUT",
       headers: JSON_HEADERS,
       body: JSON.stringify(modules),
@@ -67,31 +71,38 @@ export function EditModuleObject(props) {
 
   return (
     <div>
-      {active && !hide && (
-        <div>
-          <Table celled color="violet">
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>Modulio pavadinimas</Table.HeaderCell>
-                <Table.HeaderCell>Aprašymas</Table.HeaderCell>
-                <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
-                <Table.HeaderCell>Veiksmai</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
+      <MainMenu />
+      <Grid columns={2} >
+        <Grid.Column width={2} id='main'>
+          <EditMenu />
+        </Grid.Column>
+        <Grid.Column textAlign='left' verticalAlign='top' width={13}>
+          <Segment id='segment' raised color='teal'>
+            {active && !hide && (
+              <div>
+                <Table celled color="violet">
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>Modulio pavadinimas</Table.HeaderCell>
+                      <Table.HeaderCell>Aprašymas</Table.HeaderCell>
+                      <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
+                      <Table.HeaderCell>Veiksmai</Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
 
-            <Table.Body>
-              <Table.Row>
-                <Table.Cell>{modules.name}</Table.Cell>
-                <Table.Cell>{modules.description}</Table.Cell>
-                <Table.Cell collapsing> {modules.modifiedDate} </Table.Cell>
-                <Table.Cell collapsing>
-                  <Button onClick={editThis}>Redaguoti</Button>
-                </Table.Cell>
-              </Table.Row>
-            </Table.Body>
-          </Table>
+                  <Table.Body>
+                    <Table.Row>
+                      <Table.Cell>{modules.name}</Table.Cell>
+                      <Table.Cell>{modules.description}</Table.Cell>
+                      <Table.Cell collapsing> {modules.modifiedDate} </Table.Cell>
+                      <Table.Cell collapsing>
+                        <Button onClick={editThis}>Redaguoti</Button>
+                      </Table.Cell>
+                    </Table.Row>
+                  </Table.Body>
+                </Table>
 
-          {/* <Divider hidden />
+                {/* <Divider hidden />
           <Table>
             <Table.Header>
               <Table.Row>
@@ -107,63 +118,60 @@ export function EditModuleObject(props) {
             </Table.Body>
           </Table> */}
 
-          <Button
-            icon
-            labelPosition="left"
-            className=""
-            onClick={() => setHide(true)}
-          >
-            <Icon name="arrow left" />
-            Atgal
-          </Button>
-        </div>
-      )}
-      {!active && !hide && (
-        <div>
-          <Table celled color="violet">
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>Modulio pavadinimas</Table.HeaderCell>
-                <Table.HeaderCell>Aprašymas</Table.HeaderCell>
-                <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
-                <Table.HeaderCell>Veiksmai</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
+                <Button
+                  icon
+                  labelPosition="left"
+                  className=""
+                  href='#/view/modules'
+                >
+                  <Icon name="arrow left" />
+                  Atgal
+                </Button>
+              </div>
+            )}
+            {!active && !hide && (
+              <div>
+                <Table celled color="violet">
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>Modulio pavadinimas</Table.HeaderCell>
+                      <Table.HeaderCell>Aprašymas</Table.HeaderCell>
+                      <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
+                      <Table.HeaderCell>Veiksmai</Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
 
-            <Table.Body>
-              <Table.Row>
-                <Table.Cell collapsing>
-                  <Input
-                    value={modules.name}
-                    onChange={(e) => updateProperty("name", e)}
-                  />
-                </Table.Cell>
-                <Table.Cell collapsing>
-                  <Input
-                    placeholder={modules.description}
-                    onChange={(e) => updateProperty("description", e)}
-                  />
-                </Table.Cell>
-                <Table.Cell collapsing> {modules.modifiedDate} </Table.Cell>
+                  <Table.Body>
+                    <Table.Row>
+                      <Table.Cell collapsing>
+                        <Input
+                          value={modules.name}
+                          onChange={(e) => updateProperty("name", e)}
+                        />
+                      </Table.Cell>
+                      <Table.Cell collapsing>
+                        <Input
+                          placeholder={modules.description}
+                          onChange={(e) => updateProperty("description", e)}
+                        />
+                      </Table.Cell>
+                      <Table.Cell collapsing> {modules.modifiedDate} </Table.Cell>
 
-                <Table.Cell collapsing>
-                  <Button onClick={() => setHide(true)}>Atšaukti</Button>
-                  <Button primary onClick={updateModules}>
-                    Atnaujinti
-                  </Button>
-                </Table.Cell>
-              </Table.Row>
-            </Table.Body>
-          </Table>
-          
-        </div>
-      )}
+                      <Table.Cell collapsing>
+                        <Button onClick={() => setActive(true)}>Atšaukti</Button>
+                        <Button primary onClick={updateModules}>
+                          Atnaujinti
+                        </Button>
+                      </Table.Cell>
+                    </Table.Row>
+                  </Table.Body>
+                </Table>
 
-      {hide && (
-        <div>
-          <ViewModules />
-        </div>
-      )}
+              </div>
+            )}
+          </Segment>
+        </Grid.Column>
+      </Grid>
     </div>
   );
 }

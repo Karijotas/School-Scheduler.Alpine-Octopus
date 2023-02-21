@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useHref, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Button, Grid, Icon, Input, Segment, Select, Table } from 'semantic-ui-react';
 import MainMenu from '../../../Components/MainMenu';
 import { EditMenu } from '../EditMenu';
@@ -113,7 +113,6 @@ export function EditGroupObject() {
                     <Segment id='segment' raised color='teal'>
                         {active && (<div >
 
-
                             <Table basic='very'>
 
                                 <Table.Header >
@@ -131,7 +130,7 @@ export function EditGroupObject() {
 
                                 <Table.Body>
                                     <Table.Row  >
-                                        <Table.Cell  collapsing >{groups.name}</Table.Cell>
+                                        <Table.Cell collapsing >{groups.name}</Table.Cell>
                                         <Table.Cell collapsing>{groups.schoolYear}</Table.Cell>
                                         <Table.Cell collapsing>{groups.studentAmount}</Table.Cell>
                                         <Table.Cell collapsing>{groups.program.name} </Table.Cell>
@@ -143,7 +142,7 @@ export function EditGroupObject() {
 
                                 </ Table.Body >
                             </Table><Button className='controls' onClick={editThis}>Redaguoti</Button>
-                            <Button icon labelPosition="left"  href='#/view/groups'><Icon name="arrow left" />Atgal</Button>
+                            <Button icon labelPosition="left" href='#/view/groups'><Icon name="arrow left" />Atgal</Button>
                         </div>
                         )}
 
@@ -182,16 +181,13 @@ export function EditGroupObject() {
                                     </Table.Row>
                                 </ Table.Body >
                             </Table>
-                            <Button  onClick={() => setActive(true)}>Atšaukti</Button><Button className='controls' primary onClick={updateGroups}>Atnaujinti</Button>
+                            <Button onClick={() => setActive(true)}>Atšaukti</Button><Button className='controls' primary onClick={updateGroups}>Atnaujinti</Button>
 
 
                         </div>)}
 
-
-
                     </Segment>
                 </Grid.Column>
-
             </Grid>
         </div>
     )

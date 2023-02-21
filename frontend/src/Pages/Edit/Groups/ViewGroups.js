@@ -124,18 +124,15 @@ export function ViewGroups() {
 
         <div >
             <MainMenu />
-
             <Grid columns={2} >
                 <Grid.Column width={2} id='main'>
                     <EditMenu />
                 </Grid.Column>
-
                 <Grid.Column textAlign='left' verticalAlign='top' width={13}>
                     <Segment id='segment' raised color='teal'>
-
                         <div  >
                             <Input
-                            title='Filtruoti pagal pavadinimą'
+                                title='Filtruoti pagal pavadinimą'
                                 className='controls1'
                                 placeholder='Filtruoti pagal pavadinimą'
                                 value={nameText} onChange={(e) => setNameText(e.target.value)} />
@@ -153,7 +150,6 @@ export function ViewGroups() {
 
                             <Button
                                 title='Kurti naują grupę'
-                                circular
                                 icon
                                 labelPosition='left'
                                 primary
@@ -208,18 +204,15 @@ export function ViewGroups() {
                             <ButtonGroup compact basic>
                                 <Button title='Atgal' onClick={() => setActivePage(activePage <= 0 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
                                 {[...Array(pagecount)].map((e, i) => {
-                                    return <Button title={i +1} key={i} active={activePage === i ? true : false} onClick={() => setActivePage(i)}>{i + 1}</Button>
+                                    return <Button title={i + 1} key={i} active={activePage === i ? true : false} onClick={() => setActivePage(i)}>{i + 1}</Button>
                                 })}
                                 <Button title='Pirmyn' onClick={() => setActivePage(activePage >= pagecount - 1 ? activePage : activePage + 1)} icon><Icon name="arrow right" />  </Button>
                             </ButtonGroup>
 
                         </div>
-
                     </Segment>
                 </Grid.Column>
-
             </Grid>
-
         </div>
     )
 }

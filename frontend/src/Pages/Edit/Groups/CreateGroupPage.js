@@ -76,17 +76,14 @@ export function CreateGroupPage() {
 
   return (<div className="create-new-page">
     <MainMenu />
-
     <Grid columns={2} >
       <Grid.Column width={2} id='main'>
         <EditMenu />
       </Grid.Column>
-
       <Grid.Column floated='left' textAlign='left' verticalAlign='top' width={13}>
         <Segment id='segment' raised color='teal'>
-          
-          <Form >
 
+          <Form >
             <Form.Field >
               <label>"Teams" grupės pavadinimas</label>
               <input placeholder='"Teams" grupės pavadinimas' value={name} onChange={(e) => setName(e.target.value)} />
@@ -114,9 +111,9 @@ export function CreateGroupPage() {
             <div><Button icon labelPosition="left" className="" as={NavLink} exact to='/view/groups'><Icon name="arrow left" />Atgal</Button>
               <Button type='submit' className="controls" primary onClick={createGroup}>Sukurti</Button></div>
           </Form>
+          
         </Segment>
       </Grid.Column>
-
     </Grid>
   </div>
   );

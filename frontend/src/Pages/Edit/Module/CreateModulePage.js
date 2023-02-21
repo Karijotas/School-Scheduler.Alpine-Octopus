@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { Button, Form, Icon, Input, Select } from "semantic-ui-react";
-import { ViewModules } from "./ViewModules";
+import React, { useState } from "react";
+import { NavLink } from 'react-router-dom';
+import { Button, Form, Grid, Icon, Input, Segment } from "semantic-ui-react";
+import MainMenu from '../../../Components/MainMenu';
+import { EditMenu } from "../EditMenu";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -56,54 +58,57 @@ export function CreateModulePage() {
 
   return (
     <div>
-      {!hide && (
-        <div className="create-new-page">
-          <Form>
-            <Form.Field>
-              <label>Modulio pavadinimas</label>
-              <input
-                placeholder="Modulio pavadinimas"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </Form.Field>
+      <MainMenu />
+      <Grid columns={2} >
+        <Grid.Column width={2} id='main'>
+          <EditMenu />
+        </Grid.Column>
+        <Grid.Column floated='left' textAlign='left' verticalAlign='top' width={13}>
+          <Segment id='segment' raised color='teal'>
+            <div className="create-new-page">
+              <Form>
+                <Form.Field>
+                  <label>Modulio pavadinimas</label>
+                  <input
+                    placeholder="Modulio pavadinimas"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </Form.Field>
 
-            <Form.Field>
-              <label>Aprašymas</label>
-              <Input
-                placeholder="Aprašymas"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-            </Form.Field>
+                <Form.Field>
+                  <label>Aprašymas</label>
+                  <Input
+                    placeholder="Aprašymas"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                  />
+                </Form.Field>
 
-            <div>
-              <Button
-                icon
-                labelPosition="left"
-                className=""
-                onClick={() => setHide(true)}
-              >
-                <Icon name="arrow left" />
-                Atgal
-              </Button>
-              <Button
-                type="submit"
-                className="controls"
-                primary
-                onClick={createModule}
-              >
-                Sukurti
-              </Button>
+                <div>
+                  <Button
+                    icon
+                    labelPosition="left"
+                    className=""
+                    as={NavLink} exact to='/view/modules'
+                  >
+                    <Icon name="arrow left" />
+                    Atgal
+                  </Button>
+                  <Button
+                    type="submit"
+                    className="controls"
+                    primary
+                    onClick={createModule}
+                  >
+                    Sukurti
+                  </Button>
+                </div>
+              </Form>
             </div>
-          </Form>
-        </div>
-      )}
-      {hide && (
-        <div>
-          <ViewModules />
-        </div>
-      )}
+          </Segment>
+        </Grid.Column>
+      </Grid>
     </div>
   );
 }

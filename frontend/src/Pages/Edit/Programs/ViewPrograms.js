@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { NavLink } from 'react-router-dom';
 import {
   Button,
   ButtonGroup, Confirm, Divider, Grid, Icon,
@@ -6,8 +7,6 @@ import {
   Segment,
   Table
 } from "semantic-ui-react";
-import { CreateProgramPage } from "./CreateProgramPage";
-import { EditProgramObject } from "./EditProgramObject";
 import MainMenu from '../../../Components/MainMenu';
 import { EditMenu } from '../EditMenu';
 
@@ -87,13 +86,12 @@ export function ViewPrograms() {
               {/* <Button onClick={fetchFilterPrograms}>Filtruoti</Button> */}
 
               <Button
-                circular
                 icon
                 labelPosition="left"
                 primary
                 className="controls"
-                onClick={() => setCreate("new")}
-              >
+                as={NavLink}
+                exact to='/create/programs'>
                 <Icon name="database" />
                 Kurti naują programą
               </Button>
@@ -115,6 +113,7 @@ export function ViewPrograms() {
 
                       <Table.Cell collapsing>
                         <Button
+                          href={'#/view/programs/edit/' + program.id}
                           basic
                           primary
                           compact

@@ -14,6 +14,7 @@ import { CreateModulePage } from "./CreateModulePage";
 import { EditModuleObject } from "./EditModuleObject";
 import MainMenu from '../../../Components/MainMenu';
 import { EditMenu } from '../EditMenu';
+import { NavLink } from 'react-router-dom';
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -73,15 +74,12 @@ export function ViewModules() {
   return (
     <div>
       <MainMenu />
-
       <Grid columns={2} >
         <Grid.Column width={2} id='main'>
           <EditMenu />
         </Grid.Column>
-
         <Grid.Column textAlign='left' verticalAlign='top' width={13}>
           <Segment id='segment' raised color='teal'>
-
             {!active && !create && (
               <div id="modules">
                 <Input
@@ -96,8 +94,8 @@ export function ViewModules() {
                   labelPosition="left"
                   primary
                   className="controls"
-                  onClick={() => setCreate("new")}
-                >
+                  as={NavLink}
+                  exact to='/create/modules'>
                   <Icon name="database" />
                   Kurti naują modulį
                 </Button>
@@ -117,6 +115,7 @@ export function ViewModules() {
                         <Table.Cell>{module.name}</Table.Cell>
                         <Table.Cell collapsing>
                           <Button
+                            href={'#/view/modules/edit/' + module.id}
                             basic
                             primary
                             compact
@@ -161,7 +160,6 @@ export function ViewModules() {
             )}
           </Segment>
         </Grid.Column>
-
       </Grid>
     </div>
   );

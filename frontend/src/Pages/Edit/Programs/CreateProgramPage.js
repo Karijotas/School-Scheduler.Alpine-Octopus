@@ -1,17 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Button,
-  Form,
-  Icon,
-  Input,
-  Image,
-  Grid,
-  TextArea,
-  List,
-  Select,
+  Form, Grid, Icon, Segment, TextArea
 } from "semantic-ui-react";
 
-import { ViewPrograms } from "./ViewPrograms";
+import { NavLink } from 'react-router-dom';
+import MainMenu from '../../../Components/MainMenu';
+import { EditMenu } from '../EditMenu';
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -63,56 +58,64 @@ export function CreateProgramPage() {
 
   return (
     <div>
-      {!hide && (
-        <div className="create-new-page">
-          <Form>
-            <Form.Field>
-              <label>Programos pavadinimas</label>
-              <input
-                placeholder="Programos pavadinimas"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </Form.Field>
-            <Form.Group widths="equal">
-              <Form.Field>
-                <label>Aprašymas</label>
-                <TextArea
-                  placeholder="Aprašymas"
-                  style={{ minHeight: 100 }}
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                />
-              </Form.Field>
-            </Form.Group>
+      <MainMenu />
 
-            <div>
-              <Button
-                icon
-                labelPosition="left"
-                className=""
-                onClick={() => setHide(true)}
-              >
-                <Icon name="arrow left" />
-                Atgal
-              </Button>
-              <Button
-                type="submit"
-                className="controls"
-                primary
-                onClick={createProgram}
-              >
-                Sukurti
-              </Button>
+      <Grid columns={2} >
+        <Grid.Column width={2} id='main'>
+          <EditMenu />
+        </Grid.Column>
+
+        <Grid.Column floated='left' textAlign='left' verticalAlign='top' width={13}>
+          <Segment id='segment' raised color='teal'>
+
+            <div className="create-new-page">
+              <Form>
+                <Form.Field>
+                  <label>Programos pavadinimas</label>
+                  <input
+                    placeholder="Programos pavadinimas"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </Form.Field>
+                <Form.Group widths="equal">
+                  <Form.Field>
+                    <label>Aprašymas</label>
+                    <TextArea
+                      placeholder="Aprašymas"
+                      style={{ minHeight: 100 }}
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                    />
+                  </Form.Field>
+                </Form.Group>
+
+                <div>
+                  <Button
+                    icon
+                    labelPosition="left"
+                    className=""
+                    as={NavLink} exact to='/view/programs'
+                  >
+                    <Icon name="arrow left" />
+                    Atgal
+                  </Button>
+                  <Button
+                    type="submit"
+                    className="controls"
+                    primary
+                    onClick={createProgram}
+                  >
+                    Sukurti
+                  </Button>
+                </div>
+              </Form>
             </div>
-          </Form>
-        </div>
-      )}
-      {hide && (
-        <div>
-          <ViewPrograms />
-        </div>
-      )}
+          </Segment>
+        </Grid.Column>
+
+      </Grid>
+
     </div>
   );
 }

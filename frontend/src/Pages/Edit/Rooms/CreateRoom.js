@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Button, Form, Icon, Input, } from "semantic-ui-react";
-import { ViewRooms } from "./ViewRooms";
+import { Button, Form, Grid, Icon, Segment } from "semantic-ui-react";
+import MainMenu from "../../../Components/MainMenu";
+import { EditMenu } from '../EditMenu';
 
 
 const JSON_HEADERS = {
@@ -43,26 +44,37 @@ export function CreateRoom() {
 
 
   return (<div>
-    {!hide && <div className="create-new-room">
-      <Form >
+    <MainMenu />
 
-        <Form.Field >
-          <label>Klasės pavadinimas</label>
-          <input placeholder='Klasės pavadinimas' value={name} onChange={(e) => setName(e.target.value)} />
-        </Form.Field>
-        <Form.Field >
-          <label>Pastatas</label>
-          <input placeholder='Pastatas' value={building} onChange={(e) => setBuilding(e.target.value)} />
-        </Form.Field>
-        <Form.Field >
-          <label>Aprašymas</label>
-          <input placeholder='Aprasymas' value={description} onChange={(e) => setDescription(e.target.value)} />
-        </Form.Field>
-        <div><Button icon labelPosition="left" className="" onClick={() => setHide(true)}><Icon name="arrow left" />Atgal</Button>
-          <Button type='submit' className="controls" primary onClick={createRoom}>Sukurti</Button></div>
-      </Form>
-    </div>}
-    {hide && (<div><ViewRooms /></div>)}
+    <Grid columns={2} >
+      <Grid.Column width={2} id='main'>
+        <EditMenu />
+      </Grid.Column>
+
+      <Grid.Column floated='left' textAlign='left' verticalAlign='top' width={13}>
+        <Segment id='segment' raised color='teal'>
+
+          <Form >
+
+            <Form.Field >
+              <label>Klasės pavadinimas</label>
+              <input placeholder='Klasės pavadinimas' value={name} onChange={(e) => setName(e.target.value)} />
+            </Form.Field>
+            <Form.Field >
+              <label>Pastatas</label>
+              <input placeholder='Pastatas' value={building} onChange={(e) => setBuilding(e.target.value)} />
+            </Form.Field>
+            <Form.Field >
+              <label>Aprašymas</label>
+              <input placeholder='Aprasymas' value={description} onChange={(e) => setDescription(e.target.value)} />
+            </Form.Field>
+            <div><Button icon labelPosition="left" className="" href='#/view/rooms'><Icon name="arrow left" />Atgal</Button>
+              <Button type='submit' className="controls" primary onClick={createRoom}>Sukurti</Button></div>
+          </Form>
+        </Segment>
+      </Grid.Column>
+
+    </Grid>
   </div>
   );
 }

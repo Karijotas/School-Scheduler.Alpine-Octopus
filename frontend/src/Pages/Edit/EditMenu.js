@@ -9,7 +9,7 @@ export function EditMenu() {
     <div >
       <Grid columns={1} >
         <Grid.Column >
-          <Menu color='blue' fluid vertical secondary className='ui centered grid'>
+          <Menu color='blue' fluid vertical secondary id='main' className='ui centered grid'>
             <Menu.Item
               name='subjects'
               icon='book'
