@@ -154,4 +154,12 @@ public class SubjectService {
   public Set<Module> getAllModulesById (Long subjectId){
         return subjectRepository.findById(subjectId).get().getSubjectModules();
   }
+
+    public Set<Room> getAllRoomsById (Long subjectId){
+        return subjectRepository.findById(subjectId).get().getSubjectRooms();
+    }
+
+    public Set<Teacher> getAllTeachersById (Long subjectId){
+        return subjectRepository.findById(subjectId).get().getSubjectTeachers();
+    }
 }

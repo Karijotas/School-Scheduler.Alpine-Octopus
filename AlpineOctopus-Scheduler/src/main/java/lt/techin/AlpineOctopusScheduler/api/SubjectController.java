@@ -6,7 +6,9 @@ import lt.techin.AlpineOctopusScheduler.api.dto.SubjectDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper;
 import lt.techin.AlpineOctopusScheduler.model.Module;
+import lt.techin.AlpineOctopusScheduler.model.Room;
 import lt.techin.AlpineOctopusScheduler.model.Subject;
+import lt.techin.AlpineOctopusScheduler.model.Teacher;
 import lt.techin.AlpineOctopusScheduler.service.SubjectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +52,17 @@ public class SubjectController {
     @ResponseBody
     public Set<Module> getAllModulesById(@PathVariable Long subjectId) {
         return subjectService.getAllModulesById(subjectId);
+    }
+    @GetMapping(value ="/{subjectId}/rooms")
+    @ResponseBody
+    public Set<Room> getAllRoomsById(@PathVariable Long subjectId) {
+        return subjectService.getAllRoomsById(subjectId);
+    }
+
+    @GetMapping(value ="/{subjectId}/teachers")
+    @ResponseBody
+    public Set<Teacher> getAllTeachersById(@PathVariable Long subjectId) {
+        return subjectService.getAllTeachersById(subjectId);
     }
     @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
