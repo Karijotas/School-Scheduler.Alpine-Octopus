@@ -18,6 +18,7 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
 
     List<Subject> findByNameContainingIgnoreCase(String nameText, Pageable pageable);
 
+
 //    @Transactional
 //    @Modifying
 //    @Query(value = "INSERT INTO modules_subjects (module_id, subject_id) VALUES (:module_id, :subject_id)",

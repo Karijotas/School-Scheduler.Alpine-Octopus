@@ -15,8 +15,8 @@ public class ProgramEntityDto extends ProgramDto{
     public ProgramEntityDto() {
     }
 
-    public ProgramEntityDto(Long id, String name, String description, LocalDateTime createdDate, LocalDateTime modifiedDate ) {
-        super(name, description, createdDate, modifiedDate);
+    public ProgramEntityDto(Long id, String name, String description, LocalDateTime createdDate, LocalDateTime modifiedDate, Boolean deleted) {
+        super(name, description, createdDate, modifiedDate, deleted);
         this.id = id;
     }
 

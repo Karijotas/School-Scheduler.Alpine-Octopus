@@ -12,8 +12,8 @@ public class TeacherEntityDto extends TeacherDto{
     public TeacherEntityDto () {
 
     }
-    public TeacherEntityDto(String name, String surname, String loginEmail, String contactEmail, double workHoursPerWeek, String phone, String shift, Set<Subject> teachersSubjects, Long id) {
-        super(name, surname, loginEmail, contactEmail, workHoursPerWeek, phone, shift, teachersSubjects);
+    public TeacherEntityDto(String name, String surname, String loginEmail, String contactEmail, double workHoursPerWeek, String phone, String shift, Boolean deleted, Long id) {
+        super(name, surname, loginEmail, contactEmail, workHoursPerWeek, phone, shift, deleted);
         this.id = id;
     }
     public Long getId() {

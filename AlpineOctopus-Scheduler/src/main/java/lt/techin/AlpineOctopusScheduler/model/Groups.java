@@ -33,6 +33,8 @@ public class Groups {
     @NotBlank
     private String shift;
 
+    private Boolean deleted = Boolean.FALSE;
+
     //private Shift shift;
     @CreatedDate
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -64,38 +66,6 @@ public class Groups {
     }
 
     public Groups(){}
-
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public LocalDateTime getModifiedDate() {
-        return modifiedDate;
-    }
-
-    public void setModifiedDate(LocalDateTime modifiedDate) {
-        this.modifiedDate = modifiedDate;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public String getModifiedBy() {
-        return modifiedBy;
-    }
-
-    public void setModifiedBy(String modifiedBy) {
-        this.modifiedBy = modifiedBy;
-    }
 
     public Long getId() {
         return id;
@@ -145,28 +115,56 @@ public class Groups {
         this.shift = shift;
     }
 
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public LocalDateTime getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(LocalDateTime modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Groups groups = (Groups) o;
-        return Objects.equals(getId(), groups.getId()) && Objects.equals(getName(), groups.getName()) && Objects.equals(getSchoolYear(), groups.getSchoolYear()) && Objects.equals(getStudentAmount(), groups.getStudentAmount()) && Objects.equals(getProgram(), groups.getProgram()) && Objects.equals(getShift(), groups.getShift()) && Objects.equals(getCreatedDate(), groups.getCreatedDate()) && Objects.equals(getModifiedDate(), groups.getModifiedDate()) && Objects.equals(getCreatedBy(), groups.getCreatedBy()) && Objects.equals(getModifiedBy(), groups.getModifiedBy());
+        return Objects.equals(id, groups.id) && Objects.equals(name, groups.name) && Objects.equals(schoolYear, groups.schoolYear) && Objects.equals(studentAmount, groups.studentAmount) && Objects.equals(program, groups.program) && Objects.equals(shift, groups.shift) && Objects.equals(deleted, groups.deleted) && Objects.equals(createdDate, groups.createdDate) && Objects.equals(modifiedDate, groups.modifiedDate) && Objects.equals(createdBy, groups.createdBy) && Objects.equals(modifiedBy, groups.modifiedBy);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getSchoolYear(), getStudentAmount(), getProgram(), getShift(), getCreatedDate(), getModifiedDate(), getCreatedBy(), getModifiedBy());
-    }
-
-    @Override
-    public String toString() {
-        return "Group{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", schoolYear=" + schoolYear +
-                ", studentAmount=" + studentAmount +
-                ", program='" + program + '\'' +
-                ", shift='" + shift + '\'' +
-                '}';
+        return Objects.hash(id, name, schoolYear, studentAmount, program, shift, deleted, createdDate, modifiedDate, createdBy, modifiedBy);
     }
 }

@@ -55,22 +55,32 @@ public class ProgramController {
         this.programSubjectHourListRepository = programSubjectHourListRepository;
     }
 
-
     @GetMapping
     @ResponseBody
-    public List<ProgramEntityDto> getPrograms() {
-        return programService.getAllPrograms();
+    public List<ProgramEntityDto> getAvailablePrograms(){
+        return programService.getAllAvailablePrograms();
+    }
+    @GetMapping(path = "/archive/", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<ProgramEntityDto> getDeletedPrograms(){
+        return programService.getAllDeletedPrograms();
     }
 
     @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<ProgramEntityDto> getPagedAvailablePrograms(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                              @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+
+            return programService.getAllAvailablePagedPrograms(page, pageSize);
+    }
+
+    @GetMapping(path = "/page/all/", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
 
     public List<ProgramEntityDto> getPagedAllPrograms(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
 
                                                 @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-
-
-        return programService.getPagedAllPrograms(page, pageSize);
+        return programService.getAllAvailablePrograms();
 
     }
 

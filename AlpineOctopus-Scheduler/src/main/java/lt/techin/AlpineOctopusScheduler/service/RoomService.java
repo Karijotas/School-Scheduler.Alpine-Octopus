@@ -44,10 +44,8 @@ public class RoomService {
                 .map(RoomMapper::toRoomEntityDto).collect(Collectors.toList());
     }
 
-
-
     public List<Room> getAll() {
-        return roomRepository.findAll();
+        return roomRepository.findAllByOrderByDeletedAscIdAsc();
     }
 
     public Optional<Room> getById(Long id) {

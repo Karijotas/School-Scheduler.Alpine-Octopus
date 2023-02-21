@@ -17,12 +17,12 @@ public class TeacherDto {
     private String phone;
     private String shift;
 
-    private Set<Subject> teachersSubjects;
+    private Boolean deleted;
 
     public TeacherDto() {
 
     }
-    public TeacherDto(String name, String surname, String loginEmail, String contactEmail, double workHoursPerWeek, String phone, String shift, Set<Subject> teachersSubjects) {
+    public TeacherDto(String name, String surname, String loginEmail, String contactEmail, double workHoursPerWeek, String phone, String shift, Boolean deleted) {
         this.name = name;
         this.surname = surname;
         this.loginEmail = loginEmail;
@@ -30,7 +30,7 @@ public class TeacherDto {
         this.workHoursPerWeek = workHoursPerWeek;
         this.phone = phone;
         this.shift = shift;
-        this.teachersSubjects = teachersSubjects;
+        this.deleted = deleted;
     }
 
     public String getName() {
@@ -88,13 +88,13 @@ public class TeacherDto {
     public void setShift(String shift) {
         this.shift = shift;
     }
-//    @JsonIgnore
-    public Set<Subject> getTeachersSubjects() {
-        return teachersSubjects;
+
+    public Boolean getDeleted() {
+    return deleted;
     }
 
-    public void setTeachersSubjects(Set<Subject> teachersSubjects) {
-        this.teachersSubjects = teachersSubjects;
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
     @Override
@@ -102,13 +102,14 @@ public class TeacherDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TeacherDto that = (TeacherDto) o;
-        return Double.compare(that.getWorkHoursPerWeek(), getWorkHoursPerWeek()) == 0 && Objects.equals(getName(), that.getName()) && Objects.equals(getSurname(), that.getSurname()) && Objects.equals(getLoginEmail(), that.getLoginEmail()) && Objects.equals(getContactEmail(), that.getContactEmail()) && Objects.equals(getPhone(), that.getPhone()) && Objects.equals(getShift(), that.getShift()) && Objects.equals(getTeachersSubjects(), that.getTeachersSubjects());
+        return Double.compare(that.workHoursPerWeek, workHoursPerWeek) == 0 && Objects.equals(name, that.name) && Objects.equals(surname, that.surname) && Objects.equals(loginEmail, that.loginEmail) && Objects.equals(contactEmail, that.contactEmail) && Objects.equals(phone, that.phone) && Objects.equals(shift, that.shift) && Objects.equals(deleted, that.deleted);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getSurname(), getLoginEmail(), getContactEmail(), getWorkHoursPerWeek(), getPhone(), getShift(), getTeachersSubjects());
+        return Objects.hash(name, surname, loginEmail, contactEmail, workHoursPerWeek, phone, shift, deleted);
     }
+
     @Override
     public String toString() {
         return "TeacherDto{" +
@@ -119,7 +120,7 @@ public class TeacherDto {
                 ", workHoursPerWeek=" + workHoursPerWeek +
                 ", phone='" + phone + '\'' +
                 ", shift='" + shift + '\'' +
-                ", teachersSubjects=" + teachersSubjects +
+                ", deleted=" + deleted +
                 '}';
     }
 }

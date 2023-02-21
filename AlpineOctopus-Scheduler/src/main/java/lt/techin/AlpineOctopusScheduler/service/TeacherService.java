@@ -79,20 +79,20 @@ public class TeacherService {
         return false;
     }
 
-    public Teacher addSubjectToTeacher(Long teacherId, Long subjectId) {
-        var existingTeacher = teacherRepository.findById(teacherId)
-                .orElseThrow(() -> new SchedulerValidationException("Teacher does not exist",
-                        "id", "Teacher not found", teacherId.toString()));
-
-        var existingSubject = subjectRepository.findById(subjectId)
-                .orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
-                        "id", "Subject not found", subjectId.toString()));
-
-        Set<Subject> existingSubjectList = existingTeacher.getTeachersSubjects();
-        existingSubjectList.add(existingSubject);
-        existingTeacher.setTeachersSubjects(existingSubjectList);
-
-        return teacherRepository.save(existingTeacher);
+//    public Teacher addSubjectToTeacher(Long teacherId, Long subjectId) {
+//        var existingTeacher = teacherRepository.findById(teacherId)
+//                .orElseThrow(() -> new SchedulerValidationException("Teacher does not exist",
+//                        "id", "Teacher not found", teacherId.toString()));
+//
+//        var existingSubject = subjectRepository.findById(subjectId)
+//                .orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
+//                        "id", "Subject not found", subjectId.toString()));
+//
+//        Set<Subject> existingSubjectList = existingTeacher.getTeachersSubjects();
+//        existingSubjectList.add(existingSubject);
+//        existingTeacher.setTeachersSubjects(existingSubjectList);
+//
+//        return teacherRepository.save(existingTeacher);
     }
 
 
@@ -105,4 +105,4 @@ public class TeacherService {
 
 
 
-}
+

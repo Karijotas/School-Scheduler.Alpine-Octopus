@@ -92,10 +92,5 @@ public class TeacherController {
         return responseEntity;
     }
 
-    @PutMapping("/subjects/{moduleId}")
-    public ResponseEntity<TeacherDto> addSubjectToTeacher(@PathVariable Long teacherId, @RequestBody Long subjectId) {
-        var updatedTeacher = teacherService.addSubjectToTeacher(teacherId, subjectId);
 
-        return ok(toTeacherDto(updatedTeacher));
-    }
 }

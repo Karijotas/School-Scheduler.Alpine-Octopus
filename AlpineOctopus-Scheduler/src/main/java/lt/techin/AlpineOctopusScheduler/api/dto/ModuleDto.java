@@ -11,8 +11,9 @@ import java.util.Set;
 public class ModuleDto {
 
     private String name;
-
     private String description;
+
+    private Boolean deleted;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -24,11 +25,12 @@ public class ModuleDto {
     public ModuleDto() {
     }
 
-    public ModuleDto(String name, String description, LocalDateTime createdDate, LocalDateTime modifiedDate) {
+    public ModuleDto(String name, String description, LocalDateTime createdDate, LocalDateTime modifiedDate, Boolean deleted) {
         this.name = name;
         this.description = description;
         this.createdDate=createdDate;
         this.modifiedDate=modifiedDate;
+        this.deleted = deleted;
 //        this.modulesSubjects = modulesSubjects;
 
     }
@@ -65,7 +67,15 @@ public class ModuleDto {
         this.modifiedDate = modifiedDate;
     }
 
-//    public Set<Subject> getModulesSubjects() {
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    //    public Set<Subject> getModulesSubjects() {
 //        return modulesSubjects;
 //    }
 //
@@ -79,12 +89,12 @@ public class ModuleDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ModuleDto moduleDto = (ModuleDto) o;
-        return Objects.equals(name, moduleDto.name) && Objects.equals(description, moduleDto.description) && Objects.equals(createdDate, moduleDto.createdDate) && Objects.equals(modifiedDate, moduleDto.modifiedDate);
+        return Objects.equals(name, moduleDto.name) && Objects.equals(description, moduleDto.description) && Objects.equals(deleted, moduleDto.deleted) && Objects.equals(createdDate, moduleDto.createdDate) && Objects.equals(modifiedDate, moduleDto.modifiedDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, createdDate, modifiedDate);
+        return Objects.hash(name, description, deleted, createdDate, modifiedDate);
     }
 
     @Override
@@ -92,6 +102,7 @@ public class ModuleDto {
         return "ModuleDto{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", deleted=" + deleted +
                 ", createdDate=" + createdDate +
                 ", modifiedDate=" + modifiedDate +
                 '}';
