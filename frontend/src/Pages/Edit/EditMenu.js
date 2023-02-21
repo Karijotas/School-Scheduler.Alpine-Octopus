@@ -9,7 +9,7 @@ export function EditMenu() {
     <div >
       <Grid columns={1} >
         <Grid.Column >
-          <Menu color='blue' fluid vertical secondary id='main' className='ui centered grid'>
+          <Menu  fluid vertical tabular color="grey" id='main' className='ui centered grid'>
             <Menu.Item
               name='subjects'
               icon='book'
@@ -65,6 +65,14 @@ export function EditMenu() {
               as={NavLink}
               exact
               to='/view/modules'
+            />
+             <Menu.Item
+              name='archives'
+              content='Archyvas'
+              icon='archive'
+              as={NavLink}
+              exact
+              to='/view/archives'
             />
           </Menu>
         </Grid.Column>

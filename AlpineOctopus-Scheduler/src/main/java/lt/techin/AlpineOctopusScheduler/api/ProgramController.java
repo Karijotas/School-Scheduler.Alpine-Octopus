@@ -74,7 +74,7 @@ public class ProgramController {
             return programService.getAllAvailablePagedPrograms(page, pageSize);
     }
 
-    @GetMapping(path = "/page/all/", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(path = "/page/all", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
 
     public List<ProgramEntityDto> getPagedAllPrograms(@RequestParam(value = "page", defaultValue = "0", required = false) int page,

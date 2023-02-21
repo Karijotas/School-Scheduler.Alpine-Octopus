@@ -55,6 +55,13 @@ export function EditProgramObject() {
       .then(console.log(subjectsInProgram));
   }, [params]);
 
+  const getSubjectsInProgram = () => {
+    fetch(`/api/v1/programs/${params.id}/subjects`)
+      .then((response) => response.json())
+      .then(setSubjectsInProgram)
+      .then(console.log(subjectsInProgram));
+  }
+
   useEffect(() => {
     fetch(`/api/v1/programs/${params.id}/subjects/hours`)
       .then((response) => response.json())
@@ -65,9 +72,9 @@ export function EditProgramObject() {
     fetch(`/api/v1/programs/${programId}/subjects/${subjectId}/${hours}`, {
       method: "DELETE",
       headers: JSON_HEADERS,
-    }).then(fetch(`/api/v1/programs/${params.id}/subjects/hours`)
+    }).then(getSubjectsInProgram)
       .then((response) => response.json())
-      .then(setTotalHours));
+      .then(setTotalHours);
 
   };
 
@@ -80,9 +87,12 @@ export function EditProgramObject() {
         subject,
         subjectHours,
       }),
-    }).then(fetch(`/api/v1/programs/${params.id}/subjects/hours`)
+    }).then(getSubjectsInProgram)
+    .then((response) => response.json())
+    .then(setSubjectsInProgram)
+    .then(console.log(subjectsInProgram))
       .then((response) => response.json())
-      .then(setTotalHours));
+      .then(setTotalHours);
   };
 
 
@@ -294,7 +304,8 @@ export function EditProgramObject() {
                             </List.Content>
                             <Divider hidden />
                             <List.Content floated="left">
-                              <Button onClick={() => addSubjectAndHours(params.id, subjectId, subjectHours)}>Pridėti</Button>
+                              <Button onClick={() => addSubjectAndHours(params.id, subjectId, subjectHours)}
+                              onClose={fetch(`/api/v1/programs/${params.id}/subjects`)}>Pridėti</Button>
                             </List.Content>
                           </List.Item>
                         </List>

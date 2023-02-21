@@ -25,6 +25,7 @@ import { ViewTeachers } from './Pages/Edit/Teachers/ViewTeachers';
 import { CreateProgramPage } from './Pages/Edit/Programs/CreateProgramPage';
 import { EditModuleObject } from './Pages/Edit/Module/EditModuleObject';
 import { CreateModulePage } from './Pages/Edit/Module/CreateModulePage';
+import { ViewProgramsArchive } from './Pages/Edit/Programs/ViewProgramsArchive';
 
 
 
@@ -75,6 +76,10 @@ root.render(
         <Route path='/view/modules' element={<ViewModules />} />
         <Route path='/view/modules/edit/:id' element={<EditModuleObject />} />
         <Route path='/create/modules' element={<CreateModulePage />} />
+
+        {/* Archive routes: */}
+        <Route path='/view/archives' element={<ViewProgramsArchive />} />
+        
 
 
       </Routes>
