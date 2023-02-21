@@ -326,15 +326,7 @@ export function EditProgramObject() {
                     </Table.Row>
                   </Table.Body>
                 </Table>
-                <Button
-                  icon
-                  labelPosition="center"
-                  className=""
-                  href='#/view/programs'
-                >
-                  <Icon name="arrow left" />
-                  Atgal
-                </Button>
+                <Button onClick={() => setActive(true)}>Atšaukti</Button>
                 <Button floated="right" primary onClick={updatePrograms}>
                   Atnaujinti
                 </Button>
