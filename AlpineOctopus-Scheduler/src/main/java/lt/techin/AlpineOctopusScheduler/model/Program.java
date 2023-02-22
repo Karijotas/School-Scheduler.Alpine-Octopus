@@ -23,14 +23,15 @@ public class Program {
     private Long id;
     @NotBlank
     @Column(name = "name", unique = true)
-    @Size(min = 5, max = 40)
+    @Size(min = 5, max = 150)
     private String name;
 
     @NotBlank
-    @Size(min = 5, max = 100)
+    @Size(min = 5, max = 500)
     private String description;
 
     @OneToMany(mappedBy = "program")
+    @JsonIgnore
     private Set<Groups> groupsSet;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @CreatedDate

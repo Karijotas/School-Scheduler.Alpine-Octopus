@@ -85,6 +85,8 @@ public class ProgramService {
         return programRepository.save(existingProgram);
     }
 
+
+
     public ProgramSubjectHours updateProgramSubjectHours(Long id, ProgramSubjectHours programSubjectHours) {
         var existingProgramSubjectHours = programSubjectHoursRepository.findById(id)
                 .orElseThrow(() -> new SchedulerValidationException("Subject and Hours in Program does not exist",
@@ -207,20 +209,20 @@ public class ProgramService {
                 .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
-    public ProgramEntityDto restoreProgram(Long programId){
+    public Program restoreProgram(Long programId){
         var existingProgram = programRepository.findById(programId).orElseThrow(() -> new SchedulerValidationException("Program does not exist",
                 "id", "Program not found", programId.toString()));
         existingProgram.setDeleted(Boolean.FALSE);
         programRepository.save(existingProgram);
-       return toProgramEntityDto(existingProgram);
+       return existingProgram;
     }
 
-    public ProgramEntityDto deleteProgram(Long programId){
+    public Program deleteProgram(Long programId){
         var existingProgram = programRepository.findById(programId).orElseThrow(() -> new SchedulerValidationException("Program does not exist",
                 "id", "Program not found", programId.toString()));
         existingProgram.setDeleted(Boolean.TRUE);
         programRepository.save(existingProgram);
-        return toProgramEntityDto(existingProgram);
+        return existingProgram;
     }
 //    public boolean deleteAllSubjectsForCreate(){
 //

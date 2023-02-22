@@ -126,23 +126,23 @@ public class ProgramController {
                 .map(ProgramSubjectHours::getSubjectHours).reduce(0, Integer::sum);
     }
 
-    @DeleteMapping("/{programId}")
-    public ResponseEntity<Void> deleteProgram(@PathVariable Long programId) {
-        logger.info("Attempt to delete Program by id: {}", programId);
-        List<ProgramSubjectHours> pshList = programSubjectHoursRepository.findAll().stream().filter(psh -> psh.getProgram()
-                .getId().equals(programId)).collect(toList());
-        if (!pshList.isEmpty()) {
-            for (ProgramSubjectHours psh : pshList) {
-                programSubjectHoursRepository.deleteById(psh.getId());
-            }
-        }
-        boolean deleted = programService.deleteById(programId);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+//    @DeleteMapping("/{programId}")
+//    public ResponseEntity<Void> deleteProgram(@PathVariable Long programId) {
+//        logger.info("Attempt to delete Program by id: {}", programId);
+//        List<ProgramSubjectHours> pshList = programSubjectHoursRepository.findAll().stream().filter(psh -> psh.getProgram()
+//                .getId().equals(programId)).collect(toList());
+//        if (!pshList.isEmpty()) {
+//            for (ProgramSubjectHours psh : pshList) {
+//                programSubjectHoursRepository.deleteById(psh.getId());
+//            }
+//        }
+//        boolean deleted = programService.deleteById(programId);
+//        if (deleted) {
+//            return ResponseEntity.noContent().build();
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 
     @DeleteMapping("/programsSubjects/{programSubjectId}")
     public ResponseEntity<Void> deleteProgramSubjectById(@PathVariable Long programSubjectId) {
@@ -179,6 +179,18 @@ public class ProgramController {
         var updatedProgram = programService.update(programId, toProgram(programDto));
 
         return ok(toProgramDto(updatedProgram));
+    }
+
+    @PatchMapping("/delete/{programId}")
+    public ResponseEntity<Program> removeProgram(@PathVariable Long programId) {
+        var updatedProgram = programService.deleteProgram(programId);
+        return ok(updatedProgram);
+    }
+
+    @PatchMapping("/restore/{programId}")
+    public ResponseEntity<Program> restoreProgram(@PathVariable Long programId) {
+        var updatedProgram = programService.restoreProgram(programId);
+        return ok(updatedProgram);
     }
 
     @PatchMapping("/programSubjects/{programSubjectId}")

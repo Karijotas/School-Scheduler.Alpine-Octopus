@@ -4,6 +4,7 @@ import {
   Button,
   ButtonGroup, Confirm, Divider, Grid, Icon,
   Input,
+  Label,
   Segment,
   Table
 } from "semantic-ui-react";
@@ -14,7 +15,7 @@ const JSON_HEADERS = {
   "Content-Type": "application/json",
 };
 
-export function ViewProgramsArchive() {
+export function ViewSubjectsArchive() {
   const [active, setActive] = useState();
   const [create, setCreate] = useState("");
   const [nameText, setNameText] = useState("");
@@ -31,7 +32,7 @@ export function ViewProgramsArchive() {
   };
 
   const fetchSinglePrograms = () => {
-    fetch("/api/v1/programs/archive/")
+    fetch("/api/v1/programs")
       .then((response) => response.json())
       .then((jsonResponse) => setGroupsForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(groupsforPaging.length / 10)));
@@ -43,15 +44,22 @@ export function ViewProgramsArchive() {
       .then((jsonRespones) => setPrograms(jsonRespones));
   };
 
-  const restoreProgram = (id) => {
-    fetch("/api/v1/programs/restore/" + id, {
-      method: "PATCH",      
-    }).then(fetchPrograms);      
+  const removeProgram = (id) => {
+    fetch("/api/v1/programs/" + id, {
+      method: "DELETE",
+      headers: JSON_HEADERS,
+    }).then(fetchPrograms)
+      .then(setOpen(false));
   };
+
+  
 
   useEffect(() => {
     nameText.length > 0 ? fetchFilterPrograms() : fetchPrograms();
   }, [activePage, nameText]);
+
+  const [open, setOpen] = useState(false);
+  const [close, setClose] = useState(false);
 
 
   useEffect(() => {
@@ -73,14 +81,18 @@ export function ViewProgramsArchive() {
           <Segment id='segment' raised color='grey'>
 
             <div id="programs">
-           
+              <Input
+                value={nameText}
+                onChange={(e) => setNameText(e.target.value)}
+                placeholder="Ieškoti pagal programą"
+              />
               {/* <Button onClick={fetchFilterPrograms}>Filtruoti</Button> */}
 
               
               <Table selectable>
                 <Table.Header>
                   <Table.Row>
-                    <Table.HeaderCell>Archyvas: Programos pavadinimas</Table.HeaderCell>
+                    <Table.HeaderCell>Programos pavadinimas</Table.HeaderCell>
 
                     <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                   </Table.Row>
@@ -98,7 +110,7 @@ export function ViewProgramsArchive() {
                           compact
                           title="Atstatyti"
                           icon="undo"
-                          onClick={() => restoreProgram(program.id)}
+                          onClick={() => setOpen(program.id)}
                         ></Button>
                       </Table.Cell>
                     </Table.Row>

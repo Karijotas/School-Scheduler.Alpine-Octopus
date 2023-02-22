@@ -44,10 +44,10 @@ export function ViewPrograms() {
   };
 
   const removeProgram = (id) => {
-    fetch("/api/v1/programs/" + id, {
-      method: "DELETE",
-      headers: JSON_HEADERS,
-    }).then(fetchPrograms)
+    fetch("/api/v1/programs/delete/" + id, {
+      method: "PATCH", 
+      })    
+    .then(fetchPrograms)
       .then(setOpen(false));
   };
 
