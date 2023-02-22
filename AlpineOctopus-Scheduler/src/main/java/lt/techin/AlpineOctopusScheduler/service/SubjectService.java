@@ -64,7 +64,6 @@ public class SubjectService {
     }
 
 
-
     public Optional<Subject> getById(Long id) {
         return subjectRepository.findById(id);
     }
@@ -94,11 +93,11 @@ public class SubjectService {
         return subjectRepository.save(existingSubject);
     }
 
-    public Boolean deleteById(Long id){
-        try{
+    public Boolean deleteById(Long id) {
+        try {
             subjectRepository.deleteById(id);
             return true;
-        } catch (EmptyResultDataAccessException e){
+        } catch (EmptyResultDataAccessException e) {
             return false;
         }
     }
@@ -151,15 +150,51 @@ public class SubjectService {
         return subjectRepository.save(existingSubject);
     }
 
-  public Set<Module> getAllModulesById (Long subjectId){
+    public Set<Module> getAllModulesById(Long subjectId) {
         return subjectRepository.findById(subjectId).get().getSubjectModules();
-  }
+    }
 
-    public Set<Room> getAllRoomsById (Long subjectId){
+    public Set<Room> getAllRoomsById(Long subjectId) {
         return subjectRepository.findById(subjectId).get().getSubjectRooms();
     }
 
-    public Set<Teacher> getAllTeachersById (Long subjectId){
+    public Set<Teacher> getAllTeachersById(Long subjectId) {
         return subjectRepository.findById(subjectId).get().getSubjectTeachers();
+    }
+
+    public boolean deleteModuleInSubjectById(Long subjectId, Long moduleId) {
+        try {
+            var existingSubject = subjectRepository.findById(subjectId).get();
+            existingSubject.getSubjectModules().remove(moduleRepository.findById(moduleId).get());
+            subjectRepository.save(existingSubject);
+            return true;
+        } catch (EmptyResultDataAccessException exception) {
+            return false;
+        }
+
+    }
+
+    public boolean deleteTeacherInSubjectById(Long subjectId, Long teacherId) {
+        try {
+            var existingSubject = subjectRepository.findById(subjectId).get();
+            existingSubject.getSubjectTeachers().remove(teacherRepository.findById(teacherId).get());
+            subjectRepository.save(existingSubject);
+            return true;
+        } catch (EmptyResultDataAccessException exception) {
+            return false;
+        }
+
+    }
+
+    public boolean deleteRoomInSubjectById(Long subjectId, Long roomId) {
+        try {
+            var existingSubject = subjectRepository.findById(subjectId).get();
+            existingSubject.getSubjectRooms().remove(roomRepository.findById(roomId).get());
+            subjectRepository.save(existingSubject);
+            return true;
+        } catch (EmptyResultDataAccessException exception) {
+            return false;
+        }
+
     }
 }

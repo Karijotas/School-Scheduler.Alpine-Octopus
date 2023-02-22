@@ -20,7 +20,7 @@ const JSON_HEADERS = {
   "Content-Type": "application/json",
 };
 
-export function EditSubjectObject() {
+export function EditSubjects() {
   const params = useParams();
   const [modules, setModules] = useState([]);
   const [module, setModule] = useState("");
@@ -30,7 +30,7 @@ export function EditSubjectObject() {
   const [teacherId, setTeacherId] = useState("");
   const [rooms, setRooms] = useState([]);
   const [room, setRoom] = useState("");
-  const [roomId, setRoomsId] = useState("");
+  const [roomId, setRoomId] = useState("");
 
   const [modulesInSubjects, setModulesInSubjects] = useState([]);
   const [roomsInSubjects, setRoomsInSubjects] = useState([]);
@@ -100,8 +100,6 @@ export function EditSubjectObject() {
       .then(applyResult);
   };
 
-  
-
   const updateProperty = (property, event) => {
     setSubjects({
       ...subjects,
@@ -164,14 +162,50 @@ export function EditSubjectObject() {
         subjectId,
         module,
       }),
-    })
+    });
   };
 
   const removeModule = (subjectId, moduleId) => {
     fetch(`/api/v1/subjects/${subjectId}/modules/${moduleId}`, {
       method: "DELETE",
       headers: JSON_HEADERS,
-    })
+    });
+  };
+
+  const addTeacher = (subjectId, teacherId) => {
+    fetch(`/api/v1/subjects/${subjectId}/teachers/${teacherId}/newTeachers`, {
+      method: "POST",
+      header: JSON_HEADERS,
+      body: JSON.stringify({
+        subjectId,
+        teacher,
+      }),
+    });
+  };
+
+  const removeTeacher = (subjectId, teacherId) => {
+    fetch(`/api/v1/subjects/${subjectId}/teachers/${teacherId}`, {
+      method: "DELETE",
+      headers: JSON_HEADERS,
+    });
+  };
+
+  const addRoom = (subjectId, roomId) => {
+    fetch(`/api/v1/subjects/${subjectId}/rooms/${roomId}/newRooms`, {
+      method: "POST",
+      header: JSON_HEADERS,
+      body: JSON.stringify({
+        subjectId,
+        room,
+      }),
+    });
+  };
+
+  const removeRoom = (subjectId, roomId) => {
+    fetch(`/api/v1/subjects/${subjectId}/rooms/${roomId}`, {
+      method: "DELETE",
+      headers: JSON_HEADERS,
+    });
   };
 
   return (
@@ -298,7 +332,6 @@ export function EditSubjectObject() {
                       <Table.HeaderCell>
                         Paskutinis atnaujinimas:
                       </Table.HeaderCell>
-                      <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
 
@@ -318,85 +351,205 @@ export function EditSubjectObject() {
                           ) => updateProperty("description", e)}
                         />
                       </Table.Cell>
-                      {/* <Table.Cell collapsing><Input value={groups.studentAmount} onChange={(e) => updateProperty('studentAmount', e)} />
-                        </Table.Cell>
-                        <Table.Cell collapsing><Input options={shiftOptions} placeholder={groups.program.id} value={groups.program} onChange={(e) => updateProperty('program', e)} />
-                        </Table.Cell>
-                        <Table.Cell collapsing><Input options={shiftOptions} placeholder={groups.shift} value={groups.shift} onChange={(e) => updateProperty('shift', e)} /> */}
-                      {/* </Table.Cell> */}
-
                       <Table.Cell collapsing>
                         {" "}
                         {subjects.modifiedDate}{" "}
                       </Table.Cell>
-
-                      <Table.Cell collapsing>
-                        <Button onClick={() => setActive(true)}>
-                          Atšaukti
-                        </Button>
-                        <Button primary onClick={updateSubjects}>
-                          Atnaujinti
-                        </Button>
-                      </Table.Cell>
                     </Table.Row>
                   </Table.Body>
                 </Table>
-                {/* <Button icon labelPosition="left" className="" onClick={() => setHide(true)}><Icon name="arrow left" />Atgal į sarašą</Button> */}
-                <Table>
-                  <Table.Header>
-                    <Table.Row>
-                      <Table.HeaderCell width={8}>
-                        Modulio pavadinimas
-                      </Table.HeaderCell>
-                      <Table.HeaderCell width={8}>Pridėti moduliai</Table.HeaderCell>
-                    </Table.Row>
-                  </Table.Header>
-                  <Divider hidden />
-                  <Table.Body>
-                    <Table.Row>
-                      <Table.Cell>
-                        <List textAlign="center" divided verticalAlign="middle">
-                          <List.Item >
-                            <Form.Group widths="equal">
-                              <Form.Field>
-                                <Select
-                                  options={modules}
-                                  placeholder="Dalykai"
-                                  value={module}
-                                  onChange={(e, data) => (setModule(e.target.value), setModuleId(data.value))}
-                                  onClose={() => console.log(moduleId)}
-                                />
-                              </Form.Field>
-                            </Form.Group>
-                            <Divider hidden />
-                            <List.Content floated="left">
-                              <Button onClick={() => addModule(params.id, moduleId)}>Pridėti</Button>
-                            </List.Content>
-                          </List.Item>
-                        </List>
-                      </Table.Cell>
-                      <Table.Cell>
-                        <Table.Body>
-                          {modulesInSubjects.map((module) => (
-                            <Table.Row key={module.id}>
-                              <Table.Cell>{module.name}</Table.Cell>
-                              <Table.Cell collapsing>
-                                <Button
-                                  basic
-                                  compact
-                                  icon="remove"
-                                  title="Pašalinti"
-                                  onClick={() => removeModule(params.id, module.id)}
-                                ></Button>
-                              </Table.Cell>
+                <Grid columns={3}>
+                  <Grid.Column>
+                    <Table>
+                      <Table.Header>
+                        <Table.Row>
+                          <Table.HeaderCell width={8}>
+                            Moduliai
+                          </Table.HeaderCell>
+                        </Table.Row>
+                      </Table.Header>
+                      <Table.Body>
+                        <Table.Row>
+                          <Table.Cell>
+                            <Table.Body>
+                              {modulesInSubjects.map((module) => (
+                                <Table.Row key={module.id}>
+                                  <Table.Cell>{module.name}</Table.Cell>
+                                  <Table.Cell collapsing>
+                                    <Button
+                                      basic
+                                      compact
+                                      icon="remove"
+                                      title="Pašalinti"
+                                      onClick={() =>
+                                        removeModule(params.id, module.id)
+                                      }
+                                    ></Button>
+                                  </Table.Cell>
+                                </Table.Row>
+                              ))}
+                            </Table.Body>
+                            <List>
+                              <List.Item>
+                                <Form.Group widths="equal">
+                                  <Form.Field>
+                                    <Select
+                                      options={modules}
+                                      placeholder="Dalykai"
+                                      value={module}
+                                      onChange={(e, data) => (
+                                        setModule(e.target.value),
+                                        setModuleId(data.value)
+                                      )}
+                                      onClose={() => console.log(moduleId)}
+                                    />
+                                  </Form.Field>
+                                </Form.Group>
+                                <Divider hidden />
+                                <List.Content>
+                                  <Button
+                                    onClick={() =>
+                                      addModule(params.id, moduleId)
+                                    }
+                                  >
+                                    Pridėti
+                                  </Button>
+                                </List.Content>
+                              </List.Item>
+                            </List>
+                          </Table.Cell>
+                        </Table.Row>
+                      </Table.Body>
+                    </Table>
+                  </Grid.Column>
 
-                            </Table.Row>
-                          ))}
-                        </Table.Body>
-                      </Table.Cell>
-                    </Table.Row>
-                  </Table.Body>
-                </Table>
+                  <Grid.Column>
+                    <Table>
+                      <Table.Header>
+                        <Table.Row>
+                          <Table.HeaderCell width={8}>
+                            Mokytojai
+                          </Table.HeaderCell>
+                        </Table.Row>
+                      </Table.Header>
+                      <Table.Body>
+                        <Table.Row>
+                          <Table.Cell>
+                            <Table.Body>
+                              {teachersInSubjects.map((teacher) => (
+                                <Table.Row key={teacher.id}>
+                                  <Table.Cell>{teacher.name}</Table.Cell>
+                                  <Table.Cell collapsing>
+                                    <Button
+                                      basic
+                                      compact
+                                      icon="remove"
+                                      title="Pašalinti"
+                                      onClick={() =>
+                                        removeTeacher(params.id, teacher.id)
+                                      }
+                                    ></Button>
+                                  </Table.Cell>
+                                </Table.Row>
+                              ))}
+                            </Table.Body>
+                            <List>
+                              <List.Item>
+                                <Form.Group widths="equal">
+                                  <Form.Field>
+                                    <Select
+                                      options={teachers}
+                                      placeholder="Mokytojai"
+                                      value={teacher}
+                                      onChange={(e, data) => (
+                                        setTeacher(e.target.value),
+                                        setTeacherId(data.value)
+                                      )}
+                                      onClose={() => console.log(moduleId)}
+                                    />
+                                  </Form.Field>
+                                </Form.Group>
+                                <Divider hidden />
+                                <List.Content>
+                                  <Button
+                                    onClick={() =>
+                                      addTeacher(params.id, teacherId)
+                                    }
+                                  >
+                                    Pridėti
+                                  </Button>
+                                </List.Content>
+                              </List.Item>
+                            </List>
+                          </Table.Cell>
+                        </Table.Row>
+                      </Table.Body>
+                    </Table>
+                  </Grid.Column>
+
+                  <Grid.Column>
+                    <Table>
+                      <Table.Header>
+                        <Table.Row>
+                          <Table.HeaderCell width={8}>
+                            Kabinetai
+                          </Table.HeaderCell>
+                        </Table.Row>
+                      </Table.Header>
+                      <Table.Body>
+                        <Table.Row>
+                          <Table.Cell>
+                            <Table.Body>
+                              {roomsInSubjects.map((room) => (
+                                <Table.Row key={room.id}>
+                                  <Table.Cell>{room.name}</Table.Cell>
+                                  <Table.Cell collapsing>
+                                    <Button
+                                      basic
+                                      compact
+                                      icon="remove"
+                                      title="Pašalinti"
+                                      onClick={() =>
+                                        removeRoom(params.id, room.id)
+                                      }
+                                    ></Button>
+                                  </Table.Cell>
+                                </Table.Row>
+                              ))}
+                            </Table.Body>
+                            <List>
+                              <List.Item>
+                                <Form.Group widths="equal">
+                                  <Form.Field>
+                                    <Select
+                                      options={rooms}
+                                      placeholder="Kabinetai"
+                                      value={room}
+                                      onChange={(e, data) => (
+                                        setRoom(e.target.value),
+                                        setRoomId(data.value)
+                                      )}
+                                      onClose={() => console.log(roomId)}
+                                    />
+                                  </Form.Field>
+                                </Form.Group>
+                                <Divider hidden />
+                                <List.Content>
+                                  <Button
+                                    onClick={() => addRoom(params.id, roomId)}
+                                  >
+                                    Pridėti
+                                  </Button>
+                                </List.Content>
+                              </List.Item>
+                            </List>
+                          </Table.Cell>
+                        </Table.Row>
+                      </Table.Body>
+                    </Table>
+                  </Grid.Column>
+                </Grid>
+                <Divider hidden></Divider>
                 <Button onClick={() => setActive(true)}>Atšaukti</Button>
                 <Button floated="right" primary onClick={updateSubjects}>
                   Atnaujinti

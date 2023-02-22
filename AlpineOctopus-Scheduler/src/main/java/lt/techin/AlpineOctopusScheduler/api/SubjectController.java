@@ -119,28 +119,54 @@ public class SubjectController {
         return responseEntity;
     }
 
-    @PutMapping("/modules/{subjectId}")
-    public ResponseEntity<SubjectDto> addModuleToSubject(@PathVariable Long subjectId, @RequestBody Long moduleId) {
+    @PostMapping("/{subjectId}/modules/{moduleId}/newModules")
+    public ResponseEntity<SubjectDto> addModuleToSubject(@PathVariable Long subjectId, @PathVariable Long moduleId) {
         var updatedSubject = subjectService.addModuleToSubject(subjectId, moduleId);
 
         return ok(toSubjectDto(updatedSubject));
     }
 
-    @PutMapping("/teachers/{subjectId}")
-    public ResponseEntity<SubjectDto> addTeacherToSubject(@PathVariable Long subjectId, @RequestBody Long teacherId) {
+    @PostMapping("/{subjectId}/teachers/{teacherId}/newTeachers")
+    public ResponseEntity<SubjectDto> addTeacherToSubject(@PathVariable Long subjectId, @PathVariable Long teacherId) {
         var updatedSubject = subjectService.addTeacherToSubject(subjectId, teacherId);
 
         return ok(toSubjectDto(updatedSubject));
     }
 
-    @PutMapping("/rooms/{subjectId}")
-    public ResponseEntity<SubjectDto> addRoomToSubject(@PathVariable Long subjectId, @RequestBody Long roomId) {
+    @PostMapping("/{subjectId}/rooms/{roomId}/newRooms")
+    public ResponseEntity<SubjectDto> addRoomToSubject(@PathVariable Long subjectId, @PathVariable Long roomId) {
         var updatedSubject = subjectService.addRoomToSubject(subjectId, roomId);
-
         return ok(toSubjectDto(updatedSubject));
     }
 
+    @DeleteMapping("/{subjectId}/modules/{moduleId}")
+    public ResponseEntity<Void> deleteModuleFromSubjectByModuleId(@PathVariable Long subjectId, @PathVariable Long moduleId) {
+        boolean deleted = subjectService.deleteModuleInSubjectById(subjectId, moduleId);
+        if (deleted) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
+    @DeleteMapping("/{subjectId}/teachers/{teacherId}")
+    public ResponseEntity<Void> deleteTeacherFromSubjectByTeacherId(@PathVariable Long subjectId, @PathVariable Long teacherId) {
+        boolean deleted = subjectService.deleteTeacherInSubjectById(subjectId, teacherId);
+        if (deleted) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
+    @DeleteMapping("/{subjectId}/rooms/{roomId}")
+    public ResponseEntity<Void> deleteRoomFromSubjectByRoomId(@PathVariable Long subjectId, @PathVariable Long roomId) {
+        boolean deleted = subjectService.deleteRoomInSubjectById(subjectId, roomId);
+        if (deleted) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 }
