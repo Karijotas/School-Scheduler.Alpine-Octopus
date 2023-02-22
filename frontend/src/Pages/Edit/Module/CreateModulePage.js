@@ -64,7 +64,7 @@ export function CreateModulePage() {
           <EditMenu />
         </Grid.Column>
         <Grid.Column floated='left' textAlign='left' verticalAlign='top' width={13}>
-          <Segment id='segment' raised color='teal'>
+          <Segment id='segment' color='teal'>
             <div className="create-new-page">
               <Form>
                 <Form.Field>

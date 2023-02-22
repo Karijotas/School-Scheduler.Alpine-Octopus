@@ -89,7 +89,7 @@ const [modulesInSubjects, setModulesInSubjects] = useState([]);
             <EditMenu active='groups' />
         </Grid.Column>
         <Grid.Column floated='left' textAlign='left' verticalAlign='top' width={13}>
-            <Segment raised color='teal'>{active && !hide &&(<div >
+            <Segment color='teal'>{active && !hide &&(<div >
 
         <Table celled color='violet'>
             <Table.Header >

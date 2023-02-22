@@ -86,7 +86,7 @@ export function CreateGroupPage() {
         <EditMenu />
       </Grid.Column>
       <Grid.Column floated='left' textAlign='left' verticalAlign='top' width={13}>
-        <Segment id='segment' raised color='teal'>
+        <Segment id='segment' color='teal'>
 
           <Form >
             <Form.Field >

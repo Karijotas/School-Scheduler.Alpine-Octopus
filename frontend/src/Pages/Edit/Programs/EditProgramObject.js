@@ -152,7 +152,7 @@ export function EditProgramObject() {
         </Grid.Column>
 
         <Grid.Column textAlign='left' verticalAlign='top' width={13}>
-          <Segment id='segment' raised color='teal'>
+          <Segment id='segment' color='teal'>
             {active && !hide && (
               <div>
                 <Table celled color="violet">
