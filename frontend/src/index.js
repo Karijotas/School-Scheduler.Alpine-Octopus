@@ -17,7 +17,7 @@ import { CreateShiftPage } from './Pages/Edit/Shifts/CreateShiftPage';
 import { EditShiftObject } from './Pages/Edit/Shifts/EditShiftObject';
 import { ViewShifts } from './Pages/Edit/Shifts/ViewShifts';
 import { CreateSubjecPage } from './Pages/Edit/Subjects/CreateSubjectPage';
-import { EditSubjects } from './Pages/Edit/Subjects/EditSubjects';
+import { EditSubjectObject } from './Pages/Edit/Subjects/EditSubjectObject';
 import { ViewSubjects } from './Pages/Edit/Subjects/ViewSubjects';
 import { CreateTeacher } from './Pages/Edit/Teachers/CreateTeacher';
 import { EditTeacherObject } from './Pages/Edit/Teachers/EditTeacherObject';
@@ -42,7 +42,7 @@ root.render(
 
         {/* Subjects routes: */}
         <Route path='/view/subjects' element={<ViewSubjects />} />
-        <Route path='/view/subjects/edit/:id' element={<EditSubjects />} />
+        <Route path='/view/subjects/edit/:id' element={<EditSubjectObject />} />
         <Route path='/create/subjects' element={<CreateSubjecPage />} />
 
         {/* Teachers routes: */}
