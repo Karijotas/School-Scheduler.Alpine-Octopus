@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button, Grid, Icon, Input, Segment, Table } from 'semantic-ui-react';
 import MainMenu from '../../../Components/MainMenu';
-import { EditMenu } from '../EditMenu';
+import { EditMenu } from '../../../Components/EditMenu';
 
 
 
@@ -80,7 +80,7 @@ export function EditRoom() {
             </Grid.Column>
 
             <Grid.Column textAlign='left' verticalAlign='top' width={13}>
-                <Segment id='segment' raised color='teal'>{active && !hide && (<div >
+                <Segment id='segment' color='teal'>{active && !hide && (<div >
 
                     <Table celled color='violet'>
                         <Table.Header >

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { NavLink } from 'react-router-dom';
 import {
   Button,
   ButtonGroup,
@@ -10,11 +11,8 @@ import {
   Segment,
   Table
 } from "semantic-ui-react";
-import { CreateModulePage } from "./CreateModulePage";
-import { EditModuleObject } from "./EditModuleObject";
+import { EditMenu } from '../../../Components/EditMenu';
 import MainMenu from '../../../Components/MainMenu';
-import { EditMenu } from '../EditMenu';
-import { NavLink } from 'react-router-dom';
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -79,7 +77,7 @@ export function ViewModules() {
           <EditMenu />
         </Grid.Column>
         <Grid.Column textAlign='left' verticalAlign='top' width={13}>
-          <Segment id='segment' raised color='teal'>
+          <Segment id='segment' color='teal'>
             {!active && !create && (
               <div id="modules">
                 <Input

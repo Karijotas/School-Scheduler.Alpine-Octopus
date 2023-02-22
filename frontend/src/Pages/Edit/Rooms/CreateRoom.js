@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Form, Grid, Icon, Segment } from "semantic-ui-react";
 import MainMenu from "../../../Components/MainMenu";
-import { EditMenu } from '../EditMenu';
+import { EditMenu } from '../../../Components/EditMenu';
 
 
 const JSON_HEADERS = {
@@ -52,7 +52,7 @@ export function CreateRoom() {
       </Grid.Column>
 
       <Grid.Column floated='left' textAlign='left' verticalAlign='top' width={13}>
-        <Segment id='segment' raised color='teal'>
+        <Segment id='segment' color='teal'>
 
           <Form >
 

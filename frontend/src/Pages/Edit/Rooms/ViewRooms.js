@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import { Button, Divider, ButtonGroup, Confirm, Icon, Input, Table, Grid, Segment } from 'semantic-ui-react'
-import { CreateRoom } from './CreateRoom';
-import { EditRoom } from './EditRoom';
-import MainMenu from '../../../Components/MainMenu';
-import { EditMenu } from '../EditMenu';
+import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { Button, ButtonGroup, Confirm, Divider, Grid, Icon, Input, Segment, Table } from 'semantic-ui-react';
+import { EditMenu } from '../../../Components/EditMenu';
+import MainMenu from '../../../Components/MainMenu';
 
 
 
@@ -115,7 +113,7 @@ export function ViewRooms() {
                 </Grid.Column>
 
                 <Grid.Column textAlign='left' verticalAlign='top' width={13}>
-                    <Segment id='segment' raised color='teal'>
+                    <Segment id='segment' color='teal'>
 
                         <div id='rooms'>
                             <Input className='controls1' value={nameText} onChange={(e) => setNameText(e.target.value)} placeholder='Filtruoti pagal klasę' />

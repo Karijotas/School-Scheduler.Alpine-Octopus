@@ -8,7 +8,7 @@ import {
   Table
 } from "semantic-ui-react";
 import MainMenu from '../../../Components/MainMenu';
-import { EditMenu } from '../EditMenu';
+import { EditMenu } from '../../../Components/EditMenu';
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -75,7 +75,7 @@ export function ViewPrograms() {
         </Grid.Column>
 
         <Grid.Column textAlign='left' verticalAlign='top' width={13}>
-          <Segment id='segment' raised color='teal'>
+          <Segment id='segment' color='teal'>
 
             <div id="programs">
               <Input

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Divider, Icon, Input, Table, Grid, Segment } from 'semantic-ui-react';
 import { ViewSubjects } from './ViewSubjects';
 import MainMenu from '../../../Components/MainMenu';
-import { EditMenu } from '../EditMenu';
+import { EditMenu } from '../../../Components/EditMenu';
 import { useParams } from 'react-router-dom';
 
 const JSON_HEADERS = {
@@ -89,7 +89,7 @@ const [modulesInSubjects, setModulesInSubjects] = useState([]);
             <EditMenu active='groups' />
         </Grid.Column>
         <Grid.Column floated='left' textAlign='left' verticalAlign='top' width={13}>
-            <Segment raised color='teal'>{active && !hide &&(<div >
+            <Segment color='teal'>{active && !hide &&(<div >
 
         <Table celled color='violet'>
             <Table.Header >
