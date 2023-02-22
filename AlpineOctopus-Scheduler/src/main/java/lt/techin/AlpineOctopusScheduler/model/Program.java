@@ -31,6 +31,7 @@ public class Program {
     private String description;
 
     @OneToMany(mappedBy = "program")
+    @JsonIgnore
     private Set<Groups> groupsSet;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @CreatedDate
