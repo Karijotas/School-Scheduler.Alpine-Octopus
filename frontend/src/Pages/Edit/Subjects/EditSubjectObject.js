@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Divider, Icon, Input, Table, Grid, Segment } from 'semantic-ui-react';
 import { ViewSubjects } from './ViewSubjects';
 import MainMenu from '../../../Components/MainMenu';
-import { EditMenu } from '../EditMenu';
+import { EditMenu } from '../../../Components/EditMenu';
 import { useParams } from 'react-router-dom';
 
 const JSON_HEADERS = {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button, Grid, Icon, Input, Segment, Table } from 'semantic-ui-react';
 import MainMenu from '../../../Components/MainMenu';
-import { EditMenu } from '../EditMenu';
+import { EditMenu } from '../../../Components/EditMenu';
 
 
 

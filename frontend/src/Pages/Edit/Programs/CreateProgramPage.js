@@ -6,7 +6,7 @@ import {
 
 import { NavLink } from 'react-router-dom';
 import MainMenu from '../../../Components/MainMenu';
-import { EditMenu } from '../EditMenu';
+import { EditMenu } from '../../../Components/EditMenu';
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",

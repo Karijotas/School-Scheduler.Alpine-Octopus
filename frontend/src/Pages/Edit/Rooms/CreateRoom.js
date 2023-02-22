@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Form, Grid, Icon, Segment } from "semantic-ui-react";
 import MainMenu from "../../../Components/MainMenu";
-import { EditMenu } from '../EditMenu';
+import { EditMenu } from '../../../Components/EditMenu';
 
 
 const JSON_HEADERS = {

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import { Button, ButtonGroup, Confirm, Divider, Grid, Icon, Input, Segment, Table } from 'semantic-ui-react'
-import MainMenu from '../../../Components/MainMenu';
-import { CreateGroupPage } from './CreateGroupPage';
-import { EditMenu } from '../EditMenu';
+import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { Button, ButtonGroup, Confirm, Divider, Grid, Icon, Input, Segment, Table } from 'semantic-ui-react';
+import { YEAR_OPTIONS } from '../../../Components/const';
+import { EditMenu } from '../../../Components/EditMenu';
+import MainMenu from '../../../Components/MainMenu';
 
 
 const JSON_HEADERS = {
@@ -21,13 +21,12 @@ export function ViewGroups() {
     //     { key: 28, value: 2028, text: '2028' },
     // ]
 
+
     const [active, setActive] = useState()
 
-    const [create, setCreate] = useState('')
-
     const [groups, setGroups] = useState([]);
-    const [groupsforPaging, setGroupsForPaging] = useState([]);
 
+    const [groupsforPaging, setGroupsForPaging] = useState([]);
 
     const [nameText, setNameText] = useState('')
 
@@ -75,18 +74,18 @@ export function ViewGroups() {
     };
 
 
-    const removeGroup = (id) => {
-        fetch('/api/v1/groups/' + id, {
-            method: 'DELETE',
-            headers: JSON_HEADERS
-        }).then(fetchGroups)
-            .then(setOpen(false));
-    }
+    // const removeGroup = (id) => {
+    //     fetch('/api/v1/groups/' + id, {
+    //         method: 'DELETE',
+    //         headers: JSON_HEADERS
+    //     }).then(fetchGroups)
+    //         .then(setOpen(false));
+    // }
 
 
 
     useEffect(() => {
-        if (nameText.length === 0 && yearText.length === 0 && programText.length === 0) {
+        if (nameText.length === 0 && yearText.length === 0 && programText.length === 0 || yearText === '-') {
             fetchGroups();
             // setYearText('2023')
         } else if (nameText.length > 0) {
@@ -94,7 +93,6 @@ export function ViewGroups() {
             setYearText('')
             fetchFilterGroups();
         } else if (yearText.length > 0) {
-
             setNameText('')
             setProgramText('')
             fetchYearGroups();
@@ -112,7 +110,7 @@ export function ViewGroups() {
         if (pagecount !== null) {
             fetchSingleGroups();
         }
-    }, [groups])
+    }, [groups,])
 
     const [open, setOpen] = useState(false)
 
@@ -129,30 +127,37 @@ export function ViewGroups() {
                     <EditMenu />
                 </Grid.Column>
                 <Grid.Column textAlign='left' verticalAlign='top' width={13}>
-                    <Segment id='segment' raised color='teal'>
-                        <div  >
+                    <Segment id='segment' color='teal'>
+                        <div >
                             <Input
                                 title='Filtruoti pagal pavadinimą'
                                 className='controls1'
                                 placeholder='Filtruoti pagal pavadinimą'
                                 value={nameText} onChange={(e) => setNameText(e.target.value)} />
+
+                            <Button title='Filtruoti pagal metus'>Filtruoti pagal metus:</Button>
+                            <select
+                                id='selectYear'
+                                value={yearText} onChange={(e) => setYearText(e.target.value)} >
+                                <option>-</option>
+                                {Object.entries(YEAR_OPTIONS)
+                                    .map(([key, value]) => <option value={key}>{value}</option>)
+                                }
+                            </select>
+
+
                             <Input
-                                title='Filtruoti pagal metus'
-                                type='number'
-                                placeholder='Filtruoti pagal metus'
-                                value={yearText} className='controls1'
-                                onChange={(e) => setYearText(e.target.value)} />
-                            <Input
+                                className='controls2'
                                 title='Filtruoti pagal programą'
                                 placeholder='Filtruoti pagal programą'
                                 value={programText} onChange={(e) => setProgramText(e.target.value)} />
 
 
                             <Button
+                                id='details'
                                 title='Kurti naują grupę'
                                 icon
                                 labelPosition='left'
-                                primary
                                 className='controls'
                                 as={NavLink}
                                 exact to='/create/groups'>
@@ -173,15 +178,15 @@ export function ViewGroups() {
 
                                 <Table.Body>
                                     {groups.map(group => (
-
                                         <Table.Row key={group.id}>
                                             <Table.Cell>{group.name}</Table.Cell>
                                             <Table.Cell>{group.schoolYear}</Table.Cell>
                                             <Table.Cell>{group.studentAmount}</Table.Cell>
                                             <Table.Cell>{group.programName}</Table.Cell>
                                             <Table.Cell collapsing>
-                                                <Button href={'#/view/groups/edit/' + group.id} basic primary compact icon='eye' title='Peržiūrėti' onClick={() => setActive(group.id)}></Button>
-                                                <Button basic color='black' compact title='Ištrinti' icon='trash alternate' onClick={() => setOpen(group.id)}></Button>
+                                                <Button href={'#/view/groups/edit/' + group.id}
+                                                    basic compact icon='eye' title='Peržiūrėti' onClick={() => setActive(group.id)}></Button>
+                                                <Button basic compact title='Ištrinti' icon='trash alternate' onClick={() => setOpen(group.id)}></Button>
 
                                                 <Confirm
                                                     open={open}
@@ -190,14 +195,13 @@ export function ViewGroups() {
                                                     cancelButton='Grįžti atgal'
                                                     confirmButton="Ištrinti"
                                                     onCancel={() => setOpen(false)}
-                                                    onConfirm={() => removeGroup(open)}
+                                                    // onConfirm={() => removeGroup(open)}
                                                     size='small'
                                                 />
                                             </Table.Cell>
                                         </Table.Row>
                                     ))}
                                 </Table.Body>
-
                             </Table>
                             <Divider hidden></Divider>
 

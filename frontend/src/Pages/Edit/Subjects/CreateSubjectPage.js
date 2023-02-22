@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Button, Form, Grid, Icon, Segment, Select } from "semantic-ui-react";
-import { ViewSubjects } from "./ViewSubjects";
-import MainMenu from '../../../Components/MainMenu';
-import { EditMenu } from '../EditMenu';
 import { NavLink } from 'react-router-dom';
+import { Button, Form, Grid, Icon, Segment, Select } from "semantic-ui-react";
+import { EditMenu } from '../../../Components/EditMenu';
+import MainMenu from '../../../Components/MainMenu';
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
