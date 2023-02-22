@@ -198,6 +198,13 @@ public class ProgramService {
         return programRepository.findAll(pageable).stream().filter(program -> program.getDeleted().equals(Boolean.FALSE))
                 .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
+    public List<ProgramEntityDto> getAllDeletedPagedPrograms(int page, int pageSize){
+
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        return programRepository.findAll(pageable).stream().filter(program -> program.getDeleted().equals(Boolean.TRUE))
+                .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
+    }
 
     public List<ProgramEntityDto> getAllAvailablePrograms(){
         return programRepository.findAll().stream().filter(program -> program.getDeleted().equals(Boolean.FALSE))

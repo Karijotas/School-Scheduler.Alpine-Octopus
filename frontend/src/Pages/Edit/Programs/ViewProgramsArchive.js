@@ -1,34 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from 'react-router-dom';
 import {
   Button,
-  ButtonGroup, Confirm, Divider, Grid, Icon,
-  Input,
+  ButtonGroup,
+  Divider,
+  Grid,
+  Icon,
   Segment,
-  Table
+  Table,
 } from "semantic-ui-react";
-import MainMenu from '../../../Components/MainMenu';
-import { EditMenu } from '../EditMenu';
+import MainMenu from "../../../Components/MainMenu";
+import { EditMenu } from "../EditMenu";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
 };
 
 export function ViewProgramsArchive() {
-  const [active, setActive] = useState();
-  const [create, setCreate] = useState("");
-  const [nameText, setNameText] = useState("");
+
   const [programs, setPrograms] = useState([]);
   const [groupsforPaging, setGroupsForPaging] = useState([]);
-
   const [activePage, setActivePage] = useState(0);
   const [pagecount, setPageCount] = useState();
-
-  const fetchFilterPrograms = async () => {
-    fetch(`/api/v1/programs/page/starting-with/${nameText}?page=` + activePage)
-      .then((response) => response.json())
-      .then((jsonRespone) => setPrograms(jsonRespone));
-  };
 
   const fetchSinglePrograms = () => {
     fetch("/api/v1/programs/archive/")
@@ -37,22 +29,29 @@ export function ViewProgramsArchive() {
       .then(setPageCount(Math.ceil(groupsforPaging.length / 10)));
   };
 
+  const fetchPagedPrograms = async () => {
+    fetch("/api/v1/programs/archive/page?page=" + activePage)
+      .then((response) => response.json())
+      .then((jsonResponse) => setPrograms(jsonResponse));
+  };
+
   const fetchPrograms = async () => {
     fetch(`/api/v1/programs/archive/`)
       .then((response) => response.json())
       .then((jsonRespones) => setPrograms(jsonRespones));
   };
 
+  useEffect(() => {
+    fetch("/api/v1/programs/archive/page?page=" + activePage)
+      .then((response) => response.json())
+      .then((jsonRespones) => setPrograms(jsonRespones));
+  }, []);
+
   const restoreProgram = (id) => {
     fetch("/api/v1/programs/restore/" + id, {
-      method: "PATCH",      
-    }).then(fetchPrograms);      
+      method: "PATCH",
+    }).then(fetchPagedPrograms);
   };
-
-  useEffect(() => {
-    nameText.length > 0 ? fetchFilterPrograms() : fetchPrograms();
-  }, [activePage, nameText]);
-
 
   useEffect(() => {
     if (pagecount !== null) {
@@ -64,35 +63,31 @@ export function ViewProgramsArchive() {
     <div>
       <MainMenu />
 
-      <Grid columns={2} >
-        <Grid.Column width={2} id='main'>
+      <Grid columns={2}>
+        <Grid.Column width={2} id="main">
           <EditMenu />
         </Grid.Column>
-
-        <Grid.Column textAlign='left' verticalAlign='top' width={13}>
-          <Segment id='segment' raised color='grey'>
-
+        <Grid.Column textAlign="left" verticalAlign="top" width={13}>
+          <Segment id="segment" raised color="grey">
             <div id="programs">
-           
-              {/* <Button onClick={fetchFilterPrograms}>Filtruoti</Button> */}
-
-              
               <Table selectable>
                 <Table.Header>
                   <Table.Row>
-                    <Table.HeaderCell>Archyvas: Programos pavadinimas</Table.HeaderCell>
-
-                    <Table.HeaderCell>Veiksmai</Table.HeaderCell>
+                    <Table.HeaderCell>
+                      Archyvas. Programos pavadinimas
+                    </Table.HeaderCell>
+                    <Table.HeaderCell textAlign="center">
+                      Veiksmai
+                    </Table.HeaderCell>
                   </Table.Row>
                 </Table.Header>
-
                 <Table.Body>
                   {programs.map((program) => (
                     <Table.Row key={program.id}>
                       <Table.Cell disabled>{program.name}</Table.Cell>
-
-                      <Table.Cell collapsing>                     
+                      <Table.Cell>
                         <Button
+                          textAlign="center"
                           basic
                           color="black"
                           compact
@@ -108,17 +103,42 @@ export function ViewProgramsArchive() {
               <Divider hidden></Divider>
 
               <ButtonGroup compact basic>
-                <Button title='Atgal' onClick={() => setActivePage(activePage <= 0 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
+                <Button
+                  title="Atgal"
+                  onClick={() =>
+                    setActivePage(activePage <= 0 ? activePage : activePage - 1)
+                  }
+                  icon
+                >
+                  <Icon name="arrow left" />{" "}
+                </Button>
                 {[...Array(pagecount)].map((e, i) => {
-                  return <Button title={i + 1} key={i} active={activePage === i ? true : false} onClick={() => setActivePage(i)}>{i + 1}</Button>
+                  return (
+                    <Button
+                      title={i + 1}
+                      key={i}
+                      active={activePage === i ? true : false}
+                      onClick={() => setActivePage(i)}
+                    >
+                      {i + 1}
+                    </Button>
+                  );
                 })}
-                <Button title='Pirmyn' onClick={() => setActivePage(activePage >= pagecount - 1 ? activePage : activePage + 1)} icon><Icon name="arrow right" />  </Button>
+                <Button
+                  title="Pirmyn"
+                  onClick={() =>
+                    setActivePage(
+                      activePage >= pagecount - 1 ? activePage : activePage + 1
+                    )
+                  }
+                  icon
+                >
+                  <Icon name="arrow right" />{" "}
+                </Button>
               </ButtonGroup>
             </div>
-
           </Segment>
         </Grid.Column>
-
       </Grid>
     </div>
   );

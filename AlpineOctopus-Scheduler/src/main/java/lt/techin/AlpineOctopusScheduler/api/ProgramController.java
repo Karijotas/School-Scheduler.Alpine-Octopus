@@ -60,7 +60,7 @@ public class ProgramController {
     public List<ProgramEntityDto> getAvailablePrograms(){
         return programService.getAllAvailablePrograms();
     }
-    @GetMapping(path = "/archive/", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(path = "/archive", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public List<ProgramEntityDto> getDeletedPrograms(){
         return programService.getAllDeletedPrograms();
@@ -72,6 +72,14 @@ public class ProgramController {
                                               @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
 
             return programService.getAllAvailablePagedPrograms(page, pageSize);
+    }
+
+    @GetMapping(path = "/archive/page", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<ProgramEntityDto> getPagedDeletedPrograms(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+
+        return programService.getAllDeletedPagedPrograms(page, pageSize);
     }
 
     @GetMapping(path = "/page/all", produces = {MediaType.APPLICATION_JSON_VALUE})
