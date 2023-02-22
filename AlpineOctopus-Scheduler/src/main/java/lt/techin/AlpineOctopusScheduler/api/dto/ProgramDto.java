@@ -22,22 +22,22 @@ public class ProgramDto {
 
     private String description;
 
+    private Boolean deleted;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modifiedDate;
 
-
-
-
     public ProgramDto() {
     }
 
-    public ProgramDto(String name, String description, LocalDateTime createdDate, LocalDateTime modifiedDate) {
+    public ProgramDto(String name, String description, LocalDateTime createdDate, LocalDateTime modifiedDate, Boolean deleted) {
         this.name = name;
         this.description = description;
         this.createdDate = createdDate;
         this.modifiedDate = modifiedDate;
+        this.deleted = deleted;
 
     }
 
@@ -57,9 +57,6 @@ public class ProgramDto {
         this.description = description;
     }
 
-
-
-
     public LocalDateTime getCreatedDate() {
         return createdDate;
     }
@@ -76,17 +73,25 @@ public class ProgramDto {
         this.modifiedDate = modifiedDate;
     }
 
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProgramDto that = (ProgramDto) o;
-        return Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(createdDate, that.createdDate) && Objects.equals(modifiedDate, that.modifiedDate);
+        return Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(deleted, that.deleted) && Objects.equals(createdDate, that.createdDate) && Objects.equals(modifiedDate, that.modifiedDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, createdDate, modifiedDate);
+        return Objects.hash(name, description, deleted, createdDate, modifiedDate);
     }
 
     @Override
@@ -94,6 +99,7 @@ public class ProgramDto {
         return "ProgramDto{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", deleted=" + deleted +
                 ", createdDate=" + createdDate +
                 ", modifiedDate=" + modifiedDate +
                 '}';

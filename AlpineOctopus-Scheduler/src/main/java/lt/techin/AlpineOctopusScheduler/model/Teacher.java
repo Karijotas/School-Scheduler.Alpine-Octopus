@@ -32,6 +32,8 @@ public class Teacher {
     private double workHoursPerWeek;
     private String shift;
 
+    private Boolean deleted = Boolean.FALSE;
+
     @CreatedDate
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
@@ -47,43 +49,8 @@ public class Teacher {
     @LastModifiedBy
     private String modifiedBy;
 
-    @ManyToMany (mappedBy = "subjectTeachers")
-    @JsonIgnore
-    private Set<Subject> teachersSubjects = new HashSet<>();;
 
     public Teacher(){}
-
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public LocalDateTime getModifiedDate() {
-        return modifiedDate;
-    }
-
-    public void setModifiedDate(LocalDateTime modifiedDate) {
-        this.modifiedDate = modifiedDate;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public String getModifiedBy() {
-        return modifiedBy;
-    }
-
-    public void setModifiedBy(String modifiedBy) {
-        this.modifiedBy = modifiedBy;
-    }
 
     public Long getId() {
         return id;
@@ -149,12 +116,44 @@ public class Teacher {
         this.shift = shift;
     }
 
-    public Set<Subject> getTeachersSubjects() {
-        return teachersSubjects;
+    public Boolean getDeleted() {
+        return deleted;
     }
 
-    public void setTeachersSubjects(Set<Subject> teachersSubjects) {
-        this.teachersSubjects = teachersSubjects;
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public LocalDateTime getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(LocalDateTime modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
     }
 
     @Override
@@ -162,30 +161,12 @@ public class Teacher {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Teacher teacher = (Teacher) o;
-        return Double.compare(teacher.getWorkHoursPerWeek(), getWorkHoursPerWeek()) == 0 && Objects.equals(getId(), teacher.getId()) && Objects.equals(getName(), teacher.getName()) && Objects.equals(getSurname(), teacher.getSurname()) && Objects.equals(getLoginEmail(), teacher.getLoginEmail()) && Objects.equals(getContactEmail(), teacher.getContactEmail()) && Objects.equals(getPhone(), teacher.getPhone()) && Objects.equals(getShift(), teacher.getShift()) && Objects.equals(getCreatedDate(), teacher.getCreatedDate()) && Objects.equals(getModifiedDate(), teacher.getModifiedDate()) && Objects.equals(getCreatedBy(), teacher.getCreatedBy()) && Objects.equals(getModifiedBy(), teacher.getModifiedBy()) && Objects.equals(getTeachersSubjects(), teacher.getTeachersSubjects());
+        return Double.compare(teacher.workHoursPerWeek, workHoursPerWeek) == 0 && Objects.equals(id, teacher.id) && Objects.equals(name, teacher.name) && Objects.equals(surname, teacher.surname) && Objects.equals(loginEmail, teacher.loginEmail) && Objects.equals(contactEmail, teacher.contactEmail) && Objects.equals(phone, teacher.phone) && Objects.equals(shift, teacher.shift) && Objects.equals(deleted, teacher.deleted) && Objects.equals(createdDate, teacher.createdDate) && Objects.equals(modifiedDate, teacher.modifiedDate) && Objects.equals(createdBy, teacher.createdBy) && Objects.equals(modifiedBy, teacher.modifiedBy);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getSurname(), getLoginEmail(), getContactEmail(), getPhone(), getWorkHoursPerWeek(), getShift(), getCreatedDate(), getModifiedDate(), getCreatedBy(), getModifiedBy(), getTeachersSubjects());
+        return Objects.hash(id, name, surname, loginEmail, contactEmail, phone, workHoursPerWeek, shift, deleted, createdDate, modifiedDate, createdBy, modifiedBy);
     }
 
-    @Override
-    public String toString() {
-        return "Teacher{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", loginEmail='" + loginEmail + '\'' +
-                ", contactEmail='" + contactEmail + '\'' +
-                ", phone='" + phone + '\'' +
-                ", workHoursPerWeek=" + workHoursPerWeek +
-                ", shift='" + shift + '\'' +
-                ", createdDate=" + createdDate +
-                ", modifiedDate=" + modifiedDate +
-                ", createdBy='" + createdBy + '\'' +
-                ", modifiedBy='" + modifiedBy + '\'' +
-                ", teachersSubjects=" + teachersSubjects +
-                '}';
-    }
 }
