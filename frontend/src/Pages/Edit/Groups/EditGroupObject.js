@@ -48,7 +48,7 @@ export function EditGroupObject() {
         fetch('/api/v1/groups/' + params.id)
             .then(response => response.json())
             .then(setGroups);
-    }, [active]);
+    }, [active, params]);
 
 
 
@@ -101,7 +101,7 @@ export function EditGroupObject() {
 
 
         <div>
-            
+
 
             <MainMenu />
             <Grid columns={2}>
@@ -124,7 +124,7 @@ export function EditGroupObject() {
                                     <Table.Row  >
                                         <Table.Cell width={6} >{groups.name}</Table.Cell>
                                         <Table.Cell >{groups.schoolYear}</Table.Cell>
-                                        <Table.Cell collapsing > {groups.modifiedDate}  </Table.Cell>
+                                        <Table.Cell width={3} > {groups.modifiedDate}  </Table.Cell>
                                         <Table.Cell collapsing> <Button id='details' className='controls' onClick={editThis}>Redaguoti</Button> </Table.Cell>
                                     </Table.Row>
 
