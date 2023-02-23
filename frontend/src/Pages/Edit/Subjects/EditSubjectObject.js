@@ -41,7 +41,7 @@ export function EditSubjectObject() {
   const [subjectId, setSubjectId] = useState("");
   const [subjects, setSubjects] = useState({
     name: "",
-    subjectModules: "",
+    subjectModules: [],
     description: "",
     createdDate: "",
     modifiedDate: "",
@@ -63,6 +63,13 @@ export function EditSubjectObject() {
   //         .then(jsonResponse => setModulesInSubjects(jsonResponse));
   // };
 
+  const getModulesInSubjects = ()  => {
+    fetch(`/api/v1/subjects/${params.id}/modules`)
+      .then((response) => response.json())
+      .then(setModulesInSubjects)
+      .then(console.log(modulesInSubjects));
+  };
+
   useEffect(() => {
     fetch(`/api/v1/subjects/${params.id}/modules`)
       .then((response) => response.json())
@@ -70,12 +77,26 @@ export function EditSubjectObject() {
       .then(console.log(modulesInSubjects));
   }, [params]);
 
+  const getRoomsInSubjects = ()  => {
+    fetch(`/api/v1/subjects/${params.id}/rooms`)
+      .then((response) => response.json())
+      .then(setRoomsInSubjects)
+      .then(console.log(roomsInSubjects));
+  };
+
   useEffect(() => {
     fetch(`/api/v1/subjects/${params.id}/rooms`)
       .then((response) => response.json())
       .then(setRoomsInSubjects)
       .then(console.log(roomsInSubjects));
   }, [params]);
+
+  const getTeachersInSubjects = ()  => {
+    fetch(`/api/v1/subjects/${params.id}/teachers`)
+      .then((response) => response.json())
+      .then(setTeachersInSubjects)
+      .then(console.log(teachersInSubjects));
+  };
 
   useEffect(() => {
     fetch(`/api/v1/subjects/${params.id}/teachers`)
@@ -162,14 +183,15 @@ export function EditSubjectObject() {
         subjectId,
         module,
       }),
-    });
+    }).then(getModulesInSubjects);
   };
 
   const removeModule = (subjectId, moduleId) => {
     fetch(`/api/v1/subjects/${subjectId}/modules/${moduleId}`, {
       method: "DELETE",
       headers: JSON_HEADERS,
-    });
+    })
+    .then(getModulesInSubjects);
   };
 
   const addTeacher = (subjectId, teacherId) => {
@@ -180,14 +202,14 @@ export function EditSubjectObject() {
         subjectId,
         teacher,
       }),
-    });
+    }).then(getTeachersInSubjects);
   };
 
   const removeTeacher = (subjectId, teacherId) => {
     fetch(`/api/v1/subjects/${subjectId}/teachers/${teacherId}`, {
       method: "DELETE",
       headers: JSON_HEADERS,
-    });
+    }).then(getTeachersInSubjects);
   };
 
   const addRoom = (subjectId, roomId) => {
@@ -198,15 +220,36 @@ export function EditSubjectObject() {
         subjectId,
         room,
       }),
-    });
+    }).then(getRoomsInSubjects);
   };
 
   const removeRoom = (subjectId, roomId) => {
     fetch(`/api/v1/subjects/${subjectId}/rooms/${roomId}`, {
       method: "DELETE",
       headers: JSON_HEADERS,
-    });
+    }).then(getRoomsInSubjects);
   };
+
+  useEffect(() => {
+    fetch(`/api/v1/subjects/${params.id}/modules`)
+      .then((response) => response.json())
+      .then(setModulesInSubjects)
+      .then(console.log(modulesInSubjects));
+  }, [params]);
+
+  useEffect(() => {
+    fetch(`/api/v1/subjects/${params.id}/teachers`)
+      .then((response) => response.json())
+      .then(setTeachersInSubjects)
+      .then(console.log(teachersInSubjects));
+  }, [params]);
+
+  useEffect(() => {
+    fetch(`/api/v1/subjects/${params.id}/rooms`)
+      .then((response) => response.json())
+      .then(setRoomsInSubjects)
+      .then(console.log(roomsInSubjects));
+  }, [params]);
 
   return (
     <div>
@@ -284,7 +327,7 @@ export function EditSubjectObject() {
                         {teachersInSubjects.map((teacher) => (
                           <Table.Row key={teacher.id}>
                             <Table.Cell>
-                              {teacher.name} {teacher.surname}
+                              {teacher.name + " " + teacher.surname}
                             </Table.Cell>
                           </Table.Row>
                         ))}
@@ -406,11 +449,14 @@ export function EditSubjectObject() {
                                   </Form.Field>
                                 </Form.Group>
                                 <Divider hidden />
-                                <List.Content>
+                                <List.Content floated="left">
                                   <Button
                                     onClick={() =>
                                       addModule(params.id, moduleId)
                                     }
+                                    // onClose={fetch(
+                                    //   `/api/v1/subjects/${params.id}/modules`
+                                    // )}
                                   >
                                     Pridėti
                                   </Button>
@@ -438,7 +484,9 @@ export function EditSubjectObject() {
                             <Table.Body>
                               {teachersInSubjects.map((teacher) => (
                                 <Table.Row key={teacher.id}>
-                                  <Table.Cell>{teacher.name}</Table.Cell>
+                                  <Table.Cell>
+                                    {teacher.name + " " + teacher.surname}
+                                  </Table.Cell>
                                   <Table.Cell collapsing>
                                     <Button
                                       basic
@@ -465,16 +513,19 @@ export function EditSubjectObject() {
                                         setTeacher(e.target.value),
                                         setTeacherId(data.value)
                                       )}
-                                      onClose={() => console.log(moduleId)}
+                                      // onClose={() => console.log(moduleId)}
                                     />
                                   </Form.Field>
                                 </Form.Group>
                                 <Divider hidden />
-                                <List.Content>
+                                <List.Content floated="left">
                                   <Button
                                     onClick={() =>
                                       addTeacher(params.id, teacherId)
                                     }
+                                    // onChange={fetch(
+                                    //   `/api/v1/subjects/${params.id}/teachers`
+                                    // )}
                                   >
                                     Pridėti
                                   </Button>
@@ -529,14 +580,17 @@ export function EditSubjectObject() {
                                         setRoom(e.target.value),
                                         setRoomId(data.value)
                                       )}
-                                      onClose={() => console.log(roomId)}
+                                      // onClose={() => console.log(roomId)}
                                     />
                                   </Form.Field>
                                 </Form.Group>
                                 <Divider hidden />
-                                <List.Content>
+                                <List.Content floated="left">
                                   <Button
                                     onClick={() => addRoom(params.id, roomId)}
+                                    // onClose={fetch(
+                                    //   `/api/v1/subjects/${params.id}/rooms`
+                                    // )}
                                   >
                                     Pridėti
                                   </Button>
