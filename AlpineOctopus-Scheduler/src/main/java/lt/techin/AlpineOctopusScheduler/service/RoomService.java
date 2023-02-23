@@ -6,6 +6,7 @@ import lt.techin.AlpineOctopusScheduler.api.dto.RoomEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.RoomMapper;
 import lt.techin.AlpineOctopusScheduler.dao.RoomRepository;
 import lt.techin.AlpineOctopusScheduler.model.Room;
+import lt.techin.AlpineOctopusScheduler.model.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,18 +31,18 @@ public class RoomService {
 
         Pageable pageable = PageRequest.of(page, pageSize);
 
-        return roomRepository.findAll(pageable).stream().map(RoomMapper::toRoomEntityDto).collect(Collectors.toList());
+        return roomRepository.findAll(pageable).stream().sorted(Comparator.comparing(Room::getModifiedDate).reversed()).map(RoomMapper::toRoomEntityDto).collect(Collectors.toList());
     }
     @Transactional(readOnly = true)
     public List<RoomEntityDto> getPagedRoomsByNameContaining(String nameText, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        return roomRepository.findByNameContainingIgnoreCase(nameText, pageable).stream()
+        return roomRepository.findByNameContainingIgnoreCase(nameText, pageable).stream().sorted(Comparator.comparing(Room::getModifiedDate).reversed())
                 .map(RoomMapper::toRoomEntityDto).collect(Collectors.toList());
     }
     @Transactional(readOnly = true)
     public List<RoomEntityDto> getPagedBuildingsByNameContaining(String buildingText, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        return roomRepository.findByBuildingContainingIgnoreCase(buildingText, pageable).stream()
+        return roomRepository.findByBuildingContainingIgnoreCase(buildingText, pageable).stream().sorted(Comparator.comparing(Room::getModifiedDate).reversed())
                 .map(RoomMapper::toRoomEntityDto).collect(Collectors.toList());
     }
 

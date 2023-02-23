@@ -1,6 +1,8 @@
 package lt.techin.AlpineOctopusScheduler.service;
 
 
+import lt.techin.AlpineOctopusScheduler.api.dto.SubjectDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ModuleMapper;
 import lt.techin.AlpineOctopusScheduler.dao.ProgramRepository;
 
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
@@ -22,9 +24,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -60,7 +65,8 @@ public class SubjectService {
 
         Pageable pageable = PageRequest.of(page, pageSize);
 
-        return subjectRepository.findAll(pageable).stream().map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
+        return subjectRepository.findAll(pageable).stream().sorted(Comparator.comparing(Subject::getModifiedDate).reversed()).
+                map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
     }
 
 
@@ -72,7 +78,17 @@ public class SubjectService {
     @Transactional(readOnly = true)
     public List<SubjectEntityDto> getPagedSubjectsByNameContaining(String nameText, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        return subjectRepository.findByNameContainingIgnoreCase(nameText, pageable).stream()
+        return subjectRepository.findByNameContainingIgnoreCase(nameText, pageable).stream().sorted(Comparator.comparing(Subject::getModifiedDate).reversed())
+                .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<SubjectEntityDto> getPagedSubjectsByNameAndByModuleContaining(String nameText,String moduleText, int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        var createdModule = moduleRepository.findByNameContainingIgnoreCase(moduleText, pageable).stream()
+                .findFirst();
+        return subjectRepository.findAll().stream().
+                filter(subjects -> subjects.getSubjectModules().contains(createdModule)).sorted(Comparator.comparing(Subject::getModifiedDate).reversed())
                 .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
     }
 

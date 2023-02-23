@@ -12,7 +12,7 @@ import {
   List,
 } from "semantic-ui-react";
 import MainMenu from "../../../Components/MainMenu";
-import { EditMenu } from '../../../Components/EditMenu';
+import { EditMenu } from "../../../Components/EditMenu";
 import { CreateSubjecPage } from "./CreateSubjectPage";
 import { NavLink } from "react-router-dom";
 
@@ -33,10 +33,10 @@ export function ViewSubjects() {
   const [activePage, setActivePage] = useState(0);
   const [pagecount, setPageCount] = useState();
   const [modulesInSubjects, setModulesInSubjects] = useState([]);
-  const [moduleText, setModuleText] = useState();
+  const [moduleText, setModuleText] = useState("");
 
-  const fetchSubjectsBYModules = async () => {
-    fetch("/api/v1/subjects/module-filter/" + moduleText)
+  const fetchSubjectsByModules = async () => {
+    fetch(`/api/v1/subjects/module-filter/${nameText}?page=` + moduleText)
       .then((response) => response.json())
       .then((jsonResponse) => setSubjects(jsonResponse));
   };
@@ -75,6 +75,20 @@ export function ViewSubjects() {
   useEffect(() => {
     nameText.length > 0 ? fetchFilterSubjects() : fetchSubjects();
   }, [activePage, nameText]);
+
+  // useEffect(() => {
+  //   moduleText.length > 0 ? fetchSubjectsByModules() : fetchSubjects();
+  // }, [activePage, moduleText]);
+
+ 
+// useEffect(() => {
+//   nameText.length > 0? fetchFilterSubjects() : (moduleText.length > 0 ? fetchSubjectsByModules() : fetchSubjects())
+// }, [activePage, nameText]);
+
+
+  // useEffect(() => {
+  //   moduleText.length > 0 ? fetchSubjectsByModules() : fetchSubjects();
+  // }, [activePage, moduleText]);
 
   const [open, setOpen] = useState(false);
   const [close, setClose] = useState(false);
@@ -140,20 +154,20 @@ export function ViewSubjects() {
                   </Table.Header>
 
                   <Table.Body>
-              {subjects.map((subject) => (
-                <Table.Row key={subject.id}>
-                  <Table.Cell>{subject.name}</Table.Cell>
-                  <Table.Cell>
-                    <List bulleted>
-                      {console.log(subject.subjectModules)}
-                      {subject.subjectModules.map((module) => (
-                        <List.Content key={module.id}>
-                          <List.Item>{module.name}</List.Item>
-                        </List.Content>
-                      ))}
-                    </List>
-                  </Table.Cell>
-                  <Table.Cell collapsing>
+                    {subjects.map((subject) => (
+                      <Table.Row key={subject.id}>
+                        <Table.Cell>{subject.name}</Table.Cell>
+                        <Table.Cell>
+                          <List bulleted>
+                            {console.log(subject.subjectModules)}
+                            {subject.subjectModules.map((module) => (
+                              <List.Content key={module.id}>
+                                <List.Item>{module.name}</List.Item>
+                              </List.Content>
+                            ))}
+                          </List>
+                        </Table.Cell>
+                        <Table.Cell collapsing>
                           <Button
                             basic
                             primary

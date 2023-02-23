@@ -69,8 +69,7 @@ public class SubjectController {
     public List<SubjectEntityDto> getPagedAllSubjects(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
                                                       @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
 
-        return subjectService.getPagedAllSubjects(page, pageSize);
-
+        return subjectService.getPagedAllSubjects(page,pageSize);
     }
 
     @GetMapping(path = "page/name-filter/{nameText}")

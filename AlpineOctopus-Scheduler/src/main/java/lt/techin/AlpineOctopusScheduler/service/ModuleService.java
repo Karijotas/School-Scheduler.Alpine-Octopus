@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Table;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -78,7 +79,7 @@ public class ModuleService {
     @Transactional(readOnly = true)
     public List<ModuleEntityDto> getPagedModulesByNameContaining(String nameText, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        return moduleRepository.findByNameContainingIgnoreCase(nameText, pageable).stream()
+        return moduleRepository.findByNameContainingIgnoreCase(nameText, pageable).stream().sorted(Comparator.comparing(Module::getModifiedDate).reversed())
                 .map(ModuleMapper::toModuleEntityDto).collect(Collectors.toList());
     }
 
@@ -86,7 +87,7 @@ public class ModuleService {
 
         Pageable pageable = PageRequest.of(page, pageSize);
 
-        return moduleRepository.findAll(pageable).stream().map(ModuleMapper::toModuleEntityDto).collect(Collectors.toList());
+        return moduleRepository.findAll(pageable).stream().sorted(Comparator.comparing(Module::getModifiedDate).reversed()).map(ModuleMapper::toModuleEntityDto).collect(Collectors.toList());
     }
 
 //    public Module addSubjectToModule(Long moduleId, Long subjectId) {

@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -42,17 +43,17 @@ public class GroupService {
 
         Pageable pageable = PageRequest.of(page, pageSize);
 
-        return groupsRepository.findAll(pageable).stream().collect(Collectors.toList());
+        return groupsRepository.findAll(pageable).stream().sorted(Comparator.comparing(Groups::getModifiedDate).reversed()).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public List<GroupsEntityDto> getGroupsByNameContaining(String nameText) {
-        return groupsRepository.findByNameContainingIgnoreCase(nameText).stream()
+        return groupsRepository.findByNameContainingIgnoreCase(nameText).stream().sorted(Comparator.comparing(Groups::getModifiedDate).reversed())
                 .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
     }
     @Transactional(readOnly = true)
     public List<GroupsEntityDto> getGroupsBySchoolYear(Integer schoolYearText) {
-        return groupsRepository.findBySchoolYear(schoolYearText).stream()
+        return groupsRepository.findBySchoolYear(schoolYearText).stream().sorted(Comparator.comparing(Groups::getModifiedDate).reversed())
                 .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
     }
 
@@ -60,7 +61,7 @@ public class GroupService {
     @Transactional(readOnly = true)
     public List<GroupsEntityDto> getGroupsByProgram(String programText) {
         Program createdProgram = programRepository.findByNameContainingIgnoreCase(programText).stream().findAny().get();
-        return groupsRepository.findAll().stream().filter(groups -> groups.getProgram().equals(createdProgram))
+        return groupsRepository.findAll().stream().sorted(Comparator.comparing(Groups::getModifiedDate).reversed()).filter(groups -> groups.getProgram().equals(createdProgram))
                 .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
     }
 

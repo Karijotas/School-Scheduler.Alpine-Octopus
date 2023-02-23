@@ -11,6 +11,7 @@ import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Program;
 import lt.techin.AlpineOctopusScheduler.model.ProgramSubjectHours;
 import lt.techin.AlpineOctopusScheduler.model.ProgramSubjectHoursList;
+import lt.techin.AlpineOctopusScheduler.model.Room;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import org.springframework.data.domain.PageRequest;
@@ -42,14 +43,14 @@ public class ProgramService {
     }
 
     public List<ProgramEntityDto> getAllPrograms() {
-        return programRepository.findAll().stream().map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
+        return programRepository.findAll().stream().sorted(Comparator.comparing(Program::getModifiedDate).reversed()).map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
     public List<ProgramEntityDto> getPagedAllPrograms(int page, int pageSize) {
 
         Pageable pageable = PageRequest.of(page, pageSize);
 
-        return programRepository.findAll(pageable).stream().map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
+        return programRepository.findAll(pageable).stream().sorted(Comparator.comparing(Program::getModifiedDate).reversed()).map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
     public Optional<Program> getById(Long id) {
@@ -58,14 +59,14 @@ public class ProgramService {
 
     @Transactional(readOnly = true)
     public List<ProgramEntityDto> getProgramsByNameContaining(String nameText) {
-        return programRepository.findByNameContainingIgnoreCase(nameText).stream()
+        return programRepository.findByNameContainingIgnoreCase(nameText).stream().sorted(Comparator.comparing(Program::getModifiedDate).reversed())
                 .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public List<ProgramEntityDto> getPagedProgramsByNameContaining(String nameText, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        return programRepository.findByNameContainingIgnoreCase(nameText, pageable).stream()
+        return programRepository.findByNameContainingIgnoreCase(nameText, pageable).stream().sorted(Comparator.comparing(Program::getModifiedDate).reversed())
                 .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
