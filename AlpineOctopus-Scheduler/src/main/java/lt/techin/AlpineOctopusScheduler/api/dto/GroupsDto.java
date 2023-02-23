@@ -1,7 +1,6 @@
 package lt.techin.AlpineOctopusScheduler.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lt.techin.AlpineOctopusScheduler.model.Program;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -25,7 +24,9 @@ public class GroupsDto {
     private String createdBy;
 
     private String modifiedBy;
-    public GroupsDto(){}
+
+    public GroupsDto() {
+    }
 
     public GroupsDto(String name, Integer schoolYear, Integer studentAmount, String shift, Long programId, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy, Boolean deleted) {
         this.name = name;
@@ -38,6 +39,13 @@ public class GroupsDto {
         this.createdBy = createdBy;
         this.modifiedBy = modifiedBy;
         this.deleted = deleted;
+    }
+
+    public boolean schoolYearIsValid() {
+        if (getSchoolYear() >= 2023 && getSchoolYear() <= 3032) {
+            return true;
+        }
+        return false;
     }
 
     public Long getProgramId() {

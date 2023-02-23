@@ -3,7 +3,9 @@ package lt.techin.AlpineOctopusScheduler.model;
 import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import java.util.Objects;
+
 @Entity
 public class ProgramSubjectHours {
 
@@ -14,10 +16,12 @@ public class ProgramSubjectHours {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "program_id")
     @JsonIgnore
+    @Valid
     Program program;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_id")
+    @Valid
     Subject subject;
 
     Integer subjectHours;

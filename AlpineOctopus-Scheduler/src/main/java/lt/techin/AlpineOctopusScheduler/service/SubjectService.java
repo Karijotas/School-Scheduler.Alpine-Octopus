@@ -1,21 +1,12 @@
 package lt.techin.AlpineOctopusScheduler.service;
 
 
-import lt.techin.AlpineOctopusScheduler.dao.ProgramRepository;
-
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper;
-
-import lt.techin.AlpineOctopusScheduler.dao.ModuleRepository;
-import lt.techin.AlpineOctopusScheduler.dao.RoomRepository;
-
-import lt.techin.AlpineOctopusScheduler.dao.SubjectRepository;
-import lt.techin.AlpineOctopusScheduler.dao.TeacherRepository;
+import lt.techin.AlpineOctopusScheduler.dao.*;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
-
 import lt.techin.AlpineOctopusScheduler.model.Module;
 import lt.techin.AlpineOctopusScheduler.model.Room;
-
 import lt.techin.AlpineOctopusScheduler.model.Subject;
 import lt.techin.AlpineOctopusScheduler.model.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -43,13 +36,23 @@ public class SubjectService {
 
     private final ProgramRepository programRepository;
 
+    private final Validator validator;
+
     @Autowired
-    public SubjectService(SubjectRepository subjectRepository, ModuleRepository moduleRepository, TeacherRepository teacherRepository, RoomRepository roomRepository, ProgramRepository programRepository) {
+    public SubjectService(SubjectRepository subjectRepository, ModuleRepository moduleRepository, TeacherRepository teacherRepository, RoomRepository roomRepository, ProgramRepository programRepository, Validator validator) {
         this.subjectRepository = subjectRepository;
         this.moduleRepository = moduleRepository;
         this.teacherRepository = teacherRepository;
         this.roomRepository = roomRepository;
         this.programRepository = programRepository;
+        this.validator = validator;
+    }
+
+    void validateInputWithInjectedValidator(Subject subject) {
+        Set<ConstraintViolation<Subject>> violations = validator.validate(subject);
+        if (!violations.isEmpty()) {
+            throw new SchedulerValidationException(violations.toString(), "Subject", "Error in subject entity", subject.toString());
+        }
     }
 
     public List<Subject> getAll() {
@@ -62,7 +65,6 @@ public class SubjectService {
 
         return subjectRepository.findAll(pageable).stream().map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
     }
-
 
 
     public Optional<Subject> getById(Long id) {
@@ -78,10 +80,12 @@ public class SubjectService {
     }
 
     public Subject create(Subject subject) {
+        validateInputWithInjectedValidator(subject);
         return subjectRepository.save(subject);
     }
 
     public Subject update(Long id, Subject subject) {
+        validateInputWithInjectedValidator(subject);
         var existingSubject = subjectRepository.findById(id)
                 .orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
                         "id", "Subject not found", id.toString()));
@@ -94,11 +98,11 @@ public class SubjectService {
         return subjectRepository.save(existingSubject);
     }
 
-    public Boolean deleteById(Long id){
-        try{
+    public Boolean deleteById(Long id) {
+        try {
             subjectRepository.deleteById(id);
             return true;
-        } catch (EmptyResultDataAccessException e){
+        } catch (EmptyResultDataAccessException e) {
             return false;
         }
     }
@@ -151,7 +155,7 @@ public class SubjectService {
         return subjectRepository.save(existingSubject);
     }
 
-  public Set<Module> getAllModulesById (Long subjectId){
+    public Set<Module> getAllModulesById(Long subjectId) {
         return subjectRepository.findById(subjectId).get().getSubjectModules();
-  }
+    }
 }

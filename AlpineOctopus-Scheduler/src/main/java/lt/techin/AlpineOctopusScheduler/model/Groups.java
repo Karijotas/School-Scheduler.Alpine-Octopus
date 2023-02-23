@@ -6,11 +6,11 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.Entity;
 import javax.persistence.*;
-import javax.validation.constraints.Min;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -21,16 +21,15 @@ public class Groups {
     private Long id;
 
     @NotBlank
-    @Column(unique = true)
+    @Size(max = 100, message = "A group name shouldn't be longer than 100 characters or shorter than 1")
     private String name;
     @NotNull
-    @Min(value = 2023, message = "School year should not be less than year the application was made")
     private Integer schoolYear;
     @NotNull
     private Integer studentAmount;
+    @Valid
     @ManyToOne
     private Program program;
-    @NotBlank
     private String shift;
 
     private Boolean deleted = Boolean.FALSE;
@@ -65,7 +64,15 @@ public class Groups {
         modifiedBy = "API app";
     }
 
-    public Groups(){}
+    public Groups() {
+    }
+
+    public boolean schoolYearIsValid() {
+        if (getSchoolYear() >= 2023 && getSchoolYear() <= 3032) {
+            return true;
+        }
+        return false;
+    }
 
     public Long getId() {
         return id;
