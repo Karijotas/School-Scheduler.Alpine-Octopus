@@ -1,10 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 import {
-  Button, Divider, Form, Grid, Icon, Input, List, Segment, Select, Table, TextArea
+  Button,
+  Divider,
+  Form,
+  Grid,
+  Icon,
+  Input,
+  List,
+  Segment,
+  Select,
+  Table,
+  TextArea,
 } from "semantic-ui-react";
-import MainMenu from '../../../Components/MainMenu';
-import { EditMenu } from '../EditMenu';
+import MainMenu from "../../../Components/MainMenu";
+import { EditMenu } from "../EditMenu";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -23,7 +33,6 @@ export function EditProgramObject() {
   const [programName, setProgramName] = useState("");
   const [programDescription, setProgramDescription] = useState("");
 
-
   const subjectOptions = [
     { key: 23, value: 2023, text: "2023" },
     { key: 24, value: 2024, text: "2024" },
@@ -41,60 +50,62 @@ export function EditProgramObject() {
     modifiedDate: "",
   });
 
-
   useEffect(() => {
     fetch("/api/v1/programs/" + params.id)
       .then((response) => response.json())
       .then(setPrograms);
-  }, []);
+  }, [totalHours]);
 
   useEffect(() => {
     fetch(`/api/v1/programs/${params.id}/subjects`)
       .then((response) => response.json())
       .then(setSubjectsInProgram)
       .then(console.log(subjectsInProgram));
-  }, [params]);
+  }, [params, totalHours, subjectHours]);
 
   const getSubjectsInProgram = () => {
     fetch(`/api/v1/programs/${params.id}/subjects`)
       .then((response) => response.json())
       .then(setSubjectsInProgram)
       .then(console.log(subjectsInProgram));
-  }
+  };
 
   useEffect(() => {
     fetch(`/api/v1/programs/${params.id}/subjects/hours`)
       .then((response) => response.json())
       .then(setTotalHours);
-  }, [params]);
+  }, [subjectHours]);
 
   const removeSubject = (programId, subjectId, hours) => {
     fetch(`/api/v1/programs/${programId}/subjects/${subjectId}/${hours}`, {
       method: "DELETE",
       headers: JSON_HEADERS,
-    }).then(getSubjectsInProgram)
+    })
+      .then(getSubjectsInProgram)
       .then((response) => response.json())
       .then(setTotalHours);
-
   };
 
   const addSubjectAndHours = (programId, subjectId, hours) => {
-    fetch(`/api/v1/programs/${programId}/subjects/${subjectId}/${hours}/newSubjectsWithHours`, {
-      method: "POST",
-      header: JSON_HEADERS,
-      body: JSON.stringify({
-        programId,
-        subject,
-        subjectHours,
-      }),
-    }).then(getSubjectsInProgram)
-    .then((response) => response.json())
-    .then(setSubjectsInProgram)
-    .then(console.log(subjectsInProgram))
+    fetch(
+      `/api/v1/programs/${programId}/subjects/${subjectId}/${hours}/newSubjectsWithHours`,
+      {
+        method: "POST",
+        header: JSON_HEADERS,
+        body: JSON.stringify({
+          programId,
+          subject,
+          subjectHours,
+        }),
+      }
+    )
+      .then(getSubjectsInProgram)
+      .then((response) => response.json())
+      .then(setSubjectsInProgram)
+      .then(console.log(subjectsInProgram))
       .then((response) => response.json())
       .then(setTotalHours);
   };
-
 
   useEffect(() => {
     fetch("/api/v1/subjects/")
@@ -112,18 +123,14 @@ export function EditProgramObject() {
     setHide(true);
   };
 
-
-
   const updatePrograms = () => {
-    fetch('/api/v1/programs/' + params.id, {
+    fetch("/api/v1/programs/" + params.id, {
       method: "PATCH",
       headers: JSON_HEADERS,
-      body: JSON.stringify({
-
-      }),
+      body: JSON.stringify({}),
     })
       .then(console.log(programs))
-      .then(result => {
+      .then((result) => {
         if (!result.ok) {
           setError("Update failed");
         } else {
@@ -151,18 +158,17 @@ export function EditProgramObject() {
   //     .then(() => window.location = listUrl);
   // }
 
-
-
   return (
-    <div><MainMenu />
+    <div>
+      <MainMenu />
 
-      <Grid columns={2} >
-        <Grid.Column width={2} id='main'>
+      <Grid columns={2}>
+        <Grid.Column width={2} id="main">
           <EditMenu />
         </Grid.Column>
 
-        <Grid.Column textAlign='left' verticalAlign='top' width={13}>
-          <Segment id='segment' raised color='teal'>
+        <Grid.Column textAlign="left" verticalAlign="top" width={13}>
+          <Segment id="segment" raised color="teal">
             {active && !hide && (
               <div>
                 <Table celled color="violet">
@@ -170,7 +176,9 @@ export function EditProgramObject() {
                     <Table.Row>
                       <Table.HeaderCell>Programos pavadinimas</Table.HeaderCell>
                       <Table.HeaderCell>Aprašymas</Table.HeaderCell>
-                      <Table.HeaderCell>Paskutinis atnaujinimas</Table.HeaderCell>
+                      <Table.HeaderCell>
+                        Paskutinis atnaujinimas
+                      </Table.HeaderCell>
                       <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
@@ -180,7 +188,10 @@ export function EditProgramObject() {
                       <Table.Cell>{programs.name}</Table.Cell>
                       <Table.Cell>{programs.description}</Table.Cell>
 
-                      <Table.Cell collapsing> {programs.modifiedDate} </Table.Cell>
+                      <Table.Cell collapsing>
+                        {" "}
+                        {programs.modifiedDate}{" "}
+                      </Table.Cell>
 
                       <Table.Cell collapsing>
                         <Button onClick={editThis}>Redaguoti</Button>
@@ -192,7 +203,9 @@ export function EditProgramObject() {
                 <Table>
                   <Table.Header>
                     <Table.Row>
-                      <Table.HeaderCell width={6}>Programos dalykai</Table.HeaderCell>
+                      <Table.HeaderCell width={6}>
+                        Programos dalykai
+                      </Table.HeaderCell>
                       <Table.HeaderCell width={8}></Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
@@ -201,13 +214,15 @@ export function EditProgramObject() {
                       <Table.Row key={subject.id}>
                         <Table.Cell>{subject.subject.name}</Table.Cell>
                         <Table.Cell>{subject.subjectHours} val.</Table.Cell>
-
-
                       </Table.Row>
                     ))}
                     <Table.Row>
-                      <Table.Cell><h5>Programos valandų skaičius:</h5></Table.Cell>
-                      <Table.Cell><h5>{totalHours} val.</h5></Table.Cell>
+                      <Table.Cell>
+                        <h5>Programos valandų skaičius:</h5>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <h5>{totalHours} val.</h5>
+                      </Table.Cell>
                     </Table.Row>
                   </Table.Body>
                 </Table>
@@ -215,7 +230,7 @@ export function EditProgramObject() {
                   icon
                   labelPosition="left"
                   className=""
-                  href='#/view/programs'
+                  href="#/view/programs"
                 >
                   <Icon name="arrow left" />
                   Atgal
@@ -229,8 +244,9 @@ export function EditProgramObject() {
                     <Table.Row>
                       <Table.HeaderCell>Programos pavadinimas</Table.HeaderCell>
                       <Table.HeaderCell>Aprašymas</Table.HeaderCell>
-                      <Table.HeaderCell>Paskutinis atnaujinimas</Table.HeaderCell>
-
+                      <Table.HeaderCell>
+                        Paskutinis atnaujinimas
+                      </Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
 
@@ -239,7 +255,9 @@ export function EditProgramObject() {
                       <Table.Cell collapsing>
                         <Input
                           value={programs.name}
-                          onChange={(e, data) => ((updateProperty('name', e)), (setProgramName(data)))}
+                          onChange={(e, data) => (
+                            updateProperty("name", e), setProgramName(data)
+                          )}
                         />
                       </Table.Cell>
                       <Table.Cell collapsing>
@@ -249,7 +267,7 @@ export function EditProgramObject() {
                             placeholder={programs.description}
                             value={programs.description}
                             /*options={yearOptions} value={groups.schoolYear} */
-                            onChange={(e) => updateProperty('description', e)}
+                            onChange={(e) => updateProperty("description", e)}
                           />
                         </Form>
                         {console.log(programs.description)}
@@ -263,8 +281,10 @@ export function EditProgramObject() {
                         <Table.Cell collapsing><Input options={shiftOptions} placeholder={groups.shift} value={groups.shift} onChange={(e) => updateProperty('shift', e)} /> */}
                       {/* </Table.Cell> */}
 
-                      <Table.Cell collapsing> {programs.modifiedDate} </Table.Cell>
-
+                      <Table.Cell collapsing>
+                        {" "}
+                        {programs.modifiedDate}{" "}
+                      </Table.Cell>
                     </Table.Row>
                   </Table.Body>
                 </Table>
@@ -274,7 +294,9 @@ export function EditProgramObject() {
                       <Table.HeaderCell width={8}>
                         Dalyko pavadinimas
                       </Table.HeaderCell>
-                      <Table.HeaderCell width={8}>Pridėti dalykai</Table.HeaderCell>
+                      <Table.HeaderCell width={8}>
+                        Pridėti dalykai
+                      </Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
                   <Divider hidden />
@@ -282,14 +304,17 @@ export function EditProgramObject() {
                     <Table.Row>
                       <Table.Cell>
                         <List textAlign="center" divided verticalAlign="middle">
-                          <List.Item >
+                          <List.Item>
                             <Form.Group widths="equal">
                               <Form.Field>
                                 <Select
                                   options={subjects}
                                   placeholder="Dalykai"
                                   value={subject}
-                                  onChange={(e, data) => (setSubject(e.target.value), setSubjectId(data.value))}
+                                  onChange={(e, data) => (
+                                    setSubject(e.target.value),
+                                    setSubjectId(data.value)
+                                  )}
                                   onClose={() => console.log(subjectId)}
                                 />
                               </Form.Field>
@@ -299,13 +324,27 @@ export function EditProgramObject() {
                               <Input
                                 placeholder="Valandų skaičius"
                                 value={subjectHours}
-                                onChange={(e) => setSubjectHours(e.target.value)}
+                                onChange={(e) =>
+                                  setSubjectHours(e.target.value)
+                                }
                               />
                             </List.Content>
                             <Divider hidden />
                             <List.Content floated="left">
-                              <Button onClick={() => addSubjectAndHours(params.id, subjectId, subjectHours)}
-                              onClose={fetch(`/api/v1/programs/${params.id}/subjects`)}>Pridėti</Button>
+                              <Button
+                                onClick={() =>
+                                  addSubjectAndHours(
+                                    params.id,
+                                    subjectId,
+                                    subjectHours
+                                  )
+                                }
+                                // onClose={fetch(
+                                //   `/api/v1/programs/${params.id}/subjects`
+                                // )}
+                              >
+                                Pridėti
+                              </Button>
                             </List.Content>
                           </List.Item>
                         </List>
@@ -315,22 +354,33 @@ export function EditProgramObject() {
                           {subjectsInProgram.map((subject) => (
                             <Table.Row key={subject.id}>
                               <Table.Cell>{subject.subject.name}</Table.Cell>
-                              <Table.Cell>{subject.subjectHours} val.</Table.Cell>
+                              <Table.Cell>
+                                {subject.subjectHours} val.
+                              </Table.Cell>
                               <Table.Cell collapsing>
                                 <Button
                                   basic
                                   compact
                                   icon="remove"
                                   title="Pašalinti"
-                                  onClick={() => removeSubject(params.id, subject.subject.id, subject.subjectHours,)}
+                                  onClick={() =>
+                                    removeSubject(
+                                      params.id,
+                                      subject.subject.id,
+                                      subject.subjectHours
+                                    )
+                                  }
                                 ></Button>
                               </Table.Cell>
-
                             </Table.Row>
                           ))}
                           <Table.Row>
-                            <Table.Cell><h5>Programos valandų skaičius:</h5></Table.Cell>
-                            <Table.Cell><h5>{totalHours} val.</h5></Table.Cell>
+                            <Table.Cell>
+                              <h5>Programos valandų skaičius:</h5>
+                            </Table.Cell>
+                            <Table.Cell>
+                              <h5>{totalHours} val.</h5>
+                            </Table.Cell>
                           </Table.Row>
                         </Table.Body>
                       </Table.Cell>
@@ -343,10 +393,8 @@ export function EditProgramObject() {
                 </Button>
               </div>
             )}
-
           </Segment>
         </Grid.Column>
-
       </Grid>
     </div>
   );

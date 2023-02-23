@@ -25,9 +25,13 @@ public interface ProgramRepository extends JpaRepository<Program, Long> {
 
     List<Program> findByNameContainingIgnoreCase(String nameText, Pageable pageable);
 
+    @Query(value = "SELECT FROM program p WHERE p.deleted = TRUE", nativeQuery = true)
+    List<Program> getAllDeletedPrograms(Pageable pageable);
 
+    @Query(value = "SELECT program FROM program p WHERE p.deleted = FALSE", nativeQuery = true)
+    List<Program> getAllAvailablePrograms(Pageable pageable);
 
-
+    List<Program> findAllByDeletedOrderByModifiedDateDesc(Boolean deleted, Pageable pageable);
 }
 
 //(@Param("names") List<String> names, @Param("status") String status);

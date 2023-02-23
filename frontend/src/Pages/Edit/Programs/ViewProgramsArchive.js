@@ -18,19 +18,19 @@ const JSON_HEADERS = {
 export function ViewProgramsArchive() {
 
   const [programs, setPrograms] = useState([]);
-  const [groupsforPaging, setGroupsForPaging] = useState([]);
+  const [programsforPaging, setProgramsForPaging] = useState([]);
   const [activePage, setActivePage] = useState(0);
   const [pagecount, setPageCount] = useState();
 
-  const fetchSinglePrograms = () => {
-    fetch("/api/v1/programs/archive/")
+  const fetchSinglePrograms = async () => {
+    fetch('/api/v1/programs/archive/')
       .then((response) => response.json())
-      .then((jsonResponse) => setGroupsForPaging(jsonResponse))
-      .then(setPageCount(Math.ceil(groupsforPaging.length / 10)));
+      .then((jsonResponse) => setProgramsForPaging(jsonResponse))
+      .then(setPageCount(Math.ceil(programsforPaging.length / 10)));
   };
 
   const fetchPagedPrograms = async () => {
-    fetch("/api/v1/programs/archive/page?page=" + activePage)
+    fetch('/api/v1/programs/archive/page?page=' + activePage)
       .then((response) => response.json())
       .then((jsonResponse) => setPrograms(jsonResponse));
   };
@@ -59,6 +59,10 @@ export function ViewProgramsArchive() {
     }
   }, [programs]);
 
+  useEffect(() => {
+    fetchPagedPrograms();
+  }, [activePage]);
+
   return (
     <div>
       <MainMenu />
@@ -76,7 +80,7 @@ export function ViewProgramsArchive() {
                     <Table.HeaderCell>
                       Archyvas. Programos pavadinimas
                     </Table.HeaderCell>
-                    <Table.HeaderCell textAlign="center">
+                    <Table.HeaderCell collapsing textAlign="center">
                       Veiksmai
                     </Table.HeaderCell>
                   </Table.Row>
@@ -103,39 +107,12 @@ export function ViewProgramsArchive() {
               <Divider hidden></Divider>
 
               <ButtonGroup compact basic>
-                <Button
-                  title="Atgal"
-                  onClick={() =>
-                    setActivePage(activePage <= 0 ? activePage : activePage - 1)
-                  }
-                  icon
-                >
-                  <Icon name="arrow left" />{" "}
-                </Button>
-                {[...Array(pagecount)].map((e, i) => {
-                  return (
-                    <Button
-                      title={i + 1}
-                      key={i}
-                      active={activePage === i ? true : false}
-                      onClick={() => setActivePage(i)}
-                    >
-                      {i + 1}
-                    </Button>
-                  );
-                })}
-                <Button
-                  title="Pirmyn"
-                  onClick={() =>
-                    setActivePage(
-                      activePage >= pagecount - 1 ? activePage : activePage + 1
-                    )
-                  }
-                  icon
-                >
-                  <Icon name="arrow right" />{" "}
-                </Button>
-              </ButtonGroup>
+                                <Button title='Atgal' onClick={() => setActivePage(activePage <= 0 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
+                                {[...Array(pagecount)].map((e, i) => {
+                                    return <Button title={i + 1} key={i} active={activePage === i ? true : false} onClick={() => setActivePage(i)}>{i + 1}</Button>
+                                })}
+                                <Button title='Pirmyn' onClick={() => setActivePage(activePage >= pagecount - 1 ? activePage : activePage + 1)} icon><Icon name="arrow right" />  </Button>
+                            </ButtonGroup>
             </div>
           </Segment>
         </Grid.Column>

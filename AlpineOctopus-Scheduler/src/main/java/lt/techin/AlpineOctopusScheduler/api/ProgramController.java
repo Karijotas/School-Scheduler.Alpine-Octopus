@@ -15,6 +15,8 @@ import lt.techin.AlpineOctopusScheduler.model.ProgramSubjectHours;
 import lt.techin.AlpineOctopusScheduler.service.ProgramService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -71,6 +73,7 @@ public class ProgramController {
     public List<ProgramEntityDto> getPagedAvailablePrograms(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
                                               @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
 
+        Pageable pageable = PageRequest.of(page, pageSize);
             return programService.getAllAvailablePagedPrograms(page, pageSize);
     }
 

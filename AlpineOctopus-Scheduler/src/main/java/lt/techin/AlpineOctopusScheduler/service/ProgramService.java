@@ -192,17 +192,15 @@ public class ProgramService {
     }
 
     public List<ProgramEntityDto> getAllAvailablePagedPrograms(int page, int pageSize){
-
         Pageable pageable = PageRequest.of(page, pageSize);
-
-        return programRepository.findAll(pageable).stream().filter(program -> program.getDeleted().equals(Boolean.FALSE))
+        return programRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE, pageable).stream()
                 .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
-    public List<ProgramEntityDto> getAllDeletedPagedPrograms(int page, int pageSize){
+    public List<ProgramEntityDto> getAllDeletedPagedPrograms(int page, int pageSize) {
 
         Pageable pageable = PageRequest.of(page, pageSize);
 
-        return programRepository.findAll(pageable).stream().filter(program -> program.getDeleted().equals(Boolean.TRUE))
+        return programRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.TRUE, pageable).stream()
                 .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 

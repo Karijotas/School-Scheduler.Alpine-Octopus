@@ -16,6 +16,7 @@ const JSON_HEADERS = {
 };
 
 export function ViewSubjectsArchive() {
+
   const [active, setActive] = useState();
   const [create, setCreate] = useState("");
   const [nameText, setNameText] = useState("");
@@ -32,7 +33,7 @@ export function ViewSubjectsArchive() {
   };
 
   const fetchSinglePrograms = () => {
-    fetch("/api/v1/programs")
+    fetch("/api/v1/programs/archive/")
       .then((response) => response.json())
       .then((jsonResponse) => setGroupsForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(groupsforPaging.length / 10)));

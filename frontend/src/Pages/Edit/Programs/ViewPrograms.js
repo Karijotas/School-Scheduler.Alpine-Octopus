@@ -136,7 +136,7 @@ export function ViewPrograms() {
                           header="Dėmesio!"
                           content="Ar tikrai norite perkelti į archyvą?"
                           cancelButton="Grįžti atgal"
-                          confirmButton="Ištrinti"
+                          confirmButton="Taip"
                           onCancel={() => setOpen(false)}
                           onConfirm={() => removeProgram(open)}
                           size="small"
