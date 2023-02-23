@@ -57,6 +57,12 @@ public class ProgramService {
         }
     }
 
+    public boolean programNameIsUnique(Program program) {
+        return programRepository.findAll()
+                .stream()
+                .noneMatch(program1 -> program1.getName().equals(program.getName()));
+    }
+
     public List<ProgramEntityDto> getAllPrograms() {
         return programRepository.findAll().stream().map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }

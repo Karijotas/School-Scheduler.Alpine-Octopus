@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper;
+import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Module;
 import lt.techin.AlpineOctopusScheduler.model.Subject;
 import lt.techin.AlpineOctopusScheduler.service.SubjectService;
@@ -70,9 +71,12 @@ public class SubjectController {
 
     @PostMapping
     public ResponseEntity<SubjectDto> createSubject(@Valid @RequestBody SubjectDto subjectDto) {
-        var createdSubject = subjectService.create(toSubject(subjectDto));
-
-        return ok(toSubjectDto(createdSubject));
+        if (subjectService.subjectNameIsUnique(toSubject(subjectDto))) {
+            var createdSubject = subjectService.create(toSubject(subjectDto));
+            return ok(toSubjectDto(createdSubject));
+        } else {
+            throw new SchedulerValidationException("Subject already exists", "Subject name", "Already exists", subjectDto.getName());
+        }
     }
 
     @DeleteMapping("/{subjectId}")
@@ -89,9 +93,12 @@ public class SubjectController {
 
     @PutMapping("/{subjectId}")
     public ResponseEntity<SubjectDto> updateSubject(@PathVariable Long subjectId, @Valid @RequestBody SubjectDto subjectDto) {
-        var updatedSubject = subjectService.update(subjectId, toSubject(subjectDto));
-
-        return ok(toSubjectDto(updatedSubject));
+        if (subjectService.subjectNameIsUnique(toSubject(subjectDto))) {
+            var updatedSubject = subjectService.update(subjectId, toSubject(subjectDto));
+            return ok(toSubjectDto(updatedSubject));
+        } else {
+            throw new SchedulerValidationException("Subject already exists", "Subject name", "Already exists", subjectDto.getName());
+        }
     }
 
     @GetMapping(value = "/{subjectId}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
@@ -125,6 +132,4 @@ public class SubjectController {
 
         return ok(toSubjectDto(updatedSubject));
     }
-
-
 }

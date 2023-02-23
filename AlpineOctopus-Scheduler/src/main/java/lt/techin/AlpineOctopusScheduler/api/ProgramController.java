@@ -7,6 +7,7 @@ import lt.techin.AlpineOctopusScheduler.dao.ProgramRepository;
 import lt.techin.AlpineOctopusScheduler.dao.ProgramSubjectHourListRepository;
 import lt.techin.AlpineOctopusScheduler.dao.ProgramSubjectHoursRepository;
 import lt.techin.AlpineOctopusScheduler.dao.SubjectRepository;
+import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Program;
 import lt.techin.AlpineOctopusScheduler.model.ProgramSubjectHours;
 import lt.techin.AlpineOctopusScheduler.service.ProgramService;
@@ -167,16 +168,22 @@ public class ProgramController {
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<ProgramDto> createProgram(@Valid @RequestBody ProgramDto programDto) {
-        var createdProgram = programService.create(toProgram(programDto));
-
-        return ok(toProgramDto(createdProgram));
+        if (programService.programNameIsUnique(toProgram(programDto))) {
+            var createdProgram = programService.create(toProgram(programDto));
+            return ok(toProgramDto(createdProgram));
+        } else {
+            throw new SchedulerValidationException("Program already exists", "Program name", "Already exists", programDto.getName());
+        }
     }
 
     @PatchMapping("/{programId}")
     public ResponseEntity<ProgramDto> updateProgram(@PathVariable Long programId, @Valid @RequestBody ProgramDto programDto) {
-        var updatedProgram = programService.update(programId, toProgram(programDto));
-
-        return ok(toProgramDto(updatedProgram));
+        if (programService.programNameIsUnique(toProgram(programDto))) {
+            var updatedProgram = programService.update(programId, toProgram(programDto));
+            return ok(toProgramDto(updatedProgram));
+        } else {
+            throw new SchedulerValidationException("Program already exists", "Program name", "Already exists", programDto.getName());
+        }
     }
 
     @PatchMapping("/programSubjects/{programSubjectId}")

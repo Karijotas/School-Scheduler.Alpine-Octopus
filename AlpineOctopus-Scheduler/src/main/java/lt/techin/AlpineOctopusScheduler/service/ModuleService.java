@@ -45,6 +45,12 @@ public class ModuleService {
         }
     }
 
+    public boolean moduleNameIsUnique(Module module) {
+        return moduleRepository.findAll()
+                .stream()
+                .noneMatch(module1 -> module1.getName().equals(module.getName()));
+    }
+
     public List<Module> getAll() {
 
         return moduleRepository.findAll();

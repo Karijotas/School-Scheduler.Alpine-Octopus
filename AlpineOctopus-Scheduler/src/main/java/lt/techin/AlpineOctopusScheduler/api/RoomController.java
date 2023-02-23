@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.RoomDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.RoomEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.RoomMapper;
+import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Room;
 import lt.techin.AlpineOctopusScheduler.service.RoomService;
 import org.slf4j.Logger;
@@ -56,15 +57,22 @@ public class RoomController {
 
     @PostMapping
     public ResponseEntity<RoomDto> createRoom(@Valid @RequestBody RoomDto roomDto) {
-        var createdRoom = roomService.create(toRoom(roomDto));
-        return ok(toRoomDto(createdRoom));
+        if (roomService.classIsUnique(toRoom(roomDto))) {
+            var createdRoom = roomService.create(toRoom(roomDto));
+            return ok(toRoomDto(createdRoom));
+        } else {
+            throw new SchedulerValidationException("Class already exists", "Class name & building adress", "Already exists", roomDto.getName());
+        }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<RoomDto> updateRoom(@PathVariable Long id, @Valid @RequestBody RoomDto roomDto) {
-        var updatedRoom = roomService.update(id, toRoom(roomDto));
-
-        return ok(toRoomDto(updatedRoom));
+        if (roomService.classIsUnique(toRoom(roomDto))) {
+            var updatedRoom = roomService.update(id, toRoom(roomDto));
+            return ok(toRoomDto(updatedRoom));
+        } else {
+            throw new SchedulerValidationException("Class already exists", "Class name & building adress", "Already exists", roomDto.getName());
+        }
     }
 
     @DeleteMapping("/{id}")
@@ -105,6 +113,4 @@ public class RoomController {
                                                                  @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
         return roomService.getPagedBuildingsByNameContaining(buildingText, page, pageSize);
     }
-
-
 }

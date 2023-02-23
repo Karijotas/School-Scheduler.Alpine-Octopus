@@ -67,13 +67,6 @@ public class Groups {
     public Groups() {
     }
 
-    public boolean schoolYearIsValid() {
-        if (getSchoolYear() >= 2023 && getSchoolYear() <= 3032) {
-            return true;
-        }
-        return false;
-    }
-
     public Long getId() {
         return id;
     }

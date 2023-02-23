@@ -58,6 +58,12 @@ public class RoomService {
         }
     }
 
+    public boolean classIsUnique(Room room) {
+        return roomRepository.findAll()
+                .stream()
+                .noneMatch(room1 -> room1.getName().equals(room.getName()) && room1.getBuilding().equals(room.getBuilding()));
+    }
+
     public List<Room> getAll() {
         return roomRepository.findAllByOrderByDeletedAscIdAsc();
     }

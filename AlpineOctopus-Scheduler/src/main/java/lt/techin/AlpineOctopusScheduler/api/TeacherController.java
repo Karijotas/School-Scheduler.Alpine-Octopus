@@ -5,6 +5,7 @@ package lt.techin.AlpineOctopusScheduler.api;
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.TeacherMapper;
+import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Teacher;
 import lt.techin.AlpineOctopusScheduler.service.TeacherService;
 import org.slf4j.Logger;
@@ -58,26 +59,31 @@ public class TeacherController {
 
     @PostMapping
     public ResponseEntity<TeacherDto> createTeacher(@Valid @RequestBody TeacherDto teacherDto) {
-        var createdTeacher = teacherService.create(toTeacher(teacherDto));
-        return ok(toTeacherDto(createdTeacher));
+        if (teacherService.loginEmailIsUnique(toTeacher(teacherDto))) {
+            var createdTeacher = teacherService.create(toTeacher(teacherDto));
+            return ok(toTeacherDto(createdTeacher));
+        } else {
+            throw new SchedulerValidationException("Teacher already exists", "Teacher login email", "Already exists", teacherDto.getLoginEmail());
+        }
     }
 
     @DeleteMapping("/{teacherId}")
     public ResponseEntity<Void> deleteTeacher(@PathVariable Long teacherId) {
         var teacherDeleted = teacherService.deleteById(teacherId);
-
         if (teacherDeleted) {
             return ResponseEntity.noContent().build();
         }
-
         return ResponseEntity.notFound().build();
     }
 
     @PutMapping("/{teacherId}")
     public ResponseEntity<TeacherDto> updateTeacher(@PathVariable Long teacherId, @Valid @RequestBody TeacherDto teacherDto) {
-        var updatedTeacher = teacherService.update(teacherId, toTeacher(teacherDto));
-
-        return ok(toTeacherDto(updatedTeacher));
+        if (teacherService.loginEmailIsUnique(toTeacher(teacherDto))) {
+            var updatedTeacher = teacherService.update(teacherId, toTeacher(teacherDto));
+            return ok(toTeacherDto(updatedTeacher));
+        } else {
+            throw new SchedulerValidationException("Teacher already exists", "Teacher login email", "Already exists", teacherDto.getLoginEmail());
+        }
     }
 
     @GetMapping(value = "/{teacherId}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
@@ -90,6 +96,4 @@ public class TeacherController {
 
         return responseEntity;
     }
-
-
 }

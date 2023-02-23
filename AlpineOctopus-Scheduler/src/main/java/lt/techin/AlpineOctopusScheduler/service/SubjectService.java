@@ -55,6 +55,12 @@ public class SubjectService {
         }
     }
 
+    public boolean subjectNameIsUnique(Subject subject) {
+        return subjectRepository.findAll()
+                .stream()
+                .noneMatch(subject1 -> subject1.getName().equals(subject.getName()));
+    }
+
     public List<Subject> getAll() {
         return subjectRepository.findAll();
     }

@@ -32,6 +32,7 @@ public class Teacher {
     @NotBlank
     @Size(min = 1, max = 100, message = "A name shouldn't be longer than 100 characters or shorter than 1")
     private String surname;
+    @NotBlank
     @Email
     private String loginEmail;
     private String contactEmail;

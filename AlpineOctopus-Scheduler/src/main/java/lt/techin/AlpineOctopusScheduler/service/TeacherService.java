@@ -26,11 +26,9 @@ public class TeacherService {
 
     private final TeacherRepository teacherRepository;
     private final SubjectRepository subjectRepository;
-
     private final Validator validator;
 
     public TeacherService(TeacherRepository teacherRepository, SubjectRepository subjectRepository, Validator validator) {
-
         this.teacherRepository = teacherRepository;
         this.subjectRepository = subjectRepository;
         this.validator = validator;
@@ -43,13 +41,17 @@ public class TeacherService {
         }
     }
 
-    public List<Teacher> getAll() {
+    public boolean loginEmailIsUnique(Teacher teacher) {
+        return teacherRepository.findAll()
+                .stream()
+                .noneMatch(teacher1 -> teacher1.getLoginEmail().equals(teacher.getLoginEmail()));
+    }
 
+    public List<Teacher> getAll() {
         return teacherRepository.findAll();
     }
 
     public Optional<Teacher> getById(Long id) {
-
         return teacherRepository.findById(id);
     }
 
@@ -65,11 +67,14 @@ public class TeacherService {
     }
 
     public Teacher create(Teacher teacher) {
+
         validateInputWithInjectedValidator(teacher);
         return teacherRepository.save(teacher);
+
     }
 
     public Teacher update(Long id, Teacher teacher) {
+
         validateInputWithInjectedValidator(teacher);
         var existingTeacher = teacherRepository.findById(id)
                 .orElseThrow(() -> new SchedulerValidationException("Teacher does not exist",
@@ -87,9 +92,7 @@ public class TeacherService {
     }
 
     public boolean deleteById(Long id) {
-
         if (teacherRepository.existsById(id)) {
-
             teacherRepository.deleteById(id);
             return true;
         }

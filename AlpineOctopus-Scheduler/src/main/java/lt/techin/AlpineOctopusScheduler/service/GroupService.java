@@ -43,6 +43,16 @@ public class GroupService {
         }
     }
 
+    public boolean groupNameIsUnique(Groups groups) {
+        return groupsRepository.findAll()
+                .stream()
+                .noneMatch(groups1 -> groups1.getName().equals(groups.getName()));
+    }
+
+    public boolean schoolYearIsValid(Groups groups) {
+        return groups.getSchoolYear() >= 2023 && groups.getSchoolYear() <= 3032;
+    }
+
     public List<Groups> getAll() {
         return groupsRepository.findAll();
     }
@@ -91,7 +101,7 @@ public class GroupService {
         Program createdProgram = programRepository.findById(programId)
                 .orElseThrow(() -> new SchedulerValidationException("Program doesn't exist", "Program", "Program not found", programId.toString()));
 
-        if (groups.schoolYearIsValid()) {
+        if (schoolYearIsValid(groups)) {
             groups.setProgram(createdProgram);
             return groupsRepository.save(groups);
         } else {

@@ -41,13 +41,6 @@ public class GroupsDto {
         this.deleted = deleted;
     }
 
-    public boolean schoolYearIsValid() {
-        if (getSchoolYear() >= 2023 && getSchoolYear() <= 3032) {
-            return true;
-        }
-        return false;
-    }
-
     public Long getProgramId() {
         return programId;
     }

@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.ModuleDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ModuleEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ModuleMapper;
+import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Module;
 import lt.techin.AlpineOctopusScheduler.service.ModuleService;
 import org.slf4j.Logger;
@@ -50,9 +51,12 @@ public class ModuleController {
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<ModuleDto> createModule(@Valid @RequestBody ModuleDto moduleDto) {
-        var createdModule = moduleService.create(toModule(moduleDto));
-
-        return ok(toModuleDto(createdModule));
+        if (moduleService.moduleNameIsUnique(toModule(moduleDto))) {
+            var createdModule = moduleService.create(toModule(moduleDto));
+            return ok(toModuleDto(createdModule));
+        } else {
+            throw new SchedulerValidationException("Module already exists", "Module name", "Already exists", moduleDto.getName());
+        }
     }
 
     @DeleteMapping("/delete/{moduleId}")
@@ -68,10 +72,14 @@ public class ModuleController {
 
     @PutMapping("/update/{moduleId}")
     public ResponseEntity<ModuleDto> updateModule(@PathVariable Long moduleId, @Valid @RequestBody ModuleDto moduleDto) {
-        var updatedModule = moduleService.update(moduleId, toModule(moduleDto));
-
-        return ok(toModuleDto(updatedModule));
+        if (moduleService.moduleNameIsUnique(toModule(moduleDto))) {
+            var updatedModule = moduleService.update(moduleId, toModule(moduleDto));
+            return ok(toModuleDto(updatedModule));
+        } else {
+            throw new SchedulerValidationException("Module already exists", "Module name", "Already exists", moduleDto.getName());
+        }
     }
+
 
     @GetMapping(value = "/{moduleId}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<Module> getModule(@PathVariable Long moduleId) {
