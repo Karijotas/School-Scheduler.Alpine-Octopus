@@ -51,10 +51,10 @@ export function EditSubjectObject() {
     fetch("/api/v1/subjects/" + params.id)
       .then((response) => response.json())
       .then(setSubjects);
-  }, [params]);
+  }, [active, params]);
 
   const applyResult = () => {
-    setHide(true);
+    setActive(true);
   };
 
   // const fetchModulesInSubject = async () => {
