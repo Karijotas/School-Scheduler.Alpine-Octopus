@@ -12,7 +12,7 @@ import {
   List,
 } from "semantic-ui-react";
 import MainMenu from "../../../Components/MainMenu";
-import { EditMenu } from "../EditMenu";
+import { EditMenu } from '../../../Components/EditMenu';
 import { CreateSubjecPage } from "./CreateSubjectPage";
 import { NavLink } from "react-router-dom";
 

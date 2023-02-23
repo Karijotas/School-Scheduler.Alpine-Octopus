@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { NavLink } from 'react-router-dom';
 import { Button, Form, Grid, Icon, Input, Segment } from "semantic-ui-react";
+import { EditMenu } from '../../../Components/EditMenu';
 import MainMenu from '../../../Components/MainMenu';
-import { EditMenu } from "../EditMenu";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -64,7 +64,7 @@ export function CreateModulePage() {
           <EditMenu />
         </Grid.Column>
         <Grid.Column floated='left' textAlign='left' verticalAlign='top' width={13}>
-          <Segment id='segment' raised color='teal'>
+          <Segment id='segment' color='teal'>
             <div className="create-new-page">
               <Form>
                 <Form.Field>

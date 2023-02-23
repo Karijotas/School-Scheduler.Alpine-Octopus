@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Confirm, Divider, Icon, Input, Table, Grid, Segment, ButtonGroup } from 'semantic-ui-react';
 import MainMenu from '../../../Components/MainMenu';
-import { EditMenu } from '../EditMenu';
 import { NavLink } from 'react-router-dom';
+import { EditMenu } from '../../../Components/EditMenu';
 
 const JSON_HEADERS = {
     'Content-Type': 'application/json'
@@ -111,7 +111,7 @@ export function ViewTeachers() {
                 </Grid.Column>
 
                 <Grid.Column textAlign='left' verticalAlign='top' width={13}>
-                    <Segment id='segment' raised color='teal'>
+                    <Segment id='segment' color='teal'>
                         {/* {create && (<div>
                 <CreateteacherPage /></div>)}
             {active && (<div className='edit'>

@@ -3,8 +3,8 @@ import { useParams } from 'react-router-dom';
 import {
   Button, Divider, Form, Grid, Icon, Input, List, Segment, Select, Table, TextArea
 } from "semantic-ui-react";
+import { EditMenu } from '../../../Components/EditMenu';
 import MainMenu from '../../../Components/MainMenu';
-import { EditMenu } from '../EditMenu';
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -151,7 +151,7 @@ export function EditProgramObject() {
         </Grid.Column>
 
         <Grid.Column textAlign='left' verticalAlign='top' width={13}>
-          <Segment id='segment' raised color='teal'>
+          <Segment id='segment' color='teal'>
             {active && !hide && (
               <div>
                 <Table celled color="violet">

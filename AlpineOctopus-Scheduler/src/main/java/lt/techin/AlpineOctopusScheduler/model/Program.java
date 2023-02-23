@@ -29,8 +29,9 @@ public class Program {
     @NotBlank
     @Size(min = 5, max = 100)
     private String description;
-    @JsonIgnore
+
     @OneToMany(mappedBy = "program")
+    @JsonIgnore
     private Set<Groups> groupsSet;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @CreatedDate
