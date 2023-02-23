@@ -59,12 +59,14 @@ public class RoomController {
         var createdRoom = roomService.create(toRoom(roomDto));
         return ok(toRoomDto(createdRoom));
     }
+
     @PutMapping("/{id}")
-    public ResponseEntity<RoomDto> updateRoom(@PathVariable Long id, @RequestBody RoomDto roomDto) {
+    public ResponseEntity<RoomDto> updateRoom(@PathVariable Long id, @Valid @RequestBody RoomDto roomDto) {
         var updatedRoom = roomService.update(id, toRoom(roomDto));
 
         return ok(toRoomDto(updatedRoom));
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRoom(@PathVariable Long id) {
         var roomDeleted = roomService.deleteById(id);
@@ -75,6 +77,7 @@ public class RoomController {
         }
         return ResponseEntity.notFound().build();
     }
+
     @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public List<RoomEntityDto> getPagedAllRooms(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
@@ -84,6 +87,7 @@ public class RoomController {
         return roomService.getPagedAllRooms(page, pageSize);
 
     }
+
     @GetMapping(path = "page/name-filter/{nameText}")
     @ApiOperation(value = "Get Paged Programs starting with", notes = "Returns list of Programs starting with passed String")
     @ResponseBody

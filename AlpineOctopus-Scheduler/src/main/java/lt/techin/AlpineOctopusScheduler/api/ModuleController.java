@@ -1,13 +1,10 @@
 package lt.techin.AlpineOctopusScheduler.api;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import io.swagger.annotations.ApiOperation;
-import lt.techin.AlpineOctopusScheduler.api.dto.SubjectDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ModuleMapper;
-import lt.techin.AlpineOctopusScheduler.model.Module;
 import lt.techin.AlpineOctopusScheduler.api.dto.ModuleDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ModuleEntityDto;
-import lt.techin.AlpineOctopusScheduler.model.Subject;
+import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ModuleMapper;
+import lt.techin.AlpineOctopusScheduler.model.Module;
 import lt.techin.AlpineOctopusScheduler.service.ModuleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,17 +13,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Set;
 
 import javax.validation.Valid;
+import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ModuleMapper.toModule;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ModuleMapper.toModuleDto;
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper.toSubjectDto;
 import static org.springframework.http.ResponseEntity.ok;
 
 @Controller
@@ -74,11 +67,12 @@ public class ModuleController {
     }
 
     @PutMapping("/update/{moduleId}")
-    public ResponseEntity<ModuleDto> updateModule(@PathVariable Long moduleId, @RequestBody ModuleDto moduleDto) {
+    public ResponseEntity<ModuleDto> updateModule(@PathVariable Long moduleId, @Valid @RequestBody ModuleDto moduleDto) {
         var updatedModule = moduleService.update(moduleId, toModule(moduleDto));
 
         return ok(toModuleDto(updatedModule));
     }
+
     @GetMapping(value = "/{moduleId}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<Module> getModule(@PathVariable Long moduleId) {
         var moduleOptional = moduleService.getById(moduleId);
@@ -93,7 +87,7 @@ public class ModuleController {
     @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public List<ModuleEntityDto> getPagedAllModules(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                                      @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+                                                    @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
 
 
         return moduleService.getPagedAllModules(page, pageSize);
@@ -104,8 +98,8 @@ public class ModuleController {
     @ApiOperation(value = "Get Paged Modules starting with", notes = "Returns list of Modules starting with passed String")
     @ResponseBody
     public List<ModuleEntityDto> getPagedModulesByNameContaining(@PathVariable String nameText,
-                                                                   @RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                                                   @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+                                                                 @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                                 @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
         return moduleService.getPagedModulesByNameContaining(nameText, page, pageSize);
     }
 

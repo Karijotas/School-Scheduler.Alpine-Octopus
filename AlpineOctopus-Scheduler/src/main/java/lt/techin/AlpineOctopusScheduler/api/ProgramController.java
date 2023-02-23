@@ -2,10 +2,7 @@ package lt.techin.AlpineOctopusScheduler.api;
 
 import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.*;
-import lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupsMapper;
-import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramSubjectHoursMapper;
-import lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper;
 import lt.techin.AlpineOctopusScheduler.dao.ProgramRepository;
 import lt.techin.AlpineOctopusScheduler.dao.ProgramSubjectHourListRepository;
 import lt.techin.AlpineOctopusScheduler.dao.ProgramSubjectHoursRepository;
@@ -21,14 +18,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import javax.validation.Valid;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper.toProgram;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper.toProgramDto;
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper.toProgramEntityDto;
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramSubjectHoursMapper.*;
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramSubjectHoursMapper.toProgramSubjectHours;
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramSubjectHoursMapper.toProgramSubjectHoursDtoForList;
 import static org.springframework.http.ResponseEntity.ok;
 
 @Controller
@@ -57,21 +54,22 @@ public class ProgramController {
 
     @GetMapping
     @ResponseBody
-    public List<ProgramEntityDto> getAvailablePrograms(){
+    public List<ProgramEntityDto> getAvailablePrograms() {
         return programService.getAllAvailablePrograms();
     }
+
     @GetMapping(path = "/archive/", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public List<ProgramEntityDto> getDeletedPrograms(){
+    public List<ProgramEntityDto> getDeletedPrograms() {
         return programService.getAllDeletedPrograms();
     }
 
     @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public List<ProgramEntityDto> getPagedAvailablePrograms(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                              @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+                                                            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
 
-            return programService.getAllAvailablePagedPrograms(page, pageSize);
+        return programService.getAllAvailablePagedPrograms(page, pageSize);
     }
 
     @GetMapping(path = "/page/all/", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -79,7 +77,7 @@ public class ProgramController {
 
     public List<ProgramEntityDto> getPagedAllPrograms(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
 
-                                                @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+                                                      @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
         return programService.getAllAvailablePrograms();
 
     }
@@ -168,21 +166,21 @@ public class ProgramController {
     }
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<ProgramDto> createProgram(@RequestBody ProgramDto programDto) {
+    public ResponseEntity<ProgramDto> createProgram(@Valid @RequestBody ProgramDto programDto) {
         var createdProgram = programService.create(toProgram(programDto));
 
         return ok(toProgramDto(createdProgram));
     }
 
     @PatchMapping("/{programId}")
-    public ResponseEntity<ProgramDto> updateProgram(@PathVariable Long programId, @RequestBody ProgramDto programDto) {
+    public ResponseEntity<ProgramDto> updateProgram(@PathVariable Long programId, @Valid @RequestBody ProgramDto programDto) {
         var updatedProgram = programService.update(programId, toProgram(programDto));
 
         return ok(toProgramDto(updatedProgram));
     }
 
     @PatchMapping("/programSubjects/{programSubjectId}")
-    public ResponseEntity<ProgramSubjectHoursDtoForList> updateProgramSubjectHours(@PathVariable Long programSubjectId, @RequestBody ProgramSubjectHoursDto programSubjectHoursDto) {
+    public ResponseEntity<ProgramSubjectHoursDtoForList> updateProgramSubjectHours(@PathVariable Long programSubjectId, @Valid @RequestBody ProgramSubjectHoursDto programSubjectHoursDto) {
         var updatedProgramSubjectHours = programService.updateProgramSubjectHours(programSubjectId, toProgramSubjectHours(programSubjectHoursDto));
 
         return ok(toProgramSubjectHoursDtoForList(updatedProgramSubjectHours));
@@ -190,17 +188,17 @@ public class ProgramController {
 
     @PostMapping(value = "/{programId}/subjects/{subjectId}/{hours}/newSubjectsWithHours")
     @ResponseBody
-    public ProgramSubjectHours addSubjectAndHoursToProgram(@PathVariable Long programId, @PathVariable Integer hours,@PathVariable Long subjectId) {
+    public ProgramSubjectHours addSubjectAndHoursToProgram(@PathVariable Long programId, @PathVariable Integer hours, @PathVariable Long subjectId) {
         return programService.addSubjectAndHoursToProgram(programId, subjectId, hours);
     }
 
     @PostMapping(value = "/{programId}/subjects/newSubjectsWithHoursList")
     @ResponseBody
-    public List<ProgramSubjectHoursDtoForList> addAllSubjectsAndHoursToProgram(@PathVariable Long programId, @RequestBody List<ProgramSubjectHoursForCreate> programSubjectHoursForCreateList){
+    public List<ProgramSubjectHoursDtoForList> addAllSubjectsAndHoursToProgram(@PathVariable Long programId, @Valid @RequestBody List<ProgramSubjectHoursForCreate> programSubjectHoursForCreateList) {
 
         programSubjectHoursForCreateList.forEach(sh -> programService
-               .addSubjectAndHoursToProgram(programId, sh.getSubjectId(), sh.getSubjectHour()));
-               return programService.getAllSubjectsInProgramByProgramId(programId).stream()
+                .addSubjectAndHoursToProgram(programId, sh.getSubjectId(), sh.getSubjectHour()));
+        return programService.getAllSubjectsInProgramByProgramId(programId).stream()
                 .map(ProgramSubjectHoursMapper::toProgramSubjectHoursDtoForList)
                 .collect(toList());
     }

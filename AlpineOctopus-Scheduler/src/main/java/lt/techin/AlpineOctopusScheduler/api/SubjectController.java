@@ -1,6 +1,5 @@
 package lt.techin.AlpineOctopusScheduler.api;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
@@ -15,8 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -41,16 +38,17 @@ public class SubjectController {
     @GetMapping
     @ResponseBody
     public List<SubjectEntityDto> getSubjects() {
-       return subjectService.getAll().stream()
+        return subjectService.getAll().stream()
                 .map(SubjectMapper::toSubjectEntityDto)
                 .collect(toList());
     }
 
-    @GetMapping(value ="/{subjectId}/modules")
+    @GetMapping(value = "/{subjectId}/modules")
     @ResponseBody
     public Set<Module> getAllModulesById(@PathVariable Long subjectId) {
         return subjectService.getAllModulesById(subjectId);
     }
+
     @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public List<SubjectEntityDto> getPagedAllSubjects(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
@@ -90,11 +88,12 @@ public class SubjectController {
     }
 
     @PutMapping("/{subjectId}")
-    public ResponseEntity<SubjectDto> updateSubject(@PathVariable Long subjectId, @RequestBody SubjectDto subjectDto) {
+    public ResponseEntity<SubjectDto> updateSubject(@PathVariable Long subjectId, @Valid @RequestBody SubjectDto subjectDto) {
         var updatedSubject = subjectService.update(subjectId, toSubject(subjectDto));
 
         return ok(toSubjectDto(updatedSubject));
     }
+
     @GetMapping(value = "/{subjectId}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<Subject> getSubject(@PathVariable Long subjectId) {
         var subjectOptional = subjectService.getById(subjectId);
@@ -107,27 +106,25 @@ public class SubjectController {
     }
 
     @PutMapping("/modules/{subjectId}")
-    public ResponseEntity<SubjectDto> addModuleToSubject(@PathVariable Long subjectId, @RequestBody Long moduleId) {
+    public ResponseEntity<SubjectDto> addModuleToSubject(@PathVariable Long subjectId, @Valid @RequestBody Long moduleId) {
         var updatedSubject = subjectService.addModuleToSubject(subjectId, moduleId);
 
         return ok(toSubjectDto(updatedSubject));
     }
 
     @PutMapping("/teachers/{subjectId}")
-    public ResponseEntity<SubjectDto> addTeacherToSubject(@PathVariable Long subjectId, @RequestBody Long teacherId) {
+    public ResponseEntity<SubjectDto> addTeacherToSubject(@PathVariable Long subjectId, @Valid @RequestBody Long teacherId) {
         var updatedSubject = subjectService.addTeacherToSubject(subjectId, teacherId);
 
         return ok(toSubjectDto(updatedSubject));
     }
 
     @PutMapping("/rooms/{subjectId}")
-    public ResponseEntity<SubjectDto> addRoomToSubject(@PathVariable Long subjectId, @RequestBody Long roomId) {
+    public ResponseEntity<SubjectDto> addRoomToSubject(@PathVariable Long subjectId, @Valid @RequestBody Long roomId) {
         var updatedSubject = subjectService.addRoomToSubject(subjectId, roomId);
 
         return ok(toSubjectDto(updatedSubject));
     }
-
-
 
 
 }
