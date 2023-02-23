@@ -65,7 +65,7 @@ public class ProgramService {
     @Transactional(readOnly = true)
     public List<ProgramEntityDto> getPagedProgramsByNameContaining(String nameText, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        return programRepository.findByNameContainingIgnoreCase(nameText, pageable).stream()
+        return programRepository.findAllByDeletedAndNameContainingIgnoreCase(Boolean.FALSE, nameText, pageable).stream()
                 .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
