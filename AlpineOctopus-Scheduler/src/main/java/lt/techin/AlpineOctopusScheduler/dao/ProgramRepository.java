@@ -32,6 +32,8 @@ public interface ProgramRepository extends JpaRepository<Program, Long> {
     List<Program> getAllAvailablePrograms(Pageable pageable);
 
     List<Program> findAllByDeletedOrderByModifiedDateDesc(Boolean deleted, Pageable pageable);
+
+    List<Program> findAllByDeletedOrderByModifiedDateDesc(Boolean deleted);
 }
 
 //(@Param("names") List<String> names, @Param("status") String status);

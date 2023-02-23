@@ -1,5 +1,6 @@
 package lt.techin.AlpineOctopusScheduler.dao;
 
+import lt.techin.AlpineOctopusScheduler.model.Program;
 import lt.techin.AlpineOctopusScheduler.model.Subject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,6 +19,9 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
 
     List<Subject> findByNameContainingIgnoreCase(String nameText, Pageable pageable);
 
+    List<Subject> findAllByDeletedOrderByModifiedDateDesc(Boolean deleted, Pageable pageable);
+
+    List<Subject> findAllByDeletedOrderByModifiedDateDesc(Boolean deleted);
 
 //    @Transactional
 //    @Modifying

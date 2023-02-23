@@ -205,12 +205,12 @@ public class ProgramService {
     }
 
     public List<ProgramEntityDto> getAllAvailablePrograms(){
-        return programRepository.findAll().stream().filter(program -> program.getDeleted().equals(Boolean.FALSE))
+        return programRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE).stream()
                 .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
     public List<ProgramEntityDto> getAllDeletedPrograms(){
-        return programRepository.findAll().stream().filter(program -> program.getDeleted().equals(Boolean.TRUE))
+        return programRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.TRUE).stream()
                 .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 

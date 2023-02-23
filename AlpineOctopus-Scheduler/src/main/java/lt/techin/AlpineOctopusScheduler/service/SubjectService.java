@@ -1,6 +1,8 @@
 package lt.techin.AlpineOctopusScheduler.service;
 
 
+import lt.techin.AlpineOctopusScheduler.api.dto.ProgramEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper;
 import lt.techin.AlpineOctopusScheduler.dao.ProgramRepository;
 
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
@@ -13,11 +15,9 @@ import lt.techin.AlpineOctopusScheduler.dao.SubjectRepository;
 import lt.techin.AlpineOctopusScheduler.dao.TeacherRepository;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 
-import lt.techin.AlpineOctopusScheduler.model.Module;
-import lt.techin.AlpineOctopusScheduler.model.Room;
+import lt.techin.AlpineOctopusScheduler.model.*;
 
-import lt.techin.AlpineOctopusScheduler.model.Subject;
-import lt.techin.AlpineOctopusScheduler.model.Teacher;
+import lt.techin.AlpineOctopusScheduler.model.Module;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
@@ -154,4 +154,43 @@ public class SubjectService {
   public Set<Module> getAllModulesById (Long subjectId){
         return subjectRepository.findById(subjectId).get().getSubjectModules();
   }
+
+    public List<SubjectEntityDto> getAllAvailablePagedSubjects(int page, int pageSize){
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return subjectRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE, pageable).stream()
+                .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
+    }
+    public List<SubjectEntityDto> getAllDeletedPagedSubjects(int page, int pageSize) {
+
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        return subjectRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.TRUE, pageable).stream()
+                .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
+    }
+
+    public List<SubjectEntityDto> getAllAvailableSubjects(){
+        return subjectRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE).stream()
+                .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
+    }
+
+    public List<SubjectEntityDto> getAllDeletedSubjects(){
+        return subjectRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.TRUE).stream()
+                .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
+    }
+
+    public Subject restoreSubject(Long subjectId){
+        var existingSubject = subjectRepository.findById(subjectId).orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
+                "id", "Subject not found", subjectId.toString()));
+        existingSubject.setDeleted(Boolean.FALSE);
+        subjectRepository.save(existingSubject);
+        return existingSubject;
+    }
+
+    public Subject deleteSubject(Long subjectId){
+        var existingSubject = subjectRepository.findById(subjectId).orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
+                "id", "Subject not found", subjectId.toString()));
+        existingSubject.setDeleted(Boolean.TRUE);
+        subjectRepository.save(existingSubject);
+        return existingSubject;
+    }
 }
