@@ -1,7 +1,6 @@
 package lt.techin.AlpineOctopusScheduler.dao;
 
 import lt.techin.AlpineOctopusScheduler.model.Program;
-import lt.techin.AlpineOctopusScheduler.model.Subject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,9 +23,6 @@ public interface ProgramRepository extends JpaRepository<Program, Long> {
     List<Program> findByNameContainingIgnoreCase(String nameText);
 
     List<Program> findByNameContainingIgnoreCase(String nameText, Pageable pageable);
-
-
-
 
 }
 

@@ -138,7 +138,7 @@ export function ViewGroups() {
                             <select
                             id='selectYear'
                                 value={yearText} onChange={(e) => setYearText(e.target.value)} >
-                                <option>Filtruoti pagal metus</option>
+                                <option >Filtruoti pagal metus</option>
                                 {Object.entries(YEAR_OPTIONS)
                                     .map(([key, value]) => <option value={key}>{value}</option>)
                                 }

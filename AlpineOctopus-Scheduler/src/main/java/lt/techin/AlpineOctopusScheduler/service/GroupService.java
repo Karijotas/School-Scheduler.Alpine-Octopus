@@ -1,12 +1,10 @@
 package lt.techin.AlpineOctopusScheduler.service;
 
-import lt.techin.AlpineOctopusScheduler.api.dto.GroupsDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.GroupsEntityDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.ProgramDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupsMapper;
-import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper;
 import lt.techin.AlpineOctopusScheduler.dao.GroupsRepository;
 import lt.techin.AlpineOctopusScheduler.dao.ProgramRepository;
+import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Groups;
 import lt.techin.AlpineOctopusScheduler.model.Program;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,27 +14,51 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
 @Service
 public class GroupService {
 
-    private GroupsRepository groupsRepository;
-    private ProgramRepository programRepository;
+    private final GroupsRepository groupsRepository;
+    private final ProgramRepository programRepository;
+
+    private final Validator validator;
+
     @Autowired
-    public GroupService(GroupsRepository groupsRepository, ProgramRepository programRepository) {
+    public GroupService(GroupsRepository groupsRepository, ProgramRepository programRepository, Validator validator) {
         this.groupsRepository = groupsRepository;
         this.programRepository = programRepository;
+        this.validator = validator;
     }
+
+    void validateInputWithInjectedValidator(Groups groups) {
+        Set<ConstraintViolation<Groups>> violations = validator.validate(groups);
+        if (!violations.isEmpty()) {
+            throw new SchedulerValidationException(violations.toString(), "Groups", "Error in groups entity", groups.toString());
+        }
+    }
+
+    public boolean groupNameIsUnique(Groups groups) {
+        return groupsRepository.findAll()
+                .stream()
+                .noneMatch(groups1 -> groups1.getName().equals(groups.getName()));
+    }
+
+    public boolean schoolYearIsValid(Groups groups) {
+        return groups.getSchoolYear() >= 2023 && groups.getSchoolYear() <= 3032;
+    }
+
     public List<Groups> getAll() {
         return groupsRepository.findAll();
     }
 
-    public Optional<Groups> getById(Long id){
+    public Optional<Groups> getById(Long id) {
         return groupsRepository.findById(id);
     }
 
@@ -44,41 +66,55 @@ public class GroupService {
 
         Pageable pageable = PageRequest.of(page, pageSize);
 
-        return groupsRepository.findAll(pageable).stream().sorted(Comparator.comparing(Groups::getModifiedDate).reversed())
+        return groupsRepository.findAll(pageable).stream()
                 .collect(Collectors.toList());
-
     }
 
     @Transactional(readOnly = true)
     public List<GroupsEntityDto> getGroupsByNameContaining(String nameText) {
-        return groupsRepository.findByNameContainingIgnoreCase(nameText).stream().sorted(Comparator.comparing(Groups::getModifiedDate).reversed())
-                .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
-    }
-    @Transactional(readOnly = true)
-    public List<GroupsEntityDto> getGroupsBySchoolYear(Integer schoolYearText) {
-        return groupsRepository.findBySchoolYear(schoolYearText).stream().sorted(Comparator.comparing(Groups::getModifiedDate).reversed())
+        return groupsRepository.findByNameContainingIgnoreCase(nameText).stream()
                 .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public List<GroupsEntityDto> getGroupsBySchoolYear(Integer schoolYearText) {
+        return groupsRepository.findBySchoolYear(schoolYearText).stream()
+
+                .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
+    }
 
     @Transactional(readOnly = true)
     public List<GroupsEntityDto> getGroupsByProgram(String programText) {
-        Program createdProgram = programRepository.findByNameContainingIgnoreCase(programText).stream().findAny().get();
-        return groupsRepository.findAll().stream().sorted(Comparator.comparing(Groups::getModifiedDate).reversed()).filter(groups -> groups.getProgram().equals(createdProgram))
+
+        Program createdProgram = programRepository.findByNameContainingIgnoreCase(programText)
+                .stream()
+                .findFirst().get();
+        return groupsRepository.findAll()
+                .stream()
+                .filter(groups -> groups.getProgram().equals(createdProgram))
                 .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
     }
 
+    public Groups create(Groups groups, Long programId) {
+        validateInputWithInjectedValidator(groups);
+        Program createdProgram = programRepository.findById(programId)
+                .orElseThrow(() -> new SchedulerValidationException("Program doesn't exist", "Program", "Program not found", programId.toString()));
 
-    public Groups create(Groups groups, Long programId){
-        Program createdProgram = programRepository.findById(programId).get();
-        groups.setProgram(createdProgram);
-        return groupsRepository.save(groups);
+        if (schoolYearIsValid(groups)) {
+            groups.setProgram(createdProgram);
+            return groupsRepository.save(groups);
+        } else {
+            throw new SchedulerValidationException("Invalid year value", "School year", "School year must be between 2023-3023", groups.getSchoolYear().toString());
+        }
     }
-//    .getById(programId)
-    public Groups update(Long id, Groups groups, Long programId){
-        Program createdProgram = programRepository.findById(programId).get();
-        Groups existingGroups =  groupsRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Group doesn't exist"));
+
+    //    .getById(programId)
+    public Groups update(Long id, Groups groups, Long programId) {
+        validateInputWithInjectedValidator(groups);
+        Program createdProgram = programRepository.findById(programId)
+                .orElseThrow(() -> new SchedulerValidationException("Program doesn't exist", "Program", "Program not found", programId.toString()));
+        Groups existingGroups = groupsRepository.findById(id)
+                .orElseThrow(() -> new SchedulerValidationException("Group doesn't exist", "id", "Group doesn't exist", id.toString()));
 
         existingGroups.setName(groups.getName());
         existingGroups.setShift(groups.getShift());
@@ -88,16 +124,17 @@ public class GroupService {
         return groupsRepository.save(existingGroups);
     }
 
-    public Groups replace(Long id, Groups groups){
+    public Groups replace(Long id, Groups groups) {
+        validateInputWithInjectedValidator(groups);
         groups.setId(id);
         return groupsRepository.save(groups);
     }
 
-    public Boolean deleteById(Long id){
-        try{
+    public Boolean deleteById(Long id) {
+        try {
             groupsRepository.deleteById(id);
             return true;
-        } catch (EmptyResultDataAccessException e){
+        } catch (EmptyResultDataAccessException e) {
             return false;
         }
     }

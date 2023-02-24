@@ -1,38 +1,28 @@
 package lt.techin.AlpineOctopusScheduler.service;
 
-
-import lt.techin.AlpineOctopusScheduler.api.dto.ModuleEntityDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.ProgramSubjectHoursDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.SubjectDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ModuleMapper;
-import lt.techin.AlpineOctopusScheduler.dao.ProgramRepository;
-
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ModuleMapper;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper;
-
-import lt.techin.AlpineOctopusScheduler.dao.ModuleRepository;
-import lt.techin.AlpineOctopusScheduler.dao.RoomRepository;
-
-import lt.techin.AlpineOctopusScheduler.dao.SubjectRepository;
-import lt.techin.AlpineOctopusScheduler.dao.TeacherRepository;
+import lt.techin.AlpineOctopusScheduler.dao.*;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
-
-import lt.techin.AlpineOctopusScheduler.model.*;
-
 import lt.techin.AlpineOctopusScheduler.model.Module;
+import lt.techin.AlpineOctopusScheduler.model.Room;
+import lt.techin.AlpineOctopusScheduler.model.Subject;
+import lt.techin.AlpineOctopusScheduler.model.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.*;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
-
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramSubjectHoursMapper.toProgramSubjectHours;
 
 @Service
 public class SubjectService {
@@ -47,13 +37,29 @@ public class SubjectService {
 
     private final ProgramRepository programRepository;
 
+    private final Validator validator;
+
     @Autowired
-    public SubjectService(SubjectRepository subjectRepository, ModuleRepository moduleRepository, TeacherRepository teacherRepository, RoomRepository roomRepository, ProgramRepository programRepository) {
+    public SubjectService(SubjectRepository subjectRepository, ModuleRepository moduleRepository, TeacherRepository teacherRepository, RoomRepository roomRepository, ProgramRepository programRepository, Validator validator) {
         this.subjectRepository = subjectRepository;
         this.moduleRepository = moduleRepository;
         this.teacherRepository = teacherRepository;
         this.roomRepository = roomRepository;
         this.programRepository = programRepository;
+        this.validator = validator;
+    }
+
+    void validateInputWithInjectedValidator(Subject subject) {
+        Set<ConstraintViolation<Subject>> violations = validator.validate(subject);
+        if (!violations.isEmpty()) {
+            throw new SchedulerValidationException(violations.toString(), "Subject", "Error in subject entity", subject.toString());
+        }
+    }
+
+    public boolean subjectNameIsUnique(Subject subject) {
+        return subjectRepository.findAll()
+                .stream()
+                .noneMatch(subject1 -> subject1.getName().equals(subject.getName()));
     }
 
     public List<Subject> getAll() {
@@ -91,8 +97,6 @@ public class SubjectService {
     }
 
 
-
-
     @Transactional(readOnly = true)
     public List<SubjectEntityDto> getPagedSubjectsByModuleContaining(String nameText, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
@@ -107,7 +111,7 @@ public class SubjectService {
     }
 
     @Transactional(readOnly = true)
-    public List<SubjectEntityDto> getPagedSubjectsByNameAndByModuleContaining(String nameText,String moduleText, int page, int pageSize) {
+    public List<SubjectEntityDto> getPagedSubjectsByNameAndByModuleContaining(String nameText, String moduleText, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
         var createdModule = moduleRepository.findByNameContainingIgnoreCase(moduleText, pageable).stream()
                 .findFirst();
@@ -117,10 +121,12 @@ public class SubjectService {
     }
 
     public Subject create(Subject subject) {
+        validateInputWithInjectedValidator(subject);
         return subjectRepository.save(subject);
     }
 
     public Subject update(Long id, Subject subject) {
+        validateInputWithInjectedValidator(subject);
         var existingSubject = subjectRepository.findById(id)
                 .orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
                         "id", "Subject not found", id.toString()));
@@ -223,7 +229,6 @@ public class SubjectService {
         } catch (EmptyResultDataAccessException exception) {
             return false;
         }
-
     }
 
     public boolean deleteRoomInSubjectById(Long subjectId, Long roomId) {
@@ -235,6 +240,5 @@ public class SubjectService {
         } catch (EmptyResultDataAccessException exception) {
             return false;
         }
-
     }
 }

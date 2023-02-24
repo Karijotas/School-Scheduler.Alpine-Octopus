@@ -97,6 +97,13 @@ export function EditGroupObject() {
                 )
             );
     }, []);
+
+    const [updated, setUpdated] = useState();
+
+    useEffect(() => {
+        setUpdated(true);
+    }, [setUpdated]);
+
     return (
 
 
@@ -110,7 +117,8 @@ export function EditGroupObject() {
                 </Grid.Column>
                 <Grid.Column floated='left' textAlign='left' verticalAlign='top' width={13}>
                     <Segment id='segment' color='teal'>
-                        {active && (<div >
+                        {active && (<div >                            {error && (<Message warning className='error'>{error}</Message>)}
+
                             <Table celled >
                                 <Table.Header >
                                     <Table.Row  >
@@ -170,7 +178,7 @@ export function EditGroupObject() {
                                         </Table.Cell>
                                         <Table.Cell >
 
-                                            <select id='selectYear' value={groups.schoolYear} onChange={(e) => updateProperty('schoolYear', e)} >
+                                            <select  value={groups.schoolYear} onChange={(e) => updateProperty('schoolYear', e)} >
                                                 {Object.entries(YEAR_OPTIONS)
                                                     .map(([key, value]) => <option value={key}>{value}</option>)
                                                 }

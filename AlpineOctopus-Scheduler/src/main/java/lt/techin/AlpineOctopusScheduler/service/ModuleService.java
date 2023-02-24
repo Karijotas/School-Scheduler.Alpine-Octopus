@@ -1,13 +1,11 @@
 package lt.techin.AlpineOctopusScheduler.service;
+
 import lt.techin.AlpineOctopusScheduler.api.dto.ModuleEntityDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ModuleMapper;
-import lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper;
+import lt.techin.AlpineOctopusScheduler.dao.ModuleRepository;
 import lt.techin.AlpineOctopusScheduler.dao.SubjectRepository;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Module;
-import lt.techin.AlpineOctopusScheduler.dao.ModuleRepository;
-import lt.techin.AlpineOctopusScheduler.model.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
@@ -16,8 +14,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.Table;
-import java.util.Comparator;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -31,12 +29,27 @@ public class ModuleService {
     private final ModuleRepository moduleRepository;
 
     private final SubjectRepository subjectRepository;
-    @Autowired
-    public ModuleService(ModuleRepository moduleRepository,
-                         SubjectRepository subjectRepository) {
 
+    private final Validator validator;
+
+    @Autowired
+    public ModuleService(ModuleRepository moduleRepository, SubjectRepository subjectRepository, Validator validator) {
         this.moduleRepository = moduleRepository;
         this.subjectRepository = subjectRepository;
+        this.validator = validator;
+    }
+
+    void validateInputWithInjectedValidator(Module module) {
+        Set<ConstraintViolation<Module>> violations = validator.validate(module);
+        if (!violations.isEmpty()) {
+            throw new SchedulerValidationException(violations.toString(), "Module", "Error in module entity", module.toString());
+        }
+    }
+
+    public boolean moduleNameIsUnique(Module module) {
+        return moduleRepository.findAll()
+                .stream()
+                .noneMatch(module1 -> module1.getName().equals(module.getName()));
     }
 
     public List<Module> getAll() {
@@ -51,11 +64,12 @@ public class ModuleService {
 
 
     public Module create(Module module) {
-
+        validateInputWithInjectedValidator(module);
         return moduleRepository.save(module);
     }
 
     public Module update(Long id, Module module) {
+        validateInputWithInjectedValidator(module);
         var existingModule = moduleRepository.findById(id)
                 .orElseThrow(() -> new SchedulerValidationException("Module does not exist",
                         "id", "Module not found", id.toString()));
@@ -68,11 +82,11 @@ public class ModuleService {
         return moduleRepository.save(existingModule);
     }
 
-    public Boolean deleteById(Long id){
-        try{
+    public Boolean deleteById(Long id) {
+        try {
             moduleRepository.deleteById(id);
             return true;
-        } catch (EmptyResultDataAccessException e){
+        } catch (EmptyResultDataAccessException e) {
             return false;
         }
     }

@@ -20,7 +20,6 @@ public class Room {
     private Long id;
     @NotBlank
     @Size(max = 40)
-    @Column(unique = true)
     private String name;
     @NotBlank
     @Size(max = 40)

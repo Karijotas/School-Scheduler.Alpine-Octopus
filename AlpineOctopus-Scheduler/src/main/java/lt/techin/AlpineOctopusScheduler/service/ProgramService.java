@@ -1,8 +1,10 @@
 package lt.techin.AlpineOctopusScheduler.service;
 
-import lt.techin.AlpineOctopusScheduler.api.dto.*;
+import lt.techin.AlpineOctopusScheduler.api.dto.ProgramEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.ProgramSubjectHourListDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.ProgramSubjectHoursDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.ProgramSubjectHoursForCreate;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper;
-import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramSubjectHoursMapper;
 import lt.techin.AlpineOctopusScheduler.dao.ProgramRepository;
 import lt.techin.AlpineOctopusScheduler.dao.ProgramSubjectHourListRepository;
 import lt.techin.AlpineOctopusScheduler.dao.ProgramSubjectHoursRepository;
@@ -11,20 +13,23 @@ import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Program;
 import lt.techin.AlpineOctopusScheduler.model.ProgramSubjectHours;
 import lt.techin.AlpineOctopusScheduler.model.ProgramSubjectHoursList;
-import lt.techin.AlpineOctopusScheduler.model.Room;
 import org.springframework.dao.EmptyResultDataAccessException;
-
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper.toProgramEntityDto;
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramSubjectHoursMapper.*;
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramSubjectHoursMapper.toProgramSubjectHourList;
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramSubjectHoursMapper.toProgramSubjectHours;
 
 @Service
 public class ProgramService {
@@ -35,22 +40,40 @@ public class ProgramService {
 
     private final ProgramSubjectHourListRepository programSubjectHourListRepository;
 
-    public ProgramService(ProgramRepository programRepository, SubjectRepository subjectRepository, ProgramSubjectHoursRepository programSubjectHoursRepository, ProgramSubjectHourListRepository programSubjectHourListRepository) {
+    private final Validator validator;
+
+    public ProgramService(ProgramRepository programRepository, SubjectRepository subjectRepository, ProgramSubjectHoursRepository programSubjectHoursRepository, ProgramSubjectHourListRepository programSubjectHourListRepository, Validator validator) {
         this.programRepository = programRepository;
         this.subjectRepository = subjectRepository;
         this.programSubjectHoursRepository = programSubjectHoursRepository;
         this.programSubjectHourListRepository = programSubjectHourListRepository;
+        this.validator = validator;
+    }
+
+    void validateInputWithInjectedValidator(Program program) {
+        Set<ConstraintViolation<Program>> violations = validator.validate(program);
+        if (!violations.isEmpty()) {
+            throw new SchedulerValidationException(violations.toString(), "Program", "Error in program entity", program.toString());
+        }
+    }
+
+    public boolean programNameIsUnique(Program program) {
+        return programRepository.findAll()
+                .stream()
+                .noneMatch(program1 -> program1.getName().equals(program.getName()));
     }
 
     public List<ProgramEntityDto> getAllPrograms() {
-        return programRepository.findAll().stream().sorted(Comparator.comparing(Program::getModifiedDate).reversed()).map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
+        return programRepository.findAll().stream()
+                .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
     public List<ProgramEntityDto> getPagedAllPrograms(int page, int pageSize) {
 
         Pageable pageable = PageRequest.of(page, pageSize);
 
-        return programRepository.findAll(pageable).stream().sorted(Comparator.comparing(Program::getModifiedDate).reversed()).map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
+        return programRepository.findAll(pageable).stream()
+                .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
     public Optional<Program> getById(Long id) {
@@ -59,22 +82,24 @@ public class ProgramService {
 
     @Transactional(readOnly = true)
     public List<ProgramEntityDto> getProgramsByNameContaining(String nameText) {
-        return programRepository.findByNameContainingIgnoreCase(nameText).stream().sorted(Comparator.comparing(Program::getModifiedDate).reversed())
+        return programRepository.findByNameContainingIgnoreCase(nameText).stream()
                 .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public List<ProgramEntityDto> getPagedProgramsByNameContaining(String nameText, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        return programRepository.findByNameContainingIgnoreCase(nameText, pageable).stream().sorted(Comparator.comparing(Program::getModifiedDate).reversed())
+        return programRepository.findByNameContainingIgnoreCase(nameText, pageable).stream()
                 .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
     public Program create(Program program) {
+        validateInputWithInjectedValidator(program);
         return programRepository.save(program);
     }
 
     public Program update(Long id, Program program) {
+        validateInputWithInjectedValidator(program);
         var existingProgram = programRepository.findById(id)
                 .orElseThrow(() -> new SchedulerValidationException("Program does not exist",
                         "id", "Program not found", id.toString()));
@@ -98,8 +123,6 @@ public class ProgramService {
     }
 
 
-
-
     public boolean deleteById(Long id) {
         try {
             programRepository.deleteById(id);
@@ -117,7 +140,6 @@ public class ProgramService {
             return false;
         }
     }
-
 
 
     public List<ProgramSubjectHours> getAllSubjectsInProgramByProgramId(Long id) {
@@ -178,19 +200,20 @@ public class ProgramService {
         var newProgramSubjectHoursDto = new ProgramSubjectHoursDto(existingProgram, existingSubject, subjectHours);
         return programSubjectHoursRepository.save(toProgramSubjectHours(newProgramSubjectHoursDto));
     }
-    public ProgramSubjectHoursList addSubjectAndHourForCreate (Long subjectId, Integer hour){
 
-        var programSubjectHourNew  = new ProgramSubjectHoursForCreate(subjectId, hour);
+    public ProgramSubjectHoursList addSubjectAndHourForCreate(Long subjectId, Integer hour) {
+
+        var programSubjectHourNew = new ProgramSubjectHoursForCreate(subjectId, hour);
 
         var programSubjectHourListDtoNew = new ProgramSubjectHourListDto(programSubjectHourNew);
         return programSubjectHourListRepository.save(toProgramSubjectHourList(programSubjectHourListDtoNew));
     }
 
-    public List<ProgramSubjectHoursList> findAllSubjectAndHourForCreate (){
+    public List<ProgramSubjectHoursList> findAllSubjectAndHourForCreate() {
         return programSubjectHourListRepository.findAll();
     }
 
-    public List<ProgramEntityDto> getAllAvailablePagedPrograms(int page, int pageSize){
+    public List<ProgramEntityDto> getAllAvailablePagedPrograms(int page, int pageSize) {
 
         Pageable pageable = PageRequest.of(page, pageSize);
 
@@ -198,25 +221,25 @@ public class ProgramService {
                 .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
-    public List<ProgramEntityDto> getAllAvailablePrograms(){
+    public List<ProgramEntityDto> getAllAvailablePrograms() {
         return programRepository.findAll().stream().filter(program -> program.getDeleted().equals(Boolean.FALSE))
                 .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
-    public List<ProgramEntityDto> getAllDeletedPrograms(){
+    public List<ProgramEntityDto> getAllDeletedPrograms() {
         return programRepository.findAll().stream().filter(program -> program.getDeleted().equals(Boolean.TRUE))
                 .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
-    public ProgramEntityDto restoreProgram(Long programId){
+    public ProgramEntityDto restoreProgram(Long programId) {
         var existingProgram = programRepository.findById(programId).orElseThrow(() -> new SchedulerValidationException("Program does not exist",
                 "id", "Program not found", programId.toString()));
         existingProgram.setDeleted(Boolean.FALSE);
         programRepository.save(existingProgram);
-       return toProgramEntityDto(existingProgram);
+        return toProgramEntityDto(existingProgram);
     }
 
-    public ProgramEntityDto deleteProgram(Long programId){
+    public ProgramEntityDto deleteProgram(Long programId) {
         var existingProgram = programRepository.findById(programId).orElseThrow(() -> new SchedulerValidationException("Program does not exist",
                 "id", "Program not found", programId.toString()));
         existingProgram.setDeleted(Boolean.TRUE);
