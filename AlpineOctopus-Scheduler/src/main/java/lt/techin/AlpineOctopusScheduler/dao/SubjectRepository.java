@@ -11,12 +11,12 @@ import java.util.List;
 
 
 @Repository
-public interface SubjectRepository extends JpaRepository<Subject, Long> {
+public interface SubjectRepository extends JpaRepository<Subject, Long>{
 
     List<Subject> findByNameContainingIgnoreCase(String nameText, Pageable pageable);
     List<Subject> findAllBySubjectModules_NameContainingIgnoreCase(String moduleText, Pageable pageable);
 
-//    @Transactional
+    //    @Transactional
 //    @Modifying
 //    @Query(value = "INSERT INTO modules_subjects (module_id, subject_id) VALUES (:module_id, :subject_id)",
 //            nativeQuery = true)

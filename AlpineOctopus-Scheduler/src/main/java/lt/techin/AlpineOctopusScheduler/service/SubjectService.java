@@ -63,12 +63,10 @@ public class SubjectService {
     public List<SubjectEntityDto> getPagedAllSubjects(int page, int pageSize) {
 
         Pageable pageable = PageRequest.of(page, pageSize);
-
         return subjectRepository.findAll(pageable).stream()
-                .sorted(Comparator.comparing(Subject::getModifiedDate).reversed()).
-                map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
+//                .sorted(Comparator.comparing(Subject::getModifiedDate).reversed())
+                .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
     }
-
 
     public Optional<Subject> getById(Long id) {
         return subjectRepository.findById(id);
@@ -79,7 +77,7 @@ public class SubjectService {
     public List<SubjectEntityDto> getPagedSubjectsByNameContaining(String nameText, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
         return subjectRepository.findByNameContainingIgnoreCase(nameText, pageable).stream()
-                .sorted(Comparator.comparing(Subject::getModifiedDate).reversed())
+//                .sorted(Comparator.comparing(Subject::getModifiedDate).reversed())
                 .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
     }
 
