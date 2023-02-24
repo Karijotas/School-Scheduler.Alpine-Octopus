@@ -47,8 +47,8 @@ root.render(
 
         {/* Teachers routes: */}
         <Route path='/view/teachers' element={<ViewTeachers />} />
-        {/* <Route path='/view/teachers/edit/:id' element={<EditTeacherObject />} />
-        <Route path='/create/teachers/' element={<CreateTeacher />} /> */}
+        <Route path='/view/teachers/edit/:id' element={<EditTeacherObject />} />
+        <Route path='/create/teachers/' element={<CreateTeacher />} />
 
 
         {/* Groups routes: */}
