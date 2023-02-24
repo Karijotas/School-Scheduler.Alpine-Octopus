@@ -35,7 +35,6 @@ public class RoomController {
         this.roomService = roomService;
     }
 
-
     @GetMapping
     @ResponseBody
     public List<RoomEntityDto> getAllRooms() {

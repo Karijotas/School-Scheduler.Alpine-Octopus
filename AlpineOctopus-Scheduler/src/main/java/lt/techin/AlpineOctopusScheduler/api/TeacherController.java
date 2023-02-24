@@ -31,13 +31,11 @@ public class TeacherController {
 
     public static Logger logger = LoggerFactory.getLogger(TeacherController.class);
     private final TeacherService teacherService;
-
-
+    
     public TeacherController(TeacherService teacherService) {
 
         this.teacherService = teacherService;
     }
-
 
     @GetMapping
     @ResponseBody
@@ -55,7 +53,6 @@ public class TeacherController {
                 .map(TeacherMapper::toTeacherEntityDto)
                 .collect(toList());
     }
-
 
     @PostMapping
     public ResponseEntity<TeacherDto> createTeacher(@Valid @RequestBody TeacherDto teacherDto) {

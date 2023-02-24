@@ -68,7 +68,6 @@ public class SubjectController {
         return subjectService.getPagedSubjectsByNameContaining(nameText, page, pageSize);
     }
 
-
     @PostMapping
     public ResponseEntity<SubjectDto> createSubject(@Valid @RequestBody SubjectDto subjectDto) {
         if (subjectService.subjectNameIsUnique(toSubject(subjectDto))) {

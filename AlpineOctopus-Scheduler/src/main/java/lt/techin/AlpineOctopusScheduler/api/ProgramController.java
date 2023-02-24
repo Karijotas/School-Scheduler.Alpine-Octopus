@@ -209,6 +209,4 @@ public class ProgramController {
                 .map(ProgramSubjectHoursMapper::toProgramSubjectHoursDtoForList)
                 .collect(toList());
     }
-
-
 }

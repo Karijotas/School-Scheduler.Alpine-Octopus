@@ -97,6 +97,13 @@ export function EditGroupObject() {
                 )
             );
     }, []);
+
+    const [updated, setUpdated] = useState();
+
+    useEffect(() => {
+        setUpdated(true);
+    }, [setUpdated]);
+
     return (
 
 
