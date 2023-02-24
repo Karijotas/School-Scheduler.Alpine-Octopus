@@ -81,20 +81,17 @@ public class GroupService {
                 .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
     }
 
-
     @Transactional(readOnly = true)
     public List<GroupsEntityDto> getGroupsByProgram(String programText) {
         Program createdProgram = programRepository.findByNameContainingIgnoreCase(programText)
                 .stream()
-                .findFirst()
-                .orElseThrow(() -> new SchedulerValidationException("Program doesn't exist", "Program", "Program not found", programText));
+                .findFirst().get();
 
         return groupsRepository.findAll()
                 .stream()
                 .filter(groups -> groups.getProgram().equals(createdProgram))
                 .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
     }
-
 
     public Groups create(Groups groups, Long programId) {
         validateInputWithInjectedValidator(groups);
