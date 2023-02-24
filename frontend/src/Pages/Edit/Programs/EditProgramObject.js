@@ -68,7 +68,6 @@ export function EditProgramObject() {
     }).then(fetch(`/api/v1/programs/${params.id}/subjects/hours`)
       .then((response) => response.json())
       .then(setTotalHours));
-
   };
 
   const addSubjectAndHours = (programId, subjectId, hours) => {

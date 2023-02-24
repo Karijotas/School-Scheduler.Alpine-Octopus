@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -57,12 +58,12 @@ public class TeacherService {
 
     public List<Teacher> getPagedAllTeachers(int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        return teacherRepository.findAll(pageable).stream().collect(Collectors.toList());
+        return teacherRepository.findAll(pageable).stream().sorted(Comparator.comparing(Teacher::getModifiedDate).reversed()).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public List<TeacherEntityDto> getTeachersByNameContaining(String nameText) {
-        return teacherRepository.findByNameContainingIgnoreCase(nameText).stream()
+        return teacherRepository.findByNameContainingIgnoreCase(nameText).stream().sorted(Comparator.comparing(Teacher::getModifiedDate).reversed())
                 .map(TeacherMapper::toTeacherEntityDto).collect(Collectors.toList());
     }
 
@@ -70,7 +71,6 @@ public class TeacherService {
 
         validateInputWithInjectedValidator(teacher);
         return teacherRepository.save(teacher);
-
     }
 
     public Teacher update(Long id, Teacher teacher) {
@@ -114,15 +114,3 @@ public class TeacherService {
 //
 //        return teacherRepository.save(existingTeacher);
 }
-
-
-
-
-
-
-
-
-
-
-
-

@@ -60,13 +60,13 @@ export function ViewGroups() {
     };
 
     const fetchGroups = async () => {
-        fetch('http://localhost:8092/api/v1/groups/page?page=' + activePage)
+        fetch('/api/v1/groups/page?page=' + activePage)
             .then(response => response.json())
             .then(jsonResponse => setGroups(jsonResponse));
     };
 
     const fetchSingleGroups = async () => {
-        fetch('http://localhost:8092/api/v1/groups/')
+        fetch('/api/v1/groups/')
             .then(response => response.json())
             .then(jsonResponse => setGroupsForPaging(jsonResponse))
             .then(setPageCount(Math.ceil(groupsforPaging.length / 10)))

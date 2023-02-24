@@ -45,11 +45,7 @@ public class Subject {
         modifiedDate = LocalDateTime.now();
     }
 
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            })
+    @ManyToMany(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinTable(
             name = "modules_subjects",

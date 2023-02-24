@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHref } from 'react-router-dom';
 import { Button, Form, Grid, Icon, Input, Segment } from "semantic-ui-react";
 import { EditMenu } from '../../../Components/EditMenu';
 import MainMenu from '../../../Components/MainMenu';
@@ -10,6 +10,7 @@ const JSON_HEADERS = {
 
 export function CreateModulePage() {
   // const [create, setCreate] = useState()
+  const listUrl = useHref('/view/modules');
   const [hide, setHide] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -35,7 +36,7 @@ export function CreateModulePage() {
         name,
         description,
       }),
-    }).then(applyResult);
+    }).then(applyResult).then(() => window.location = listUrl);
   };
 
   // useEffect(() => {

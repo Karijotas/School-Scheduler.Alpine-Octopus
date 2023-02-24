@@ -223,4 +223,3 @@ export function EditGroupObject() {
         </div >
     )
 }
-

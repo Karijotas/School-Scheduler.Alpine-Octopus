@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHref } from 'react-router-dom';
 import { Button, Form, Grid, Icon, Segment, Select } from "semantic-ui-react";
 import { EditMenu } from '../../../Components/EditMenu';
 import MainMenu from '../../../Components/MainMenu';
@@ -10,6 +10,7 @@ const JSON_HEADERS = {
 
 export function CreateSubjecPage() {
   // const [create, setCreate] = useState()
+  const listUrl = useHref('/view/subjects');
   const [hide, setHide] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -39,12 +40,13 @@ export function CreateSubjecPage() {
       body: JSON.stringify({
         name,
         description,
-        modules,
-        teachers,
-        rooms,
+        // modules,
+        // teachers,
+        // rooms,
       }),
-    }).then(applyResult);
+    }).then(applyResult).then(() => window.location = listUrl);
   };
+
   useEffect(() => {
     fetch("/api/v1/modules/")
       .then((response) => response.json())
@@ -110,7 +112,7 @@ export function CreateSubjecPage() {
                 onChange={(e) => setDescription(e.target.value)}
               />
             </Form.Field>
-            <Form.Group widths="equal">
+            {/* <Form.Group widths="equal">
               <Form.Field>
                 <label>Moduliai</label>
                 <Select
@@ -138,7 +140,7 @@ export function CreateSubjecPage() {
                   onChange={(e, data) => setRoomId(data.value)}
                 />
               </Form.Field>
-            </Form.Group>
+            </Form.Group> */}
             <div>
               <Button
                 icon

@@ -21,6 +21,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+
 @Service
 public class GroupService {
 
@@ -65,7 +66,8 @@ public class GroupService {
 
         Pageable pageable = PageRequest.of(page, pageSize);
 
-        return groupsRepository.findAll(pageable).stream().collect(Collectors.toList());
+        return groupsRepository.findAll(pageable).stream()
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -76,17 +78,17 @@ public class GroupService {
 
     @Transactional(readOnly = true)
     public List<GroupsEntityDto> getGroupsBySchoolYear(Integer schoolYearText) {
-
         return groupsRepository.findBySchoolYear(schoolYearText).stream()
+
                 .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public List<GroupsEntityDto> getGroupsByProgram(String programText) {
+
         Program createdProgram = programRepository.findByNameContainingIgnoreCase(programText)
                 .stream()
                 .findFirst().get();
-
         return groupsRepository.findAll()
                 .stream()
                 .filter(groups -> groups.getProgram().equals(createdProgram))

@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -34,20 +35,20 @@ public class RoomService {
 
         Pageable pageable = PageRequest.of(page, pageSize);
 
-        return roomRepository.findAll(pageable).stream().map(RoomMapper::toRoomEntityDto).collect(Collectors.toList());
+        return roomRepository.findAll(pageable).stream().sorted(Comparator.comparing(Room::getModifiedDate).reversed()).map(RoomMapper::toRoomEntityDto).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public List<RoomEntityDto> getPagedRoomsByNameContaining(String nameText, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        return roomRepository.findByNameContainingIgnoreCase(nameText, pageable).stream()
+        return roomRepository.findByNameContainingIgnoreCase(nameText, pageable).stream().sorted(Comparator.comparing(Room::getModifiedDate).reversed())
                 .map(RoomMapper::toRoomEntityDto).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public List<RoomEntityDto> getPagedBuildingsByNameContaining(String buildingText, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        return roomRepository.findByBuildingContainingIgnoreCase(buildingText, pageable).stream()
+        return roomRepository.findByBuildingContainingIgnoreCase(buildingText, pageable).stream().sorted(Comparator.comparing(Room::getModifiedDate).reversed())
                 .map(RoomMapper::toRoomEntityDto).collect(Collectors.toList());
     }
 

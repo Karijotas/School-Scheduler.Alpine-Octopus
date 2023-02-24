@@ -64,14 +64,16 @@ public class ProgramService {
     }
 
     public List<ProgramEntityDto> getAllPrograms() {
-        return programRepository.findAll().stream().map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
+        return programRepository.findAll().stream()
+                .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
     public List<ProgramEntityDto> getPagedAllPrograms(int page, int pageSize) {
 
         Pageable pageable = PageRequest.of(page, pageSize);
 
-        return programRepository.findAll(pageable).stream().map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
+        return programRepository.findAll(pageable).stream()
+                .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
     public Optional<Program> getById(Long id) {
