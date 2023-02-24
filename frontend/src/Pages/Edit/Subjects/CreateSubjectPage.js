@@ -20,6 +20,69 @@ export function CreateSubjecPage() {
   const [rooms, setRooms] = useState([]);
   const [roomId, setRoomId] = useState();
 
+  //Validation
+  const [nameDirty, setNameDirty] = useState(false);
+  
+  const [descriptionDirty, setDescriptionDirty] = useState(false);
+  const [nameError, setNameError] = useState("The name field is required!")
+  
+  const [descriptionError, setDescriptionError] = useState("")
+  const [formValid, setFormValid] = useState(false)
+
+
+  const [selectErrorModule, setSelectErrorModule] = useState("Required")
+   const [selectErrorTeachers, setSelectErrorTeachers] = useState("Required")
+   const [selectErrorRooms, setSelectErrorRooms] = useState("Required")
+
+  
+
+  useEffect(() => {
+    if(nameError || descriptionError || selectErrorModule || selectErrorTeachers || selectErrorRooms) {
+      setFormValid(false)
+    } else {
+      setFormValid(true)
+    }
+  }, [nameError, descriptionError, selectErrorModule, selectErrorTeachers, selectErrorRooms])
+  
+
+  const blurHandler = (e) => {
+    switch (e.target.name){
+      case 'name':
+        setNameDirty(true);
+        break
+    }
+  }
+  const selectModuleHandler = () => {
+    setSelectErrorModule("")
+  }
+  const selectTeachersHandler = () => {
+    setSelectErrorTeachers("")
+  }
+  const selectRoomsHandler = () => {
+    setSelectErrorRooms("")
+  }
+
+  const nameHandler = (e) => {
+    setName(e.target.value)
+    if(e.target.value.length <2 || e.target.value.length > 40){
+      setNameError("Size must be between 2 and 40 characters!")
+      if(!e.target.value){
+        setNameError("The name field is required!")
+      }
+    } else {
+      setNameError("")
+    }
+  }
+
+  const descriptionHandler = (e) => {
+    setDescription(e.target.value)
+    if(e.target.value.length > 100){
+      setDescriptionError("Size must be less than 100 characters!")
+    } else {
+      setDescriptionError("")
+    }
+  }
+
   const applyResult = (result) => {
     const clear = () => {
       setHide(true);
@@ -96,46 +159,55 @@ export function CreateSubjecPage() {
           <Form>
             <Form.Field>
               <label>Dalyko pavadinimas</label>
+              {(nameDirty && nameError) && <div style={{color: "red"}}>{nameError}</div>}
               <input
                 placeholder="Dalyko pavadinimas"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => nameHandler(e)}
+                onBlur={blurHandler}
+                name="name"
               />
             </Form.Field>
             <Form.Field>
               <label>Aprašymas</label>
+              {(descriptionError) && <div style={{color: "red"}}>{descriptionError}</div>}
               <input
                 placeholder="Aprašymas"
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={(e) => descriptionHandler(e)}
+                name="description"
+                onBlur={blurHandler}
               />
             </Form.Field>
             <Form.Group widths="equal">
               <Form.Field>
-                <label>Moduliai</label>
+                <label>Moduliai</label> {(selectErrorModule) && <div style={{color: "red"}}>{selectErrorModule}</div>}
                 <Select
+                name = "module"
                   options={modules}
                   placeholder="Moduliai"
                   onClose={() => console.log(moduleId)}
-                  onChange={(e, data) => setModuleId(data.value)}
+                  onChange={((e, data) => setModuleId(data.value), selectModuleHandler)}
                 />
               </Form.Field>
               <Form.Field>
-                <label>Mokytojai</label>
+                <label>Mokytojai</label> {(selectErrorTeachers) && <div style={{color: "red"}}>{selectErrorTeachers}</div>}
                 <Select
+                name = "teachers"
                   options={teachers}
                   placeholder="Mokytojai"
                   onClose={() => console.log(teacherId)}
-                  onChange={(e, data) => setTeacherId(data.value)}
+                  onChange={((e, data) => setTeacherId(data.value),selectTeachersHandler)}
                 />
               </Form.Field>
               <Form.Field>
-                <label>Klasės</label>
+                <label>Klasės</label> {(selectErrorRooms) && <div style={{color: "red"}}>{selectErrorRooms}</div>}
                 <Select
+                name = "rooms"
                   options={rooms}
                   placeholder="Klasės"
                   onClose={() => console.log(roomId)}
-                  onChange={(e, data) => setRoomId(data.value)}
+                  onChange={((e, data) => setRoomId(data.value),selectRoomsHandler)}
                 />
               </Form.Field>
             </Form.Group>
@@ -150,6 +222,7 @@ export function CreateSubjecPage() {
                 Atgal
               </Button>
               <Button
+              disabled={!formValid}
                 type="submit"
                 className="controls"
                 primary

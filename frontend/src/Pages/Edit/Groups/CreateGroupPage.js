@@ -39,6 +39,41 @@ export function CreateGroupPage() {
   const [programId, setProgramId] = useState()
   const [shift, setShift] = useState('')
 
+  //Validation
+  const [nameDirty, setNameDirty] = useState(false);
+  const [nameError, setNameError] = useState("The name field is required!")
+  const [formValid, setFormValid] = useState(false)
+
+  useEffect(() => {
+    if(nameError == true) {
+      setFormValid(false)
+    } else {
+      setFormValid(true)
+    }
+  }, [nameError])
+  
+
+  const blurHandler = (e) => {
+    switch (e.target.name){
+      case 'name':
+        setNameDirty(true);
+        break
+       
+    }
+  }
+
+  const nameHandler = (e) => {
+    setName(e.target.value)
+    if(e.target.value.length > 100){
+      setNameError("Size must be less than 100 characters!")
+      if(!e.target.value){
+        setNameError("The name field is required!")
+      }
+    } else {
+      setNameError("")
+    }
+  }
+
   const applyResult = (result) => {
     const clear = () => {
       setHide(true);
@@ -66,6 +101,7 @@ export function CreateGroupPage() {
     }).then(applyResult).then(() => window.location = listUrl);
 
   };
+  
   useEffect(() => {
     fetch("/api/v1/programs/")
       .then((response) => response.json())
@@ -91,11 +127,13 @@ export function CreateGroupPage() {
           <Form >
             <Form.Field >
               <label>"Teams" grupės pavadinimas</label>
-              <input placeholder='"Teams" grupės pavadinimas' value={name} onChange={(e) => setName(e.target.value)} />
+              {(nameDirty && nameError) && <div style={{color: "red"}}>{nameError}</div>}
+              <input name="name" onBlur={blurHandler} placeholder='"Teams" grupės pavadinimas' value={name} onChange={(e) => nameHandler(e)} />
             </Form.Field>
             <Form.Group widths='equal'>
               <Form.Field >
                 <label>Mokslo metai</label>
+                
                 <select id='selectYear' value={schoolYear} onChange={(e) => setSchoolYear(e.target.value)} >
                   <option>-</option>
                   {Object.entries(YEAR_OPTIONS)
@@ -117,7 +155,7 @@ export function CreateGroupPage() {
               </Form.Field>
             </Form.Group>
             <div ><Button icon labelPosition="left" className="" as={NavLink} exact to='/view/groups'><Icon name="arrow left" />Atgal</Button>
-              <Button type='submit' className="controls" id='details' onClick={createGroup}>Sukurti</Button></div>
+              <Button type='submit' className="controls" id='details' disabled={!formValid} onClick={createGroup}>Sukurti</Button></div>
           </Form>
 
         </Segment>
