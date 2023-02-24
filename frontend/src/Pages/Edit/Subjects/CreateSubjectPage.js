@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { NavLink, useHref } from 'react-router-dom';
 import { Button, Form, Grid, Icon, Segment, Select } from "semantic-ui-react";
-import { ViewSubjects } from "./ViewSubjects";
+import { EditMenu } from '../../../Components/EditMenu';
 import MainMenu from '../../../Components/MainMenu';
-import { EditMenu } from '../EditMenu';
-import { NavLink } from 'react-router-dom';
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -11,6 +10,7 @@ const JSON_HEADERS = {
 
 export function CreateSubjecPage() {
   // const [create, setCreate] = useState()
+  const listUrl = useHref('/view/subjects');
   const [hide, setHide] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -40,12 +40,13 @@ export function CreateSubjecPage() {
       body: JSON.stringify({
         name,
         description,
-        modules,
-        teachers,
-        rooms,
+        // modules,
+        // teachers,
+        // rooms,
       }),
-    }).then(applyResult);
+    }).then(applyResult).then(() => window.location = listUrl);
   };
+
   useEffect(() => {
     fetch("/api/v1/modules/")
       .then((response) => response.json())
@@ -92,7 +93,7 @@ export function CreateSubjecPage() {
   </Grid.Column>
 
   <Grid.Column floated='left' textAlign='left' verticalAlign='top' width={13}>
-    <Segment id='segment' raised color='teal'>
+    <Segment id='segment' color='teal'>
         <div className="create-new-page">
           <Form>
             <Form.Field>
@@ -111,7 +112,7 @@ export function CreateSubjecPage() {
                 onChange={(e) => setDescription(e.target.value)}
               />
             </Form.Field>
-            <Form.Group widths="equal">
+            {/* <Form.Group widths="equal">
               <Form.Field>
                 <label>Moduliai</label>
                 <Select
@@ -139,7 +140,7 @@ export function CreateSubjecPage() {
                   onChange={(e, data) => setRoomId(data.value)}
                 />
               </Form.Field>
-            </Form.Group>
+            </Form.Group> */}
             <div>
               <Button
                 icon

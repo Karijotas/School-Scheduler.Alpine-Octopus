@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHref } from 'react-router-dom';
 import { Button, Form, Grid, Icon, Input, Segment, Select } from "semantic-ui-react";
 import MainMenu from '../../../Components/MainMenu';
-import { EditMenu } from '../EditMenu';
+import { EditMenu } from '../../../Components/EditMenu';
+import { YEAR_OPTIONS } from '../../../Components/const';
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -27,6 +28,8 @@ const shiftOptions = [
 ];
 
 export function CreateGroupPage() {
+  const listUrl = useHref('/view/groups');
+
   // const [create, setCreate] = useState()
   const [hide, setHide] = useState(false)
   const [name, setName] = useState('');
@@ -42,7 +45,8 @@ export function CreateGroupPage() {
     };
 
     if (result.ok) {
-      clear();
+      clear()
+
     } else {
       window.alert("Nepavyko sukurt: " + result.status);
     }
@@ -59,7 +63,8 @@ export function CreateGroupPage() {
         studentAmount,
         shift,
       }),
-    }).then(applyResult);
+    }).then(applyResult).then(() => window.location = listUrl);
+
   };
   useEffect(() => {
     fetch("/api/v1/programs/")
@@ -81,7 +86,7 @@ export function CreateGroupPage() {
         <EditMenu />
       </Grid.Column>
       <Grid.Column floated='left' textAlign='left' verticalAlign='top' width={13}>
-        <Segment id='segment' raised color='teal'>
+        <Segment id='segment' color='teal'>
 
           <Form >
             <Form.Field >
@@ -91,8 +96,11 @@ export function CreateGroupPage() {
             <Form.Group widths='equal'>
               <Form.Field >
                 <label>Mokslo metai</label>
-                <Input options={yearOptions} placeholder='Mokslo metai' value={schoolYear} onChange={(e) => setSchoolYear(e.target.value)} />
-              </Form.Field>
+                <select id='selectYear' value={schoolYear} onChange={(e) => setSchoolYear(e.target.value)} >
+                  <option>-</option>
+                  {Object.entries(YEAR_OPTIONS)
+                    .map(([key, value]) => <option value={key}>{value}</option>)
+                  }  </select>   </Form.Field>
               <Form.Field >
                 <label>Studentų skaičius</label>
                 <Input placeholder='Studentų skaičius' value={studentAmount} onChange={(e) => setStudentAmount(e.target.value)} />
@@ -108,10 +116,10 @@ export function CreateGroupPage() {
                 <Input options={shiftOptions} placeholder='Pamaina' value={shift} onChange={(e) => setShift(e.target.value)} />
               </Form.Field>
             </Form.Group>
-            <div><Button icon labelPosition="left" className="" as={NavLink} exact to='/view/groups'><Icon name="arrow left" />Atgal</Button>
-              <Button type='submit' className="controls" primary onClick={createGroup}>Sukurti</Button></div>
+            <div ><Button icon labelPosition="left" className="" as={NavLink} exact to='/view/groups'><Icon name="arrow left" />Atgal</Button>
+              <Button type='submit' className="controls" id='details' onClick={createGroup}>Sukurti</Button></div>
           </Form>
-          
+
         </Segment>
       </Grid.Column>
     </Grid>

@@ -14,7 +14,7 @@ import {
   TextArea,
 } from "semantic-ui-react";
 import MainMenu from "../../../Components/MainMenu";
-import { EditMenu } from "../EditMenu";
+import  {EditMenu} from "../../../Components/EditMenu";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -43,7 +43,7 @@ export function EditProgramObject() {
     fetch("/api/v1/programs/" + params.id)
       .then((response) => response.json())
       .then(setPrograms);
-  }, [totalHours, active]);
+  }, [totalHours, active, params]);
 
   useEffect(() => {
     fetch(`/api/v1/programs/${params.id}/subjects`)
@@ -63,7 +63,7 @@ export function EditProgramObject() {
     fetch(`/api/v1/programs/${params.id}/subjects/hours`)
       .then((response) => response.json())
       .then(setTotalHours);
-  }, [subjectHours]);
+  }, [subjectsInProgram]);
 
   const removeSubject = (programId, subjectId, hours) => {
     fetch(`/api/v1/programs/${programId}/subjects/${subjectId}/${hours}`, {
@@ -90,10 +90,10 @@ export function EditProgramObject() {
     )
       .then(getSubjectsInProgram)
       .then((response) => response.json())
-      .then(setSubjectsInProgram)
-      .then(console.log(subjectsInProgram))
+      .then(setSubjectsInProgram)      
       .then((response) => response.json())
-      .then(setTotalHours);
+      .then(setTotalHours)
+      .then(updatePrograms);
   };
 
   useEffect(() => {
@@ -134,6 +134,13 @@ export function EditProgramObject() {
       [property]: event.target.value,
     });
   };
+
+  const [updated, setUpdated] = useState();
+
+    useEffect(() => {
+        setUpdated(true);
+    }, [setUpdated]);
+
 
   const editThis = () => {
     setActive(false);
@@ -255,10 +262,7 @@ export function EditProgramObject() {
                             /*options={yearOptions} value={groups.schoolYear} */
                             onChange={(e) => updateProperty("description", e)}
                           />
-                        </Form>
-                        {console.log(programs.description)}
-                        {console.log(programs.description)}
-                        {console.log(programs.id)}
+                        </Form>                        
                       </Table.Cell>
                       {/* <Table.Cell collapsing><Input value={groups.studentAmount} onChange={(e) => updateProperty('studentAmount', e)} />
                         </Table.Cell>

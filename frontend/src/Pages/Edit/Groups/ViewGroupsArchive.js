@@ -7,8 +7,8 @@ import {
   Segment,
   Table
 } from "semantic-ui-react";
-import MainMenu from '../../../Components/MainMenu';
-import { EditMenu } from '../EditMenu';
+import MainMenu from "../../../Components/MainMenu";
+import {EditMenu} from '../../../Components/EditMenu';
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",

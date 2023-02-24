@@ -6,27 +6,23 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-
-import java.util.HashSet;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name="SUBJECT")
+@Table(name = "SUBJECT")
 public class Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank(message = "Negali buti tuscias")
-    @Size(min = 5, max = 40)
-    @Column(unique = true)
+    @Size(min = 1, max = 40)
     private String name;
-    @Size(min = 5, max = 100)
+    @Size(max = 500)
     private String description;
 
     private Boolean deleted = Boolean.FALSE;
@@ -49,36 +45,34 @@ public class Subject {
         modifiedDate = LocalDateTime.now();
     }
 
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            })
+    @ManyToMany(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinTable(
             name = "modules_subjects",
             joinColumns = @JoinColumn(name = "subject_id"),
             inverseJoinColumns = @JoinColumn(name = "module_id"))
-    private Set<Module> subjectModules = new HashSet<>();;
+    private Set<Module> subjectModules = new HashSet<>();
+    ;
     @ManyToMany(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinTable(
             name = "rooms_subjects",
             joinColumns = @JoinColumn(name = "subject_id"),
             inverseJoinColumns = @JoinColumn(name = "room_id"))
-    private Set<Room> subjectRooms = new HashSet<>();;
+    private Set<Room> subjectRooms = new HashSet<>();
+    ;
     @ManyToMany(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinTable(
             name = "teachers_subjects",
             joinColumns = @JoinColumn(name = "subject_id"),
             inverseJoinColumns = @JoinColumn(name = "teacher_id"))
-    private Set<Teacher> subjectTeachers = new HashSet<>();;
+    private Set<Teacher> subjectTeachers = new HashSet<>();
+    ;
 
     @OneToMany(mappedBy = "program")
     @JsonIgnore
     private Set<ProgramSubjectHours> subjectHours;
-
 
 
     public Subject() {

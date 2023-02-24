@@ -1,31 +1,26 @@
 package lt.techin.AlpineOctopusScheduler.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import java.time.LocalDateTime;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
-@Table(name="MODULE")
+@Table(name = "MODULE")
 public class Module {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank(message = "Negali buti tuscias")
-    @Size(min = 5, max = 40)
-    @Column(unique = true)
+    @Size(min = 1, max = 40)
     private String name;
-    @Size(min = 5, max = 100)
+    @Size(min = 1, max = 100)
     private String description;
 
     private Boolean deleted = Boolean.FALSE;

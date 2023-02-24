@@ -8,7 +8,7 @@ import {
   Table
 } from "semantic-ui-react";
 import MainMenu from '../../../Components/MainMenu';
-import { EditMenu } from '../EditMenu';
+import { EditMenu } from '../../../Components/EditMenu';
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -25,7 +25,7 @@ export function ViewPrograms() {
   const [pagecount, setPageCount] = useState();
 
   const fetchFilterPrograms = async () => {
-    fetch(`/api/v1/programs/page/starting-with/${nameText}?page=` + activePage)
+    fetch(`/api/v1/programs/page/name-filter/${nameText}`)
       .then((response) => response.json())
       .then((jsonRespone) => setPrograms(jsonRespone));
   };
@@ -75,7 +75,7 @@ export function ViewPrograms() {
         </Grid.Column>
 
         <Grid.Column textAlign='left' verticalAlign='top' width={13}>
-          <Segment id='segment' raised color='teal'>
+          <Segment id='segment' color='teal'>
 
             <div id="programs">
               <Input

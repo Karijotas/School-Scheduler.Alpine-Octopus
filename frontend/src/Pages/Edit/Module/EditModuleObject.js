@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
 import { Button, Grid, Icon, Input, Segment, Table } from "semantic-ui-react";
 import MainMenu from '../../../Components/MainMenu';
-import { EditMenu } from '../EditMenu';
+import { EditMenu } from '../../../Components/EditMenu';
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -77,7 +77,7 @@ export function EditModuleObject() {
           <EditMenu />
         </Grid.Column>
         <Grid.Column textAlign='left' verticalAlign='top' width={13}>
-          <Segment id='segment' raised color='teal'>
+          <Segment id='segment' color='teal'>
             {active && !hide && (
               <div>
                 <Table celled color="violet">
@@ -151,7 +151,7 @@ export function EditModuleObject() {
                       </Table.Cell>
                       <Table.Cell collapsing>
                         <Input
-                          placeholder={modules.description}
+                          value={modules.description}
                           onChange={(e) => updateProperty("description", e)}
                         />
                       </Table.Cell>

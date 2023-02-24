@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHref } from 'react-router-dom';
 import { Button, Form, Grid, Icon, Input, Segment } from "semantic-ui-react";
+import { EditMenu } from '../../../Components/EditMenu';
 import MainMenu from '../../../Components/MainMenu';
-import { EditMenu } from "../EditMenu";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -10,6 +10,7 @@ const JSON_HEADERS = {
 
 export function CreateModulePage() {
   // const [create, setCreate] = useState()
+  const listUrl = useHref('/view/modules');
   const [hide, setHide] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -35,7 +36,7 @@ export function CreateModulePage() {
         name,
         description,
       }),
-    }).then(applyResult);
+    }).then(applyResult).then(() => window.location = listUrl);
   };
 
   // useEffect(() => {
@@ -64,7 +65,7 @@ export function CreateModulePage() {
           <EditMenu />
         </Grid.Column>
         <Grid.Column floated='left' textAlign='left' verticalAlign='top' width={13}>
-          <Segment id='segment' raised color='teal'>
+          <Segment id='segment' color='teal'>
             <div className="create-new-page">
               <Form>
                 <Form.Field>

@@ -3,7 +3,7 @@ CREATE TABLE GROUPS (
    name VARCHAR(255),
    school_year INT,
    student_amount INT NOT NULL,
-    program_id BIGINT,
+   program_id BIGINT,
    shift VARCHAR(255),
    created_date TIMESTAMP,
    modified_date TIMESTAMP,

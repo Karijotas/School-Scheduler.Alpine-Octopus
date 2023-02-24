@@ -2,12 +2,10 @@ package lt.techin.AlpineOctopusScheduler.api;
 
 //Mantvydas Juršys
 
-import lt.techin.AlpineOctopusScheduler.api.dto.GroupsEntityDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.ModuleDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherEntityDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupsMapper;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.TeacherMapper;
+import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Teacher;
 import lt.techin.AlpineOctopusScheduler.service.TeacherService;
 import org.slf4j.Logger;
@@ -22,7 +20,6 @@ import javax.validation.Valid;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ModuleMapper.toModuleDto;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.TeacherMapper.toTeacher;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.TeacherMapper.toTeacherDto;
 import static org.springframework.http.ResponseEntity.ok;
@@ -34,7 +31,7 @@ public class TeacherController {
 
     public static Logger logger = LoggerFactory.getLogger(TeacherController.class);
     private final TeacherService teacherService;
-
+    
     public TeacherController(TeacherService teacherService) {
 
         this.teacherService = teacherService;
@@ -51,7 +48,7 @@ public class TeacherController {
     @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public List<TeacherEntityDto> getPagedAllTeachers(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
-                                                   @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+                                                      @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
         return teacherService.getPagedAllTeachers(page, pageSize).stream()
                 .map(TeacherMapper::toTeacherEntityDto)
                 .collect(toList());
@@ -59,28 +56,33 @@ public class TeacherController {
 
     @PostMapping
     public ResponseEntity<TeacherDto> createTeacher(@Valid @RequestBody TeacherDto teacherDto) {
-        var createdTeacher = teacherService.create(toTeacher(teacherDto));
-
-        return ok(toTeacherDto(createdTeacher));
+        if (teacherService.loginEmailIsUnique(toTeacher(teacherDto))) {
+            var createdTeacher = teacherService.create(toTeacher(teacherDto));
+            return ok(toTeacherDto(createdTeacher));
+        } else {
+            throw new SchedulerValidationException("Teacher already exists", "Teacher login email", "Already exists", teacherDto.getLoginEmail());
+        }
     }
 
     @DeleteMapping("/{teacherId}")
     public ResponseEntity<Void> deleteTeacher(@PathVariable Long teacherId) {
         var teacherDeleted = teacherService.deleteById(teacherId);
-
         if (teacherDeleted) {
             return ResponseEntity.noContent().build();
         }
-
         return ResponseEntity.notFound().build();
     }
 
     @PutMapping("/{teacherId}")
-    public ResponseEntity<TeacherDto> updateTeacher(@PathVariable Long teacherId, @RequestBody TeacherDto teacherDto) {
-        var updatedTeacher = teacherService.update(teacherId, toTeacher(teacherDto));
-
-        return ok(toTeacherDto(updatedTeacher));
+    public ResponseEntity<TeacherDto> updateTeacher(@PathVariable Long teacherId, @Valid @RequestBody TeacherDto teacherDto) {
+        if (teacherService.loginEmailIsUnique(toTeacher(teacherDto))) {
+            var updatedTeacher = teacherService.update(teacherId, toTeacher(teacherDto));
+            return ok(toTeacherDto(updatedTeacher));
+        } else {
+            throw new SchedulerValidationException("Teacher already exists", "Teacher login email", "Already exists", teacherDto.getLoginEmail());
+        }
     }
+
     @GetMapping(value = "/{teacherId}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<Teacher> getTeacher(@PathVariable Long teacherId) {
         var teacherOptional = teacherService.getById(teacherId);
@@ -91,6 +93,4 @@ public class TeacherController {
 
         return responseEntity;
     }
-
-
 }

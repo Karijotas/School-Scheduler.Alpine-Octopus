@@ -1,17 +1,20 @@
 package lt.techin.AlpineOctopusScheduler.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 //Mantvydas Juršys
 
@@ -23,9 +26,14 @@ public class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true)
+    @NotBlank
+    @Size(min = 1, max = 100, message = "A name shouldn't be longer than 100 characters or shorter than 1")
     private String name;
+    @NotBlank
+    @Size(min = 1, max = 100, message = "A name shouldn't be longer than 100 characters or shorter than 1")
     private String surname;
+    @NotBlank
+    @Email
     private String loginEmail;
     private String contactEmail;
     private String phone;
@@ -38,7 +46,6 @@ public class Teacher {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
 
-
     @LastModifiedDate
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modifiedDate;
@@ -50,7 +57,8 @@ public class Teacher {
     private String modifiedBy;
 
 
-    public Teacher(){}
+    public Teacher() {
+    }
 
     public Long getId() {
         return id;
@@ -169,4 +177,22 @@ public class Teacher {
         return Objects.hash(id, name, surname, loginEmail, contactEmail, phone, workHoursPerWeek, shift, deleted, createdDate, modifiedDate, createdBy, modifiedBy);
     }
 
+    @Override
+    public String toString() {
+        return "Teacher{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", loginEmail='" + loginEmail + '\'' +
+                ", contactEmail='" + contactEmail + '\'' +
+                ", phone='" + phone + '\'' +
+                ", workHoursPerWeek=" + workHoursPerWeek +
+                ", shift='" + shift + '\'' +
+                ", deleted=" + deleted +
+                ", createdDate=" + createdDate +
+                ", modifiedDate=" + modifiedDate +
+                ", createdBy='" + createdBy + '\'' +
+                ", modifiedBy='" + modifiedBy + '\'' +
+                '}';
+    }
 }
