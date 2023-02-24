@@ -60,13 +60,13 @@ export function ViewGroups() {
     };
 
     const fetchGroups = async () => {
-        fetch('/api/v1/groups/page?page=' + activePage)
+        fetch('http://localhost:8092/api/v1/groups/page?page=' + activePage)
             .then(response => response.json())
             .then(jsonResponse => setGroups(jsonResponse));
     };
 
     const fetchSingleGroups = async () => {
-        fetch('/api/v1/groups/')
+        fetch('http://localhost:8092/api/v1/groups/')
             .then(response => response.json())
             .then(jsonResponse => setGroupsForPaging(jsonResponse))
             .then(setPageCount(Math.ceil(groupsforPaging.length / 10)))
@@ -85,7 +85,7 @@ export function ViewGroups() {
 
 
     useEffect(() => {
-        if (nameText.length === 0 && yearText.length === 0 && programText.length === 0 || yearText === '-') {
+        if (nameText.length === 0 && yearText.length === 0 && programText.length === 0 || yearText === 'Filtruoti pagal metus') {
             fetchGroups();
             // setYearText('2023')
         } else if (nameText.length > 0) {
@@ -135,11 +135,10 @@ export function ViewGroups() {
                                 placeholder='Filtruoti pagal pavadinimą'
                                 value={nameText} onChange={(e) => setNameText(e.target.value)} />
 
-                            <Button title='Filtruoti pagal metus'>Filtruoti pagal metus:</Button>
                             <select
-                                id='selectYear'
+                            id='selectYear'
                                 value={yearText} onChange={(e) => setYearText(e.target.value)} >
-                                <option>-</option>
+                                <option >Filtruoti pagal metus</option>
                                 {Object.entries(YEAR_OPTIONS)
                                     .map(([key, value]) => <option value={key}>{value}</option>)
                                 }

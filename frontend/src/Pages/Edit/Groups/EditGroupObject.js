@@ -48,7 +48,7 @@ export function EditGroupObject() {
         fetch('/api/v1/groups/' + params.id)
             .then(response => response.json())
             .then(setGroups);
-    }, [active]);
+    }, [active, params]);
 
 
 
@@ -97,11 +97,18 @@ export function EditGroupObject() {
                 )
             );
     }, []);
+
+    const [updated, setUpdated] = useState();
+
+    useEffect(() => {
+        setUpdated(true);
+    }, [setUpdated]);
+
     return (
 
 
         <div>
-            
+
 
             <MainMenu />
             <Grid columns={2}>
@@ -110,7 +117,8 @@ export function EditGroupObject() {
                 </Grid.Column>
                 <Grid.Column floated='left' textAlign='left' verticalAlign='top' width={13}>
                     <Segment id='segment' color='teal'>
-                        {active && (<div >
+                        {active && (<div >                            {error && (<Message warning className='error'>{error}</Message>)}
+
                             <Table celled >
                                 <Table.Header >
                                     <Table.Row  >
@@ -124,7 +132,7 @@ export function EditGroupObject() {
                                     <Table.Row  >
                                         <Table.Cell width={6} >{groups.name}</Table.Cell>
                                         <Table.Cell >{groups.schoolYear}</Table.Cell>
-                                        <Table.Cell collapsing > {groups.modifiedDate}  </Table.Cell>
+                                        <Table.Cell width={3} > {groups.modifiedDate}  </Table.Cell>
                                         <Table.Cell collapsing> <Button id='details' className='controls' onClick={editThis}>Redaguoti</Button> </Table.Cell>
                                     </Table.Row>
 
@@ -170,7 +178,7 @@ export function EditGroupObject() {
                                         </Table.Cell>
                                         <Table.Cell >
 
-                                            <select id='selectYear' value={groups.schoolYear} onChange={(e) => updateProperty('schoolYear', e)} >
+                                            <select  value={groups.schoolYear} onChange={(e) => updateProperty('schoolYear', e)} >
                                                 {Object.entries(YEAR_OPTIONS)
                                                     .map(([key, value]) => <option value={key}>{value}</option>)
                                                 }

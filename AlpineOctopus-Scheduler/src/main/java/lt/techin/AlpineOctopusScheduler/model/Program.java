@@ -1,14 +1,13 @@
 package lt.techin.AlpineOctopusScheduler.model;
 
-import com.fasterxml.jackson.annotation.*;
-import org.springframework.data.annotation.CreatedBy;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -22,16 +21,17 @@ public class Program {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
-    @Column(name = "name", unique = true)
-    @Size(min = 5, max = 40)
+    @Column(name = "name")
+    @Size(min = 1, max = 40)
     private String name;
 
     @NotBlank
-    @Size(min = 5, max = 100)
+    @Size(min = 1, max = 100)
     private String description;
 
     @OneToMany(mappedBy = "program")
     @JsonIgnore
+    @Valid
     private Set<Groups> groupsSet;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @CreatedDate
