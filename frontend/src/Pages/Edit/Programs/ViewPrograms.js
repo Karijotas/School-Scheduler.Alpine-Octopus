@@ -87,10 +87,9 @@ export function ViewPrograms() {
 
               <Button
                 icon
-                labelPosition="left"
-                color='teal'
-                
+                labelPosition="left"                                
                 className="controls"
+                id='details'
                 as={NavLink}
                 exact to='/create/programs'>
                 <Icon name="database" />
@@ -115,16 +114,14 @@ export function ViewPrograms() {
                       <Table.Cell collapsing>
                         <Button
                           href={'#/view/programs/edit/' + program.id}
-                          basic
-                          color='teal'
+                          basic                          
                           compact
                           icon="eye"
                           title="Peržiūrėti"
                           onClick={() => setActive(program.id)}
                         ></Button>
                         <Button
-                          basic
-                          color="black"
+                          basic                          
                           compact
                           title="Suarchyvuoti"
                           icon="archive"
@@ -133,6 +130,7 @@ export function ViewPrograms() {
 
                         <Confirm
                           open={open}
+                          id='details'
                           header="Dėmesio!"
                           content="Ar tikrai norite perkelti į archyvą?"
                           cancelButton="Grįžti atgal"

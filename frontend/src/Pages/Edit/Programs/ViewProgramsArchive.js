@@ -92,8 +92,8 @@ export function ViewProgramsArchive() {
                       <Table.Cell>
                         <Button
                           textAlign="center"
-                          basic
-                          color="black"
+                          id='details'
+                          basic                          
                           compact
                           title="Atstatyti"
                           icon="undo"

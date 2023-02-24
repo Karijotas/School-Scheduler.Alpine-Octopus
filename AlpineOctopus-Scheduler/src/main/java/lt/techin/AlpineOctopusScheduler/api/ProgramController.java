@@ -10,6 +10,7 @@ import lt.techin.AlpineOctopusScheduler.dao.SubjectRepository;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Program;
 import lt.techin.AlpineOctopusScheduler.model.ProgramSubjectHours;
+import lt.techin.AlpineOctopusScheduler.model.Subject;
 import lt.techin.AlpineOctopusScheduler.service.ProgramService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -230,5 +231,16 @@ public class ProgramController {
         return programService.getAllSubjectsInProgramByProgramId(programId).stream()
                 .map(ProgramSubjectHoursMapper::toProgramSubjectHoursDtoForList)
                 .collect(toList());
+    }
+
+    @GetMapping(value = "/{programId}/availableSubjects", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<Subject> getAvailableSubjectsInProgram(@PathVariable Long programId) {
+        List<Subject> psh = programService.getAllSubjectsInProgramByProgramId(programId)
+                .stream().map(ProgramSubjectHours::getSubject).collect(toList());
+        List<Subject> subjectList = programService.getFreeSubjects(programId);
+        List<Subject> availableSubjects = subjectList.stream().filter(sub -> !psh.contains(sub)).collect(toList());
+
+        return availableSubjects;
     }
 }

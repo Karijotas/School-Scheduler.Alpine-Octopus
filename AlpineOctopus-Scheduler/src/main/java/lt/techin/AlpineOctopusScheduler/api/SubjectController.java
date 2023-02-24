@@ -156,12 +156,9 @@ public class SubjectController {
 
     @PutMapping("/{subjectId}")
     public ResponseEntity<SubjectDto> updateSubject(@PathVariable Long subjectId, @Valid @RequestBody SubjectDto subjectDto) {
-        if (subjectService.subjectNameIsUnique(toSubject(subjectDto))) {
-            var updatedSubject = subjectService.update(subjectId, toSubject(subjectDto));
-            return ok(toSubjectDto(updatedSubject));
-        } else {
-            throw new SchedulerValidationException("Subject already exists", "Subject name", "Already exists", subjectDto.getName());
-        }
+
+        var updatedSubject = subjectService.update(subjectId, toSubject(subjectDto));
+        return ok(toSubjectDto(updatedSubject));
     }
 
     @GetMapping(value = "/{subjectId}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
@@ -177,7 +174,7 @@ public class SubjectController {
 
 
     @PostMapping("/{subjectId}/modules/{moduleId}/newModules")
-    public ResponseEntity<SubjectDto> addModuleToSubject(@PathVariable Long subjectId, @Valid @RequestBody Long moduleId) {
+    public ResponseEntity<SubjectDto> addModuleToSubject(@PathVariable Long subjectId, @Valid @PathVariable Long moduleId) {
 
         var updatedSubject = subjectService.addModuleToSubject(subjectId, moduleId);
 
@@ -186,7 +183,7 @@ public class SubjectController {
 
 
     @PutMapping("/{subjectId}/teachers/{teacherId}/newTeachers")
-    public ResponseEntity<SubjectDto> addTeacherToSubject(@PathVariable Long subjectId, @Valid @RequestBody Long teacherId) {
+    public ResponseEntity<SubjectDto> addTeacherToSubject(@PathVariable Long subjectId, @Valid @PathVariable Long teacherId) {
 
         var updatedSubject = subjectService.addTeacherToSubject(subjectId, teacherId);
 
@@ -194,7 +191,7 @@ public class SubjectController {
     }
 
     @PostMapping("/{subjectId}/rooms/{roomId}/newRooms")
-    public ResponseEntity<SubjectDto> addRoomToSubject(@PathVariable Long subjectId, @Valid @RequestBody Long roomId) {
+    public ResponseEntity<SubjectDto> addRoomToSubject(@PathVariable Long subjectId, @Valid @PathVariable Long roomId) {
 
         var updatedSubject = subjectService.addRoomToSubject(subjectId, roomId);
         return ok(toSubjectDto(updatedSubject));
@@ -209,6 +206,7 @@ public class SubjectController {
             return ResponseEntity.notFound().build();
         }
     }
+
 
     @DeleteMapping("/{subjectId}/teachers/{teacherId}")
     public ResponseEntity<Void> deleteTeacherFromSubjectByTeacherId(@PathVariable Long subjectId, @PathVariable Long teacherId) {
