@@ -1,5 +1,6 @@
 package lt.techin.AlpineOctopusScheduler.service;
 
+import lt.techin.AlpineOctopusScheduler.dao.ProgramRepository;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ModuleMapper;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper;
@@ -15,7 +16,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.util.Comparator;
@@ -198,6 +198,46 @@ public class SubjectService {
 
     public Set<Module> getAllModulesById(Long subjectId) {
         return subjectRepository.findById(subjectId).get().getSubjectModules();
+
+  }
+
+    public List<SubjectEntityDto> getAllAvailablePagedSubjects(int page, int pageSize){
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return subjectRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE, pageable).stream()
+                .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
+    }
+    public List<SubjectEntityDto> getAllDeletedPagedSubjects(int page, int pageSize) {
+
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        return subjectRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.TRUE, pageable).stream()
+                .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
+    }
+
+    public List<SubjectEntityDto> getAllAvailableSubjects(){
+        return subjectRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE).stream()
+                .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
+    }
+
+    public List<SubjectEntityDto> getAllDeletedSubjects(){
+        return subjectRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.TRUE).stream()
+                .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
+    }
+
+    public Subject restoreSubject(Long subjectId){
+        var existingSubject = subjectRepository.findById(subjectId).orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
+                "id", "Subject not found", subjectId.toString()));
+        existingSubject.setDeleted(Boolean.FALSE);
+        subjectRepository.save(existingSubject);
+        return existingSubject;
+    }
+
+    public Subject deleteSubject(Long subjectId){
+        var existingSubject = subjectRepository.findById(subjectId).orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
+                "id", "Subject not found", subjectId.toString()));
+        existingSubject.setDeleted(Boolean.TRUE);
+        subjectRepository.save(existingSubject);
+        return existingSubject;
     }
 
     public Set<Room> getAllRoomsById(Long subjectId) {
@@ -241,4 +281,5 @@ public class SubjectService {
             return false;
         }
     }
+
 }

@@ -3,7 +3,6 @@ package lt.techin.AlpineOctopusScheduler.api;
 import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Module;
 import lt.techin.AlpineOctopusScheduler.model.Room;
@@ -22,7 +21,6 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
 
-import static java.util.stream.Collectors.toList;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper.toSubject;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper.toSubjectDto;
 import static org.springframework.http.ResponseEntity.ok;
@@ -40,11 +38,53 @@ public class SubjectController {
 
     @GetMapping
     @ResponseBody
-    public List<SubjectEntityDto> getSubjects() {
-        return subjectService.getAll().stream()
-                .map(SubjectMapper::toSubjectEntityDto)
-                .collect(toList());
+    public List<SubjectEntityDto> getAvailableSubject() {
+        return subjectService.getAllAvailableSubjects();
     }
+
+
+    @GetMapping(path = "/archive", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<SubjectEntityDto> getDeletedSubject() {
+        return subjectService.getAllDeletedSubjects();
+    }
+
+
+    @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<SubjectEntityDto> getPagedAvailableSubjects(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+
+        return subjectService.getAllAvailablePagedSubjects(page, pageSize);
+    }
+
+    @GetMapping(path = "/archive/page", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<SubjectEntityDto> getPagedDeletedPrograms(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                          @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+
+        return subjectService.getAllDeletedPagedSubjects(page, pageSize);
+    }
+
+
+    @PatchMapping("/delete/{subjectId}")
+    public ResponseEntity<Subject> removeSubject(@PathVariable Long subjectId) {
+        var updatedSubject = subjectService.deleteSubject(subjectId);
+        return ok(updatedSubject);
+    }
+
+    @PatchMapping("/restore/{subjectId}")
+    public ResponseEntity<Subject> restoreSubject(@PathVariable Long subjectId) {
+        var updatedSubject = subjectService.restoreSubject(subjectId);
+        return ok(updatedSubject);
+    }
+
+//    @GetMapping
+//    public List<SubjectEntityDto> getSubjects() {
+//        return subjectService.getAll().stream()
+//                .map(SubjectMapper::toSubjectEntityDto)
+//                .collect(toList());
+//    }
 
     @GetMapping(value = "/{subjectId}/modules")
     @ResponseBody
@@ -64,13 +104,13 @@ public class SubjectController {
         return subjectService.getAllTeachersById(subjectId);
     }
 
-    @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
-    @ResponseBody
-    public List<SubjectEntityDto> getPagedAllSubjects(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                                      @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-
-        return subjectService.getPagedAllSubjects(page, pageSize);
-    }
+//    @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
+//    @ResponseBody
+//    public List<SubjectEntityDto> getPagedAllSubjects(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
+//                                                      @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+//
+//        return subjectService.getPagedAllSubjects(page, pageSize);
+//    }
 
     @GetMapping(path = "page/name-filter/{nameText}")
     @ApiOperation(value = "Get Paged Subjects starting with", notes = "Returns list of Subjects starting with passed String")
