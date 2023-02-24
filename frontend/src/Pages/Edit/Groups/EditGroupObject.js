@@ -4,12 +4,9 @@ import { Button, Grid, Icon, Input, Segment, Select, Table } from 'semantic-ui-r
 import MainMenu from '../../../Components/MainMenu';
 import { EditMenu } from '../EditMenu';
 
-
-
 const JSON_HEADERS = {
     'Content-Type': 'application/json'
 };
-
 
 export function EditGroupObject() {
 

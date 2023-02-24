@@ -8,8 +8,8 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/SubjectController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/SubjectController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/dao/ProgramRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/dao/ProgramRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/service/ProgramService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/service/ProgramService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Subjects/ViewSubjectsArchive.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Subjects/ViewSubjectsArchive.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/dao/SubjectRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/dao/SubjectRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/service/SubjectService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/service/SubjectService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -172,6 +172,8 @@
       <workItem from="1677085621654" duration="2192000" />
       <workItem from="1677097494471" duration="1289000" />
       <workItem from="1677140140740" duration="7365000" />
+      <workItem from="1677184660713" duration="1668000" />
+      <workItem from="1677226691116" duration="3440000" />
     </task>
     <servers />
   </component>

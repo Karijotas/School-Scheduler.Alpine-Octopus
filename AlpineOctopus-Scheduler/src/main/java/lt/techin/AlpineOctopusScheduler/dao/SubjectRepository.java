@@ -23,6 +23,7 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
 
     List<Subject> findAllByDeletedOrderByModifiedDateDesc(Boolean deleted);
 
+
 //    @Transactional
 //    @Modifying
 //    @Query(value = "INSERT INTO modules_subjects (module_id, subject_id) VALUES (:module_id, :subject_id)",

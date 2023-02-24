@@ -21,8 +21,7 @@ const JSON_HEADERS = {
 };
 
 export function EditProgramObject() {
-  const params = useParams();
-  const [hide, setHide] = useState(false);
+  const params = useParams(); 
   const [active, setActive] = useState(true);
   const [subjects, setSubjects] = useState([]);
   const [subjectsInProgram, setSubjectsInProgram] = useState([]);
@@ -33,28 +32,18 @@ export function EditProgramObject() {
   const [programName, setProgramName] = useState("");
   const [programDescription, setProgramDescription] = useState("");
 
-  const subjectOptions = [
-    { key: 23, value: 2023, text: "2023" },
-    { key: 24, value: 2024, text: "2024" },
-    { key: 25, value: 2025, text: "2025" },
-    { key: 26, value: 2026, text: "2026" },
-    { key: 27, value: 2027, text: "2027" },
-    { key: 28, value: 2028, text: "2028" },
-  ];
-
   const [error, setError] = useState();
-
   const [programs, setPrograms] = useState({
     name: "",
     description: "",
     modifiedDate: "",
-  });
+  }); 
 
   useEffect(() => {
     fetch("/api/v1/programs/" + params.id)
       .then((response) => response.json())
       .then(setPrograms);
-  }, [totalHours]);
+  }, [totalHours, active]);
 
   useEffect(() => {
     fetch(`/api/v1/programs/${params.id}/subjects`)
@@ -120,16 +109,15 @@ export function EditProgramObject() {
   }, []);
 
   const applyResult = () => {
-    setHide(true);
+    setActive(true);
   };
 
   const updatePrograms = () => {
     fetch("/api/v1/programs/" + params.id, {
       method: "PATCH",
       headers: JSON_HEADERS,
-      body: JSON.stringify({}),
-    })
-      .then(console.log(programs))
+      body: JSON.stringify(programs),
+    })   
       .then((result) => {
         if (!result.ok) {
           setError("Update failed");
@@ -169,7 +157,7 @@ export function EditProgramObject() {
 
         <Grid.Column textAlign="left" verticalAlign="top" width={13}>
           <Segment id="segment" raised color="teal">
-            {active && !hide && (
+            {active && (
               <div>
                 <Table celled color="violet">
                   <Table.Header>
@@ -237,7 +225,7 @@ export function EditProgramObject() {
                 </Button>
               </div>
             )}
-            {!active && !hide && (
+            {!active && (
               <div>
                 <Table celled color="violet">
                   <Table.Header>
@@ -255,16 +243,14 @@ export function EditProgramObject() {
                       <Table.Cell collapsing>
                         <Input
                           value={programs.name}
-                          onChange={(e, data) => (
-                            updateProperty("name", e), setProgramName(data)
-                          )}
+                          onChange={(e) => (
+                            updateProperty("name", e))}
                         />
                       </Table.Cell>
                       <Table.Cell collapsing>
                         <Form>
                           <TextArea
-                            style={{ minHeight: 100, minWidth: 200 }}
-                            placeholder={programs.description}
+                            style={{ minHeight: 100, minWidth: 200 }}                            
                             value={programs.description}
                             /*options={yearOptions} value={groups.schoolYear} */
                             onChange={(e) => updateProperty("description", e)}
