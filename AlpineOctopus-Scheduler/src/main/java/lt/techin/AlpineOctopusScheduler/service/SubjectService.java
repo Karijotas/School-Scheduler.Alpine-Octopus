@@ -1,6 +1,8 @@
 package lt.techin.AlpineOctopusScheduler.service;
 
 
+import lt.techin.AlpineOctopusScheduler.api.dto.ModuleEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.ProgramSubjectHoursDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ModuleMapper;
 import lt.techin.AlpineOctopusScheduler.dao.ProgramRepository;
@@ -15,11 +17,9 @@ import lt.techin.AlpineOctopusScheduler.dao.SubjectRepository;
 import lt.techin.AlpineOctopusScheduler.dao.TeacherRepository;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 
-import lt.techin.AlpineOctopusScheduler.model.Module;
-import lt.techin.AlpineOctopusScheduler.model.Room;
+import lt.techin.AlpineOctopusScheduler.model.*;
 
-import lt.techin.AlpineOctopusScheduler.model.Subject;
-import lt.techin.AlpineOctopusScheduler.model.Teacher;
+import lt.techin.AlpineOctopusScheduler.model.Module;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
@@ -29,11 +29,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramSubjectHoursMapper.toProgramSubjectHours;
 
 @Service
 public class SubjectService {
@@ -65,7 +64,8 @@ public class SubjectService {
 
         Pageable pageable = PageRequest.of(page, pageSize);
 
-        return subjectRepository.findAll(pageable).stream().sorted(Comparator.comparing(Subject::getModifiedDate).reversed()).
+        return subjectRepository.findAll(pageable).stream()
+                .sorted(Comparator.comparing(Subject::getModifiedDate).reversed()).
                 map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
     }
 
@@ -78,8 +78,34 @@ public class SubjectService {
     @Transactional(readOnly = true)
     public List<SubjectEntityDto> getPagedSubjectsByNameContaining(String nameText, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        return subjectRepository.findByNameContainingIgnoreCase(nameText, pageable).stream().sorted(Comparator.comparing(Subject::getModifiedDate).reversed())
+        return subjectRepository.findByNameContainingIgnoreCase(nameText, pageable).stream()
+                .sorted(Comparator.comparing(Subject::getModifiedDate).reversed())
                 .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<SubjectEntityDto> getPagedSubjectsByModuleNameContaining(String nameText, int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return subjectRepository.findAllBySubjectModules_NameContainingIgnoreCase(nameText, pageable)
+                .stream()
+                .sorted(Comparator.comparing(Subject::getModifiedDate).reversed())
+                .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
+    }
+
+
+
+
+    @Transactional(readOnly = true)
+    public List<SubjectEntityDto> getPagedSubjectsByModuleContaining(String nameText, int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        var filtered = moduleRepository.findByNameContainingIgnoreCase(nameText, pageable).stream()
+                .sorted(Comparator.comparing(Module::getModifiedDate).reversed())
+                .filter(module -> module.equals(nameText))
+                .map(ModuleMapper::toModuleEntityDto).collect(Collectors.toList());
+
+        var found = subjectRepository.findAll().stream().filter(subject -> subject.getSubjectModules().contains(filtered))
+                .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
+        return found;
     }
 
     @Transactional(readOnly = true)

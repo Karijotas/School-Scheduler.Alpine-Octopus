@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+
 @Service
 public class GroupService {
 
@@ -43,7 +44,9 @@ public class GroupService {
 
         Pageable pageable = PageRequest.of(page, pageSize);
 
-        return groupsRepository.findAll(pageable).stream().sorted(Comparator.comparing(Groups::getModifiedDate).reversed()).collect(Collectors.toList());
+        return groupsRepository.findAll(pageable).stream().sorted(Comparator.comparing(Groups::getModifiedDate).reversed())
+                .collect(Collectors.toList());
+
     }
 
     @Transactional(readOnly = true)

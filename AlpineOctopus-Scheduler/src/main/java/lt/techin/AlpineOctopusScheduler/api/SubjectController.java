@@ -2,6 +2,7 @@ package lt.techin.AlpineOctopusScheduler.api;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiOperation;
+import lt.techin.AlpineOctopusScheduler.api.dto.ModuleEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper;
@@ -79,6 +80,15 @@ public class SubjectController {
                                                                    @RequestParam(value = "page", defaultValue = "0", required = false) int page,
                                                                    @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
         return subjectService.getPagedSubjectsByNameContaining(nameText, page, pageSize);
+    }
+
+    @GetMapping(path = "page/module-filter/{moduleText}")
+    @ApiOperation(value = "Get Paged Subjects starting with", notes = "Returns list of Subjects starting with passed String")
+    @ResponseBody
+    public List<SubjectEntityDto> getPagedSubjectsByModuleContaining(@PathVariable String moduleText,
+                                                                    @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                                    @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+        return subjectService.getPagedSubjectsByModuleNameContaining(moduleText, page, pageSize);
     }
 
 

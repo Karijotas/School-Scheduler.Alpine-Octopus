@@ -14,12 +14,7 @@ import java.util.List;
 public interface SubjectRepository extends JpaRepository<Subject, Long> {
 
     List<Subject> findByNameContainingIgnoreCase(String nameText, Pageable pageable);
-
-//    List<Subject> findByOrderByModifiedDateDesc();
-
-
-
-
+    List<Subject> findAllBySubjectModules_NameContainingIgnoreCase(String moduleText, Pageable pageable);
 
 //    @Transactional
 //    @Modifying

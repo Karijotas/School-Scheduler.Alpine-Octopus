@@ -36,7 +36,7 @@ export function ViewSubjects() {
   const [moduleText, setModuleText] = useState("");
 
   const fetchSubjectsByModules = async () => {
-    fetch(`/api/v1/subjects/module-filter/${nameText}?page=` + moduleText)
+    fetch(`/api/v1/subjects/page/module-filter/${moduleText}?page=` + activePage)
       .then((response) => response.json())
       .then((jsonResponse) => setSubjects(jsonResponse));
   };
@@ -72,23 +72,19 @@ export function ViewSubjects() {
     }).then(fetchSubjects);
   };
 
-  useEffect(() => {
-    nameText.length > 0 ? fetchFilterSubjects() : fetchSubjects();
-  }, [activePage, nameText]);
+  // useEffect(() => {
+  //   nameText.length > 0 ? fetchFilterSubjects() : fetchSubjects();
+  // }, [activePage, nameText]);
 
   // useEffect(() => {
   //   moduleText.length > 0 ? fetchSubjectsByModules() : fetchSubjects();
   // }, [activePage, moduleText]);
 
  
-// useEffect(() => {
-//   nameText.length > 0? fetchFilterSubjects() : (moduleText.length > 0 ? fetchSubjectsByModules() : fetchSubjects())
-// }, [activePage, nameText]);
+useEffect(() => {
+  nameText.length > 0? fetchFilterSubjects() : (moduleText.length > 0 ? fetchSubjectsByModules() : fetchSubjects())
+}, [activePage, nameText, moduleText]);
 
-
-  // useEffect(() => {
-  //   moduleText.length > 0 ? fetchSubjectsByModules() : fetchSubjects();
-  // }, [activePage, moduleText]);
 
   const [open, setOpen] = useState(false);
   const [close, setClose] = useState(false);
@@ -149,6 +145,7 @@ export function ViewSubjects() {
                     <Table.Row>
                       <Table.HeaderCell>Dalyko pavadinimas</Table.HeaderCell>
                       <Table.HeaderCell>Moduliai</Table.HeaderCell>
+                      <Table.HeaderCell>Redagavimo data</Table.HeaderCell>
                       <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
@@ -167,6 +164,7 @@ export function ViewSubjects() {
                             ))}
                           </List>
                         </Table.Cell>
+                        <Table.Cell>{subject.modifiedDate}</Table.Cell>
                         <Table.Cell collapsing>
                           <Button
                             basic
