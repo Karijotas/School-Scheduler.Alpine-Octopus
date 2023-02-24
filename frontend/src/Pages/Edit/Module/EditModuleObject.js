@@ -151,7 +151,7 @@ export function EditModuleObject() {
                       </Table.Cell>
                       <Table.Cell collapsing>
                         <Input
-                          placeholder={modules.description}
+                          value={modules.description}
                           onChange={(e) => updateProperty("description", e)}
                         />
                       </Table.Cell>

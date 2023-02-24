@@ -388,10 +388,8 @@ export function EditSubjectObject() {
                       </Table.Cell>
                       <Table.Cell collapsing>
                         <Input
-                          placeholder={subjects.description}
-                          /*options={yearOptions} value={groups.schoolYear} */ onChange={(
-                            e
-                          ) => updateProperty("description", e)}
+                          value={subjects.description} 
+                          onChange={(e) => updateProperty("description", e)}
                         />
                       </Table.Cell>
                       <Table.Cell collapsing>
