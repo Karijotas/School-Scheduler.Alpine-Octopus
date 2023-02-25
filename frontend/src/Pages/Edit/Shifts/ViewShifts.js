@@ -1,63 +1,165 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { Button, Divider, Grid, Icon, Input, Segment, Table } from 'semantic-ui-react';
-import MainMenu from '../../../Components/MainMenu';
-import { EditMenu } from '../../../Components/EditMenu';
+import React, { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
+import {
+  Button,
+  Divider,
+  Grid,
+  Icon,
+  Input,
+  Segment,
+  Table,
+  Confirm,
+} from "semantic-ui-react";
+import MainMenu from "../../../Components/MainMenu";
+import { EditMenu } from "../../../Components/EditMenu";
+import { CreateShiftPage } from "./CreateShiftPage";
+
+const JSON_HEADERS = {
+  "Content-Type": "application/json",
+};
 
 export function ViewShifts() {
+  const [active, setActive] = useState();
+  const [create, setCreate] = useState("");
+  const [nameText, setNameText] = useState("");
+  const [shifts, setShifts] = useState([]);
 
-    return (
+  const [shiftsforPaging, setShiftsForPaging] = useState([]);
 
+  const [activePage, setActivePage] = useState(0);
+  const [pagecount, setPageCount] = useState();
 
-        <div >
-            <MainMenu />
+  const fetchFilterShifts = async () => {
+    fetch(`/api/v1/shifts/page/name-filter/${nameText}?page=` + activePage)
+      .then((response) => response.json())
+      .then((jsonRespone) => setShifts(jsonRespone));
+  };
 
-            <Grid columns={2} >
-                <Grid.Column width={2} id='main'>
-                    <EditMenu />
-                </Grid.Column>
+  const fetchSingleShifts = () => {
+    fetch("/api/v1/shifts")
+      .then((response) => response.json())
+      .then((jsonResponse) => setShiftsForPaging(jsonResponse))
+      .then(setPageCount(Math.ceil(shiftsforPaging.length / 10)));
+  };
 
-                <Grid.Column textAlign='left' verticalAlign='top' width={13}>
-                    <Segment id='segment' color='teal'>
+  const fetchShifts = async () => {
+    fetch(`/api/v1/shifts/page?page=` + activePage)
+      .then((response) => response.json())
+      .then((jsonRespones) => setShifts(jsonRespones));
+  };
 
-                        <div  >
-                            <Input
-                                title='Filtruoti'
-                                className='controls1'
-                                placeholder='Filtruoti '
-                            />
+  const removeShift = (id) => {
+    fetch("/api/v1/shifts/" + id, {
+      method: "DELETE",
+      headers: JSON_HEADERS,
+    }).then(fetchShifts);
+  };
 
+  useEffect(() => {
+    nameText.length > 0 ? fetchFilterShifts() : fetchShifts();
+  }, [activePage, nameText]);
 
+  const [open, setOpen] = useState(false);
+  const [close, setClose] = useState(false);
 
-                            <Button
-                                title='Kurti naują pamainą'
-                                icon
-                                labelPosition='left'
-                                primary
-                                className='controls'
-                                as={NavLink}
-                                exact to='/create/shifts'>
-                                <Icon name='database' />Kurti naują pamainą</Button>
+  useEffect(() => {
+    if (pagecount !== null) {
+      fetchSingleShifts();
+    }
+  }, [shifts]);
 
-                            <Divider horizontal hidden></Divider>
-                        </div>
+  return (
+    <div>
+      <MainMenu />
+      <Grid columns={2}>
+        <Grid.Column width={2} id="main">
+          <EditMenu active="groups" />
+        </Grid.Column>
 
+        <Grid.Column stretched textAlign="left" verticalAlign="top" width={13}>
+          <Segment id="segment" raised color="teal">
+            {create && (
+              <div>
+                <CreateShiftPage />
+              </div>
+            )}
+            {!active && !create && (
+              <div id="subjects">
+                <Input
+                  className="controls1"
+                  placeholder="Filtruoti pagal pamainą"
+                  value={nameText}
+                  onChange={(e) => setNameText(e.target.value)}
+                />
 
-                        <Table selectable >
-                            <Table.Header>
-                                <Table.Row>
-                                    <Table.HeaderCell>Pamaina</Table.HeaderCell>
-                                    <Table.HeaderCell>Laikas</Table.HeaderCell>
-                                    <Table.HeaderCell>Veiksmai</Table.HeaderCell>
-                                </Table.Row>
-                            </Table.Header>
-                        </Table>
-                    </Segment>
-                </Grid.Column>
+                <Button
+                  icon
+                  labelPosition="left"
+                  primary
+                  className="controls"
+                  as={NavLink}
+                  exact
+                  to="/create/shifts"
+                >
+                  <Icon name="database" />
+                  Kurti naują pamainą
+                </Button>
+                <Divider horizontal hidden></Divider>
 
-            </Grid>
+                <Table selectable>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>Pamaina</Table.HeaderCell>
+                      <Table.HeaderCell>Pamokos nuo:</Table.HeaderCell>
+                      <Table.HeaderCell>Pamokos iki:</Table.HeaderCell>
+                      <Table.HeaderCell>Veiksmai</Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
+                  <Table.Body>
+                    {shifts.map((shift) => (
+                      <Table.Row key={shift.id}>
+                        <Table.Cell>{shift.name}</Table.Cell>
+                        <Table.Cell>{shift.starts}</Table.Cell>
+                        <Table.Cell>{shift.ends}</Table.Cell>
+                        <Table.Cell collapsing>
+                        <Button
+                            basic
+                            primary
+                            compact
+                            icon="eye"
+                            title="Peržiūrėti"
+                            href={"#/view/shifts/edit/" + shift.id}
+                            onClick={() => setActive(shift.id)}
+                          ></Button>
+                          <Button
+                            basic
+                            color="black"
+                            compact
+                            title="Ištrinti"
+                            icon="trash alternate"
+                            onClick={() => setOpen(shift.id)}
+                          ></Button>
 
-
-        </div>
-    )
+                          <Confirm
+                            open={open}
+                            header="Dėmesio!"
+                            content="Ar tikrai norite ištrinti?"
+                            cancelButton="Grįžti atgal"
+                            confirmButton="Ištrinti"
+                            onCancel={() => setOpen(false)}
+                            onConfirm={() => removeShift(open)}
+                            size="small"
+                          />
+                        </Table.Cell>
+                      </Table.Row>
+                    ))}
+                  </Table.Body>
+                </Table>
+              </div>
+            )}
+          </Segment>
+        </Grid.Column>
+      </Grid>
+    </div>
+  );
 }
