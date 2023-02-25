@@ -81,7 +81,7 @@ export function ViewPrograms() {
               <Input
                 value={nameText}
                 onChange={(e) => setNameText(e.target.value)}
-                placeholder="Filtruoti pagal programą"
+                placeholder="Filtruoti pagal pavadinimą"
               />
               {/* <Button onClick={fetchFilterPrograms}>Filtruoti</Button> */}
 
