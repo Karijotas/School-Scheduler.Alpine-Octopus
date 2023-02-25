@@ -26,9 +26,7 @@ import static org.springframework.http.ResponseEntity.ok;
 @RequestMapping("/api/v1/shifts")
 @Validated
 public class ShiftController {
-
     public static Logger logger = LoggerFactory.getLogger(SubjectController.class);
-
     private final ShiftService shiftService;
 
     public ShiftController(ShiftService shiftService) {

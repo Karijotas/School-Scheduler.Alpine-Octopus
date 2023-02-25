@@ -78,7 +78,6 @@ ALTER TABLE rooms_subjects ADD CONSTRAINT fk_roosub_on_subject FOREIGN KEY (subj
 CREATE TABLE teacher (
   id BIGINT AUTO_INCREMENT NOT NULL,
    name VARCHAR(255),
-   surname VARCHAR(255),
    login_email VARCHAR(255),
    contact_email VARCHAR(255),
    phone VARCHAR(255),

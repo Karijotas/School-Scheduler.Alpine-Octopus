@@ -73,7 +73,7 @@ export function ViewShifts() {
       <MainMenu />
       <Grid columns={2}>
         <Grid.Column width={2} id="main">
-          <EditMenu active="groups" />
+          <EditMenu active="shifts" />
         </Grid.Column>
 
         <Grid.Column stretched textAlign="left" verticalAlign="top" width={13}>
@@ -84,7 +84,7 @@ export function ViewShifts() {
               </div>
             )}
             {!active && !create && (
-              <div id="subjects">
+              <div id="shifts">
                 <Input
                   className="controls1"
                   placeholder="Filtruoti pagal pamainą"
@@ -109,7 +109,7 @@ export function ViewShifts() {
                 <Table selectable>
                   <Table.Header>
                     <Table.Row>
-                      <Table.HeaderCell>Pamaina</Table.HeaderCell>
+                      <Table.HeaderCell>Pavadinimas</Table.HeaderCell>
                       <Table.HeaderCell>Pamokos nuo:</Table.HeaderCell>
                       <Table.HeaderCell>Pamokos iki:</Table.HeaderCell>
                       <Table.HeaderCell>Veiksmai</Table.HeaderCell>

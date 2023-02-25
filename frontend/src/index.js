@@ -58,8 +58,8 @@ root.render(
 
         {/* Shifts routes: */}
         <Route path='/view/shifts' element={<ViewShifts />} />
-        {/* <Route path='/view/shifts/edit/:id' element={<EditShiftObject />} />
-        <Route path='/create/shifts' element={<CreateShiftPage />} /> */}
+        <Route path='/view/shifts/edit/:id' element={<EditShiftObject />} />
+        <Route path='/create/shifts' element={<CreateShiftPage />} />
 
         {/* Rooms routes: */}
         <Route path='/view/rooms' element={<ViewRooms />} />

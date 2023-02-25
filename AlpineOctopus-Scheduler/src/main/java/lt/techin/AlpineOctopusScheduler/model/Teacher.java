@@ -30,9 +30,6 @@ public class Teacher {
     @Size(min = 1, max = 100, message = "A name shouldn't be longer than 100 characters or shorter than 1")
     private String name;
     @NotBlank
-    @Size(min = 1, max = 100, message = "A name shouldn't be longer than 100 characters or shorter than 1")
-    private String surname;
-    @NotBlank
     @Email
     private String loginEmail;
     private String contactEmail;
@@ -74,14 +71,6 @@ public class Teacher {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
     }
 
     public String getLoginEmail() {
@@ -169,12 +158,12 @@ public class Teacher {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Teacher teacher = (Teacher) o;
-        return Double.compare(teacher.workHoursPerWeek, workHoursPerWeek) == 0 && Objects.equals(id, teacher.id) && Objects.equals(name, teacher.name) && Objects.equals(surname, teacher.surname) && Objects.equals(loginEmail, teacher.loginEmail) && Objects.equals(contactEmail, teacher.contactEmail) && Objects.equals(phone, teacher.phone) && Objects.equals(shift, teacher.shift) && Objects.equals(deleted, teacher.deleted) && Objects.equals(createdDate, teacher.createdDate) && Objects.equals(modifiedDate, teacher.modifiedDate) && Objects.equals(createdBy, teacher.createdBy) && Objects.equals(modifiedBy, teacher.modifiedBy);
+        return Double.compare(teacher.workHoursPerWeek, workHoursPerWeek) == 0 && Objects.equals(id, teacher.id) && Objects.equals(name, teacher.name) && Objects.equals(loginEmail, teacher.loginEmail) && Objects.equals(contactEmail, teacher.contactEmail) && Objects.equals(phone, teacher.phone) && Objects.equals(shift, teacher.shift) && Objects.equals(deleted, teacher.deleted) && Objects.equals(createdDate, teacher.createdDate) && Objects.equals(modifiedDate, teacher.modifiedDate) && Objects.equals(createdBy, teacher.createdBy) && Objects.equals(modifiedBy, teacher.modifiedBy);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, surname, loginEmail, contactEmail, phone, workHoursPerWeek, shift, deleted, createdDate, modifiedDate, createdBy, modifiedBy);
+        return Objects.hash(id, name, loginEmail, contactEmail, phone, workHoursPerWeek, shift, deleted, createdDate, modifiedDate, createdBy, modifiedBy);
     }
 
     @Override
@@ -182,7 +171,6 @@ public class Teacher {
         return "Teacher{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
                 ", loginEmail='" + loginEmail + '\'' +
                 ", contactEmail='" + contactEmail + '\'' +
                 ", phone='" + phone + '\'' +

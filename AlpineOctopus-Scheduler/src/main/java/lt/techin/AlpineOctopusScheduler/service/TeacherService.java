@@ -81,7 +81,6 @@ public class TeacherService {
                         "id", "Teacher not found", id.toString()));
 
         existingTeacher.setName(teacher.getName());
-        existingTeacher.setSurname(teacher.getSurname());
         existingTeacher.setLoginEmail(teacher.getLoginEmail());
         existingTeacher.setContactEmail(teacher.getContactEmail());
         existingTeacher.setPhone(teacher.getPhone());

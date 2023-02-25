@@ -50,11 +50,7 @@ export function EditGroupObject() {
             .then(setGroups);
     }, [active, params]);
 
-
-
-
     const applyResult = () => {
-
         setActive(true)
 
     }
