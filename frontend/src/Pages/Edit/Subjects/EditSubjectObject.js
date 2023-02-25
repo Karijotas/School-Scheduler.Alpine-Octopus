@@ -256,7 +256,7 @@ export function EditSubjectObject() {
       <MainMenu />
       <Grid columns={2}>
         <Grid.Column width={2} id="main">
-          <EditMenu active="groups" />
+          <EditMenu active="subjects" />
         </Grid.Column>
         <Grid.Column
           floated="left"

@@ -31,6 +31,7 @@ export function ViewTeachers() {
   const [shiftText, setShiftText] = useState("");
   const [activePage, setActivePage] = useState(0);
   const [pagecount, setPageCount] = useState();
+  const [teacherSubjects, setTeacherSubjects] = useState([]);
 
   const fetchFilterTeachers = async () => {
     fetch(`/api/v1/teachers/page/name-filter/${nameText}?page=` + activePage)
@@ -57,6 +58,13 @@ export function ViewTeachers() {
       headers: JSON_HEADERS,
     }).then(fetchTeachers);
   };
+
+  const fetchSubjectsById = (teacherId) => {
+    fetch(`/api/v1/teachers/${teacherId}/subjects?page= + activePage`)
+      .then((response) => response.json())
+      .then((jsonResponse) => setTeacherSubjects(jsonResponse));
+  };
+
 
  useEffect(() => {
     nameText.length > 0 ? fetchFilterTeachers() : fetchTeachers();
@@ -121,6 +129,7 @@ export function ViewTeachers() {
                       <Table.HeaderCell>Mokytojo vardas</Table.HeaderCell>
                       <Table.HeaderCell>Dalykai</Table.HeaderCell>
                       <Table.HeaderCell>Valandos per savaitę</Table.HeaderCell>
+                      <Table.HeaderCell>Pamaina</Table.HeaderCell>
                       <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
@@ -133,15 +142,23 @@ export function ViewTeachers() {
                         </Table.Cell>
                         <Table.Cell>
                         {/* <List bulleted>
-                            {console.log(teacher.subjectModules)}
-                            {teacher.subjectModules.map((module) => (
-                              <List.Content key={module.id}>
-                                <List.Item>{module.name}</List.Item>
+                        {console.log(teacher.teacherSubjects)}
+                            {teacher.teacherSubjects.map((subject) => (
+                              <List.Content key={subject.id}>
+                                <List.Item>{subject.name}</List.Item>
                               </List.Content>
                             ))}
                           </List> */}
+                          <List bulleted>
+                            <List.Content>
+                              <List.Item>a</List.Item>
+                              <List.Item>b</List.Item>
+                              <List.Item>c</List.Item>
+                            </List.Content>
+                          </List>
                         </Table.Cell>
                         <Table.Cell>{teacher.workHoursPerWeek}</Table.Cell>
+                        <Table.Cell>{teacher.shift}</Table.Cell>
                         <Table.Cell collapsing>
                           <Button
                             basic
