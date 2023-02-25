@@ -5,6 +5,7 @@ import lt.techin.AlpineOctopusScheduler.api.dto.mapper.TeacherMapper;
 import lt.techin.AlpineOctopusScheduler.dao.SubjectRepository;
 import lt.techin.AlpineOctopusScheduler.dao.TeacherRepository;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
+import lt.techin.AlpineOctopusScheduler.model.Shift;
 import lt.techin.AlpineOctopusScheduler.model.Teacher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -96,6 +97,10 @@ public class TeacherService {
             return true;
         }
         return false;
+    }
+
+    public Set<Shift> getAllShiftsById(Long teacherId) {
+        return teacherRepository.findById(teacherId).get().getTeacherShifts();
     }
 
 //    public Teacher addSubjectToTeacher(Long teacherId, Long subjectId) {

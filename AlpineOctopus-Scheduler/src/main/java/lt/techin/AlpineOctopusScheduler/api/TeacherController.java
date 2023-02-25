@@ -1,11 +1,11 @@
 package lt.techin.AlpineOctopusScheduler.api;
 
-//Mantvydas Juršys
 
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.TeacherMapper;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
+import lt.techin.AlpineOctopusScheduler.model.Shift;
 import lt.techin.AlpineOctopusScheduler.model.Teacher;
 import lt.techin.AlpineOctopusScheduler.service.TeacherService;
 import org.slf4j.Logger;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.TeacherMapper.toTeacher;
@@ -31,7 +32,7 @@ public class TeacherController {
 
     public static Logger logger = LoggerFactory.getLogger(TeacherController.class);
     private final TeacherService teacherService;
-    
+
     public TeacherController(TeacherService teacherService) {
 
         this.teacherService = teacherService;
@@ -92,5 +93,11 @@ public class TeacherController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
 
         return responseEntity;
+    }
+
+    @GetMapping(value = "/{teacherId}/shifts")
+    @ResponseBody
+    public Set<Shift> getAllShiftsById(@PathVariable Long teacherId) {
+        return teacherService.getAllShiftsById(teacherId);
     }
 }

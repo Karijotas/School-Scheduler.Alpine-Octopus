@@ -20,7 +20,6 @@ const JSON_HEADERS = {
 };
 
 export function ViewTeachers() {
-
   const [open, setOpen] = useState(false);
   const [close, setClose] = useState(false);
   const [active, setActive] = useState();
@@ -38,7 +37,7 @@ export function ViewTeachers() {
       .then((response) => response.json())
       .then((jsonRespone) => setTeachers(jsonRespone));
   };
-  
+
   const fetchSingleTeachers = () => {
     fetch("/api/v1/teachers")
       .then((response) => response.json())
@@ -65,8 +64,7 @@ export function ViewTeachers() {
       .then((jsonResponse) => setTeacherSubjects(jsonResponse));
   };
 
-
- useEffect(() => {
+  useEffect(() => {
     nameText.length > 0 ? fetchFilterTeachers() : fetchTeachers();
   }, [activePage, nameText]);
 
@@ -129,7 +127,7 @@ export function ViewTeachers() {
                       <Table.HeaderCell>Mokytojo vardas</Table.HeaderCell>
                       <Table.HeaderCell>Dalykai</Table.HeaderCell>
                       <Table.HeaderCell>Valandos per savaitę</Table.HeaderCell>
-                      <Table.HeaderCell>Pamaina</Table.HeaderCell>
+                      <Table.HeaderCell>Pamainos</Table.HeaderCell>
                       <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
@@ -137,11 +135,9 @@ export function ViewTeachers() {
                   <Table.Body>
                     {teachers.map((teacher) => (
                       <Table.Row key={teacher.id}>
+                        <Table.Cell>{teacher.name}</Table.Cell>
                         <Table.Cell>
-                          {teacher.name}
-                        </Table.Cell>
-                        <Table.Cell>
-                        {/* <List bulleted>
+                          {/* <List bulleted>
                         {console.log(teacher.teacherSubjects)}
                             {teacher.teacherSubjects.map((subject) => (
                               <List.Content key={subject.id}>
@@ -158,7 +154,15 @@ export function ViewTeachers() {
                           </List>
                         </Table.Cell>
                         <Table.Cell>{teacher.workHoursPerWeek}</Table.Cell>
-                        <Table.Cell>{teacher.shift}</Table.Cell>
+                        <Table.Cell>
+                          <List bulleted>
+                            {teacher.teacherShifts.map((shift) => (
+                              <List.Content key={shift.id}>
+                                <List.Item>{shift.name}</List.Item>
+                              </List.Content>
+                            ))}
+                          </List>
+                        </Table.Cell>
                         <Table.Cell collapsing>
                           <Button
                             basic

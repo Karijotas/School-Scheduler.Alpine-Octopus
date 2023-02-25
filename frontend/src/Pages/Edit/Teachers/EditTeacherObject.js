@@ -23,19 +23,16 @@ const JSON_HEADERS = {
 export function EditTeacherObject() {
   const params = useParams();
   const [modules, setModules] = useState([]);
-  const [module, setModule] = useState("");
-  const [moduleId, setModuleId] = useState("");
   
   const [teacher, setTeacher] = useState("");
   const [teacherId, setTeacherId] = useState("");
-  const [rooms, setRooms] = useState([]);
-  const [room, setRoom] = useState("");
-  const [roomId, setRoomId] = useState("");
 
   const [hide, setHide] = useState(false);
   const [active, setActive] = useState(true);
   const [error, setError] = useState();
   const [subjectId, setSubjectId] = useState("");
+  const [teacherShifts, setTeacherShifts] = useState([]);
+  const [teacherSubjects, setTeacherSubjects] = useState([]);
   const [subjectsInTeachers, setSubjectsInTeachers] = useState([]);
   const [teachers, setTeachers] = useState({
     name: "",
@@ -58,6 +55,26 @@ export function EditTeacherObject() {
     setActive(true);
   };
 
+  const getTeacherShifts = ()  => {
+    fetch(`/api/v1/teachers/${params.id}/shifts`)
+      .then((response) => response.json())
+      .then(setTeacherShifts)
+      .then(console.log(teacherShifts));
+  };
+
+  useEffect(() => {
+    fetch(`/api/v1/teachers/${params.id}/shifts`)
+      .then((response) => response.json())
+      .then(setTeacherShifts)
+      .then(console.log(teacherShifts));
+  }, [params]);
+
+  const getTeacherSubjects = ()  => {
+    fetch(`/api/v1/teachers/${params.id}/subjects`)
+      .then((response) => response.json())
+      .then(setTeacherSubjects)
+      .then(console.log(teacherSubjects));
+  };
 
   useEffect(() => {
     fetch(`/api/v1/teachers/${params.id}/subjects`)
@@ -139,10 +156,7 @@ export function EditTeacherObject() {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Vardas ir pavardė</Table.HeaderCell>
-                      <Table.HeaderCell>Teams vartotojo vardas</Table.HeaderCell>
-                      <Table.HeaderCell>Email</Table.HeaderCell>
                       <Table.HeaderCell>Telefono nr.</Table.HeaderCell>
-                      <Table.HeaderCell>Užimtumas (val. per savaitę)</Table.HeaderCell>
                       <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
                       <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                     </Table.Row>
@@ -151,10 +165,7 @@ export function EditTeacherObject() {
                   <Table.Body>
                     <Table.Row>
                       <Table.Cell>{teachers.name}</Table.Cell>
-                      <Table.Cell>{teachers.loginEmail}</Table.Cell>
-                      <Table.Cell>{teachers.contactEmail}</Table.Cell>
                       <Table.Cell>{teachers.phone}</Table.Cell>
-                      <Table.Cell>{teachers.workHoursPerWeek}</Table.Cell>
                       <Table.Cell collapsing>
                         {" "}
                         {teachers.modifiedDate}{" "}
@@ -165,6 +176,62 @@ export function EditTeacherObject() {
                     </Table.Row>
                   </Table.Body>
                 </Table>
+                <Table celled color="violet">
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>Teams vartotojo vardas</Table.HeaderCell>
+                      <Table.HeaderCell>Email</Table.HeaderCell>
+                      <Table.HeaderCell>Užimtumas (val. per savaitę)</Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
+
+                  <Table.Body>
+                    <Table.Row>
+                      <Table.Cell>{teachers.loginEmail}</Table.Cell>
+                      <Table.Cell>{teachers.contactEmail}</Table.Cell>
+                      <Table.Cell>{teachers.workHoursPerWeek}</Table.Cell>
+                    </Table.Row>
+                  </Table.Body>
+                </Table>
+
+                <Grid columns={2} divided>
+                  <Grid.Column>
+                    <Table width={6}>
+                      <Table.Header>
+                        <Table.Row>
+                          <Table.HeaderCell width={6}>
+                            Pamainos:
+                          </Table.HeaderCell>
+                        </Table.Row>
+                      </Table.Header>
+                      <Table.Body>
+                        {teacherShifts.map((shift) => (
+                          <Table.Row key={shift.id}>
+                            <Table.Cell>{shift.name}</Table.Cell>
+                          </Table.Row>
+                        ))}
+                      </Table.Body>
+                    </Table>
+                  </Grid.Column>
+                  <Grid.Column>
+                    <Table width={6}>
+                      <Table.Header>
+                        <Table.Row>
+                          <Table.HeaderCell width={6}>
+                            Dalykai:
+                          </Table.HeaderCell>
+                        </Table.Row>
+                      </Table.Header>
+                      <Table.Body>
+                        {teacherSubjects.map((subject) => (
+                          <Table.Row key={subject.id}>
+                            <Table.Cell>{subject.name}</Table.Cell>
+                          </Table.Row>
+                        ))}
+                      </Table.Body>
+                    </Table>
+                  </Grid.Column>
+                  </Grid>
 
                 
                 <Divider hidden />
