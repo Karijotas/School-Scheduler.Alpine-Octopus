@@ -144,3 +144,12 @@ ADD CONSTRAINT FK_PROGRAMSUBJECTHOURS_ON_SUBJECT FOREIGN KEY (subject_id) REFERE
 ALTER TABLE GROUPS ADD CONSTRAINT FK_GROUPS_ON_PROGRAM FOREIGN KEY (program_id) REFERENCES program (id);
 
 
+CREATE TABLE teacher_shifts (
+  shift_id BIGINT NOT NULL,
+   teacher_id BIGINT NOT NULL,
+   CONSTRAINT pk_teacher_shifts PRIMARY KEY (shift_id, teacher_id)
+);
+
+ALTER TABLE teacher_shifts ADD CONSTRAINT fk_teashi_on_shift FOREIGN KEY (shift_id) REFERENCES shift (id);
+
+ALTER TABLE teacher_shifts ADD CONSTRAINT fk_teashi_on_teacher FOREIGN KEY (teacher_id) REFERENCES teacher (id);
