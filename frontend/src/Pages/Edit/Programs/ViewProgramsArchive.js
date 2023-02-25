@@ -92,7 +92,6 @@ export function ViewProgramsArchive() {
                       <Table.Cell>
                         <Button
                           textAlign="center"
-                          id='details'
                           basic                          
                           compact
                           title="Atstatyti"

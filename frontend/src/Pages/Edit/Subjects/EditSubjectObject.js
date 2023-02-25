@@ -196,7 +196,7 @@ export function EditSubjectObject() {
 
   const addTeacher = (subjectId, teacherId) => {
     fetch(`/api/v1/subjects/${subjectId}/teachers/${teacherId}/newTeachers`, {
-      method: "POST",
+      method: "PUT",
       header: JSON_HEADERS,
       body: JSON.stringify({
         subjectId,

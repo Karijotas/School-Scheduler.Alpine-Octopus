@@ -36,7 +36,7 @@ export function ViewSubjects() {
   const [moduleText, setModuleText] = useState("");
 
   const fetchSubjectsByModules = async () => {
-    fetch(`/api/v1/subjects/page/module-filter/${moduleText}?page=` + activePage)
+    fetch(`/api/v1/subjects/page/module-filter/${moduleText}`)
       .then((response) => response.json())
       .then((jsonResponse) => setSubjects(jsonResponse));
   };
@@ -66,10 +66,10 @@ export function ViewSubjects() {
   };
 
   const removeSubject = (id) => {
-    fetch("/api/v1/subjects/" + id, {
-      method: "DELETE",
-      headers: JSON_HEADERS,
-    }).then(fetchSubjects);
+    fetch("/api/v1/subjects/delete/" + id, {
+      method: "PATCH",      
+    }).then(fetchSubjects)
+    .then(setOpen(false));
   };
 
   // useEffect(() => {
@@ -151,14 +151,14 @@ useEffect(() => {
                   </Table.Header>
 
                   <Table.Body>
-                    {subjects.map((subject) => (
-                      <Table.Row key={subject.id}>
+                    {subjects.map((subject, index) => (
+                      <Table.Row key={index}>
                         <Table.Cell>{subject.name}</Table.Cell>
                         <Table.Cell>
                           <List bulleted>
                             {console.log(subject.subjectModules)}
-                            {subject.subjectModules.map((module) => (
-                              <List.Content key={module.id}>
+                            {subject.subjectModules.map((module, index) => (
+                              <List.Content key={index}>
                                 <List.Item>{module.name}</List.Item>
                               </List.Content>
                             ))}

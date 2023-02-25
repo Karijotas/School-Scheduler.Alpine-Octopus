@@ -129,8 +129,7 @@ export function ViewPrograms() {
                         ></Button>
 
                         <Confirm
-                          open={open}
-                          id='details'
+                          open={open}                          
                           header="Dėmesio!"
                           content="Ar tikrai norite perkelti į archyvą?"
                           cancelButton="Grįžti atgal"
