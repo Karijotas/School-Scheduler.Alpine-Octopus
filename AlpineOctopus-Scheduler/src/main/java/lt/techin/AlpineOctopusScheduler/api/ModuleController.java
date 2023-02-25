@@ -72,12 +72,10 @@ public class ModuleController {
 
     @PutMapping("/update/{moduleId}")
     public ResponseEntity<ModuleDto> updateModule(@PathVariable Long moduleId, @Valid @RequestBody ModuleDto moduleDto) {
-        if (moduleService.moduleNameIsUnique(toModule(moduleDto))) {
-            var updatedModule = moduleService.update(moduleId, toModule(moduleDto));
-            return ok(toModuleDto(updatedModule));
-        } else {
-            throw new SchedulerValidationException("Module already exists", "Module name", "Already exists", moduleDto.getName());
-        }
+
+        var updatedModule = moduleService.update(moduleId, toModule(moduleDto));
+        return ok(toModuleDto(updatedModule));
+
     }
 
 

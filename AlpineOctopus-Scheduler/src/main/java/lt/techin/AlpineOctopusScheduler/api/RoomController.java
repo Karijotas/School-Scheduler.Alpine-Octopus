@@ -66,12 +66,10 @@ public class RoomController {
 
     @PutMapping("/{id}")
     public ResponseEntity<RoomDto> updateRoom(@PathVariable Long id, @Valid @RequestBody RoomDto roomDto) {
-        if (roomService.classIsUnique(toRoom(roomDto))) {
-            var updatedRoom = roomService.update(id, toRoom(roomDto));
-            return ok(toRoomDto(updatedRoom));
-        } else {
-            throw new SchedulerValidationException("Class already exists", "Class name & building adress", "Already exists", roomDto.getName());
-        }
+
+        var updatedRoom = roomService.update(id, toRoom(roomDto));
+        return ok(toRoomDto(updatedRoom));
+
     }
 
     @DeleteMapping("/{id}")

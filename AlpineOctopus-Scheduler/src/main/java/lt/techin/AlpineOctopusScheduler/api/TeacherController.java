@@ -31,7 +31,7 @@ public class TeacherController {
 
     public static Logger logger = LoggerFactory.getLogger(TeacherController.class);
     private final TeacherService teacherService;
-    
+
     public TeacherController(TeacherService teacherService) {
 
         this.teacherService = teacherService;
@@ -75,12 +75,10 @@ public class TeacherController {
 
     @PutMapping("/{teacherId}")
     public ResponseEntity<TeacherDto> updateTeacher(@PathVariable Long teacherId, @Valid @RequestBody TeacherDto teacherDto) {
-        if (teacherService.loginEmailIsUnique(toTeacher(teacherDto))) {
-            var updatedTeacher = teacherService.update(teacherId, toTeacher(teacherDto));
-            return ok(toTeacherDto(updatedTeacher));
-        } else {
-            throw new SchedulerValidationException("Teacher already exists", "Teacher login email", "Already exists", teacherDto.getLoginEmail());
-        }
+
+        var updatedTeacher = teacherService.update(teacherId, toTeacher(teacherDto));
+        return ok(toTeacherDto(updatedTeacher));
+
     }
 
     @GetMapping(value = "/{teacherId}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})

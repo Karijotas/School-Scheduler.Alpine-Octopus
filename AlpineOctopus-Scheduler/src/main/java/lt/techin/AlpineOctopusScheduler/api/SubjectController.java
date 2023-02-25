@@ -92,12 +92,10 @@ public class SubjectController {
 
     @PutMapping("/{subjectId}")
     public ResponseEntity<SubjectDto> updateSubject(@PathVariable Long subjectId, @Valid @RequestBody SubjectDto subjectDto) {
-        if (subjectService.subjectNameIsUnique(toSubject(subjectDto))) {
-            var updatedSubject = subjectService.update(subjectId, toSubject(subjectDto));
-            return ok(toSubjectDto(updatedSubject));
-        } else {
-            throw new SchedulerValidationException("Subject already exists", "Subject name", "Already exists", subjectDto.getName());
-        }
+
+        var updatedSubject = subjectService.update(subjectId, toSubject(subjectDto));
+        return ok(toSubjectDto(updatedSubject));
+
     }
 
     @GetMapping(value = "/{subjectId}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})

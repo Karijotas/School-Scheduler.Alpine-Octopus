@@ -14,6 +14,7 @@ import org.springframework.web.HttpMediaTypeException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +26,7 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 
 @ControllerAdvice
+@RequestMapping("/")
 public class ApiExceptionHandler {
 
 //      pavyzdys response, Spring sugeneruoto validacijos pranesimo

@@ -115,29 +115,25 @@ public class GroupsController {
 
     @PutMapping("/{groupId}")
     public ResponseEntity<GroupsDto> replaceGroup(@PathVariable Long groupId, @Valid @RequestBody GroupsDto groupsDto) {
-        if (groupService.groupNameIsUnique(toGroup(groupsDto))) {
-            if (groupService.schoolYearIsValid(toGroup(groupsDto))) {
-                var updatedGroup = groupService.replace(groupId, toGroup(groupsDto));
-                return ok(toGroupDto(updatedGroup));
-            } else {
-                throw new SchedulerValidationException("Invalid year value", "School year", "School year must be between 2023-3023", groupsDto.getSchoolYear().toString());
-            }
+
+        if (groupService.schoolYearIsValid(toGroup(groupsDto))) {
+            var updatedGroup = groupService.replace(groupId, toGroup(groupsDto));
+            return ok(toGroupDto(updatedGroup));
         } else {
-            throw new SchedulerValidationException("Group already exists", "Group name", "Already exists", groupsDto.getName());
+            throw new SchedulerValidationException("Invalid year value", "School year", "School year must be between 2023-3023", groupsDto.getSchoolYear().toString());
         }
+
     }
 
     @PatchMapping("/{groupId}")
     public ResponseEntity<GroupsDto> updateGroup(@PathVariable Long groupId, @Valid @RequestBody GroupsDto groupsDto, Long programId) {
-        if (groupService.groupNameIsUnique(toGroup(groupsDto))) {
-            if (groupService.schoolYearIsValid(toGroup(groupsDto))) {
-                var updatedGroup = groupService.update(groupId, toGroup(groupsDto), programId);
-                return ok(toGroupDto(updatedGroup));
-            } else {
-                throw new SchedulerValidationException("Invalid year value", "School year", "School year must be between 2023-3023", groupsDto.getSchoolYear().toString());
-            }
+
+        if (groupService.schoolYearIsValid(toGroup(groupsDto))) {
+            var updatedGroup = groupService.update(groupId, toGroup(groupsDto), programId);
+            return ok(toGroupDto(updatedGroup));
         } else {
-            throw new SchedulerValidationException("Group already exists", "Group name", "Already exists", groupsDto.getName());
+            throw new SchedulerValidationException("Invalid year value", "School year", "School year must be between 2023-3023", groupsDto.getSchoolYear().toString());
         }
+
     }
 }

@@ -178,12 +178,10 @@ public class ProgramController {
 
     @PatchMapping("/{programId}")
     public ResponseEntity<ProgramDto> updateProgram(@PathVariable Long programId, @Valid @RequestBody ProgramDto programDto) {
-        if (programService.programNameIsUnique(toProgram(programDto))) {
-            var updatedProgram = programService.update(programId, toProgram(programDto));
-            return ok(toProgramDto(updatedProgram));
-        } else {
-            throw new SchedulerValidationException("Program already exists", "Program name", "Already exists", programDto.getName());
-        }
+
+        var updatedProgram = programService.update(programId, toProgram(programDto));
+        return ok(toProgramDto(updatedProgram));
+
     }
 
     @PatchMapping("/programSubjects/{programSubjectId}")
