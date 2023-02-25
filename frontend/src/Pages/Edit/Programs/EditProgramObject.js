@@ -43,26 +43,26 @@ export function EditProgramObject() {
 
 
   useEffect(() => {
-    fetch("/api/v1/programs/" + params.id)
+    fetch("http://localhost:8081/scheduler/api/v1/programs/" + params.id)
       .then((response) => response.json())
       .then(setPrograms);
   }, []);
 
   useEffect(() => {
-    fetch(`/api/v1/programs/${params.id}/subjects`)
+    fetch(`http://localhost:8081/scheduler/api/v1/programs/${params.id}/subjects`)
       .then((response) => response.json())
       .then(setSubjectsInProgram)
       .then(console.log(subjectsInProgram));
   }, [params]);
 
   useEffect(() => {
-    fetch(`/api/v1/programs/${params.id}/subjects/hours`)
+    fetch(`http://localhost:8081/scheduler/api/v1/programs/${params.id}/subjects/hours`)
       .then((response) => response.json())
       .then(setTotalHours);
   }, [params]);
 
   const removeSubject = (programId, subjectId, hours) => {
-    fetch(`/api/v1/programs/${programId}/subjects/${subjectId}/${hours}`, {
+    fetch(`http://localhost:8081/scheduler/api/v1/programs/${programId}/subjects/${subjectId}/${hours}`, {
       method: "DELETE",
       headers: JSON_HEADERS,
     }).then(fetch(`/api/v1/programs/${params.id}/subjects/hours`)
@@ -72,7 +72,7 @@ export function EditProgramObject() {
   };
 
   const addSubjectAndHours = (programId, subjectId, hours) => {
-    fetch(`/api/v1/programs/${programId}/subjects/${subjectId}/${hours}/newSubjectsWithHours`, {
+    fetch(`http://localhost:8081/scheduler/api/v1/programs/${programId}/subjects/${subjectId}/${hours}/newSubjectsWithHours`, {
       method: "POST",
       header: JSON_HEADERS,
       body: JSON.stringify({
@@ -87,7 +87,7 @@ export function EditProgramObject() {
 
 
   useEffect(() => {
-    fetch("/api/v1/subjects/")
+    fetch("http://localhost:8081/scheduler/api/v1/subjects/")
       .then((response) => response.json())
       .then((data) =>
         setSubjects(
@@ -105,7 +105,7 @@ export function EditProgramObject() {
 
 
   const updatePrograms = () => {
-    fetch('/api/v1/programs/' + params.id, {
+    fetch('http://localhost:8081/scheduler/api/v1/programs/' + params.id, {
       method: "PATCH",
       headers: JSON_HEADERS,
       body: JSON.stringify({

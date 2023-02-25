@@ -42,31 +42,31 @@ export function ViewGroups() {
 
 
     const fetchProgramGroups = async () => {
-        fetch('/api/v1/groups/program-filter/' + programText)
+        fetch('http://localhost:8081/scheduler/api/v1/groups/program-filter/' + programText)
             .then(response => response.json())
             .then(jsonResponse => setGroups(jsonResponse));
     };
     const fetchYearGroups = async () => {
-        fetch('/api/v1/groups/year-filter/' + yearText)
+        fetch('http://localhost:8081/scheduler/api/v1/groups/year-filter/' + yearText)
             .then(response => response.json())
             .then(jsonResponse => setGroups(jsonResponse));
     };
 
 
     const fetchFilterGroups = async () => {
-        fetch('/api/v1/groups/name-filter/' + nameText)
+        fetch('http://localhost:8081/scheduler/api/v1/groups/name-filter/' + nameText)
             .then(response => response.json())
             .then(jsonResponse => setGroups(jsonResponse));
     };
 
     const fetchGroups = async () => {
-        fetch('http://localhost:8092/api/v1/groups/page?page=' + activePage)
+        fetch('http://localhost:8081/scheduler/api/v1/groups/page?page=' + activePage)
             .then(response => response.json())
             .then(jsonResponse => setGroups(jsonResponse));
     };
 
     const fetchSingleGroups = async () => {
-        fetch('http://localhost:8092/api/v1/groups/')
+        fetch('http://localhost:8081/scheduler/api/v1/groups/')
             .then(response => response.json())
             .then(jsonResponse => setGroupsForPaging(jsonResponse))
             .then(setPageCount(Math.ceil(groupsforPaging.length / 10)))
@@ -136,7 +136,7 @@ export function ViewGroups() {
                                 value={nameText} onChange={(e) => setNameText(e.target.value)} />
 
                             <select
-                            id='selectYear'
+                                id='selectYear'
                                 value={yearText} onChange={(e) => setYearText(e.target.value)} >
                                 <option >Filtruoti pagal metus</option>
                                 {Object.entries(YEAR_OPTIONS)

@@ -31,7 +31,7 @@ export function CreateRoom() {
 
   const createRoom = () => {
     fetch(
-      '/api/v1/rooms', {
+      'http://localhost:8081/scheduler/api/v1/rooms', {
       method: 'POST',
       headers: JSON_HEADERS,
       body: JSON.stringify({

@@ -36,19 +36,19 @@ export function ViewSubjects() {
   const [moduleText, setModuleText] = useState();
 
   const fetchSubjectsBYModules = async () => {
-    fetch("/api/v1/subjects/module-filter/" + moduleText)
+    fetch("http://localhost:8081/scheduler/api/v1/subjects/module-filter/" + moduleText)
       .then((response) => response.json())
       .then((jsonResponse) => setSubjects(jsonResponse));
   };
 
   const fetchFilterSubjects = async () => {
-    fetch(`/api/v1/subjects/page/name-filter/${nameText}?page=` + activePage)
+    fetch(`http://localhost:8081/scheduler/api/v1/subjects/page/name-filter/${nameText}?page=` + activePage)
       .then((response) => response.json())
       .then((jsonRespone) => setSubjects(jsonRespone));
   };
 
   const fetchSingleSubjects = () => {
-    fetch("/api/v1/subjects")
+    fetch("http://localhost:8081/scheduler/api/v1/subjects")
       .then((response) => response.json())
       .then((jsonResponse) => setSubjectsForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(subjectsforPaging.length / 10)));
@@ -60,13 +60,13 @@ export function ViewSubjects() {
   //     .then((jsonRespones) => setModules(jsonRespones));
   // };
   const fetchSubjects = async () => {
-    fetch(`/api/v1/subjects/page?page=` + activePage)
+    fetch(`http://localhost:8081/scheduler/api/v1/subjects/page?page=` + activePage)
       .then((response) => response.json())
       .then((jsonRespones) => setSubjects(jsonRespones));
   };
 
   const removeSubject = (id) => {
-    fetch("/api/v1/subjects/" + id, {
+    fetch("http://localhost:8081/scheduler/api/v1/subjects/" + id, {
       method: "DELETE",
       headers: JSON_HEADERS,
     }).then(fetchSubjects);

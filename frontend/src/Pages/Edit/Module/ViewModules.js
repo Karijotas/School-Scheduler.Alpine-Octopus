@@ -30,27 +30,27 @@ export function ViewModules() {
   const [pagecount, setPageCount] = useState();
 
   const fetchFilterModules = async () => {
-    fetch(`/api/v1/modules/page/name-filter/${nameText}?page=` + activePage)
+    fetch(`http://localhost:8081/scheduler/api/v1/modules/page/name-filter/${nameText}?page=` + activePage)
       .then((response) => response.json())
       .then((jsonRespone) => setModules(jsonRespone));
 
   };
 
   const fetchSingleModules = () => {
-    fetch("/api/v1/modules")
+    fetch("http://localhost:8081/scheduler/api/v1/modules")
       .then((response) => response.json())
       .then((jsonResponse) => setModulesForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(modulesforPaging.length / 10)));
   };
 
   const fetchModules = async () => {
-    fetch(`/api/v1/modules/page?page=` + activePage)
+    fetch(`http://localhost:8081/scheduler/api/v1/modules/page?page=` + activePage)
       .then((response) => response.json())
       .then((jsonRespones) => setModules(jsonRespones));
   };
 
   const removeModule = (id) => {
-    fetch("/api/v1/modules/" + id, {
+    fetch("http://localhost:8081/scheduler/api/v1/modules/" + id, {
       method: "DELETE",
       headers: JSON_HEADERS,
     }).then(fetchModules);

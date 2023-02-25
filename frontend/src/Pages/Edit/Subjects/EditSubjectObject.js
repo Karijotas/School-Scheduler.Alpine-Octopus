@@ -26,7 +26,7 @@ const [modulesInSubjects, setModulesInSubjects] = useState([]);
     }); 
 
     useEffect(() => {
-        fetch('/api/v1/subjects/' + params.id)
+        fetch('http://localhost:8081/scheduler/api/v1/subjects/' + params.id)
             .then(response => response.json())
             .then(setSubjects);
     }, [params]);
@@ -44,14 +44,14 @@ const [modulesInSubjects, setModulesInSubjects] = useState([]);
     // };
 
     useEffect(() => {
-        fetch(`/api/v1/subjects/${params.id}/modules`)
+        fetch(`http://localhost:8081/scheduler/api/v1/subjects/${params.id}/modules`)
           .then((response) => response.json())
           .then(setModulesInSubjects)
           .then(console.log(modulesInSubjects));
       }, [params]);
 
     const updateSubjects = () => {
-        fetch('/api/v1/subjects/' + params.id, {
+        fetch('http://localhost:8081/scheduler/api/v1/subjects/' + params.id, {
             method: 'PUT',
             headers: JSON_HEADERS,
             body: JSON.stringify(subjects)

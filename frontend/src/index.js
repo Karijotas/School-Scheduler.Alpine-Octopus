@@ -7,24 +7,20 @@ import './index.css';
 import { CreateGroupPage } from './Pages/Edit/Groups/CreateGroupPage';
 import { EditGroupObject } from './Pages/Edit/Groups/EditGroupObject';
 import { ViewGroups } from './Pages/Edit/Groups/ViewGroups.js';
+import { CreateModulePage } from './Pages/Edit/Module/CreateModulePage';
+import { EditModuleObject } from './Pages/Edit/Module/EditModuleObject';
 import { ViewModules } from './Pages/Edit/Module/ViewModules';
+import { CreateProgramPage } from './Pages/Edit/Programs/CreateProgramPage';
 import { EditProgramObject } from './Pages/Edit/Programs/EditProgramObject';
 import { ViewPrograms } from './Pages/Edit/Programs/ViewPrograms';
 import { CreateRoom } from './Pages/Edit/Rooms/CreateRoom';
 import { EditRoom } from './Pages/Edit/Rooms/EditRoom';
 import { ViewRooms } from './Pages/Edit/Rooms/ViewRooms';
-import { CreateShiftPage } from './Pages/Edit/Shifts/CreateShiftPage';
-import { EditShiftObject } from './Pages/Edit/Shifts/EditShiftObject';
 import { ViewShifts } from './Pages/Edit/Shifts/ViewShifts';
 import { CreateSubjecPage } from './Pages/Edit/Subjects/CreateSubjectPage';
 import { EditSubjectObject } from './Pages/Edit/Subjects/EditSubjectObject';
 import { ViewSubjects } from './Pages/Edit/Subjects/ViewSubjects';
-import { CreateTeacher } from './Pages/Edit/Teachers/CreateTeacher';
-import { EditTeacherObject } from './Pages/Edit/Teachers/EditTeacherObject';
 import { ViewTeachers } from './Pages/Edit/Teachers/ViewTeachers';
-import { CreateProgramPage } from './Pages/Edit/Programs/CreateProgramPage';
-import { EditModuleObject } from './Pages/Edit/Module/EditModuleObject';
-import { CreateModulePage } from './Pages/Edit/Module/CreateModulePage';
 
 
 
@@ -35,7 +31,7 @@ import { CreateModulePage } from './Pages/Edit/Module/CreateModulePage';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <HashRouter>
+    <HashRouter basename={process.env.REACT_APP_PUBLIC_URL}>
       <Routes>
         <Route path='/' element={<App />} />
         {/* EDIT MENU ROUTES */}
@@ -75,6 +71,7 @@ root.render(
         <Route path='/view/modules' element={<ViewModules />} />
         <Route path='/view/modules/edit/:id' element={<EditModuleObject />} />
         <Route path='/create/modules' element={<CreateModulePage />} />
+
 
 
       </Routes>

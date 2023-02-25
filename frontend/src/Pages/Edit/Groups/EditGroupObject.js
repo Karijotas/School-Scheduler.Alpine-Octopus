@@ -45,7 +45,7 @@ export function EditGroupObject() {
 
 
     useEffect(() => {
-        fetch('/api/v1/groups/' + params.id)
+        fetch('http://localhost:8081/scheduler/api/v1/groups/' + params.id)
             .then(response => response.json())
             .then(setGroups);
     }, [active, params]);
@@ -60,7 +60,7 @@ export function EditGroupObject() {
     }
 
     const updateGroups = () => {
-        fetch('/api/v1/groups/' + params.id + '?programId=' + programId, {
+        fetch('http://localhost:8081/scheduler/api/v1/groups/' + params.id + '?programId=' + programId, {
             method: 'PATCH',
             headers: JSON_HEADERS,
             body: JSON.stringify(groups,)
@@ -87,7 +87,7 @@ export function EditGroupObject() {
     }
 
     useEffect(() => {
-        fetch('/api/v1/programs/')
+        fetch('http://localhost:8081/scheduler/api/v1/programs/')
             .then((response) => response.json())
             .then((data) =>
                 setPrograms(
