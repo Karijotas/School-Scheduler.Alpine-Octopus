@@ -256,7 +256,7 @@ export function EditSubjectObject() {
       <MainMenu />
       <Grid columns={2}>
         <Grid.Column width={2} id="main">
-          <EditMenu active="groups" />
+          <EditMenu />
         </Grid.Column>
         <Grid.Column
           floated="left"
@@ -267,7 +267,7 @@ export function EditSubjectObject() {
           <Segment raised color="teal">
             {active && !hide && (
               <div>
-                <Table celled color="violet">
+                <Table celled>
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Dalyko pavadinimas</Table.HeaderCell>
@@ -288,7 +288,7 @@ export function EditSubjectObject() {
                         {subjects.modifiedDate}{" "}
                       </Table.Cell>
                       <Table.Cell collapsing>
-                        <Button onClick={editThis}>Redaguoti</Button>
+                        <Button id='details' onClick={editThis}>Redaguoti</Button>
                       </Table.Cell>
                     </Table.Row>
                   </Table.Body>
@@ -367,7 +367,7 @@ export function EditSubjectObject() {
             )}
             {!active && !hide && (
               <div>
-                <Table celled color="violet">
+                <Table celled>
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Dalyko pavadinimas</Table.HeaderCell>
@@ -449,6 +449,8 @@ export function EditSubjectObject() {
                                 <Divider hidden />
                                 <List.Content floated="left">
                                   <Button
+                                  color="teal"
+                                  //id='details'
                                     onClick={() =>
                                       addModule(params.id, moduleId)
                                     }
@@ -518,6 +520,8 @@ export function EditSubjectObject() {
                                 <Divider hidden />
                                 <List.Content floated="left">
                                   <Button
+                                  color="teal"
+                                  //id='details'
                                     onClick={() =>
                                       addTeacher(params.id, teacherId)
                                     }
@@ -585,6 +589,8 @@ export function EditSubjectObject() {
                                 <Divider hidden />
                                 <List.Content floated="left">
                                   <Button
+                                  color="teal"
+                                  //id='details'
                                     onClick={() => addRoom(params.id, roomId)}
                                     // onClose={fetch(
                                     //   `/api/v1/subjects/${params.id}/rooms`
@@ -603,7 +609,7 @@ export function EditSubjectObject() {
                 </Grid>
                 <Divider hidden></Divider>
                 <Button onClick={() => setActive(true)}>Atšaukti</Button>
-                <Button floated="right" primary onClick={updateSubjects}>
+                <Button id='details' floated="right" primary onClick={updateSubjects}>
                   Atnaujinti
                 </Button>
               </div>
