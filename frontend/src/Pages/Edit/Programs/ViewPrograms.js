@@ -113,6 +113,7 @@ export function ViewPrograms() {
 
                       <Table.Cell collapsing>
                         <Button
+                        id="icocolor"
                           href={'#/view/programs/edit/' + program.id}
                           basic                          
                           compact
@@ -121,6 +122,7 @@ export function ViewPrograms() {
                           onClick={() => setActive(program.id)}
                         ></Button>
                         <Button
+                        id="icocolor"
                           basic                          
                           compact
                           title="Suarchyvuoti"
