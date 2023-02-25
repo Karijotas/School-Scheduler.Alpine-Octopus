@@ -21,6 +21,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ModuleMapper.toModuleEntityDto;
+
 @Service
 
 public class ModuleService {
@@ -94,7 +96,7 @@ public class ModuleService {
     @Transactional(readOnly = true)
     public List<ModuleEntityDto> getPagedModulesByNameContaining(String nameText, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize, Sort.by("modifiedDate"));
-        return moduleRepository.findByNameContainingIgnoreCase(nameText, pageable).stream()
+        return moduleRepository.findAllByDeletedAndNameContainingIgnoreCaseOrderByModifiedDateDesc(Boolean.FALSE, nameText, pageable).stream()
 //                .sorted(Comparator.comparing(Module::getModifiedDate).reversed())
                 .map(ModuleMapper::toModuleEntityDto).collect(Collectors.toList());
     }
@@ -107,6 +109,49 @@ public class ModuleService {
 //                .sorted(Comparator.comparing(Module::getModifiedDate).reversed())
                 .map(ModuleMapper::toModuleEntityDto).collect(Collectors.toList());
     }
+
+    public List<ModuleEntityDto> getAllAvailablePagedModules(int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return moduleRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE, pageable).stream()
+                .map(ModuleMapper::toModuleEntityDto).collect(Collectors.toList());
+    }
+
+    public List<ModuleEntityDto> getAllDeletedPagedModules(int page, int pageSize) {
+
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        return moduleRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.TRUE, pageable).stream()
+                .map(ModuleMapper::toModuleEntityDto).collect(Collectors.toList());
+    }
+
+    public List<ModuleEntityDto> getAllAvailableModules() {
+        return moduleRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE).stream()
+                .map(ModuleMapper::toModuleEntityDto).collect(Collectors.toList());
+    }
+
+    public List<ModuleEntityDto> getAllDeletedModules() {
+        return moduleRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.TRUE).stream()
+                .map(ModuleMapper::toModuleEntityDto).collect(Collectors.toList());
+    }
+
+    public ModuleEntityDto restoreModule(Long moduleId) {
+
+        var existingModule = moduleRepository.findById(moduleId).orElseThrow(() -> new SchedulerValidationException("Module does not exist",
+                "id", "Module not found", moduleId.toString()));
+        existingModule.setDeleted(Boolean.FALSE);
+        moduleRepository.save(existingModule);
+        return toModuleEntityDto(existingModule);
+    }
+
+    public ModuleEntityDto deleteModule(Long moduleId) {
+
+        var existingModule = moduleRepository.findById(moduleId).orElseThrow(() -> new SchedulerValidationException("Module does not exist",
+                "id", "Module not found", moduleId.toString()));
+        existingModule.setDeleted(Boolean.TRUE);
+        moduleRepository.save(existingModule);
+        return toModuleEntityDto(existingModule);
+    }
+
 
 //    public Module addSubjectToModule(Long moduleId, Long subjectId) {
 //        var existingModule = moduleRepository.findById(moduleId)

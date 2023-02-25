@@ -82,7 +82,7 @@ public class SubjectService {
     @Transactional(readOnly = true)
     public List<SubjectEntityDto> getPagedSubjectsByNameContaining(String nameText, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        return subjectRepository.findByNameContainingIgnoreCase(nameText, pageable).stream()
+        return subjectRepository.findAllByDeletedAndNameContainingIgnoreCaseOrderByModifiedDateDesc(Boolean.FALSE, nameText, pageable).stream()
 //                .sorted(Comparator.comparing(Subject::getModifiedDate).reversed())
                 .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
     }
