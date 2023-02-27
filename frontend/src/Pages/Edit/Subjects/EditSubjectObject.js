@@ -436,7 +436,7 @@ export function EditSubjectObject() {
                                   <Form.Field>
                                     <Select
                                       options={modules}
-                                      placeholder="Dalykai"
+                                      placeholder="Moduliai"
                                       value={module}
                                       onChange={(e, data) => (
                                         setModule(e.target.value),

@@ -6,6 +6,7 @@ import lt.techin.AlpineOctopusScheduler.api.dto.TeacherEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.TeacherMapper;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Shift;
+import lt.techin.AlpineOctopusScheduler.model.Subject;
 import lt.techin.AlpineOctopusScheduler.model.Teacher;
 import lt.techin.AlpineOctopusScheduler.service.TeacherService;
 import org.slf4j.Logger;
@@ -99,5 +100,11 @@ public class TeacherController {
     @ResponseBody
     public Set<Shift> getAllShiftsById(@PathVariable Long teacherId) {
         return teacherService.getAllShiftsById(teacherId);
+    }
+
+    @GetMapping(value = "/{teacherId}/subjects")
+    @ResponseBody
+    public List<Subject> getAllSubjectsById(@PathVariable Long teacherId) {
+        return teacherService.getAllSubjectsById(teacherId);
     }
 }

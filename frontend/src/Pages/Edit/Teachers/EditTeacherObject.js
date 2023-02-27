@@ -33,7 +33,6 @@ export function EditTeacherObject() {
   const [subjectId, setSubjectId] = useState("");
   const [teacherShifts, setTeacherShifts] = useState([]);
   const [teacherSubjects, setTeacherSubjects] = useState([]);
-  const [subjectsInTeachers, setSubjectsInTeachers] = useState([]);
   const [teachers, setTeachers] = useState({
     name: "",
     loginEmail: "",
@@ -55,7 +54,7 @@ export function EditTeacherObject() {
     setActive(true);
   };
 
-  const getTeacherShifts = ()  => {
+  const fetchTeacherShifts = ()  => {
     fetch(`/api/v1/teachers/${params.id}/shifts`)
       .then((response) => response.json())
       .then(setTeacherShifts)
@@ -69,7 +68,7 @@ export function EditTeacherObject() {
       .then(console.log(teacherShifts));
   }, [params]);
 
-  const getTeacherSubjects = ()  => {
+  const fetchTeacherSubjects = ()  => {
     fetch(`/api/v1/teachers/${params.id}/subjects`)
       .then((response) => response.json())
       .then(setTeacherSubjects)
@@ -79,8 +78,8 @@ export function EditTeacherObject() {
   useEffect(() => {
     fetch(`/api/v1/teachers/${params.id}/subjects`)
       .then((response) => response.json())
-      .then(setSubjectsInTeachers)
-      .then(console.log(subjectsInTeachers));
+      .then(setTeacherSubjects)
+      .then(console.log(teacherSubjects));
   }, [params]);
 
 

@@ -6,6 +6,7 @@ import lt.techin.AlpineOctopusScheduler.dao.ModuleRepository;
 import lt.techin.AlpineOctopusScheduler.dao.SubjectRepository;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Module;
+import lt.techin.AlpineOctopusScheduler.model.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
@@ -106,6 +107,24 @@ public class ModuleService {
         return moduleRepository.findAll(pageable).stream()
 //                .sorted(Comparator.comparing(Module::getModifiedDate).reversed())
                 .map(ModuleMapper::toModuleEntityDto).collect(Collectors.toList());
+    }
+
+    public List<Subject> getAllSubjectsById(Long moduleId) {
+        return subjectRepository.findAllBySubjectModules_Id(moduleId);
+    }
+
+    public boolean deleteSubjectInModuleById(Long moduleId, Long subjectId) {
+        try {
+            var existingModule = moduleRepository.findById(moduleId).get();
+            var existingSubject = subjectRepository.findAllBySubjectModules_Id(existingModule.getId())
+                    .remove(subjectId);
+//            existingModule.getSubjectModules().remove(moduleRepository.findById(moduleId).get());
+            moduleRepository.save(existingModule);
+            return true;
+        } catch (EmptyResultDataAccessException exception) {
+            return false;
+        }
+
     }
 
 //    public Module addSubjectToModule(Long moduleId, Long subjectId) {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
-import { Button, Grid, Icon, Input, Segment, Table } from "semantic-ui-react";
+import { Button, Grid, Icon, Input, Segment, Table, Divider, List, Form, Select } from "semantic-ui-react";
 import MainMenu from '../../../Components/MainMenu';
 import { EditMenu } from '../../../Components/EditMenu';
 
@@ -12,13 +12,11 @@ export function EditModuleObject() {
 
   const params = useParams();
   const [hide, setHide] = useState(false);
-
   const [active, setActive] = useState(true);
-
   const [error, setError] = useState();
-  const [subjectsInModule, setSubjectsInModule] = useState([]);
+  const [moduleSubjects, setModuleSubjects] = useState([]);
   const [moduleId, setModuleId] = useState("");
-
+  const [subjects, setSubjects] = useState([]);
   const [modules, setModules] = useState({
     name: "",
     description: "",
@@ -26,11 +24,18 @@ export function EditModuleObject() {
     modifiedDate: "",
   });
 
-  const fetchSubjectsInModule = async () => {
+  const fetchModuleSubjects = async () => {
     fetch(`/api/v1/modules/${params.id}/subjects`)
       .then((response) => response.json())
-      .then((jsonResponse) => setSubjectsInModule(jsonResponse));
+      .then((jsonResponse) => setModuleSubjects(jsonResponse));
   };
+
+  useEffect(() => {
+    fetch(`/api/v1/modules/${params.id}/subjects`)
+      .then((response) => response.json())
+      .then(setModuleSubjects)
+      .then(console.log(moduleSubjects));
+  }, [params]);
 
   useEffect(() => {
     fetch("/api/v1/modules/" + params.id)
@@ -69,6 +74,36 @@ export function EditModuleObject() {
     setActive(false);
   };
 
+  // const addSubject = (moduleId, subjectId) => {
+  //   fetch(`/api/v1/modules/${moduleId}/subjects/${subjectId}/newSubjects`, {
+  //     method: "POST",
+  //     header: JSON_HEADERS,
+  //     body: JSON.stringify({
+  //       moduleId,
+  //       subject,
+  //     }),
+  //   }).then(fetchModuleSubjects);
+  // };
+
+  // const removeSubject = (moduleId, subjectId) => {
+  //   fetch(`/api/v1/modules/${moduleId}/subjects/${subjectId}`, {
+  //     method: "DELETE",
+  //     headers: JSON_HEADERS,
+  //   }).then(fetchModuleSubjects);
+  // };
+
+  // useEffect(() => {
+  //   fetch("/api/v1/subjects/")
+  //     .then((response) => response.json())
+  //     .then((data) =>
+  //       setSubjects(
+  //         data.map((x) => {
+  //           return { key: x.id, text: x.name, value: x.id };
+  //         })
+  //       )
+  //     );
+  // }, []);
+
   return (
     <div>
       <MainMenu />
@@ -101,6 +136,28 @@ export function EditModuleObject() {
                     </Table.Row>
                   </Table.Body>
                 </Table>
+
+                <Grid columns={2} divided>
+                  <Grid.Column>
+                    <Table width={6}>
+                      <Table.Header>
+                        <Table.Row>
+                          <Table.HeaderCell width={6}>
+                            Dalykai:
+                          </Table.HeaderCell>
+                        </Table.Row>
+                      </Table.Header>
+                      <Table.Body>
+                        {moduleSubjects.map((subject) => (
+                          <Table.Row key={subject.id}>
+                            <Table.Cell>{subject.name}</Table.Cell>
+                          </Table.Row>
+                        ))}
+                      </Table.Body>
+                    </Table>
+                  </Grid.Column>
+                  </Grid>
+                  <Divider hidden />
 
                 {/* <Divider hidden />
           <Table>
@@ -156,17 +213,77 @@ export function EditModuleObject() {
                         />
                       </Table.Cell>
                       <Table.Cell collapsing> {modules.modifiedDate} </Table.Cell>
-
-                      <Table.Cell collapsing>
-                        <Button onClick={() => setActive(true)}>Atšaukti</Button>
-                        <Button primary onClick={updateModules}>
-                          Atnaujinti
-                        </Button>
-                      </Table.Cell>
                     </Table.Row>
                   </Table.Body>
                 </Table>
-
+                {/* <Grid columns={3}>
+                  <Grid.Column>
+                    <Table>
+                      <Table.Header>
+                        <Table.Row>
+                          <Table.HeaderCell width={8}>
+                            Dalykai
+                          </Table.HeaderCell>
+                        </Table.Row>
+                      </Table.Header>
+                      <Table.Body>
+                        <Table.Row>
+                          <Table.Cell>
+                            <Table.Body>
+                              {moduleSubjects.map((subject) => (
+                                <Table.Row key={subject.id}>
+                                  <Table.Cell>{subject.name}</Table.Cell>
+                                  <Table.Cell collapsing>
+                                    <Button
+                                      basic
+                                      compact
+                                      icon="remove"
+                                      title="Pašalinti"
+                                      onClick={() =>
+                                        removeSubject(params.id, subject.id)
+                                      }
+                                    ></Button>
+                                  </Table.Cell>
+                                </Table.Row>
+                              ))}
+                            </Table.Body>
+                            <List>
+                              <List.Item>
+                                <Form.Group widths="equal">
+                                  <Form.Field>
+                                    <Select
+                                      options={subjects}
+                                      placeholder="Dalykai"
+                                      value={subject}
+                                      onChange={(e, data) => (
+                                        setSubject(e.target.value),
+                                        setSubjectId(data.value)
+                                      )}
+                                      onClose={() => console.log(subjectId)}
+                                    />
+                                  </Form.Field>
+                                </Form.Group>
+                                <Divider hidden />
+                                <List.Content floated="left">
+                                  <Button
+                                    onClick={() =>
+                                      addSubject(params.id, subjectId)
+                                    }
+                                    // onClose={fetch(
+                                    //   `/api/v1/subjects/${params.id}/modules`
+                                    // )}
+                                  >
+                                    Pridėti
+                                  </Button>
+                                </List.Content>
+                              </List.Item>
+                            </List>
+                          </Table.Cell>
+                        </Table.Row>
+                      </Table.Body>
+                    </Table>
+                  </Grid.Column>
+                  </Grid> */}
               </div>
             )}
           </Segment>

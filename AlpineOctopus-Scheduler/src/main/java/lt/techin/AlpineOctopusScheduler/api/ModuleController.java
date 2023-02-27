@@ -6,6 +6,7 @@ import lt.techin.AlpineOctopusScheduler.api.dto.ModuleEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ModuleMapper;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Module;
+import lt.techin.AlpineOctopusScheduler.model.Subject;
 import lt.techin.AlpineOctopusScheduler.service.ModuleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -109,6 +110,12 @@ public class ModuleController {
                                                                  @RequestParam(value = "page", defaultValue = "0", required = false) int page,
                                                                  @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
         return moduleService.getPagedModulesByNameContaining(nameText, page, pageSize);
+    }
+
+    @GetMapping(value = "/{moduleId}/subjects")
+    @ResponseBody
+    public List<Subject> getAllSubjectsById(@PathVariable Long moduleId) {
+        return moduleService.getAllSubjectsById(moduleId);
     }
 
 //    @PutMapping("/{moduleId}/subjects/{subjectId}")
