@@ -25,26 +25,26 @@ export function ViewPrograms() {
   const [pagecount, setPageCount] = useState();
 
   const fetchFilterPrograms = async () => {
-    fetch(`http://localhost:8081/scheduler/api/v1/programs/page/starting-with/${nameText}?page=` + activePage)
+    fetch(`http://192.168.0.129:8081/scheduler/api/v1/programs/page/starting-with/${nameText}?page=` + activePage)
       .then((response) => response.json())
       .then((jsonRespone) => setPrograms(jsonRespone));
   };
 
   const fetchSinglePrograms = () => {
-    fetch("http://localhost:8081/scheduler/api/v1/programs")
+    fetch("http://192.168.0.129:8081/scheduler/api/v1/programs")
       .then((response) => response.json())
       .then((jsonResponse) => setGroupsForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(groupsforPaging.length / 10)));
   };
 
   const fetchPrograms = async () => {
-    fetch(`http://localhost:8081/scheduler/api/v1/programs/page?page=` + activePage)
+    fetch(`http://192.168.0.129:8081/scheduler/api/v1/programs/page?page=` + activePage)
       .then((response) => response.json())
       .then((jsonRespones) => setPrograms(jsonRespones));
   };
 
   const removeProgram = (id) => {
-    fetch("http://localhost:8081/scheduler/api/v1/programs/" + id, {
+    fetch("http://192.168.0.129:8081/scheduler/api/v1/programs/" + id, {
       method: "DELETE",
       headers: JSON_HEADERS,
     }).then(fetchPrograms)
