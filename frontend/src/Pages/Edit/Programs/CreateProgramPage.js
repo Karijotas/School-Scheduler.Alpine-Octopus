@@ -4,7 +4,7 @@ import {
   Form, Grid, Icon, Segment, TextArea
 } from "semantic-ui-react";
 
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHref } from 'react-router-dom';
 import MainMenu from '../../../Components/MainMenu';
 import { EditMenu } from '../../../Components/EditMenu';
 
@@ -23,6 +23,8 @@ const yearOptions = [
 
 export function CreateProgramPage() {
   // const [create, setCreate] = useState()
+
+  const listUrl = useHref('/view/programs');
   const [hide, setHide] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -52,7 +54,8 @@ export function CreateProgramPage() {
         name,
         description,
       }),
-    }).then(applyResult);
+    }).then(applyResult)
+    .then(() => window.location = listUrl);
   };
 
 
@@ -101,6 +104,7 @@ export function CreateProgramPage() {
                     Atgal
                   </Button>
                   <Button
+                   id='details'
                     type="submit"
                     className="controls"
                     primary

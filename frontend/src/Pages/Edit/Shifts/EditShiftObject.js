@@ -7,9 +7,6 @@ import {
   Table,
   Grid,
   Segment,
-  List,
-  Form,
-  Select,
 } from "semantic-ui-react";
 import { ViewShifts } from "./ViewShifts";
 import MainMenu from "../../../Components/MainMenu";

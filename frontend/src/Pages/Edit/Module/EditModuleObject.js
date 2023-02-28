@@ -17,6 +17,8 @@ export function EditModuleObject() {
   const [moduleSubjects, setModuleSubjects] = useState([]);
   const [moduleId, setModuleId] = useState("");
   const [subjects, setSubjects] = useState([]);
+  const [subject, setSubject] = useState("");
+  const [subjectId, setSubjectId] = useState("");
   const [modules, setModules] = useState({
     name: "",
     description: "",
@@ -74,35 +76,44 @@ export function EditModuleObject() {
     setActive(false);
   };
 
-  // const addSubject = (moduleId, subjectId) => {
-  //   fetch(`/api/v1/modules/${moduleId}/subjects/${subjectId}/newSubjects`, {
-  //     method: "POST",
-  //     header: JSON_HEADERS,
-  //     body: JSON.stringify({
-  //       moduleId,
-  //       subject,
-  //     }),
-  //   }).then(fetchModuleSubjects);
-  // };
+  const fetchSingleSubjects = () => {
+    fetch("/api/v1/subjects")
+      .then((response) => response.json())
+      .then((jsonResponse) => setSubjects(jsonResponse));
+  };
 
-  // const removeSubject = (moduleId, subjectId) => {
-  //   fetch(`/api/v1/modules/${moduleId}/subjects/${subjectId}`, {
-  //     method: "DELETE",
-  //     headers: JSON_HEADERS,
-  //   }).then(fetchModuleSubjects);
-  // };
+  useEffect(() => {
+    fetch("/api/v1/subjects/")
+      .then((response) => response.json())
+      .then((data) =>
+        setSubjects(
+          data.map((x) => {
+            return { key: x.id, text: x.name, value: x.id };
+          })
+        )
+      );
+  }, []);
 
-  // useEffect(() => {
-  //   fetch("/api/v1/subjects/")
-  //     .then((response) => response.json())
-  //     .then((data) =>
-  //       setSubjects(
-  //         data.map((x) => {
-  //           return { key: x.id, text: x.name, value: x.id };
-  //         })
-  //       )
-  //     );
-  // }, []);
+  const addSubject = (moduleId, subjectId) => {
+    fetch(`/api/v1/modules/${moduleId}/subjects/${subjectId}/newSubjects`, {
+      method: "POST",
+      header: JSON_HEADERS,
+      body: JSON.stringify({
+        moduleId,
+        subject,
+      }),
+    }).then(fetchModuleSubjects);
+  };
+
+
+  const removeSubject = (moduleId, subjectId) => {
+    fetch(`/api/v1/modules/${moduleId}/subjects/${subjectId}`, {
+      method: "DELETE",
+      headers: JSON_HEADERS,
+    }).then(fetchModuleSubjects);
+  };
+
+
 
   return (
     <div>
@@ -194,7 +205,6 @@ export function EditModuleObject() {
                       <Table.HeaderCell>Modulio pavadinimas</Table.HeaderCell>
                       <Table.HeaderCell>Aprašymas</Table.HeaderCell>
                       <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
-                      <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
 
@@ -216,7 +226,7 @@ export function EditModuleObject() {
                     </Table.Row>
                   </Table.Body>
                 </Table>
-                {/* <Grid columns={3}>
+                <Grid columns={3}>
                   <Grid.Column>
                     <Table>
                       <Table.Header>
@@ -256,7 +266,7 @@ export function EditModuleObject() {
                                       placeholder="Dalykai"
                                       value={subject}
                                       onChange={(e, data) => (
-                                        setSubject(e.target.value),
+                                        setSubjects(e.target.value),
                                         setSubjectId(data.value)
                                       )}
                                       onClose={() => console.log(subjectId)}
@@ -269,9 +279,6 @@ export function EditModuleObject() {
                                     onClick={() =>
                                       addSubject(params.id, subjectId)
                                     }
-                                    // onClose={fetch(
-                                    //   `/api/v1/subjects/${params.id}/modules`
-                                    // )}
                                   >
                                     Pridėti
                                   </Button>
@@ -283,7 +290,12 @@ export function EditModuleObject() {
                       </Table.Body>
                     </Table>
                   </Grid.Column>
-                  </Grid> */}
+                  </Grid>
+                  <Divider hidden></Divider>
+                  <Button onClick={() => setActive(true)}>Atšaukti</Button>
+                <Button  id='details' floated="right" primary onClick={updateModules}>
+                  Atnaujinti
+                </Button>
               </div>
             )}
           </Segment>

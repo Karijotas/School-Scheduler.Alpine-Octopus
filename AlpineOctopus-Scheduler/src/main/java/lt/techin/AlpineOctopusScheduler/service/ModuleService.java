@@ -22,6 +22,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ModuleMapper.toModuleEntityDto;
+
 @Service
 
 public class ModuleService {
@@ -95,7 +97,7 @@ public class ModuleService {
     @Transactional(readOnly = true)
     public List<ModuleEntityDto> getPagedModulesByNameContaining(String nameText, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize, Sort.by("modifiedDate"));
-        return moduleRepository.findByNameContainingIgnoreCase(nameText, pageable).stream()
+        return moduleRepository.findAllByDeletedAndNameContainingIgnoreCaseOrderByModifiedDateDesc(Boolean.FALSE, nameText, pageable).stream()
 //                .sorted(Comparator.comparing(Module::getModifiedDate).reversed())
                 .map(ModuleMapper::toModuleEntityDto).collect(Collectors.toList());
     }
@@ -108,6 +110,7 @@ public class ModuleService {
 //                .sorted(Comparator.comparing(Module::getModifiedDate).reversed())
                 .map(ModuleMapper::toModuleEntityDto).collect(Collectors.toList());
     }
+
 
     public List<Subject> getAllSubjectsById(Long moduleId) {
         return subjectRepository.findAllBySubjectModules_Id(moduleId);
@@ -127,46 +130,90 @@ public class ModuleService {
 
     }
 
-//    public Module addSubjectToModule(Long moduleId, Long subjectId) {
-//        var existingModule = moduleRepository.findById(moduleId)
-//                .orElseThrow(() -> new SchedulerValidationException("Module does not exist",
-//                        "id", "Module not found", moduleId.toString()));
-//
-//        var existingSubject = subjectRepository.findById(subjectId)
-//                .orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
-//                        "id", "Subject not found", subjectId.toString()));
-//
-//        Set<Subject> existingSubjectList = existingModule.getModulesSubjects();
-//        existingSubjectList.add(existingSubject);
-//        existingModule.setModulesSubjects(existingSubjectList);
-//
-//        return moduleRepository.save(existingModule);
-//    }
+    public List<ModuleEntityDto> getAllAvailablePagedModules(int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return moduleRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE, pageable).stream()
+                .map(ModuleMapper::toModuleEntityDto).collect(Collectors.toList());
+    }
 
-//    public Set<Subject> getAllSubjectsById (Long moduleId){
-//        return moduleRepository.findById(moduleId).get().getModulesSubjects();
-//    }
+    public List<ModuleEntityDto> getAllDeletedPagedModules(int page, int pageSize) {
 
-//    public boolean deleteSubjectFromModuleById(Long moduleId, Long subjectId) {
-//        var existingModule = moduleRepository.findById(moduleId)
-//                .orElseThrow(() -> new SchedulerValidationException("Module does not exist",
-//                        "id", "Module not found", moduleId.toString()));
-//
-//        var existingSubject = subjectRepository.findById(subjectId)
-//                .orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
-//                        "id", "Subject not found", subjectId.toString()));
-//
-//        Set<Subject> existingSubjectList = existingModule.getModulesSubjects();
-//        subjectRepository.deleteAll(existingSubjectList);
-//        existingModule.setModulesSubjects(existingSubjectList);
-//
-//        if (subjectRepository.existsById(subjectId)) {
-//            subjectRepository.deleteById(subjectId);
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        return moduleRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.TRUE, pageable).stream()
+                .map(ModuleMapper::toModuleEntityDto).collect(Collectors.toList());
+    }
+
+    public List<ModuleEntityDto> getAllAvailableModules() {
+        return moduleRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE).stream()
+                .map(ModuleMapper::toModuleEntityDto).collect(Collectors.toList());
+    }
+
+    public List<ModuleEntityDto> getAllDeletedModules() {
+        return moduleRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.TRUE).stream()
+                .map(ModuleMapper::toModuleEntityDto).collect(Collectors.toList());
+    }
+
+    public ModuleEntityDto restoreModule(Long moduleId) {
+
+        var existingModule = moduleRepository.findById(moduleId).orElseThrow(() -> new SchedulerValidationException("Module does not exist",
+                "id", "Module not found", moduleId.toString()));
+        existingModule.setDeleted(Boolean.FALSE);
+        moduleRepository.save(existingModule);
+        return toModuleEntityDto(existingModule);
+    }
+
+    public ModuleEntityDto deleteModule(Long moduleId) {
+
+        var existingModule = moduleRepository.findById(moduleId).orElseThrow(() -> new SchedulerValidationException("Module does not exist",
+                "id", "Module not found", moduleId.toString()));
+        existingModule.setDeleted(Boolean.TRUE);
+        moduleRepository.save(existingModule);
+        return toModuleEntityDto(existingModule);
+    }
+
+    public void addSubjectToModule(Long moduleId, Long subjectId) {
+        var existingModule = moduleRepository.findById(moduleId)
+                .orElseThrow(() -> new SchedulerValidationException("Module does not exist",
+                        "id", "Module not found", moduleId.toString()));
+
+        var existingSubject = subjectRepository.findById(subjectId)
+                .orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
+                        "id", "Subject not found", subjectId.toString()));
+
+        moduleRepository.insertModuleAndSubject(moduleId, subjectId);
+    }
+
+//    public boolean deleteSubjectInModuleById(Long moduleId, Long subjectId) {
+//        try {
+//            var existingModule = moduleRepository.findById(moduleId).get();
+//            existingModule.getSubjectTeachers().remove(subjectRepository.findById(subjectId).get());
+//            moduleRepository.save(existingModule);
 //            return true;
+//        } catch (EmptyResultDataAccessException exception) {
+//            return false;
 //        }
-//
-//        return false;
 //    }
+
+
+    public boolean deleteSubjectFromModuleById(Long moduleId, Long subjectId) {
+        var existingModule = moduleRepository.findById(moduleId)
+                .orElseThrow(() -> new SchedulerValidationException("Module does not exist",
+                        "id", "Module not found", moduleId.toString()));
+
+        var existingSubject = subjectRepository.findById(subjectId)
+                .orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
+                        "id", "Subject not found", subjectId.toString()));
+
+        moduleRepository.deleteModuleFromSubject(moduleId, subjectId);
+
+        if (subjectRepository.existsById(subjectId)) {
+            subjectRepository.deleteById(subjectId);
+            return true;
+        }
+
+        return false;
+    }
 }
 
 

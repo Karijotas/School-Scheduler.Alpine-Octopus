@@ -34,7 +34,7 @@ export function ViewModules() {
   const [pagecount, setPageCount] = useState();
 
   const fetchFilterModules = async () => {
-    fetch(`/api/v1/modules/page/name-filter/${nameText}?page=` + activePage)
+    fetch(`/api/v1/modules/page/name-filter/${nameText}`)
       .then((response) => response.json())
       .then((jsonRespone) => setModules(jsonRespone));
 
@@ -67,10 +67,10 @@ export function ViewModules() {
   };
 
   const removeModule = (id) => {
-    fetch("/api/v1/modules/" + id, {
-      method: "DELETE",
-      headers: JSON_HEADERS,
-    }).then(fetchModules);
+    fetch("/api/v1/modules/delete/" + id, {
+      method: "PATCH",      
+    }).then(fetchModules)
+    .then(setOpen(false));
   };
 
   useEffect(() => {
@@ -142,28 +142,26 @@ export function ViewModules() {
                         <Table.Cell collapsing>
                           <Button
                             href={'#/view/modules/edit/' + module.id}
-                            basic
-                            primary
+                            basic                            
                             compact
                             icon="eye"
                             title="Peržiūrėti"
                             onClick={() => setActive(module.id)}
                           ></Button>
                           <Button
-                            basic
-                            color="black"
+                            basic                            
                             compact
-                            title="Ištrinti"
-                            icon="trash alternate"
+                            title="Suarchyvuoti"
+                          icon="archive"
                             onClick={() => setOpen(module.id)}
                           ></Button>
 
                           <Confirm
                             open={open}
                             header="Dėmesio!"
-                            content="Ar tikrai norite ištrinti?"
-                            cancelButton="Grįžti atgal"
-                            confirmButton="Ištrinti"
+                            content="Ar tikrai norite perkelti į archyvą?"
+                          cancelButton="Grįžti atgal"
+                          confirmButton="Taip"
                             onCancel={() => setOpen(false)}
                             onConfirm={() => removeModule(open)}
                             size="small"

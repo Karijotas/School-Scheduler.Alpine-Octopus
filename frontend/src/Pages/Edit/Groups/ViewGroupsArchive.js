@@ -7,14 +7,14 @@ import {
   Segment,
   Table
 } from "semantic-ui-react";
-import MainMenu from '../../../Components/MainMenu';
-import { EditMenu } from '../../../Components/EditMenu';
+import MainMenu from "../../../Components/MainMenu";
+import {EditMenu} from '../../../Components/EditMenu';
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
 };
 
-export function ViewPrograms() {
+export function ViewGroupsArchive() {
   const [active, setActive] = useState();
   const [create, setCreate] = useState("");
   const [nameText, setNameText] = useState("");
@@ -25,7 +25,7 @@ export function ViewPrograms() {
   const [pagecount, setPageCount] = useState();
 
   const fetchFilterPrograms = async () => {
-    fetch(`/api/v1/programs/page/name-filter/${nameText}`)
+    fetch(`/api/v1/programs/page/starting-with/${nameText}?page=` + activePage)
       .then((response) => response.json())
       .then((jsonRespone) => setPrograms(jsonRespone));
   };
@@ -38,16 +38,16 @@ export function ViewPrograms() {
   };
 
   const fetchPrograms = async () => {
-    fetch(`/api/v1/programs/page?page=` + activePage)
+    fetch(`/api/v1/programs/archive/`)
       .then((response) => response.json())
       .then((jsonRespones) => setPrograms(jsonRespones));
   };
 
   const removeProgram = (id) => {
-    fetch("/api/v1/programs/delete/" + id, {
-      method: "PATCH", 
-      })    
-    .then(fetchPrograms)
+    fetch("/api/v1/programs/" + id, {
+      method: "DELETE",
+      headers: JSON_HEADERS,
+    }).then(fetchPrograms)
       .then(setOpen(false));
   };
 
@@ -75,28 +75,17 @@ export function ViewPrograms() {
         </Grid.Column>
 
         <Grid.Column textAlign='left' verticalAlign='top' width={13}>
-          <Segment id='segment' color='teal'>
+          <Segment id='segment' raised color='grey'>
 
             <div id="programs">
               <Input
                 value={nameText}
                 onChange={(e) => setNameText(e.target.value)}
-                placeholder="Filtruoti pagal pavadinimą"
+                placeholder="Ieškoti pagal programą"
               />
               {/* <Button onClick={fetchFilterPrograms}>Filtruoti</Button> */}
 
-              <Button
-                icon
-                labelPosition="left"                                
-                className="controls"
-                id='details'
-                as={NavLink}
-                exact to='/create/programs'>
-                <Icon name="database" />
-                Kurti naują programą
-              </Button>
-              <Divider horizontal hidden></Divider>
-
+              
               <Table selectable>
                 <Table.Header>
                   <Table.Row>
@@ -111,35 +100,15 @@ export function ViewPrograms() {
                     <Table.Row key={program.id}>
                       <Table.Cell>{program.name}</Table.Cell>
 
-                      <Table.Cell collapsing>
+                      <Table.Cell collapsing>                     
                         <Button
-                        id="icocolor"
-                          href={'#/view/programs/edit/' + program.id}
-                          basic                          
+                          basic
+                          color="black"
                           compact
-                          icon="eye"
-                          title="Peržiūrėti"
-                          onClick={() => setActive(program.id)}
-                        ></Button>
-                        <Button
-                        id="icocolor"
-                          basic                          
-                          compact
-                          title="Suarchyvuoti"
-                          icon="archive"
+                          title="Atstatyti"
+                          icon="undo"
                           onClick={() => setOpen(program.id)}
                         ></Button>
-
-                        <Confirm
-                          open={open}                          
-                          header="Dėmesio!"
-                          content="Ar tikrai norite perkelti į archyvą?"
-                          cancelButton="Grįžti atgal"
-                          confirmButton="Taip"
-                          onCancel={() => setOpen(false)}
-                          onConfirm={() => removeProgram(open)}
-                          size="small"
-                        />
                       </Table.Cell>
                     </Table.Row>
                   ))}

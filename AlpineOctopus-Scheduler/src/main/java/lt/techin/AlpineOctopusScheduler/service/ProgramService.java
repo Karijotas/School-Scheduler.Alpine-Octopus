@@ -13,6 +13,7 @@ import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Program;
 import lt.techin.AlpineOctopusScheduler.model.ProgramSubjectHours;
 import lt.techin.AlpineOctopusScheduler.model.ProgramSubjectHoursList;
+import lt.techin.AlpineOctopusScheduler.model.Subject;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -89,7 +90,7 @@ public class ProgramService {
     @Transactional(readOnly = true)
     public List<ProgramEntityDto> getPagedProgramsByNameContaining(String nameText, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        return programRepository.findByNameContainingIgnoreCase(nameText, pageable).stream()
+        return programRepository.findAllByDeletedAndNameContainingIgnoreCase(Boolean.FALSE, nameText, pageable).stream()
                 .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
@@ -110,6 +111,7 @@ public class ProgramService {
 
         return programRepository.save(existingProgram);
     }
+
 
     public ProgramSubjectHours updateProgramSubjectHours(Long id, ProgramSubjectHours programSubjectHours) {
         var existingProgramSubjectHours = programSubjectHoursRepository.findById(id)
@@ -213,25 +215,33 @@ public class ProgramService {
         return programSubjectHourListRepository.findAll();
     }
 
+
     public List<ProgramEntityDto> getAllAvailablePagedPrograms(int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return programRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE, pageable).stream()
+                .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
+    }
+
+    public List<ProgramEntityDto> getAllDeletedPagedPrograms(int page, int pageSize) {
 
         Pageable pageable = PageRequest.of(page, pageSize);
 
-        return programRepository.findAll(pageable).stream().filter(program -> program.getDeleted().equals(Boolean.FALSE))
+        return programRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.TRUE, pageable).stream()
                 .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
     public List<ProgramEntityDto> getAllAvailablePrograms() {
-        return programRepository.findAll().stream().filter(program -> program.getDeleted().equals(Boolean.FALSE))
+        return programRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE).stream()
                 .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
     public List<ProgramEntityDto> getAllDeletedPrograms() {
-        return programRepository.findAll().stream().filter(program -> program.getDeleted().equals(Boolean.TRUE))
+        return programRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.TRUE).stream()
                 .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
     public ProgramEntityDto restoreProgram(Long programId) {
+
         var existingProgram = programRepository.findById(programId).orElseThrow(() -> new SchedulerValidationException("Program does not exist",
                 "id", "Program not found", programId.toString()));
         existingProgram.setDeleted(Boolean.FALSE);
@@ -240,14 +250,18 @@ public class ProgramService {
     }
 
     public ProgramEntityDto deleteProgram(Long programId) {
+
         var existingProgram = programRepository.findById(programId).orElseThrow(() -> new SchedulerValidationException("Program does not exist",
                 "id", "Program not found", programId.toString()));
         existingProgram.setDeleted(Boolean.TRUE);
         programRepository.save(existingProgram);
         return toProgramEntityDto(existingProgram);
     }
+
+    public List<Subject> getFreeSubjects(Long programId) {
+        return subjectRepository.findAll();
+    }
 //    public boolean deleteAllSubjectsForCreate(){
-//
 //        return programSubjectHourListRepository.deleteAll();
 //    }
 }

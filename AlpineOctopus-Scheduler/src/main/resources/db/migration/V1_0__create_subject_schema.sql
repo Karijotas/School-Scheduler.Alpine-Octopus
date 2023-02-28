@@ -106,7 +106,7 @@ CREATE TABLE program
 (
     id            BIGINT AUTO_INCREMENT NOT NULL,
     name          VARCHAR(255),
-    description   VARCHAR(255),
+    description   VARCHAR(500),
     created_date  TIMESTAMP,
     modified_date TIMESTAMP,
     DELETED BOOLEAN,

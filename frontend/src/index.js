@@ -25,6 +25,13 @@ import { ViewTeachers } from './Pages/Edit/Teachers/ViewTeachers';
 import { CreateProgramPage } from './Pages/Edit/Programs/CreateProgramPage';
 import { EditModuleObject } from './Pages/Edit/Module/EditModuleObject';
 import { CreateModulePage } from './Pages/Edit/Module/CreateModulePage';
+import { ViewProgramsArchive } from './Pages/Edit/Programs/ViewProgramsArchive';
+import { ViewSubjectsArchive } from './Pages/Edit/Subjects/ViewSubjectsArchive';
+import { ViewTeachersArchive } from './Pages/Edit/Teachers/ViewTeachersArchive';
+import { ViewGroupsArchive } from './Pages/Edit/Groups/ViewGroupsArchive';
+import { ViewShiftsArchive } from './Pages/Edit/Shifts/ViewShiftsArchive';
+import { ViewRoomsArchive } from './Pages/Edit/Rooms/ViewRoomsArchive';
+import { ViewModulesArchive } from './Pages/Edit/Module/ViewModulesArchive';
 
 
 
@@ -76,6 +83,14 @@ root.render(
         <Route path='/view/modules/edit/:id' element={<EditModuleObject />} />
         <Route path='/create/modules' element={<CreateModulePage />} />
 
+        {/* Archive routes: */}
+        <Route path='/view/archives/subjects' element={<ViewSubjectsArchive />} />
+        <Route path='/view/archives/teachers' element={<ViewTeachersArchive />} />
+        <Route path='/view/archives/groups' element={<ViewGroupsArchive />} />
+        <Route path='/view/archives/shifts' element={<ViewShiftsArchive />} />
+        <Route path='/view/archives/rooms' element={<ViewRoomsArchive />} />
+        <Route path='/view/archives/programs' element={<ViewProgramsArchive />} />
+        <Route path='/view/archives/modules' element={<ViewModulesArchive />} />
 
       </Routes>
     </HashRouter>

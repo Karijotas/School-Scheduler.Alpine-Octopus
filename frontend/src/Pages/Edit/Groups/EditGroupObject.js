@@ -5,12 +5,9 @@ import { YEAR_OPTIONS } from '../../../Components/const';
 import { EditMenu } from '../../../Components/EditMenu';
 import MainMenu from '../../../Components/MainMenu';
 
-
-
 const JSON_HEADERS = {
     'Content-Type': 'application/json'
 };
-
 
 export function EditGroupObject() {
 

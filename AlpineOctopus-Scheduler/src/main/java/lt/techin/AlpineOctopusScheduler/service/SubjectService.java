@@ -89,11 +89,30 @@ public class SubjectService {
     @Transactional(readOnly = true)
     public List<SubjectEntityDto> getPagedSubjectsByModuleNameContaining(String nameText, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        return subjectRepository.findAllBySubjectModules_NameContainingIgnoreCase(nameText, pageable)
-                .stream()
+        return subjectRepository.findAllByDeletedAndNameContainingIgnoreCaseOrderByModifiedDateDesc(Boolean.FALSE, nameText, pageable).stream()
                 .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
     }
 
+//    @Transactional(readOnly = true)
+//    public List<SubjectEntityDto> getPagedSubjectsByModuleNameContaining(String nameText) {
+//        List<Module> modules = moduleRepository.findByNameContainingIgnoreCase(nameText).stream().collect(Collectors.toList());
+//        List<Subject> subjects = new ArrayList<>(subjectRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE).stream().toList());
+//        List<Subject> containingSubjects = new ArrayList<>();
+//        for (Module module : modules) {
+//            for (Subject subject : subjects) {
+//                if (subject.getSubjectModules().contains(module)) {
+//                    containingSubjects.add(subject);
+//                    subjects.remove(subject);
+//                }
+//            }
+//        }
+//        return containingSubjects.stream().map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
+//    }
+
+    @Transactional(readOnly = true)
+    public List<SubjectEntityDto> getPagedSubjectsByModuleNameContaining(String nameText) {
+        return subjectRepository.findDistinctByDeletedAndSubjectModules_NameContainingIgnoreCaseOrderByModifiedDateDesc(Boolean.FALSE, nameText).stream().map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
+    }
 
     @Transactional(readOnly = true)
     public List<SubjectEntityDto> getPagedSubjectsByModuleContaining(String nameText, int page, int pageSize) {
@@ -196,6 +215,47 @@ public class SubjectService {
 
     public Set<Module> getAllModulesById(Long subjectId) {
         return subjectRepository.findById(subjectId).get().getSubjectModules();
+
+    }
+
+    public List<SubjectEntityDto> getAllAvailablePagedSubjects(int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return subjectRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE, pageable).stream()
+                .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
+    }
+
+    public List<SubjectEntityDto> getAllDeletedPagedSubjects(int page, int pageSize) {
+
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        return subjectRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.TRUE, pageable).stream()
+                .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
+    }
+
+    public List<SubjectEntityDto> getAllAvailableSubjects() {
+        return subjectRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE).stream()
+                .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
+    }
+
+    public List<SubjectEntityDto> getAllDeletedSubjects() {
+        return subjectRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.TRUE).stream()
+                .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
+    }
+
+    public Subject restoreSubject(Long subjectId) {
+        var existingSubject = subjectRepository.findById(subjectId).orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
+                "id", "Subject not found", subjectId.toString()));
+        existingSubject.setDeleted(Boolean.FALSE);
+        subjectRepository.save(existingSubject);
+        return existingSubject;
+    }
+
+    public Subject deleteSubject(Long subjectId) {
+        var existingSubject = subjectRepository.findById(subjectId).orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
+                "id", "Subject not found", subjectId.toString()));
+        existingSubject.setDeleted(Boolean.TRUE);
+        subjectRepository.save(existingSubject);
+        return existingSubject;
     }
 
     public Set<Room> getAllRoomsById(Long subjectId) {
@@ -239,4 +299,5 @@ public class SubjectService {
             return false;
         }
     }
+
 }

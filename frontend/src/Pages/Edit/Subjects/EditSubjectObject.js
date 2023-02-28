@@ -103,7 +103,7 @@ export function EditSubjectObject() {
       .then((response) => response.json())
       .then(setTeachersInSubjects)
       .then(console.log(teachersInSubjects));
-  }, [params]);
+  }, [params]); 
 
   const updateSubjects = () => {
     fetch("/api/v1/subjects/" + params.id, {
@@ -119,7 +119,7 @@ export function EditSubjectObject() {
         }
       })
       .then(applyResult);
-  };
+  }; 
 
   const updateProperty = (property, event) => {
     setSubjects({
