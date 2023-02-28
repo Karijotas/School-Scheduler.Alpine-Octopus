@@ -43,26 +43,26 @@ export function EditProgramObject() {
 
 
   useEffect(() => {
-    fetch("http://192.168.0.129:8081/scheduler/api/v1/programs/" + params.id)
+    fetch("http://localhost:8081/scheduler/api/v1/programs/" + params.id)
       .then((response) => response.json())
       .then(setPrograms);
   }, []);
 
   useEffect(() => {
-    fetch(`http://192.168.0.129:8081/scheduler/api/v1/programs/${params.id}/subjects`)
+    fetch(`http://localhost:8081/scheduler/api/v1/programs/${params.id}/subjects`)
       .then((response) => response.json())
       .then(setSubjectsInProgram)
       .then(console.log(subjectsInProgram));
   }, [params]);
 
   useEffect(() => {
-    fetch(`http://192.168.0.129:8081/scheduler/api/v1/programs/${params.id}/subjects/hours`)
+    fetch(`http://localhost:8081/scheduler/api/v1/programs/${params.id}/subjects/hours`)
       .then((response) => response.json())
       .then(setTotalHours);
   }, [params]);
 
   const removeSubject = (programId, subjectId, hours) => {
-    fetch(`http://192.168.0.129:8081/scheduler/api/v1/programs/${programId}/subjects/${subjectId}/${hours}`, {
+    fetch(`http://localhost:8081/scheduler/api/v1/programs/${programId}/subjects/${subjectId}/${hours}`, {
       method: "DELETE",
       headers: JSON_HEADERS,
     }).then(fetch(`/api/v1/programs/${params.id}/subjects/hours`)
@@ -72,7 +72,7 @@ export function EditProgramObject() {
   };
 
   const addSubjectAndHours = (programId, subjectId, hours) => {
-    fetch(`http://192.168.0.129:8081/scheduler/api/v1/programs/${programId}/subjects/${subjectId}/${hours}/newSubjectsWithHours`, {
+    fetch(`http://localhost:8081/scheduler/api/v1/programs/${programId}/subjects/${subjectId}/${hours}/newSubjectsWithHours`, {
       method: "POST",
       header: JSON_HEADERS,
       body: JSON.stringify({
@@ -80,14 +80,14 @@ export function EditProgramObject() {
         subject,
         subjectHours,
       }),
-    }).then(fetch(`http://192.168.0.129:8081/scheduler//api/v1/programs/${params.id}/subjects/hours`)
+    }).then(fetch(`http://localhost:8081/scheduler//api/v1/programs/${params.id}/subjects/hours`)
       .then((response) => response.json())
       .then(setTotalHours));
   };
 
 
   useEffect(() => {
-    fetch("http://192.168.0.129:8081/scheduler/api/v1/subjects/")
+    fetch("http://localhost:8081/scheduler/api/v1/subjects/")
       .then((response) => response.json())
       .then((data) =>
         setSubjects(

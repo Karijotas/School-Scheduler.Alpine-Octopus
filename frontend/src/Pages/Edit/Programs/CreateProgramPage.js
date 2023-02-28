@@ -45,7 +45,7 @@ export function CreateProgramPage() {
   };
 
   const createProgram = () => {
-    fetch("http://192.168.0.129:8081/scheduler/api/v1/programs", {
+    fetch("http://localhost:8081/scheduler/api/v1/programs", {
       method: "POST",
       headers: JSON_HEADERS,
       body: JSON.stringify({

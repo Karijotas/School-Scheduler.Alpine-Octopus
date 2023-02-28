@@ -27,13 +27,13 @@ export function EditModuleObject() {
   });
 
   const fetchSubjectsInModule = async () => {
-    fetch(`http://192.168.0.129:8081/scheduler/api/v1/modules/${params.id}/subjects`)
+    fetch(`http://localhost:8081/scheduler/api/v1/modules/${params.id}/subjects`)
       .then((response) => response.json())
       .then((jsonResponse) => setSubjectsInModule(jsonResponse));
   };
 
   useEffect(() => {
-    fetch("http://192.168.0.129:8081/scheduler/api/v1/modules/" + params.id)
+    fetch("http://localhost:8081/scheduler/api/v1/modules/" + params.id)
       .then((response) => response.json())
       .then(setModules);
   }, [params]);
@@ -43,7 +43,7 @@ export function EditModuleObject() {
   };
 
   const updateModules = () => {
-    fetch("http://192.168.0.129:8081/scheduler/api/v1/modules/update/" + params.id, {
+    fetch("http://localhost:8081/scheduler/api/v1/modules/update/" + params.id, {
       method: "PUT",
       headers: JSON_HEADERS,
       body: JSON.stringify(modules),

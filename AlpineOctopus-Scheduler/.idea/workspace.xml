@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="be4542e8-401c-4b51-a94d-0543b0658664" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/ApiExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/ApiExceptionHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/GroupsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/GroupsController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/ModuleController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/ModuleController.java" afterDir="false" />
@@ -14,6 +13,15 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/RoomController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/RoomController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/SubjectController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/SubjectController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/TeacherController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/TeacherController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/model/Groups.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/model/Groups.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/public/asset-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/public/asset-manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/public/static/js/main.4782a8f2.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/public/static/js/main.4782a8f2.js.LICENSE.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/public/static/js/main.4782a8f2.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/public/static/js/main.d923ca9f.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/public/static/js/main.d923ca9f.js.LICENSE.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/public/static/js/main.d923ca9f.js.map" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Groups/CreateGroupPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Groups/CreateGroupPage.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Groups/EditGroupObject.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Groups/EditGroupObject.js" afterDir="false" />
@@ -52,6 +60,11 @@
     <option name="myRunOnSave" value="true" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="unitT" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="JpbToolWindowState">
@@ -218,15 +231,21 @@
     <select />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$GroupsControllerTest.ic" NAME="GroupsControllerTest Coverage Results" MODIFIED="1677498527107" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>lt.techin.AlpineOctopusScheduler.api.*</FILTER>
+    </SUITE>
     <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$ProgramControllerTest.ic" NAME="ProgramControllerTest Coverage Results" MODIFIED="1675964990724" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>lt.techin.AlpineOctopusScheduler.api.*</FILTER>
     </SUITE>
     <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$All_in_AlpineOctopus_Scheduler__2_.ic" NAME="All in AlpineOctopus-Scheduler (2) Coverage Results" MODIFIED="1675965957052" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$All_in_AlpineOctopus_Scheduler__1_.ic" NAME="All in AlpineOctopus-Scheduler (1) Coverage Results" MODIFIED="1675965757179" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$lt_techin_AlpineOctopusScheduler_in_AlpineOctopus_Scheduler.ic" NAME="lt.techin.AlpineOctopusScheduler in AlpineOctopus-Scheduler Coverage Results" MODIFIED="1677496455271" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>lt.techin.AlpineOctopusScheduler.*</FILTER>
+    </SUITE>
     <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$ProgramServiceTest.ic" NAME="ProgramServiceTest Coverage Results" MODIFIED="1675965734640" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>lt.techin.AlpineOctopusScheduler.service.*</FILTER>
     </SUITE>
     <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$All_in_AlpineOctopus_Scheduler__3_.ic" NAME="All in AlpineOctopus-Scheduler (3) Coverage Results" MODIFIED="1676046660569" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
-    <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$All_in_AlpineOctopus_Scheduler.ic" NAME="All in AlpineOctopus-Scheduler Coverage Results" MODIFIED="1676376250071" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$All_in_AlpineOctopus_Scheduler.ic" NAME="All in AlpineOctopus-Scheduler Coverage Results" MODIFIED="1677501511237" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

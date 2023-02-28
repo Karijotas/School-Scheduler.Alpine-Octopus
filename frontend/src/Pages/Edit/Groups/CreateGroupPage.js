@@ -53,7 +53,7 @@ export function CreateGroupPage() {
   };
 
   const createGroup = () => {
-    fetch('http://192.168.0.129:8081/scheduler/api/v1/groups?programId=' + programId, {
+    fetch('http://localhost:8081/scheduler/api/v1/groups?programId=' + programId, {
       method: 'POST',
       headers: JSON_HEADERS,
       body: JSON.stringify({
@@ -66,7 +66,7 @@ export function CreateGroupPage() {
 
   };
   useEffect(() => {
-    fetch("http://192.168.0.129:8081/scheduler/api/v1/programs/")
+    fetch("http://localhost:8081/scheduler/api/v1/programs/")
       .then((response) => response.json())
       .then((data) =>
         setPrograms(

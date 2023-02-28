@@ -60,13 +60,13 @@ export function ViewSubjects() {
   //     .then((jsonRespones) => setModules(jsonRespones));
   // };
   const fetchSubjects = async () => {
-    fetch(`http://192.168.0.129:8081/scheduler/api/v1/subjects/page?page=` + activePage)
+    fetch(`http://localhost:8081/scheduler/api/v1/subjects/page?page=` + activePage)
       .then((response) => response.json())
       .then((jsonRespones) => setSubjects(jsonRespones));
   };
 
   const removeSubject = (id) => {
-    fetch("http://192.168.0.129:8081/scheduler/api/v1/subjects/" + id, {
+    fetch("http://localhost:8081/scheduler/api/v1/subjects/" + id, {
       method: "DELETE",
       headers: JSON_HEADERS,
     }).then(fetchSubjects);
