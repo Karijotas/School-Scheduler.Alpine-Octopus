@@ -25,18 +25,15 @@ export function ViewSubjects() {
   const [create, setCreate] = useState("");
   const [nameText, setNameText] = useState("");
   const [subjects, setSubjects] = useState([]);
-  const [modules, setModules] = useState([]);
-  const [subjectId, setSubjectId] = useState("");
 
   const [subjectsforPaging, setSubjectsForPaging] = useState([]);
 
   const [activePage, setActivePage] = useState(0);
   const [pagecount, setPageCount] = useState();
-  const [modulesInSubjects, setModulesInSubjects] = useState([]);
   const [moduleText, setModuleText] = useState("");
 
   const fetchSubjectsByModules = async () => {
-    fetch(`/api/v1/subjects/page/module-filter/${moduleText}?page=` + activePage)
+    fetch(`/api/v1/subjects/page/module-filter/${moduleText}`)
       .then((response) => response.json())
       .then((jsonResponse) => setSubjects(jsonResponse));
   };
@@ -66,10 +63,10 @@ export function ViewSubjects() {
   };
 
   const removeSubject = (id) => {
-    fetch("/api/v1/subjects/" + id, {
-      method: "DELETE",
-      headers: JSON_HEADERS,
-    }).then(fetchSubjects);
+    fetch("/api/v1/subjects/delete/" + id, {
+      method: "PATCH",      
+    }).then(fetchSubjects)
+    .then(setOpen(false));
   };
 
   // useEffect(() => {
@@ -104,7 +101,7 @@ useEffect(() => {
         </Grid.Column>
 
         <Grid.Column stretched textAlign="left" verticalAlign="top" width={13}>
-          <Segment id="segment" raised color="teal">
+          <Segment id="segment" color="teal">
             {create && (
               <div>
                 <CreateSubjecPage />
@@ -129,8 +126,8 @@ useEffect(() => {
                 <Button
                   icon
                   labelPosition="left"
-                  primary
                   className="controls"
+                  id='details'                                    
                   as={NavLink}
                   exact
                   to="/create/subjects"
@@ -151,14 +148,14 @@ useEffect(() => {
                   </Table.Header>
 
                   <Table.Body>
-                    {subjects.map((subject) => (
-                      <Table.Row key={subject.id}>
+                    {subjects.map((subject, index) => (
+                      <Table.Row key={index}>
                         <Table.Cell>{subject.name}</Table.Cell>
                         <Table.Cell>
                           <List bulleted>
                             {console.log(subject.subjectModules)}
-                            {subject.subjectModules.map((module) => (
-                              <List.Content key={module.id}>
+                            {subject.subjectModules.map((module, index) => (
+                              <List.Content key={index}>
                                 <List.Item>{module.name}</List.Item>
                               </List.Content>
                             ))}
@@ -167,8 +164,7 @@ useEffect(() => {
                         <Table.Cell>{subject.modifiedDate}</Table.Cell>
                         <Table.Cell collapsing>
                           <Button
-                            basic
-                            primary
+                            basic                            
                             compact
                             icon="eye"
                             title="Peržiūrėti"
@@ -176,20 +172,19 @@ useEffect(() => {
                             onClick={() => setActive(subject.id)}
                           ></Button>
                           <Button
-                            basic
-                            color="black"
+                            basic                            
                             compact
                             title="Ištrinti"
-                            icon="trash alternate"
+                            icon="archive"
                             onClick={() => setOpen(subject.id)}
                           ></Button>
 
                           <Confirm
                             open={open}
                             header="Dėmesio!"
-                            content="Ar tikrai norite ištrinti?"
+                            content="Ar tikrai norite perkelti į archyvą?"
                             cancelButton="Grįžti atgal"
-                            confirmButton="Ištrinti"
+                            confirmButton="Taip"
                             onCancel={() => setOpen(false)}
                             onConfirm={() => removeSubject(open)}
                             size="small"

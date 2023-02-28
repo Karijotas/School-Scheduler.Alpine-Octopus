@@ -104,6 +104,7 @@ export function CreateProgramPage() {
                     Atgal
                   </Button>
                   <Button
+                   id='details'
                     type="submit"
                     className="controls"
                     primary
