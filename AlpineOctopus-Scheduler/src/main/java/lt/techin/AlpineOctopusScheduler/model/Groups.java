@@ -25,8 +25,6 @@ public class Groups {
     private String name;
     @NotNull
     private Integer schoolYear;
-    @NotNull
-    @Size(min = 1, max = 200)
     private Integer studentAmount;
     @Valid
     @ManyToOne
