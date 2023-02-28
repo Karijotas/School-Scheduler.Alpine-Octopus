@@ -165,8 +165,8 @@ export function ViewTeachers() {
                         </Table.Cell>
                         <Table.Cell collapsing>
                           <Button
+                          id="icocolor"
                             basic
-                            primary
                             compact
                             icon="eye"
                             title="Peržiūrėti"
@@ -174,8 +174,8 @@ export function ViewTeachers() {
                             onClick={() => setActive(teacher.id)}
                           ></Button>
                           <Button
+                          id="icocolor"
                             basic
-                            color="black"
                             compact
                             title="Ištrinti"
                             icon="trash alternate"

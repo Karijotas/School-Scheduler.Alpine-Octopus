@@ -99,6 +99,7 @@ export function ViewShifts() {
                   className="controls"
                   as={NavLink}
                   exact
+                  id='details'
                   to="/create/shifts"
                 >
                   <Icon name="database" />
@@ -123,8 +124,8 @@ export function ViewShifts() {
                         <Table.Cell>{shift.ends}</Table.Cell>
                         <Table.Cell collapsing>
                         <Button
+                        id="icocolor"
                             basic
-                            primary
                             compact
                             icon="eye"
                             title="Peržiūrėti"
@@ -132,8 +133,8 @@ export function ViewShifts() {
                             onClick={() => setActive(shift.id)}
                           ></Button>
                           <Button
+                          id="icocolor"
                             basic
-                            color="black"
                             compact
                             title="Ištrinti"
                             icon="trash alternate"

@@ -154,12 +154,12 @@ export function EditModuleObject() {
                   </Table.Body>
                 </Table>
 
-                <Grid columns={2} divided>
+                <Grid columns={3} divided>
                   <Grid.Column>
-                    <Table width={6}>
+                    <Table width={4}>
                       <Table.Header>
                         <Table.Row>
-                          <Table.HeaderCell width={6}>
+                          <Table.HeaderCell width={4}>
                             Dalykai:
                           </Table.HeaderCell>
                         </Table.Row>

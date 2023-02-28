@@ -164,6 +164,7 @@ useEffect(() => {
                         <Table.Cell>{subject.modifiedDate}</Table.Cell>
                         <Table.Cell collapsing>
                           <Button
+                          id="icocolor"
                             basic                            
                             compact
                             icon="eye"
@@ -172,6 +173,7 @@ useEffect(() => {
                             onClick={() => setActive(subject.id)}
                           ></Button>
                           <Button
+                          id="icocolor"
                             basic                            
                             compact
                             title="Ištrinti"

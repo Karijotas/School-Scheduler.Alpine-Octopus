@@ -267,11 +267,10 @@ export function EditSubjectObject() {
           <Segment raised color="teal">
             {active && !hide && (
               <div>
-                <Table celled color="violet">
+                <Table celled>
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Dalyko pavadinimas</Table.HeaderCell>
-                      <Table.HeaderCell>Aprašymas</Table.HeaderCell>
                       <Table.HeaderCell>
                         Paskutinis atnaujinimas:
                       </Table.HeaderCell>
@@ -282,14 +281,27 @@ export function EditSubjectObject() {
                   <Table.Body>
                     <Table.Row>
                       <Table.Cell>{subjects.name}</Table.Cell>
-                      <Table.Cell>{subjects.description}</Table.Cell>
                       <Table.Cell collapsing>
                         {" "}
                         {subjects.modifiedDate}{" "}
                       </Table.Cell>
                       <Table.Cell collapsing>
-                        <Button onClick={editThis}>Redaguoti</Button>
+                        <Button id='details' onClick={editThis}>Redaguoti</Button>
                       </Table.Cell>
+                    </Table.Row>
+                  </Table.Body>
+                </Table>
+                <Divider hidden />
+                <Table celled>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>Aprašymas</Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
+
+                  <Table.Body>
+                    <Table.Row>
+                      <Table.Cell>{subjects.description}</Table.Cell>
                     </Table.Row>
                   </Table.Body>
                 </Table>
