@@ -22,7 +22,7 @@ public class Subject {
     @NotBlank(message = "Negali buti tuscias")
     @Size(min = 1, max = 40)
     private String name;
-    @Size(max = 100)
+    @Size(max = 500)
     private String description;
 
     private Boolean deleted = Boolean.FALSE;
@@ -45,11 +45,7 @@ public class Subject {
         modifiedDate = LocalDateTime.now();
     }
 
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            })
+    @ManyToMany(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinTable(
             name = "modules_subjects",

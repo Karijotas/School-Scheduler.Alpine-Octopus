@@ -20,7 +20,6 @@ export function CreateRoom() {
   //Validation
   const [nameDirty, setNameDirty] = useState(false);
   const [buildingDirty, setBuildingDirty] = useState(false);
-  const [descriptionDirty, setDescriptionDirty] = useState(false);
   const [nameError, setNameError] = useState("The name field is required!")
   const [buildingError, setBuildingError] = useState("The building field is required!")
   const [descriptionError, setDescriptionError] = useState("")

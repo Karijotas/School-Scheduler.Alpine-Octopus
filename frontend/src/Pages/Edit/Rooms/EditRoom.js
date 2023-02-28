@@ -28,13 +28,69 @@ export function EditRoom() {
         modifiedDate: '',
     });
 
+    const [name, setName] = useState('');
+    const [building, setBuilding] = useState('');
+    const [nameError, setNameError] = useState("")
+    const [buildingError, setBuildingError] = useState("")
+    const [formValid, setFormValid] = useState(false)
+
+
+    useEffect(() => {
+        if(nameError || buildingError) {
+          setFormValid(false)
+        } else {
+          setFormValid(true)
+        }
+      }, [nameError, buildingError])
+
+    
+
+    const handleNameInputChange = (e) => {
+        rooms.name = e.target.value
+        const inputValue = e.target.value;
+        setName(inputValue);
+        // perform validation on input change
+        validateNameInput(inputValue);
+      };
+      const handleBuildingInputChange = (e) => {
+        rooms.building = e.target.value
+        const inputValue = e.target.value;
+        setBuilding(inputValue);
+        // perform validation on input change
+        validateBuildingInput(inputValue);
+      };
+    
+      const validateNameInput = (value) => {
+        // perform validation
+        if (value.length <2 || value.length > 40) {
+            setNameError("Size must be between 2 and 40 characters!")
+            if(!value){
+                setNameError("The name field is required!")
+              } 
+        } else {
+            setNameError("")
+        }
+      };
+
+      const validateBuildingInput = (value) => {
+        // perform validation
+        if (value.length <2 || value.length > 40) {
+            setBuildingError("Size must be between 2 and 40 characters!")
+            if(!value){
+                setBuildingError("The building field is required!")
+              } 
+        } else {
+            setBuildingError("")
+        }
+      };
+
+
+
     useEffect(() => {
         fetch('/api/v1/rooms/' + params.id)
             .then(response => response.json())
             .then(setRooms);
     }, []);
-
-
 
 
     const applyResult = () => {
@@ -131,9 +187,9 @@ export function EditRoom() {
 
                             <Table.Body>
                                 <Table.Row  >
-                                    <Table.Cell collapsing><Input value={rooms.name} onChange={(e) => updateProperty('name', e)} />
+                                    <Table.Cell collapsing><Input value={rooms.name} onChange={(e) => handleNameInputChange(e)} />
                                     </Table.Cell>
-                                    <Table.Cell collapsing><Input value={rooms.building} onChange={(e) => updateProperty('building', e)} />
+                                    <Table.Cell collapsing><Input value={rooms.building} onChange={(e) => handleBuildingInputChange(e)} />
                                     </Table.Cell>
                                     <Table.Cell collapsing><Input value={rooms.description} onChange={(e) => updateProperty('description', e)} />
                                     </Table.Cell>
@@ -141,7 +197,7 @@ export function EditRoom() {
 
                                     <Table.Cell collapsing >
                                         <Button onClick={() => setActive(true)}>Atšaukti</Button>
-                                        <Button primary onClick={updateRooms}>Atnaujinti</Button>
+                                        <Button disabled={!formValid} primary onClick={updateRooms}>Atnaujinti</Button>
                                     </Table.Cell>
 
 
@@ -149,6 +205,9 @@ export function EditRoom() {
                                 </Table.Row>
 
                             </ Table.Body >
+                            {(nameError) && <div style={{color: "red"}}>{nameError}</div>}
+                            {(buildingError) && <div style={{color: "red"}}>{buildingError}</div>}
+                            
 
                         </Table>
 

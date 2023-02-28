@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -92,16 +93,19 @@ public class ModuleService {
 
     @Transactional(readOnly = true)
     public List<ModuleEntityDto> getPagedModulesByNameContaining(String nameText, int page, int pageSize) {
-        Pageable pageable = PageRequest.of(page, pageSize);
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.by("modifiedDate"));
         return moduleRepository.findByNameContainingIgnoreCase(nameText, pageable).stream()
+//                .sorted(Comparator.comparing(Module::getModifiedDate).reversed())
                 .map(ModuleMapper::toModuleEntityDto).collect(Collectors.toList());
     }
 
     public List<ModuleEntityDto> getPagedAllModules(int page, int pageSize) {
 
-        Pageable pageable = PageRequest.of(page, pageSize);
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.by("modifiedDate"));
 
-        return moduleRepository.findAll(pageable).stream().map(ModuleMapper::toModuleEntityDto).collect(Collectors.toList());
+        return moduleRepository.findAll(pageable).stream()
+//                .sorted(Comparator.comparing(Module::getModifiedDate).reversed())
+                .map(ModuleMapper::toModuleEntityDto).collect(Collectors.toList());
     }
 
 //    public Module addSubjectToModule(Long moduleId, Long subjectId) {

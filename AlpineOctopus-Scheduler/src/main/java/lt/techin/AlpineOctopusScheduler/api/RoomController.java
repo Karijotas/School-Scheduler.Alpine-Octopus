@@ -98,18 +98,14 @@ public class RoomController {
     @GetMapping(path = "page/name-filter/{nameText}")
     @ApiOperation(value = "Get Paged Programs starting with", notes = "Returns list of Programs starting with passed String")
     @ResponseBody
-    public List<RoomEntityDto> getPagedRoomsByNameContaining(@PathVariable String nameText,
-                                                             @RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                                             @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        return roomService.getPagedRoomsByNameContaining(nameText, page, pageSize);
+    public List<RoomEntityDto> getPagedRoomsByNameContaining(@PathVariable String nameText) {
+        return roomService.getPagedRoomsByNameContaining(nameText);
     }
 
     @GetMapping(path = "page/building-filter/{buildingText}")
     @ApiOperation(value = "Get Paged Programs starting with", notes = "Returns list of Programs starting with passed String")
     @ResponseBody
-    public List<RoomEntityDto> getPagedBuildingsByNameContaining(@PathVariable String buildingText,
-                                                                 @RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                                                 @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        return roomService.getPagedBuildingsByNameContaining(buildingText, page, pageSize);
+    public List<RoomEntityDto> getPagedBuildingsByNameContaining(@PathVariable String buildingText) {
+        return roomService.getPagedBuildingsByNameContaining(buildingText);
     }
 }

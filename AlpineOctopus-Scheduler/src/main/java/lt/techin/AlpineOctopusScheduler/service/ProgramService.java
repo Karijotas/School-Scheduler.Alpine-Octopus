@@ -64,14 +64,16 @@ public class ProgramService {
     }
 
     public List<ProgramEntityDto> getAllPrograms() {
-        return programRepository.findAll().stream().map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
+        return programRepository.findAll().stream()
+                .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
     public List<ProgramEntityDto> getPagedAllPrograms(int page, int pageSize) {
 
         Pageable pageable = PageRequest.of(page, pageSize);
 
-        return programRepository.findAll(pageable).stream().map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
+        return programRepository.findAll(pageable).stream()
+                .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
     public Optional<Program> getById(Long id) {
@@ -87,7 +89,7 @@ public class ProgramService {
     @Transactional(readOnly = true)
     public List<ProgramEntityDto> getPagedProgramsByNameContaining(String nameText, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        return programRepository.findByNameContainingIgnoreCase(nameText, pageable).stream()
+        return programRepository.findAllByDeletedAndNameContainingIgnoreCase(Boolean.FALSE, nameText, pageable).stream()
                 .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
@@ -108,6 +110,8 @@ public class ProgramService {
 
         return programRepository.save(existingProgram);
     }
+
+
 
     public ProgramSubjectHours updateProgramSubjectHours(Long id, ProgramSubjectHours programSubjectHours) {
         var existingProgramSubjectHours = programSubjectHoursRepository.findById(id)
@@ -211,25 +215,32 @@ public class ProgramService {
         return programSubjectHourListRepository.findAll();
     }
 
-    public List<ProgramEntityDto> getAllAvailablePagedPrograms(int page, int pageSize) {
+
+    public List<ProgramEntityDto> getAllAvailablePagedPrograms(int page, int pageSize){
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return programRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE, pageable).stream()
+                .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
+    }
+    public List<ProgramEntityDto> getAllDeletedPagedPrograms(int page, int pageSize) {
 
         Pageable pageable = PageRequest.of(page, pageSize);
 
-        return programRepository.findAll(pageable).stream().filter(program -> program.getDeleted().equals(Boolean.FALSE))
+        return programRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.TRUE, pageable).stream()
                 .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
-    public List<ProgramEntityDto> getAllAvailablePrograms() {
-        return programRepository.findAll().stream().filter(program -> program.getDeleted().equals(Boolean.FALSE))
+    public List<ProgramEntityDto> getAllAvailablePrograms(){
+        return programRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE).stream()
                 .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
-    public List<ProgramEntityDto> getAllDeletedPrograms() {
-        return programRepository.findAll().stream().filter(program -> program.getDeleted().equals(Boolean.TRUE))
+    public List<ProgramEntityDto> getAllDeletedPrograms(){
+        return programRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.TRUE).stream()
                 .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
     public ProgramEntityDto restoreProgram(Long programId) {
+
         var existingProgram = programRepository.findById(programId).orElseThrow(() -> new SchedulerValidationException("Program does not exist",
                 "id", "Program not found", programId.toString()));
         existingProgram.setDeleted(Boolean.FALSE);
@@ -238,6 +249,7 @@ public class ProgramService {
     }
 
     public ProgramEntityDto deleteProgram(Long programId) {
+
         var existingProgram = programRepository.findById(programId).orElseThrow(() -> new SchedulerValidationException("Program does not exist",
                 "id", "Program not found", programId.toString()));
         existingProgram.setDeleted(Boolean.TRUE);

@@ -20,7 +20,7 @@ public class Module {
     @NotBlank(message = "Negali buti tuscias")
     @Size(min = 1, max = 40)
     private String name;
-    @Size(max = 100)
+    @Size(min = 1, max = 100)
     private String description;
 
     private Boolean deleted = Boolean.FALSE;

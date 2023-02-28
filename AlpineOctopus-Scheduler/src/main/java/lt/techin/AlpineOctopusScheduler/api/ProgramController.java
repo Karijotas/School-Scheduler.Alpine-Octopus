@@ -13,6 +13,8 @@ import lt.techin.AlpineOctopusScheduler.model.ProgramSubjectHours;
 import lt.techin.AlpineOctopusScheduler.service.ProgramService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -59,21 +61,32 @@ public class ProgramController {
         return programService.getAllAvailablePrograms();
     }
 
+
     @GetMapping(path = "/archive/", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public List<ProgramEntityDto> getDeletedPrograms() {
         return programService.getAllDeletedPrograms();
     }
 
+
     @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public List<ProgramEntityDto> getPagedAvailablePrograms(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
                                                             @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
 
+        Pageable pageable = PageRequest.of(page, pageSize);
         return programService.getAllAvailablePagedPrograms(page, pageSize);
     }
 
-    @GetMapping(path = "/page/all/", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(path = "/archive/page", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<ProgramEntityDto> getPagedDeletedPrograms(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                          @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+
+        return programService.getAllDeletedPagedPrograms(page, pageSize);
+    }
+
+    @GetMapping(path = "/page/all", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
 
     public List<ProgramEntityDto> getPagedAllPrograms(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
@@ -125,23 +138,23 @@ public class ProgramController {
                 .map(ProgramSubjectHours::getSubjectHours).reduce(0, Integer::sum);
     }
 
-    @DeleteMapping("/{programId}")
-    public ResponseEntity<Void> deleteProgram(@PathVariable Long programId) {
-        logger.info("Attempt to delete Program by id: {}", programId);
-        List<ProgramSubjectHours> pshList = programSubjectHoursRepository.findAll().stream().filter(psh -> psh.getProgram()
-                .getId().equals(programId)).collect(toList());
-        if (!pshList.isEmpty()) {
-            for (ProgramSubjectHours psh : pshList) {
-                programSubjectHoursRepository.deleteById(psh.getId());
-            }
-        }
-        boolean deleted = programService.deleteById(programId);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+//    @DeleteMapping("/{programId}")
+//    public ResponseEntity<Void> deleteProgram(@PathVariable Long programId) {
+//        logger.info("Attempt to delete Program by id: {}", programId);
+//        List<ProgramSubjectHours> pshList = programSubjectHoursRepository.findAll().stream().filter(psh -> psh.getProgram()
+//                .getId().equals(programId)).collect(toList());
+//        if (!pshList.isEmpty()) {
+//            for (ProgramSubjectHours psh : pshList) {
+//                programSubjectHoursRepository.deleteById(psh.getId());
+//            }
+//        }
+//        boolean deleted = programService.deleteById(programId);
+//        if (deleted) {
+//            return ResponseEntity.noContent().build();
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 
     @DeleteMapping("/programsSubjects/{programSubjectId}")
     public ResponseEntity<Void> deleteProgramSubjectById(@PathVariable Long programSubjectId) {
@@ -178,12 +191,21 @@ public class ProgramController {
 
     @PatchMapping("/{programId}")
     public ResponseEntity<ProgramDto> updateProgram(@PathVariable Long programId, @Valid @RequestBody ProgramDto programDto) {
-        if (programService.programNameIsUnique(toProgram(programDto))) {
-            var updatedProgram = programService.update(programId, toProgram(programDto));
-            return ok(toProgramDto(updatedProgram));
-        } else {
-            throw new SchedulerValidationException("Program already exists", "Program name", "Already exists", programDto.getName());
-        }
+
+        var updatedProgram = programService.update(programId, toProgram(programDto));
+        return ok(toProgramDto(updatedProgram));
+    }
+
+    @PatchMapping("/delete/{programId}")
+    public ResponseEntity<ProgramEntityDto> removeProgram(@PathVariable Long programId) {
+        var updatedProgram = programService.deleteProgram(programId);
+        return ok(updatedProgram);
+    }
+
+    @PatchMapping("/restore/{programId}")
+    public ResponseEntity<ProgramEntityDto> restoreProgram(@PathVariable Long programId) {
+        var updatedProgram = programService.restoreProgram(programId);
+        return ok(updatedProgram);
     }
 
     @PatchMapping("/programSubjects/{programSubjectId}")

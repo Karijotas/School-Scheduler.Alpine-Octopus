@@ -13,7 +13,7 @@ spring:
     hibernate:
       ddl-auto: none
 
-    #      ddl-auto: drop-and-create
+#      ddl-auto: drop-and-create
 
 
     generate-ddl: false
@@ -61,7 +61,7 @@ logging:
           sql:
             BasicBinder: DEBUG
 Server:
-  Port: 8083
+  Port: 8080
 
 
 

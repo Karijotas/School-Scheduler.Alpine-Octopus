@@ -1,7 +1,8 @@
 package lt.techin.AlpineOctopusScheduler.service;
 
-
+import lt.techin.AlpineOctopusScheduler.dao.ProgramRepository;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ModuleMapper;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper;
 import lt.techin.AlpineOctopusScheduler.dao.*;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
@@ -15,9 +16,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -68,10 +69,10 @@ public class SubjectService {
     public List<SubjectEntityDto> getPagedAllSubjects(int page, int pageSize) {
 
         Pageable pageable = PageRequest.of(page, pageSize);
-
-        return subjectRepository.findAll(pageable).stream().map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
+        return subjectRepository.findAll(pageable).stream()
+//                .sorted(Comparator.comparing(Subject::getModifiedDate).reversed())
+                .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
     }
-
 
     public Optional<Subject> getById(Long id) {
         return subjectRepository.findById(id);
@@ -82,6 +83,40 @@ public class SubjectService {
     public List<SubjectEntityDto> getPagedSubjectsByNameContaining(String nameText, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
         return subjectRepository.findByNameContainingIgnoreCase(nameText, pageable).stream()
+//                .sorted(Comparator.comparing(Subject::getModifiedDate).reversed())
+                .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<SubjectEntityDto> getPagedSubjectsByModuleNameContaining(String nameText, int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return subjectRepository.findAllBySubjectModules_NameContainingIgnoreCase(nameText, pageable)
+                .stream()
+                .sorted(Comparator.comparing(Subject::getModifiedDate).reversed())
+                .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
+    }
+
+
+    @Transactional(readOnly = true)
+    public List<SubjectEntityDto> getPagedSubjectsByModuleContaining(String nameText, int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        var filtered = moduleRepository.findByNameContainingIgnoreCase(nameText, pageable).stream()
+                .sorted(Comparator.comparing(Module::getModifiedDate).reversed())
+                .filter(module -> module.equals(nameText))
+                .map(ModuleMapper::toModuleEntityDto).collect(Collectors.toList());
+
+        var found = subjectRepository.findAll().stream().filter(subject -> subject.getSubjectModules().contains(filtered))
+                .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
+        return found;
+    }
+
+    @Transactional(readOnly = true)
+    public List<SubjectEntityDto> getPagedSubjectsByNameAndByModuleContaining(String nameText, String moduleText, int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        var createdModule = moduleRepository.findByNameContainingIgnoreCase(moduleText, pageable).stream()
+                .findFirst();
+        return subjectRepository.findAll().stream().
+                filter(subjects -> subjects.getSubjectModules().contains(createdModule)).sorted(Comparator.comparing(Subject::getModifiedDate).reversed())
                 .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
     }
 
@@ -163,5 +198,88 @@ public class SubjectService {
 
     public Set<Module> getAllModulesById(Long subjectId) {
         return subjectRepository.findById(subjectId).get().getSubjectModules();
+
+  }
+
+    public List<SubjectEntityDto> getAllAvailablePagedSubjects(int page, int pageSize){
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return subjectRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE, pageable).stream()
+                .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
     }
+    public List<SubjectEntityDto> getAllDeletedPagedSubjects(int page, int pageSize) {
+
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        return subjectRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.TRUE, pageable).stream()
+                .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
+    }
+
+    public List<SubjectEntityDto> getAllAvailableSubjects(){
+        return subjectRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE).stream()
+                .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
+    }
+
+    public List<SubjectEntityDto> getAllDeletedSubjects(){
+        return subjectRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.TRUE).stream()
+                .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
+    }
+
+    public Subject restoreSubject(Long subjectId){
+        var existingSubject = subjectRepository.findById(subjectId).orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
+                "id", "Subject not found", subjectId.toString()));
+        existingSubject.setDeleted(Boolean.FALSE);
+        subjectRepository.save(existingSubject);
+        return existingSubject;
+    }
+
+    public Subject deleteSubject(Long subjectId){
+        var existingSubject = subjectRepository.findById(subjectId).orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
+                "id", "Subject not found", subjectId.toString()));
+        existingSubject.setDeleted(Boolean.TRUE);
+        subjectRepository.save(existingSubject);
+        return existingSubject;
+    }
+
+    public Set<Room> getAllRoomsById(Long subjectId) {
+        return subjectRepository.findById(subjectId).get().getSubjectRooms();
+    }
+
+    public Set<Teacher> getAllTeachersById(Long subjectId) {
+        return subjectRepository.findById(subjectId).get().getSubjectTeachers();
+    }
+
+    public boolean deleteModuleInSubjectById(Long subjectId, Long moduleId) {
+        try {
+            var existingSubject = subjectRepository.findById(subjectId).get();
+            existingSubject.getSubjectModules().remove(moduleRepository.findById(moduleId).get());
+            subjectRepository.save(existingSubject);
+            return true;
+        } catch (EmptyResultDataAccessException exception) {
+            return false;
+        }
+
+    }
+
+    public boolean deleteTeacherInSubjectById(Long subjectId, Long teacherId) {
+        try {
+            var existingSubject = subjectRepository.findById(subjectId).get();
+            existingSubject.getSubjectTeachers().remove(teacherRepository.findById(teacherId).get());
+            subjectRepository.save(existingSubject);
+            return true;
+        } catch (EmptyResultDataAccessException exception) {
+            return false;
+        }
+    }
+
+    public boolean deleteRoomInSubjectById(Long subjectId, Long roomId) {
+        try {
+            var existingSubject = subjectRepository.findById(subjectId).get();
+            existingSubject.getSubjectRooms().remove(roomRepository.findById(roomId).get());
+            subjectRepository.save(existingSubject);
+            return true;
+        } catch (EmptyResultDataAccessException exception) {
+            return false;
+        }
+    }
+
 }
