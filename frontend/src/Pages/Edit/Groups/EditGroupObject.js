@@ -47,11 +47,7 @@ export function EditGroupObject() {
             .then(setGroups);
     }, [active, params]);
 
-
-
-
     const applyResult = () => {
-
         setActive(true)
 
     }
@@ -209,7 +205,8 @@ export function EditGroupObject() {
                                 </ Table.Body >
                             </Table>
 
-                            <Button onClick={() => setActive(true)}>Atšaukti</Button><Button className='controls' id='details' onClick={updateGroups}>Atnaujinti</Button>
+                            <Button onClick={() => setActive(true)}>Atšaukti</Button>
+                            <Button className='controls' id='details' onClick={updateGroups}>Atnaujinti</Button>
 
 
                         </div>)}

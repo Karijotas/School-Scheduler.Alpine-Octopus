@@ -27,45 +27,48 @@ export function EditRoom() {
         description: '',
         modifiedDate: '',
     });
-
     const [name, setName] = useState('');
     const [building, setBuilding] = useState('');
+    const [description, setDescription] = useState('');
+
     const [nameError, setNameError] = useState("")
     const [buildingError, setBuildingError] = useState("")
+    const [descriptionError, setDescriptionError] = useState("")
+
     const [formValid, setFormValid] = useState(false)
 
 
     useEffect(() => {
-        if(nameError || buildingError) {
+        if(nameError || buildingError || descriptionError) {
           setFormValid(false)
         } else {
           setFormValid(true)
         }
-      }, [nameError, buildingError])
-
-    
+      }, [nameError, buildingError, descriptionError])
 
     const handleNameInputChange = (e) => {
         rooms.name = e.target.value
-        const inputValue = e.target.value;
-        setName(inputValue);
-        // perform validation on input change
-        validateNameInput(inputValue);
+        setName(e.target.value);
+        validateNameInput(e.target.value);
       };
-      const handleBuildingInputChange = (e) => {
+
+    const handleBuildingInputChange = (e) => {
         rooms.building = e.target.value
-        const inputValue = e.target.value;
-        setBuilding(inputValue);
-        // perform validation on input change
-        validateBuildingInput(inputValue);
+        setBuilding(e.target.value);
+        validateBuildingInput(e.target.value);
+      };
+
+    const handleDescriptionInputChange = (e) => {
+        rooms.description = e.target.value
+        setDescription(e.target.value);
+        validateDescriptionInput(e.target.value);
       };
     
-      const validateNameInput = (value) => {
-        // perform validation
+    const validateNameInput = (value) => {
         if (value.length <2 || value.length > 40) {
-            setNameError("Size must be between 2 and 40 characters!")
+            setNameError("Įveskite nuo 2 iki 40 simbolių!")
             if(!value){
-                setNameError("The name field is required!")
+                setNameError("Pavadinimas negali būti tuščias!")
               } 
         } else {
             setNameError("")
@@ -73,29 +76,37 @@ export function EditRoom() {
       };
 
       const validateBuildingInput = (value) => {
-        // perform validation
         if (value.length <2 || value.length > 40) {
-            setBuildingError("Size must be between 2 and 40 characters!")
+            setBuildingError("Įveskite nuo 2 iki 40 simbolių!")
             if(!value){
-                setBuildingError("The building field is required!")
+                setBuildingError("Pastatas negali būti tuščias!")
               } 
         } else {
             setBuildingError("")
         }
       };
 
-
+      const validateDescriptionInput = (value) => {
+        if (value.length > 100) {
+            setDescriptionError("Aprašymas negali viršyti 100 symbolių!")
+        } else {
+            setDescriptionError("")
+        }
+      };
 
     useEffect(() => {
         fetch('/api/v1/rooms/' + params.id)
             .then(response => response.json())
             .then(setRooms);
-    }, []);
+            
+    }, [params, active]);
+
+
 
 
     const applyResult = () => {
 
-        setHide(true)
+        setActive(true);
 
 
     }
@@ -121,10 +132,13 @@ export function EditRoom() {
         });
     };
 
+   
+
     const editThis = () => {
         setActive(false);
     }
 
+  
 
 
 
@@ -182,22 +196,28 @@ export function EditRoom() {
                                     <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
                                     <Table.HeaderCell>Veiksmai</Table.HeaderCell>
 
-                                </Table.Row>
+                                </Table.Row> 
                             </Table.Header>
 
                             <Table.Body>
                                 <Table.Row  >
                                     <Table.Cell collapsing><Input value={rooms.name} onChange={(e) => handleNameInputChange(e)} />
+                                    {(nameError) && <div style={{color: "red"}}>{nameError}</div>}
                                     </Table.Cell>
+                                    
                                     <Table.Cell collapsing><Input value={rooms.building} onChange={(e) => handleBuildingInputChange(e)} />
+                                    {(buildingError) && <div style={{color: "red"}}>{buildingError}</div>}
                                     </Table.Cell>
-                                    <Table.Cell collapsing><Input value={rooms.description} onChange={(e) => updateProperty('description', e)} />
+                                    
+                                    <Table.Cell collapsing><Input value={rooms.description} onChange={(e) => handleDescriptionInputChange(e)} />
+                                    {(descriptionError) && <div style={{color: "red"}}>{descriptionError}</div>}
                                     </Table.Cell>
+                                    
                                     <Table.Cell collapsing> {rooms.modifiedDate}  </Table.Cell>
 
                                     <Table.Cell collapsing >
                                         <Button onClick={() => setActive(true)}>Atšaukti</Button>
-                                        <Button disabled={!formValid} primary onClick={updateRooms}>Atnaujinti</Button>
+                                        <Button primary disabled={!formValid} onClick={updateRooms}>Atnaujinti</Button>
                                     </Table.Cell>
 
 
@@ -205,13 +225,12 @@ export function EditRoom() {
                                 </Table.Row>
 
                             </ Table.Body >
-                            {(nameError) && <div style={{color: "red"}}>{nameError}</div>}
-                            {(buildingError) && <div style={{color: "red"}}>{buildingError}</div>}
-                            
+
 
                         </Table>
 
                     </div>)}
+                   
                 </Segment>
             </Grid.Column>
 

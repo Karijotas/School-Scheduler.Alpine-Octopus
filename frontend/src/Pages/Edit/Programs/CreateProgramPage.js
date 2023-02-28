@@ -4,7 +4,7 @@ import {
   Form, Grid, Icon, Segment, TextArea
 } from "semantic-ui-react";
 
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHref } from 'react-router-dom';
 import MainMenu from '../../../Components/MainMenu';
 import { EditMenu } from '../../../Components/EditMenu';
 
@@ -16,13 +16,15 @@ const yearOptions = [
   { key: 23, value: 2023, text: "2023" },
   { key: 24, value: 2024, text: "2024" },
   { key: 25, value: 2025, text: "2025" },
-  { key: 26, value: 2026, text: "2026" },
+  { key: 26, value: 2026, text: "2026" }, 
   { key: 27, value: 2027, text: "2027" },
   { key: 28, value: 2028, text: "2028" },
 ];
 
 export function CreateProgramPage() {
   // const [create, setCreate] = useState()
+
+  const listUrl = useHref('/view/programs');
   const [hide, setHide] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -34,8 +36,7 @@ export function CreateProgramPage() {
 
    //Validation
    const [nameDirty, setNameDirty] = useState(false);
-   const [descriptionDirty, setDescriptionDirty] = useState(false);
-   const [nameError, setNameError] = useState("The name field is required!")
+   const [nameError, setNameError] = useState("Negali būti tuščias!")
    const [descriptionError, setDescriptionError] = useState("")
    const [formValid, setFormValid] = useState(false)
  
@@ -53,18 +54,15 @@ export function CreateProgramPage() {
        case 'name':
          setNameDirty(true);
          break
-         case 'description':
-           setDescriptionDirty(true);
-           break
      }
    }
  
    const nameHandler = (e) => {
      setName(e.target.value)
      if(e.target.value.length <2 || e.target.value.length > 40){
-       setNameError("Size must be between 2 and 40 characters!")
+       setNameError("Įveskite nuo 2 iki 40 simbolių!")
        if(!e.target.value){
-         setNameError("The name field is required!")
+         setNameError("Negali būti tuščias!")
        }
      } else {
        setNameError("")
@@ -74,13 +72,11 @@ export function CreateProgramPage() {
    const descriptionHandler = (e) => {
      setDescription(e.target.value)
      if(e.target.value.length > 100){
-       setDescriptionError("Size must be less than 100 characters!")
+       setDescriptionError("Aprašymas negali viršyti 100 symbolių!")
      } else {
        setDescriptionError("")
      }
    }
-
-  
 
   const applyResult = (result) => {
     const clear = () => {
@@ -102,7 +98,8 @@ export function CreateProgramPage() {
         name,
         description,
       }),
-    }).then(applyResult);
+    }).then(applyResult)
+    .then(() => window.location = listUrl);
   };
 
 
@@ -126,8 +123,8 @@ export function CreateProgramPage() {
                   <input
                   name="name"
                     placeholder="Programos pavadinimas"
-                    value={name}
                     onBlur={blurHandler}
+                    value={name}
                     onChange={(e) => nameHandler(e)}
                   />
                 </Form.Field>
@@ -135,8 +132,7 @@ export function CreateProgramPage() {
                   <Form.Field>
                     <label>Aprašymas</label>
                     {(descriptionError) && <div style={{color: "red"}}>{descriptionError}</div>}
-                    <TextArea name="description"
-                    
+                    <TextArea
                       placeholder="Aprašymas"
                       style={{ minHeight: 100 }}
                       value={description}
@@ -156,6 +152,7 @@ export function CreateProgramPage() {
                     Atgal
                   </Button>
                   <Button
+                   id='details'
                     type="submit"
                     className="controls"
                     primary

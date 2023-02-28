@@ -103,7 +103,7 @@ export function EditSubjectObject() {
       .then((response) => response.json())
       .then(setTeachersInSubjects)
       .then(console.log(teachersInSubjects));
-  }, [params]);
+  }, [params]); 
 
   const updateSubjects = () => {
     fetch("/api/v1/subjects/" + params.id, {
@@ -119,7 +119,7 @@ export function EditSubjectObject() {
         }
       })
       .then(applyResult);
-  };
+  }; 
 
   const updateProperty = (property, event) => {
     setSubjects({
@@ -256,7 +256,7 @@ export function EditSubjectObject() {
       <MainMenu />
       <Grid columns={2}>
         <Grid.Column width={2} id="main">
-          <EditMenu active="groups" />
+          <EditMenu active="subjects" />
         </Grid.Column>
         <Grid.Column
           floated="left"
@@ -327,7 +327,7 @@ export function EditSubjectObject() {
                         {teachersInSubjects.map((teacher) => (
                           <Table.Row key={teacher.id}>
                             <Table.Cell>
-                              {teacher.name + " " + teacher.surname}
+                              {teacher.name}
                             </Table.Cell>
                           </Table.Row>
                         ))}
@@ -436,7 +436,7 @@ export function EditSubjectObject() {
                                   <Form.Field>
                                     <Select
                                       options={modules}
-                                      placeholder="Dalykai"
+                                      placeholder="Moduliai"
                                       value={module}
                                       onChange={(e, data) => (
                                         setModule(e.target.value),
@@ -483,7 +483,7 @@ export function EditSubjectObject() {
                               {teachersInSubjects.map((teacher) => (
                                 <Table.Row key={teacher.id}>
                                   <Table.Cell>
-                                    {teacher.name + " " + teacher.surname}
+                                    {teacher.name}
                                   </Table.Cell>
                                   <Table.Cell collapsing>
                                     <Button

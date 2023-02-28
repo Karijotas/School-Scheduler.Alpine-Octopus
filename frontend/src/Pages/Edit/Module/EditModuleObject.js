@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
-import { Button, Grid, Icon, Input, Segment, Table } from "semantic-ui-react";
+import { Button, Grid, Icon, Input, Segment, Table, Divider, List, Form, Select } from "semantic-ui-react";
 import MainMenu from '../../../Components/MainMenu';
 import { EditMenu } from '../../../Components/EditMenu';
 
@@ -12,13 +12,13 @@ export function EditModuleObject() {
 
   const params = useParams();
   const [hide, setHide] = useState(false);
-
   const [active, setActive] = useState(true);
-
   const [error, setError] = useState();
-  const [subjectsInModule, setSubjectsInModule] = useState([]);
+  const [moduleSubjects, setModuleSubjects] = useState([]);
   const [moduleId, setModuleId] = useState("");
-
+  const [subjects, setSubjects] = useState([]);
+  const [subject, setSubject] = useState("");
+  const [subjectId, setSubjectId] = useState("");
   const [modules, setModules] = useState({
     name: "",
     description: "",
@@ -26,11 +26,70 @@ export function EditModuleObject() {
     modifiedDate: "",
   });
 
-  const fetchSubjectsInModule = async () => {
+
+
+
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [nameError, setNameError] = useState("")
+    const [buildingError, setBuildingError] = useState("")
+    const [descriptionError, setDescriptionError] = useState("")
+
+    const [formValid, setFormValid] = useState(false)
+
+
+    useEffect(() => {
+        if(nameError || descriptionError) {
+          setFormValid(false)
+        } else {
+          setFormValid(true)
+        }
+      }, [nameError, descriptionError])
+
+    const handleNameInputChange = (e) => {
+        modules.name = e.target.value
+        setName(e.target.value);
+        validateNameInput(e.target.value);
+      };
+
+    const handleDescriptionInputChange = (e) => {
+      modules.description = e.target.value
+        setDescription(e.target.value);
+        validateDescriptionInput(e.target.value);
+      };
+    
+    const validateNameInput = (value) => {
+        if (value.length <2 || value.length > 40) {
+            setNameError("Įveskite nuo 2 iki 40 simbolių!")
+            if(!value){
+                setNameError("Pavadinimas negali būti tuščias!")
+              } 
+        } else {
+            setNameError("")
+        }
+      };
+
+      const validateDescriptionInput = (value) => {
+        if (value.length > 100) {
+            setDescriptionError("Aprašymas negali viršyti 100 symbolių!")
+        } else {
+            setDescriptionError("")
+        }
+      };
+
+
+  const fetchModuleSubjects = async () => {
     fetch(`/api/v1/modules/${params.id}/subjects`)
       .then((response) => response.json())
-      .then((jsonResponse) => setSubjectsInModule(jsonResponse));
+      .then((jsonResponse) => setModuleSubjects(jsonResponse));
   };
+
+  useEffect(() => {
+    fetch(`/api/v1/modules/${params.id}/subjects`)
+      .then((response) => response.json())
+      .then(setModuleSubjects)
+      .then(console.log(moduleSubjects));
+  }, [params]);
 
   useEffect(() => {
     fetch("/api/v1/modules/" + params.id)
@@ -39,7 +98,7 @@ export function EditModuleObject() {
   }, [params]);
 
   const applyResult = () => {
-    setHide(true);
+    setActive(true);
   };
 
   const updateModules = () => {
@@ -64,10 +123,55 @@ export function EditModuleObject() {
       [property]: event.target.value,
     });
   };
+  const [updated, setUpdated] = useState();
+
+    useEffect(() => {
+        setUpdated(true);
+    }, [setUpdated]);
+
 
   const editThis = () => {
     setActive(false);
   };
+
+  const fetchSingleSubjects = () => {
+    fetch("/api/v1/subjects")
+      .then((response) => response.json())
+      .then((jsonResponse) => setSubjects(jsonResponse));
+  };
+
+  useEffect(() => {
+    fetch("/api/v1/subjects/")
+      .then((response) => response.json())
+      .then((data) =>
+        setSubjects(
+          data.map((x) => {
+            return { key: x.id, text: x.name, value: x.id };
+          })
+        )
+      );
+  }, []);
+
+  const addSubject = (moduleId, subjectId) => {
+    fetch(`/api/v1/modules/${moduleId}/subjects/${subjectId}/newSubjects`, {
+      method: "POST",
+      header: JSON_HEADERS,
+      body: JSON.stringify({
+        moduleId,
+        subject,
+      }),
+    }).then(fetchModuleSubjects);
+  };
+
+
+  const removeSubject = (moduleId, subjectId) => {
+    fetch(`/api/v1/modules/${moduleId}/subjects/${subjectId}`, {
+      method: "DELETE",
+      headers: JSON_HEADERS,
+    }).then(fetchModuleSubjects);
+  };
+
+
 
   return (
     <div>
@@ -101,6 +205,28 @@ export function EditModuleObject() {
                     </Table.Row>
                   </Table.Body>
                 </Table>
+
+                <Grid columns={2} divided>
+                  <Grid.Column>
+                    <Table width={6}>
+                      <Table.Header>
+                        <Table.Row>
+                          <Table.HeaderCell width={6}>
+                            Dalykai:
+                          </Table.HeaderCell>
+                        </Table.Row>
+                      </Table.Header>
+                      <Table.Body>
+                        {moduleSubjects.map((subject) => (
+                          <Table.Row key={subject.id}>
+                            <Table.Cell>{subject.name}</Table.Cell>
+                          </Table.Row>
+                        ))}
+                      </Table.Body>
+                    </Table>
+                  </Grid.Column>
+                  </Grid>
+                  <Divider hidden />
 
                 {/* <Divider hidden />
           <Table>
@@ -137,7 +263,6 @@ export function EditModuleObject() {
                       <Table.HeaderCell>Modulio pavadinimas</Table.HeaderCell>
                       <Table.HeaderCell>Aprašymas</Table.HeaderCell>
                       <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
-                      <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
 
@@ -146,27 +271,90 @@ export function EditModuleObject() {
                       <Table.Cell collapsing>
                         <Input
                           value={modules.name}
-                          onChange={(e) => updateProperty("name", e)}
-                        />
+                          
+                          onChange={(e) => handleNameInputChange(e)}
+                        />{(nameError) && <div style={{color: "red"}}>{nameError}</div>}
                       </Table.Cell>
                       <Table.Cell collapsing>
                         <Input
                           value={modules.description}
-                          onChange={(e) => updateProperty("description", e)}
-                        />
+                          onChange={(e) => handleDescriptionInputChange(e)}
+                        />{(descriptionError) && <div style={{color: "red"}}>{descriptionError}</div>}
                       </Table.Cell>
                       <Table.Cell collapsing> {modules.modifiedDate} </Table.Cell>
-
-                      <Table.Cell collapsing>
-                        <Button onClick={() => setActive(true)}>Atšaukti</Button>
-                        <Button primary onClick={updateModules}>
-                          Atnaujinti
-                        </Button>
-                      </Table.Cell>
                     </Table.Row>
                   </Table.Body>
                 </Table>
-
+                <Grid columns={3}>
+                  <Grid.Column>
+                    <Table>
+                      <Table.Header>
+                        <Table.Row>
+                          <Table.HeaderCell width={8}>
+                            Dalykai
+                          </Table.HeaderCell>
+                        </Table.Row>
+                      </Table.Header>
+                      <Table.Body>
+                        <Table.Row>
+                          <Table.Cell>
+                            <Table.Body>
+                              {moduleSubjects.map((subject) => (
+                                <Table.Row key={subject.id}>
+                                  <Table.Cell>{subject.name}</Table.Cell>
+                                  <Table.Cell collapsing>
+                                    <Button
+                                      basic
+                                      compact
+                                      icon="remove"
+                                      title="Pašalinti"
+                                      onClick={() =>
+                                        removeSubject(params.id, subject.id)
+                                      }
+                                    ></Button>
+                                  </Table.Cell>
+                                </Table.Row>
+                              ))}
+                            </Table.Body>
+                            <List>
+                              <List.Item>
+                                <Form.Group widths="equal">
+                                  <Form.Field>
+                                    <Select
+                                      options={subjects}
+                                      placeholder="Dalykai"
+                                      value={subject}
+                                      onChange={(e, data) => (
+                                        setSubjects(e.target.value),
+                                        setSubjectId(data.value)
+                                      )}
+                                      onClose={() => console.log(subjectId)}
+                                    />
+                                  </Form.Field>
+                                </Form.Group>
+                                <Divider hidden />
+                                <List.Content floated="left">
+                                  <Button
+                                    onClick={() =>
+                                      addSubject(params.id, subjectId)
+                                    }
+                                  >
+                                    Pridėti
+                                  </Button>
+                                </List.Content>
+                              </List.Item>
+                            </List>
+                          </Table.Cell>
+                        </Table.Row>
+                      </Table.Body>
+                    </Table>
+                  </Grid.Column>
+                  </Grid>
+                  <Divider hidden></Divider>
+                  <Button onClick={() => setActive(true)}>Atšaukti</Button>
+                <Button  id='details' disabled={!formValid} floated="right" primary onClick={updateModules}>
+                  Atnaujinti
+                </Button>
               </div>
             )}
           </Segment>

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Button, Form, Grid, Icon, Segment } from "semantic-ui-react";
 import MainMenu from "../../../Components/MainMenu";
 import { EditMenu } from '../../../Components/EditMenu';
+import { NavLink, useHref } from 'react-router-dom';
 
 
 const JSON_HEADERS = {
@@ -12,6 +13,7 @@ const JSON_HEADERS = {
 
 export function CreateRoom() {
   // const [create, setCreate] = useState()
+  const listUrl = useHref('/view/rooms');
   const [hide, setHide] = useState(false);
   const [name, setName] = useState('');
   const [building, setBuilding] = useState('');
@@ -20,8 +22,8 @@ export function CreateRoom() {
   //Validation
   const [nameDirty, setNameDirty] = useState(false);
   const [buildingDirty, setBuildingDirty] = useState(false);
-  const [nameError, setNameError] = useState("The name field is required!")
-  const [buildingError, setBuildingError] = useState("The building field is required!")
+  const [nameError, setNameError] = useState("Pavadinimas negali būti tuščias!")
+  const [buildingError, setBuildingError] = useState("Pastatas negali būti tuščias!")
   const [descriptionError, setDescriptionError] = useState("")
   const [formValid, setFormValid] = useState(false)
 
@@ -32,14 +34,13 @@ export function CreateRoom() {
       setFormValid(true)
     }
   }, [nameError, buildingError, descriptionError])
-  
 
   const blurHandler = (e) => {
     switch (e.target.name){
       case 'name':
         setNameDirty(true);
         break
-        case 'building':
+        case 'building': 
           setBuildingDirty(true);
           break
     }
@@ -48,9 +49,9 @@ export function CreateRoom() {
   const nameHandler = (e) => {
     setName(e.target.value)
     if(e.target.value.length <2 || e.target.value.length > 40){
-      setNameError("Size must be between 2 and 40 characters!")
+      setNameError("Įveskite nuo 2 iki 40 simbolių!")
       if(!e.target.value){
-        setNameError("The name field is required!")
+        setNameError("Pavadinimas negali būti tuščias!")
       }
     } else {
       setNameError("")
@@ -60,9 +61,9 @@ export function CreateRoom() {
   const buildingHandler = (e) => {
     setBuilding(e.target.value)
     if(e.target.value.length < 2 || e.target.value.length > 40){
-      setBuildingError("Size must be between 2 and 40 characters!")
+      setBuildingError("Įveskite nuo 2 iki 40 simbolių!!")
       if(!e.target.value){
-        setBuildingError("The building field is required!")
+        setBuildingError("Pastatas negali būti tuščias!")
       }
     } else {
       setBuildingError("")
@@ -72,7 +73,7 @@ export function CreateRoom() {
   const descriptionHandler = (e) => {
     setDescription(e.target.value)
     if(e.target.value.length > 100){
-      setDescriptionError("Size must be less than 100 characters!")
+      setDescriptionError("Aprašymas negali viršyti 100 symbolių!")
     } else {
       setDescriptionError("")
     }
@@ -80,8 +81,8 @@ export function CreateRoom() {
 
   const applyResult = (result) => {
     const clear = () => {
-      setHide(true)
-    }
+      setHide(true);
+    };
 
     if (result.ok) {
       clear();
@@ -91,8 +92,7 @@ export function CreateRoom() {
   };
 
   const createRoom = () => {
-    fetch(
-      '/api/v1/rooms', {
+    fetch('/api/v1/rooms', {
       method: 'POST',
       headers: JSON_HEADERS,
       body: JSON.stringify({
@@ -101,6 +101,7 @@ export function CreateRoom() {
         description,
       })
     }).then(applyResult)
+    .then(() => window.location = listUrl);
   };
 
 
@@ -117,24 +118,23 @@ export function CreateRoom() {
 
           <Form >
 
-          <Form.Field >
-          <label>Klasės pavadinimas</label>
-          {(nameDirty && nameError) && <div style={{color: "red"}}>{nameError}</div>}
-          <input name="name" onBlur={blurHandler} placeholder='Klasės pavadinimas' value={name} onChange={e => nameHandler(e)} />
-          
-        </Form.Field>
-        <Form.Field >
-          <label>Pastatas</label>
-          {(buildingDirty && buildingError) && <div style={{color: "red"}}>{buildingError}</div>}
-          <input name="building" onBlur={blurHandler} placeholder='Pastatas' value={building} onChange={e => buildingHandler(e)} />
-        </Form.Field>
-        <Form.Field >
-          <label>Aprašymas</label>
-          {(descriptionError) && <div style={{color: "red"}}>{descriptionError}</div>}
-          <input input name="description" onBlur={blurHandler} placeholder='Aprasymas' value={description} onChange={e => descriptionHandler(e)} />
-        </Form.Field>
+            <Form.Field >
+              <label>Klasės pavadinimas</label>
+              {(nameDirty && nameError) && <div style={{color: "red"}}>{nameError}</div>}
+              <input name="name" onBlur={blurHandler} placeholder='Klasės pavadinimas' value={name} onChange={e => nameHandler(e)} />
+            </Form.Field>
+            <Form.Field >
+              <label>Pastatas</label>
+              {(buildingDirty && buildingError) && <div style={{color: "red"}}>{buildingError}</div>}
+              <input name="building" onBlur={blurHandler} placeholder='Pastatas' value={building} onChange={e => buildingHandler(e)} />
+            </Form.Field>
+            <Form.Field >
+              <label>Aprašymas</label>
+              {(descriptionError) && <div style={{color: "red"}}>{descriptionError}</div>}
+              <input input name="description" onBlur={blurHandler} placeholder='Aprasymas' value={description} onChange={e => descriptionHandler(e)} />
+            </Form.Field>
             <div><Button icon labelPosition="left" className="" href='#/view/rooms'><Icon name="arrow left" />Atgal</Button>
-              <Button disabled={!formValid} type='submit' className="controls" primary onClick={createRoom}>Sukurti</Button></div>
+              <Button type='submit' disabled={!formValid} className="controls" primary onClick={createRoom}>Sukurti</Button></div>
           </Form>
         </Segment>
       </Grid.Column>

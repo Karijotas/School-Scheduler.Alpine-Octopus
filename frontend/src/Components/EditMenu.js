@@ -8,7 +8,8 @@ export function EditMenu() {
       <Grid columns={1}>
         <Grid.Column>
           <Menu fluid vertical tabular id="main" className="ui centered grid">
-            <Menu.Item
+            <Menu.Item 
+            id="icocolor"           
               name="subjects"
               icon="book"
               content="Dalykai"
@@ -17,6 +18,7 @@ export function EditMenu() {
               to="/view/subjects"
             />
             <Menu.Item
+            id="icocolor"
               name="teachers"
               icon="user"
               content="Mokytojai"
@@ -25,6 +27,7 @@ export function EditMenu() {
               to="/view/teachers"
             />
             <Menu.Item
+            id="icocolor"
               name="groups"
               icon="users"
               content="Grupės"
@@ -33,6 +36,7 @@ export function EditMenu() {
               to="/view/groups"
             />
             <Menu.Item
+            id="icocolor"
               name="shifts"
               content="Pamainos"
               icon="sync"
@@ -41,6 +45,7 @@ export function EditMenu() {
               to="/view/shifts"
             />
             <Menu.Item
+            id="icocolor"
               name="rooms"
               icon="warehouse"
               content="Klasės"
@@ -49,6 +54,7 @@ export function EditMenu() {
               to="/view/rooms"
             />
             <Menu.Item
+            id="icocolor"
               name="program"
               icon="file alternate"
               content="Programos"
@@ -57,6 +63,7 @@ export function EditMenu() {
               to="/view/programs"
             />
             <Menu.Item
+            id="icocolor"
               name="modules"
               content="Moduliai"
               icon="unordered list"

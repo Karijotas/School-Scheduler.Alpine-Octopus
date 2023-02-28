@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHref } from 'react-router-dom';
 import { Button, Form, Grid, Icon, Segment, Select } from "semantic-ui-react";
 import { EditMenu } from '../../../Components/EditMenu';
 import MainMenu from '../../../Components/MainMenu';
@@ -10,6 +10,7 @@ const JSON_HEADERS = {
 
 export function CreateSubjecPage() {
   // const [create, setCreate] = useState()
+  const listUrl = useHref('/view/subjects');
   const [hide, setHide] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -22,28 +23,17 @@ export function CreateSubjecPage() {
 
   //Validation
   const [nameDirty, setNameDirty] = useState(false);
-  
-  const [descriptionDirty, setDescriptionDirty] = useState(false);
-  const [nameError, setNameError] = useState("The name field is required!")
-  
+  const [nameError, setNameError] = useState("Negali būti tuščias!")
   const [descriptionError, setDescriptionError] = useState("")
   const [formValid, setFormValid] = useState(false)
 
-
-  const [selectErrorModule, setSelectErrorModule] = useState("Required")
-   const [selectErrorTeachers, setSelectErrorTeachers] = useState("Required")
-   const [selectErrorRooms, setSelectErrorRooms] = useState("Required")
-
-  
-
   useEffect(() => {
-    if(nameError || descriptionError || selectErrorModule || selectErrorTeachers || selectErrorRooms) {
+    if(nameError || descriptionError) {
       setFormValid(false)
     } else {
       setFormValid(true)
     }
-  }, [nameError, descriptionError, selectErrorModule, selectErrorTeachers, selectErrorRooms])
-  
+  }, [nameError, descriptionError])
 
   const blurHandler = (e) => {
     switch (e.target.name){
@@ -52,22 +42,13 @@ export function CreateSubjecPage() {
         break
     }
   }
-  const selectModuleHandler = () => {
-    setSelectErrorModule("")
-  }
-  const selectTeachersHandler = () => {
-    setSelectErrorTeachers("")
-  }
-  const selectRoomsHandler = () => {
-    setSelectErrorRooms("")
-  }
 
   const nameHandler = (e) => {
     setName(e.target.value)
     if(e.target.value.length <2 || e.target.value.length > 40){
-      setNameError("Size must be between 2 and 40 characters!")
+      setNameError("Įveskite nuo 2 iki 40 simbolių!")
       if(!e.target.value){
-        setNameError("The name field is required!")
+        setNameError("Negali būti tuščias!")
       }
     } else {
       setNameError("")
@@ -77,7 +58,7 @@ export function CreateSubjecPage() {
   const descriptionHandler = (e) => {
     setDescription(e.target.value)
     if(e.target.value.length > 100){
-      setDescriptionError("Size must be less than 100 characters!")
+      setDescriptionError("Aprašymas negali viršyti 100 symbolių!")
     } else {
       setDescriptionError("")
     }
@@ -102,12 +83,13 @@ export function CreateSubjecPage() {
       body: JSON.stringify({
         name,
         description,
-        modules,
-        teachers,
-        rooms,
+        // modules,
+        // teachers,
+        // rooms,
       }),
-    }).then(applyResult);
+    }).then(applyResult).then(() => window.location = listUrl);
   };
+
   useEffect(() => {
     fetch("/api/v1/modules/")
       .then((response) => response.json())
@@ -162,10 +144,10 @@ export function CreateSubjecPage() {
               {(nameDirty && nameError) && <div style={{color: "red"}}>{nameError}</div>}
               <input
                 placeholder="Dalyko pavadinimas"
-                value={name}
-                onChange={(e) => nameHandler(e)}
                 onBlur={blurHandler}
                 name="name"
+                value={name}
+                onChange={(e) => nameHandler(e)}
               />
             </Form.Field>
             <Form.Field>
@@ -175,42 +157,37 @@ export function CreateSubjecPage() {
                 placeholder="Aprašymas"
                 value={description}
                 onChange={(e) => descriptionHandler(e)}
-                name="description"
-                onBlur={blurHandler}
               />
             </Form.Field>
-            <Form.Group widths="equal">
+            {/* <Form.Group widths="equal">
               <Form.Field>
-                <label>Moduliai</label> {(selectErrorModule) && <div style={{color: "red"}}>{selectErrorModule}</div>}
+                <label>Moduliai</label>
                 <Select
-                name = "module"
                   options={modules}
                   placeholder="Moduliai"
                   onClose={() => console.log(moduleId)}
-                  onChange={((e, data) => setModuleId(data.value), selectModuleHandler)}
+                  onChange={(e, data) => setModuleId(data.value)}
                 />
               </Form.Field>
               <Form.Field>
-                <label>Mokytojai</label> {(selectErrorTeachers) && <div style={{color: "red"}}>{selectErrorTeachers}</div>}
+                <label>Mokytojai</label>
                 <Select
-                name = "teachers"
                   options={teachers}
                   placeholder="Mokytojai"
                   onClose={() => console.log(teacherId)}
-                  onChange={((e, data) => setTeacherId(data.value),selectTeachersHandler)}
+                  onChange={(e, data) => setTeacherId(data.value)}
                 />
               </Form.Field>
               <Form.Field>
-                <label>Klasės</label> {(selectErrorRooms) && <div style={{color: "red"}}>{selectErrorRooms}</div>}
+                <label>Klasės</label>
                 <Select
-                name = "rooms"
                   options={rooms}
                   placeholder="Klasės"
                   onClose={() => console.log(roomId)}
-                  onChange={((e, data) => setRoomId(data.value),selectRoomsHandler)}
+                  onChange={(e, data) => setRoomId(data.value)}
                 />
               </Form.Field>
-            </Form.Group>
+            </Form.Group> */}
             <div>
               <Button
                 icon
@@ -222,8 +199,8 @@ export function CreateSubjecPage() {
                 Atgal
               </Button>
               <Button
-              disabled={!formValid}
                 type="submit"
+                disabled={!formValid}
                 className="controls"
                 primary
                 onClick={createSubject}

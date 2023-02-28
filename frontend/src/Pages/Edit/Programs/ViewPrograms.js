@@ -81,16 +81,15 @@ export function ViewPrograms() {
               <Input
                 value={nameText}
                 onChange={(e) => setNameText(e.target.value)}
-                placeholder="Ieškoti pagal programą"
+                placeholder="Filtruoti pagal pavadinimą"
               />
               {/* <Button onClick={fetchFilterPrograms}>Filtruoti</Button> */}
 
               <Button
                 icon
-                labelPosition="left"
-                color='teal'
-                
+                labelPosition="left"                                
                 className="controls"
+                id='details'
                 as={NavLink}
                 exact to='/create/programs'>
                 <Icon name="database" />
@@ -114,17 +113,17 @@ export function ViewPrograms() {
 
                       <Table.Cell collapsing>
                         <Button
+                        id="icocolor"
                           href={'#/view/programs/edit/' + program.id}
-                          basic
-                          color='teal'
+                          basic                          
                           compact
                           icon="eye"
                           title="Peržiūrėti"
                           onClick={() => setActive(program.id)}
                         ></Button>
                         <Button
-                          basic
-                          color="black"
+                        id="icocolor"
+                          basic                          
                           compact
                           title="Suarchyvuoti"
                           icon="archive"
@@ -132,7 +131,7 @@ export function ViewPrograms() {
                         ></Button>
 
                         <Confirm
-                          open={open}
+                          open={open}                          
                           header="Dėmesio!"
                           content="Ar tikrai norite perkelti į archyvą?"
                           cancelButton="Grįžti atgal"

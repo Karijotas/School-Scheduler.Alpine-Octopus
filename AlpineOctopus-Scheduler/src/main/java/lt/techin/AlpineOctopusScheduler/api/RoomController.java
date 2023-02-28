@@ -96,16 +96,16 @@ public class RoomController {
     }
 
     @GetMapping(path = "page/name-filter/{nameText}")
-    @ApiOperation(value = "Get Paged Programs starting with", notes = "Returns list of Programs starting with passed String")
+    @ApiOperation(value = "Get Programs starting with", notes = "Returns list of Programs starting with passed String")
     @ResponseBody
-    public List<RoomEntityDto> getPagedRoomsByNameContaining(@PathVariable String nameText) {
-        return roomService.getPagedRoomsByNameContaining(nameText);
+    public List<RoomEntityDto> getRoomsByNameContaining(@PathVariable String nameText) {
+        return roomService.getRoomsByNameContaining(nameText);
     }
 
     @GetMapping(path = "page/building-filter/{buildingText}")
-    @ApiOperation(value = "Get Paged Programs starting with", notes = "Returns list of Programs starting with passed String")
+    @ApiOperation(value = "Get Programs starting with", notes = "Returns list of Programs starting with passed String")
     @ResponseBody
-    public List<RoomEntityDto> getPagedBuildingsByNameContaining(@PathVariable String buildingText) {
-        return roomService.getPagedBuildingsByNameContaining(buildingText);
+    public List<RoomEntityDto> getBuildingsByNameContaining(@PathVariable String buildingText) {
+        return roomService.getBuildingsByNameContaining(buildingText);
     }
 }

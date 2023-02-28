@@ -144,7 +144,7 @@ export function ViewRooms() {
 
                                             <Table.Cell collapsing>
                                                 <Button href={'#/view/rooms/edit/' + room.id} basic primary compact icon='eye' title='Peržiūrėti' onClick={() => setActive(room.id)}></Button>
-                                                <Button basic color='black' compact icon='trash alternate' onClick={() => setOpen(room.id)}></Button>
+                                                <Button basic color='black' compact icon='archive' onClick={() => setOpen(room.id)}></Button>
                                                 <Confirm
                                                     open={open}
                                                     header='Dėmesio!'

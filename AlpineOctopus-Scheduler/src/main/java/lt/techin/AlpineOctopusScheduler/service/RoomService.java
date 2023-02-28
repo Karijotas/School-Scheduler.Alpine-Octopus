@@ -39,13 +39,15 @@ public class RoomService {
     }
 
     @Transactional(readOnly = true)
-    public List<RoomEntityDto> getPagedRoomsByNameContaining(String nameText) {
+    public List<RoomEntityDto> getRoomsByNameContaining(String nameText) {
+
         return roomRepository.findByNameContainingIgnoreCase(nameText).stream().sorted(Comparator.comparing(Room::getModifiedDate).reversed())
                 .map(RoomMapper::toRoomEntityDto).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public List<RoomEntityDto> getPagedBuildingsByNameContaining(String buildingText) {
+    public List<RoomEntityDto> getBuildingsByNameContaining(String buildingText) {
+
         return roomRepository.findByBuildingContainingIgnoreCase(buildingText).stream().sorted(Comparator.comparing(Room::getModifiedDate).reversed())
                 .map(RoomMapper::toRoomEntityDto).collect(Collectors.toList());
     }
