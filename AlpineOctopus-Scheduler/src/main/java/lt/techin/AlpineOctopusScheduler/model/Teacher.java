@@ -1,20 +1,20 @@
 package lt.techin.AlpineOctopusScheduler.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 //Mantvydas Juršys
 
@@ -30,15 +30,18 @@ public class Teacher {
     @Size(min = 1, max = 100, message = "A name shouldn't be longer than 100 characters or shorter than 1")
     private String name;
     @NotBlank
-    @Size(min = 1, max = 100, message = "A name shouldn't be longer than 100 characters or shorter than 1")
-    private String surname;
-    @NotBlank
     @Email
     private String loginEmail;
     private String contactEmail;
     private String phone;
     private double workHoursPerWeek;
-    private String shift;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @JoinTable(
+            name = "teacher_shifts",
+            joinColumns = @JoinColumn(name = "teacher_id"),
+            inverseJoinColumns = @JoinColumn(name = "shift_id"))
+    private Set<Shift> teacherShifts = new HashSet<>();
 
     private Boolean deleted = Boolean.FALSE;
 
@@ -60,6 +63,21 @@ public class Teacher {
     public Teacher() {
     }
 
+    public Teacher(Long id, String name, String loginEmail, String contactEmail, String phone, double workHoursPerWeek, Set<Shift> teacherShifts, Boolean deleted, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy) {
+        this.id = id;
+        this.name = name;
+        this.loginEmail = loginEmail;
+        this.contactEmail = contactEmail;
+        this.phone = phone;
+        this.workHoursPerWeek = workHoursPerWeek;
+        this.teacherShifts = teacherShifts;
+        this.deleted = deleted;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
+        this.createdBy = createdBy;
+        this.modifiedBy = modifiedBy;
+    }
+
     public Long getId() {
         return id;
     }
@@ -74,14 +92,6 @@ public class Teacher {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
     }
 
     public String getLoginEmail() {
@@ -116,12 +126,12 @@ public class Teacher {
         this.workHoursPerWeek = workHoursPerWeek;
     }
 
-    public String getShift() {
-        return shift;
+    public Set<Shift> getTeacherShifts() {
+        return teacherShifts;
     }
 
-    public void setShift(String shift) {
-        this.shift = shift;
+    public void setTeacherShifts(Set<Shift> teacherShifts) {
+        this.teacherShifts = teacherShifts;
     }
 
     public Boolean getDeleted() {
@@ -169,12 +179,12 @@ public class Teacher {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Teacher teacher = (Teacher) o;
-        return Double.compare(teacher.workHoursPerWeek, workHoursPerWeek) == 0 && Objects.equals(id, teacher.id) && Objects.equals(name, teacher.name) && Objects.equals(surname, teacher.surname) && Objects.equals(loginEmail, teacher.loginEmail) && Objects.equals(contactEmail, teacher.contactEmail) && Objects.equals(phone, teacher.phone) && Objects.equals(shift, teacher.shift) && Objects.equals(deleted, teacher.deleted) && Objects.equals(createdDate, teacher.createdDate) && Objects.equals(modifiedDate, teacher.modifiedDate) && Objects.equals(createdBy, teacher.createdBy) && Objects.equals(modifiedBy, teacher.modifiedBy);
+        return Double.compare(teacher.workHoursPerWeek, workHoursPerWeek) == 0 && Objects.equals(id, teacher.id) && Objects.equals(name, teacher.name) && Objects.equals(loginEmail, teacher.loginEmail) && Objects.equals(contactEmail, teacher.contactEmail) && Objects.equals(phone, teacher.phone) && Objects.equals(teacherShifts, teacher.teacherShifts) && Objects.equals(deleted, teacher.deleted) && Objects.equals(createdDate, teacher.createdDate) && Objects.equals(modifiedDate, teacher.modifiedDate) && Objects.equals(createdBy, teacher.createdBy) && Objects.equals(modifiedBy, teacher.modifiedBy);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, surname, loginEmail, contactEmail, phone, workHoursPerWeek, shift, deleted, createdDate, modifiedDate, createdBy, modifiedBy);
+        return Objects.hash(id, name, loginEmail, contactEmail, phone, workHoursPerWeek, teacherShifts, deleted, createdDate, modifiedDate, createdBy, modifiedBy);
     }
 
     @Override
@@ -182,12 +192,11 @@ public class Teacher {
         return "Teacher{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
                 ", loginEmail='" + loginEmail + '\'' +
                 ", contactEmail='" + contactEmail + '\'' +
                 ", phone='" + phone + '\'' +
                 ", workHoursPerWeek=" + workHoursPerWeek +
-                ", shift='" + shift + '\'' +
+                ", teacherShifts=" + teacherShifts +
                 ", deleted=" + deleted +
                 ", createdDate=" + createdDate +
                 ", modifiedDate=" + modifiedDate +

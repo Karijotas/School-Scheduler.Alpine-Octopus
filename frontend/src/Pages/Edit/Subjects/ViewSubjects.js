@@ -25,14 +25,11 @@ export function ViewSubjects() {
   const [create, setCreate] = useState("");
   const [nameText, setNameText] = useState("");
   const [subjects, setSubjects] = useState([]);
-  const [modules, setModules] = useState([]);
-  const [subjectId, setSubjectId] = useState("");
 
   const [subjectsforPaging, setSubjectsForPaging] = useState([]);
 
   const [activePage, setActivePage] = useState(0);
   const [pagecount, setPageCount] = useState();
-  const [modulesInSubjects, setModulesInSubjects] = useState([]);
   const [moduleText, setModuleText] = useState("");
 
   const fetchSubjectsByModules = async () => {

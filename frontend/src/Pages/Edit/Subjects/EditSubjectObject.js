@@ -256,7 +256,7 @@ export function EditSubjectObject() {
       <MainMenu />
       <Grid columns={2}>
         <Grid.Column width={2} id="main">
-          <EditMenu active="groups" />
+          <EditMenu active="subjects" />
         </Grid.Column>
         <Grid.Column
           floated="left"
@@ -327,7 +327,7 @@ export function EditSubjectObject() {
                         {teachersInSubjects.map((teacher) => (
                           <Table.Row key={teacher.id}>
                             <Table.Cell>
-                              {teacher.name + " " + teacher.surname}
+                              {teacher.name}
                             </Table.Cell>
                           </Table.Row>
                         ))}
@@ -483,7 +483,7 @@ export function EditSubjectObject() {
                               {teachersInSubjects.map((teacher) => (
                                 <Table.Row key={teacher.id}>
                                   <Table.Cell>
-                                    {teacher.name + " " + teacher.surname}
+                                    {teacher.name}
                                   </Table.Cell>
                                   <Table.Cell collapsing>
                                     <Button

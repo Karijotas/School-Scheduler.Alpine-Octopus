@@ -1,20 +1,17 @@
 package lt.techin.AlpineOctopusScheduler.api.dto;
 
-import lt.techin.AlpineOctopusScheduler.model.Shift;
-
+import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Set;
 
-public class TeacherEntityDto extends TeacherDto {
+public class ShiftEntityDto extends ShiftDto {
 
     private Long id;
 
-    public TeacherEntityDto() {
-
+    public ShiftEntityDto() {
     }
 
-    public TeacherEntityDto(String name, String loginEmail, String contactEmail, double workHoursPerWeek, String phone, Set<Shift> teacherShifts, Boolean deleted, Long id) {
-        super(name, loginEmail, contactEmail, workHoursPerWeek, phone, teacherShifts, deleted);
+    public ShiftEntityDto(String name, int starts, int ends, LocalDateTime createdDate, LocalDateTime modifiedDate, Boolean deleted, Long id) {
+        super(name, starts, ends, createdDate, modifiedDate, deleted);
         this.id = id;
     }
 
@@ -31,7 +28,7 @@ public class TeacherEntityDto extends TeacherDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        TeacherEntityDto that = (TeacherEntityDto) o;
+        ShiftEntityDto that = (ShiftEntityDto) o;
         return Objects.equals(id, that.id);
     }
 
@@ -42,7 +39,7 @@ public class TeacherEntityDto extends TeacherDto {
 
     @Override
     public String toString() {
-        return "TeacherEntityDto{" +
+        return "ShiftEntityDto{" +
                 "id=" + id +
                 '}';
     }

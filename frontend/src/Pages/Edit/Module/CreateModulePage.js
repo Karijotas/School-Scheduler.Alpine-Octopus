@@ -39,18 +39,6 @@ export function CreateModulePage() {
     }).then(applyResult).then(() => window.location = listUrl);
   };
 
-  // useEffect(() => {
-  //   fetch("/api/v1/modules/")
-  //     .then((response) => response.json())
-  //     .then((data) =>
-  //       setModules(
-  //         data.map((x) => {
-  //           return { key: x.id, text: x.name, value: x.id };
-  //         })
-  //       )
-  //     );
-  // }, []);
-
   const fetchModules = async () => {
     fetch(`/api/v1/modules/`)
       .then((response) => response.json())

@@ -16,8 +16,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -37,24 +39,26 @@ public class SubjectService {
 
     private final ProgramRepository programRepository;
 
-    private final Validator validator;
+//    private final Validator validator;
 
     @Autowired
-    public SubjectService(SubjectRepository subjectRepository, ModuleRepository moduleRepository, TeacherRepository teacherRepository, RoomRepository roomRepository, ProgramRepository programRepository, Validator validator) {
+    public SubjectService(SubjectRepository subjectRepository, ModuleRepository moduleRepository, TeacherRepository teacherRepository, RoomRepository roomRepository, ProgramRepository programRepository
+//            , Validator validator
+    ) {
         this.subjectRepository = subjectRepository;
         this.moduleRepository = moduleRepository;
         this.teacherRepository = teacherRepository;
         this.roomRepository = roomRepository;
         this.programRepository = programRepository;
-        this.validator = validator;
+//        this.validator = validator;
     }
 
-    void validateInputWithInjectedValidator(Subject subject) {
-        Set<ConstraintViolation<Subject>> violations = validator.validate(subject);
-        if (!violations.isEmpty()) {
-            throw new SchedulerValidationException(violations.toString(), "Subject", "Error in subject entity", subject.toString());
-        }
-    }
+//    void validateInputWithInjectedValidator(Subject subject) {
+//        Set<ConstraintViolation<Subject>> violations = validator.validate(subject);
+//        if (!violations.isEmpty()) {
+//            throw new SchedulerValidationException(violations.toString(), "Subject", "Error in subject entity", subject.toString());
+//        }
+//    }
 
     public boolean subjectNameIsUnique(Subject subject) {
         return subjectRepository.findAll()
@@ -83,7 +87,6 @@ public class SubjectService {
     public List<SubjectEntityDto> getPagedSubjectsByNameContaining(String nameText, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
         return subjectRepository.findByNameContainingIgnoreCase(nameText, pageable).stream()
-//                .sorted(Comparator.comparing(Subject::getModifiedDate).reversed())
                 .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
     }
 
@@ -92,7 +95,6 @@ public class SubjectService {
         Pageable pageable = PageRequest.of(page, pageSize);
         return subjectRepository.findAllBySubjectModules_NameContainingIgnoreCase(nameText, pageable)
                 .stream()
-                .sorted(Comparator.comparing(Subject::getModifiedDate).reversed())
                 .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
     }
 
@@ -121,12 +123,12 @@ public class SubjectService {
     }
 
     public Subject create(Subject subject) {
-        validateInputWithInjectedValidator(subject);
+//        validateInputWithInjectedValidator(subject);
         return subjectRepository.save(subject);
     }
 
     public Subject update(Long id, Subject subject) {
-        validateInputWithInjectedValidator(subject);
+//        validateInputWithInjectedValidator(subject);
         var existingSubject = subjectRepository.findById(id)
                 .orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
                         "id", "Subject not found", id.toString()));
