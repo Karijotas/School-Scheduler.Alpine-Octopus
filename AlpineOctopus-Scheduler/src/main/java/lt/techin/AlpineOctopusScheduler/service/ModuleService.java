@@ -184,17 +184,6 @@ public class ModuleService {
         moduleRepository.insertModuleAndSubject(moduleId, subjectId);
     }
 
-//    public boolean deleteSubjectInModuleById(Long moduleId, Long subjectId) {
-//        try {
-//            var existingModule = moduleRepository.findById(moduleId).get();
-//            existingModule.getSubjectTeachers().remove(subjectRepository.findById(subjectId).get());
-//            moduleRepository.save(existingModule);
-//            return true;
-//        } catch (EmptyResultDataAccessException exception) {
-//            return false;
-//        }
-//    }
-
 
     public boolean deleteSubjectFromModuleById(Long moduleId, Long subjectId) {
         var existingModule = moduleRepository.findById(moduleId)

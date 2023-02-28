@@ -205,7 +205,7 @@ export function EditModuleObject() {
             )}
             {!active && !hide && (
               <div>
-                <Table celled color="violet">
+                <Table celled>
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Modulio pavadinimas</Table.HeaderCell>
@@ -272,10 +272,10 @@ export function EditModuleObject() {
                                       placeholder="Dalykai"
                                       value={subject}
                                       onChange={(e, data) => (
-                                        setSubjects(e.target.value),
+                                        setSubject(e.target.value),
                                         setSubjectId(data.value)
                                       )}
-                                      onClose={() => console.log(subjectId)}
+                                      // onClose={() => console.log(subjectId)}
                                     />
                                   </Form.Field>
                                 </Form.Group>

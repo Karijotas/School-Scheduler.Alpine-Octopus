@@ -109,6 +109,7 @@ export function ViewTeachers() {
 
                 <Button
                   icon
+                  id='details'
                   labelPosition="left"
                   primary
                   className="controls"
@@ -197,7 +198,6 @@ export function ViewTeachers() {
                     ))}
                   </Table.Body>
                 </Table>
-                <Divider hidden></Divider>
 
                 <Divider hidden></Divider>
 

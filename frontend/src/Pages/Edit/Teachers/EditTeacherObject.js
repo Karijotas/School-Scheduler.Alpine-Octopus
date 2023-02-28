@@ -23,16 +23,20 @@ const JSON_HEADERS = {
 export function EditTeacherObject() {
   const params = useParams();
   const [modules, setModules] = useState([]);
-  
-  const [teacher, setTeacher] = useState("");
-  const [teacherId, setTeacherId] = useState("");
+  const [shift, setShift] = useState("");
+  const [shifts, setShifts] = useState("");
+  const [shiftId, setShiftId] = useState("");
 
   const [hide, setHide] = useState(false);
   const [active, setActive] = useState(true);
   const [error, setError] = useState();
   const [subjectId, setSubjectId] = useState("");
+  const [subjects, setSubjects] = useState("");
+  const [subject, setSubject] = useState("");
   const [teacherShifts, setTeacherShifts] = useState([]);
   const [teacherSubjects, setTeacherSubjects] = useState([]);
+  const [teacher, setTeacher] = useState("");
+  const [teacherId, setTeacherId] = useState("");
   const [teachers, setTeachers] = useState({
     name: "",
     loginEmail: "",
@@ -110,11 +114,12 @@ export function EditTeacherObject() {
     setActive(false);
   };
 
+
   useEffect(() => {
-    fetch("/api/v1/subjects/")
+    fetch("/api/v1/shifts/")
       .then((response) => response.json())
       .then((data) =>
-        setModules(
+        setShifts(
           data.map((x) => {
             return { key: x.id, text: x.name, value: x.id };
           })
@@ -122,17 +127,62 @@ export function EditTeacherObject() {
       );
   }, []);
 
-//   useEffect(() => {
-//     fetch("/api/v1/shifts/")
-//       .then((response) => response.json())
-//       .then((data) =>
-//         setShifts(
-//           data.map((x) => {
-//             return { key: x.id, text: x.name, value: x.id };
-//           })
-//         )
-//       );
-//   }, []);
+  const addShift = (teacherId, shiftId) => {
+    fetch(`/api/v1/teachers/${teacherId}/shifts/${shiftId}/newShifts`, {
+      method: "POST",
+      header: JSON_HEADERS,
+      body: JSON.stringify({
+        teacherId,
+        shift,
+      }),
+    }).then(fetchTeacherShifts);
+  };
+
+  const removeShift = (teacherId, shiftId) => {
+    fetch(`/api/v1/teachers/${teacherId}/shifts/${shiftId}`, {
+      method: "DELETE",
+      headers: JSON_HEADERS,
+    })
+    .then(fetchTeacherShifts);
+  };
+
+
+  const fetchSingleSubjects = () => {
+    fetch("/api/v1/subjects")
+      .then((response) => response.json())
+      .then((jsonResponse) => setSubjects(jsonResponse));
+  };
+
+  useEffect(() => {
+    fetch("/api/v1/subjects/")
+      .then((response) => response.json())
+      .then((data) =>
+        setSubjects(
+          data.map((x) => {
+            return { key: x.id, text: x.name, value: x.id };
+          })
+        )
+      );
+  }, []);
+
+  const addSubject = (teacherId, subjectId) => {
+    fetch(`/api/v1/teachers/${teacherId}/subjects/${subjectId}/newSubjects`, {
+      method: "POST",
+      header: JSON_HEADERS,
+      body: JSON.stringify({
+        teacherId,
+        subject,
+      }),
+    }).then(fetchTeacherSubjects);
+  };
+
+
+  const removeSubject = (teacherId, subjectId) => {
+    fetch(`/api/v1/teachers/${teacherId}/subjects/${subjectId}`, {
+      method: "DELETE",
+      headers: JSON_HEADERS,
+    }).then(fetchTeacherSubjects);
+  };
 
 
   return (
@@ -151,7 +201,7 @@ export function EditTeacherObject() {
           <Segment raised color="teal">
             {active && !hide && (
               <div>
-                <Table celled color="violet">
+                <Table celled>
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Vardas ir pavardė</Table.HeaderCell>
@@ -175,7 +225,7 @@ export function EditTeacherObject() {
                     </Table.Row>
                   </Table.Body>
                 </Table>
-                <Table celled color="violet">
+                <Table celled>
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Teams vartotojo vardas</Table.HeaderCell>
@@ -247,16 +297,12 @@ export function EditTeacherObject() {
             )}
             {!active && !hide && (
               <div>
-                <Table celled color="violet">
+                <Table celled>
                   <Table.Header>
                     <Table.Row>
                     <Table.HeaderCell>Vardas ir pavardė</Table.HeaderCell>
-                      <Table.HeaderCell>Teams vartotojo vardas</Table.HeaderCell>
-                      <Table.HeaderCell>Email</Table.HeaderCell>
                       <Table.HeaderCell>Telefono nr.</Table.HeaderCell>
-                      <Table.HeaderCell>Užimtumas (val. per savaitę)</Table.HeaderCell>
                       <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
-                      <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
 
@@ -268,6 +314,31 @@ export function EditTeacherObject() {
                           onChange={(e) => updateProperty("name", e)}
                         />
                       </Table.Cell>
+                      <Table.Cell collapsing>
+                        <Input
+                          value={teachers.phone} 
+                          onChange={(e) => updateProperty("phone", e)}
+                        />
+                      </Table.Cell>
+                      <Table.Cell collapsing>
+                        {" "}
+                        {teachers.modifiedDate}{" "}
+                      </Table.Cell>
+                    </Table.Row>
+                  </Table.Body>
+                </Table>
+
+                <Table celled>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>Teams vartotojo vardas</Table.HeaderCell>
+                      <Table.HeaderCell>Email</Table.HeaderCell>
+                      <Table.HeaderCell>Užimtumas (val. per savaitę)</Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
+
+                  <Table.Body>
+                    <Table.Row>
                       <Table.Cell collapsing>
                         <Input
                           value={teachers.loginEmail} 
@@ -282,24 +353,143 @@ export function EditTeacherObject() {
                       </Table.Cell>
                       <Table.Cell collapsing>
                         <Input
-                          value={teachers.phone} 
-                          onChange={(e) => updateProperty("phone", e)}
-                        />
-                      </Table.Cell>
-                      <Table.Cell collapsing>
-                        <Input
                           value={teachers.workHoursPerWeek} 
                           onChange={(e) => updateProperty("workHoursPerWeek", e)}
                         />
                       </Table.Cell>
-                      <Table.Cell collapsing>
-                        {" "}
-                        {teachers.modifiedDate}{" "}
-                      </Table.Cell>
                     </Table.Row>
                   </Table.Body>
                 </Table>
-                <Divider hidden></Divider>
+
+                <Grid columns={2}>
+                <Grid.Column>
+                    <Table>
+                      <Table.Header>
+                        <Table.Row>
+                          <Table.HeaderCell width={8}>
+                            Pamainos
+                          </Table.HeaderCell>
+                        </Table.Row>
+                      </Table.Header>
+                      <Table.Body>
+                        <Table.Row>
+                          <Table.Cell>
+                            <Table.Body>
+                              {teacherShifts.map((shift) => (
+                                <Table.Row key={shift.id}>
+                                  <Table.Cell>{shift.name}</Table.Cell>
+                                  <Table.Cell collapsing>
+                                    <Button
+                                      basic
+                                      compact
+                                      icon="remove"
+                                      title="Pašalinti"
+                                      onClick={() =>
+                                        removeShift(params.id, shift.id)
+                                      }
+                                    ></Button>
+                                  </Table.Cell>
+                                </Table.Row>
+                              ))}
+                            </Table.Body>
+                            <List>
+                              <List.Item>
+                                <Form.Group widths="equal">
+                                  <Form.Field>
+                                    <Select
+                                      options={shifts}
+                                      placeholder="Kabinetai"
+                                      value={shift}
+                                      onChange={(e, data) => (
+                                        setShift(e.target.value),
+                                        setShiftId(data.value)
+                                      )}
+                                    />
+                                  </Form.Field>
+                                </Form.Group>
+                                <Divider hidden />
+                                <List.Content floated="left">
+                                  <Button
+                                    onClick={() => 
+                                      addShift(params.id, shiftId)}
+                                  >
+                                    Pridėti
+                                  </Button>
+                                </List.Content>
+                              </List.Item>
+                            </List>
+                          </Table.Cell>
+                        </Table.Row>
+                      </Table.Body>
+                    </Table>
+                  </Grid.Column>
+                  <Grid.Column>
+                    <Table>
+                      <Table.Header>
+                        <Table.Row>
+                          <Table.HeaderCell width={8}>
+                            Dalykai
+                          </Table.HeaderCell>
+                        </Table.Row>
+                      </Table.Header>
+                      <Table.Body>
+                        <Table.Row>
+                          <Table.Cell>
+                            <Table.Body>
+                              {teacherSubjects.map((subject) => (
+                                <Table.Row key={subject.id}>
+                                  <Table.Cell>{subject.name}</Table.Cell>
+                                  <Table.Cell collapsing>
+                                    <Button
+                                      basic
+                                      compact
+                                      icon="remove"
+                                      title="Pašalinti"
+                                      onClick={() =>
+                                        removeSubject(params.id, subject.id)
+                                      }
+                                    ></Button>
+                                  </Table.Cell>
+                                </Table.Row>
+                              ))}
+                            </Table.Body>
+                            <List>
+                              <List.Item>
+                                <Form.Group widths="equal">
+                                  <Form.Field>
+                                    <Select
+                                      options={subjects}
+                                      placeholder="Dalykai"
+                                      value={subject}
+                                      onChange={(e, data) => (
+                                        setSubject(e.target.value),
+                                        setSubjectId(data.value)
+                                      )}
+                                      // onClose={() => console.log(subjectId)}
+                                    />
+                                  </Form.Field>
+                                </Form.Group>
+                                <Divider hidden />
+                                <List.Content floated="left">
+                                  <Button
+                                    onClick={() =>
+                                      addSubject(params.id, subjectId)
+                                    }
+                                  >
+                                    Pridėti
+                                  </Button>
+                                </List.Content>
+                              </List.Item>
+                            </List>
+                          </Table.Cell>
+                        </Table.Row>
+                      </Table.Body>
+                    </Table>
+                  </Grid.Column>
+
+                  </Grid>
+                  <Divider hidden></Divider>
+
                 <Button onClick={() => setActive(true)}>Atšaukti</Button>
                 <Button floated="right" primary onClick={updateTeachers}>
                   Atnaujinti
