@@ -46,7 +46,7 @@ export function EditModuleObject() {
   }, [params]);
 
   const applyResult = () => {
-    setHide(true);
+    setActive(true);
   };
 
   const updateModules = () => {
@@ -71,6 +71,12 @@ export function EditModuleObject() {
       [property]: event.target.value,
     });
   };
+  const [updated, setUpdated] = useState();
+
+    useEffect(() => {
+        setUpdated(true);
+    }, [setUpdated]);
+
 
   const editThis = () => {
     setActive(false);
