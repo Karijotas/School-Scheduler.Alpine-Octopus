@@ -26,33 +26,33 @@ export function ViewRooms() {
 
 
     const fetchRooms = async () => {
-        fetch(`http://localhost:8081/scheduler/api/v1/rooms/page?page=` + activePage)
+        fetch(`/scheduler/api/v1/rooms/page?page=` + activePage)
             .then(response => response.json())
             .then(jsonResponse => setRooms(jsonResponse));
     };
 
     const fetchFilterRooms = async () => {
-        fetch(`http://localhost:8081/scheduler/api/v1/rooms/page/name-filter/${nameText}?page=` + activePage)
+        fetch(`/scheduler/api/v1/rooms/page/name-filter/${nameText}?page=` + activePage)
             .then((response) => response.json())
             .then((jsonRespone) => setRooms(jsonRespone));
     };
 
 
     const removeRoom = (id) => {
-        fetch('http://localhost:8081/scheduler/api/v1/rooms/' + id, {
+        fetch('/scheduler/api/v1/rooms/' + id, {
             method: 'DELETE',
             headers: JSON_HEADERS
         }).then(fetchRooms).then(setOpen(false));
     }
 
     const fetchBuildingRooms = async () => {
-        fetch(`http://localhost:8081/scheduler/api/v1/rooms/page/building-filter/${buildingText}?page=` + activePage)
+        fetch(`/scheduler/api/v1/rooms/page/building-filter/${buildingText}?page=` + activePage)
             .then((response) => response.json())
             .then((jsonRespone) => setRooms(jsonRespone));
     };
 
     const fetchSingleRooms = async () => {
-        fetch('http://localhost:8081/scheduler/api/v1/rooms/')
+        fetch('/scheduler/api/v1/rooms/')
             .then(response => response.json())
             .then(jsonResponse => setRoomsForPaging(jsonResponse))
             .then(setPageCount(Math.ceil(roomsforPaging.length / 10)))

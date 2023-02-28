@@ -42,31 +42,31 @@ export function ViewGroups() {
 
 
     const fetchProgramGroups = async () => {
-        fetch('http://localhost:8081/scheduler/api/v1/groups/program-filter/' + programText)
+        fetch('/scheduler/api/v1/groups/program-filter/' + programText)
             .then(response => response.json())
             .then(jsonResponse => setGroups(jsonResponse));
     };
     const fetchYearGroups = async () => {
-        fetch('http://localhost:8081/scheduler/api/v1/groups/year-filter/' + yearText)
+        fetch('/scheduler/api/v1/groups/year-filter/' + yearText)
             .then(response => response.json())
             .then(jsonResponse => setGroups(jsonResponse));
     };
 
 
     const fetchFilterGroups = async () => {
-        fetch('http://localhost:8081/scheduler/api/v1/groups/name-filter/' + nameText)
+        fetch('/scheduler/api/v1/groups/name-filter/' + nameText)
             .then(response => response.json())
             .then(jsonResponse => setGroups(jsonResponse));
     };
 
     const fetchGroups = async () => {
-        fetch('http://localhost:8081/scheduler/api/v1/groups/page?page=' + activePage)
+        fetch('/scheduler/api/v1/groups/page?page=' + activePage)
             .then(response => response.json())
             .then(jsonResponse => setGroups(jsonResponse));
     };
 
     const fetchSingleGroups = async () => {
-        fetch('http://localhost:8081/scheduler/api/v1/groups/')
+        fetch('/scheduler/api/v1/groups/')
             .then(response => response.json())
             .then(jsonResponse => setGroupsForPaging(jsonResponse))
             .then(setPageCount(Math.ceil(groupsforPaging.length / 10)))
