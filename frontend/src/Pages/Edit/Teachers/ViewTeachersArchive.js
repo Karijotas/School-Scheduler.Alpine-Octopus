@@ -16,50 +16,50 @@ const JSON_HEADERS = {
 
 export function ViewTeachersArchive() {
 
-  const [programs, setPrograms] = useState([]);
-  const [programsforPaging, setProgramsForPaging] = useState([]);
+  const [teachers, setTeachers] = useState([]);
+  const [teachersforPaging, setTeachersForPaging] = useState([]);
   const [activePage, setActivePage] = useState(0);
   const [pagecount, setPageCount] = useState();
 
-  const fetchSinglePrograms = async () => {
-    fetch('/api/v1/programs/archive/')
+  const fetchSingleTeachers = async () => {
+    fetch('/api/v1/teachers/archive/')
       .then((response) => response.json())
-      .then((jsonResponse) => setProgramsForPaging(jsonResponse))
-      .then(setPageCount(Math.ceil(programsforPaging.length / 10)));
+      .then((jsonResponse) => setTeachersForPaging(jsonResponse))
+      .then(setPageCount(Math.ceil(teachersforPaging.length / 10)));
   };
 
-  const fetchPagedPrograms = async () => {
-    fetch('/api/v1/programs/archive/page?page=' + activePage)
+  const fetchPagedTeachers = async () => {
+    fetch('/api/v1/teachers/archive/page?page=' + activePage)
       .then((response) => response.json())
-      .then((jsonResponse) => setPrograms(jsonResponse));
+      .then((jsonResponse) => setTeachers(jsonResponse));
   };
 
-  const fetchPrograms = async () => {
-    fetch(`/api/v1/programs/archive/`)
+  const fetchTeachers = async () => {
+    fetch(`/api/v1/pteachers/archive/`)
       .then((response) => response.json())
-      .then((jsonRespones) => setPrograms(jsonRespones));
+      .then((jsonRespones) => setTeachers(jsonRespones));
   };
 
   useEffect(() => {
-    fetch("/api/v1/programs/archive/page?page=" + activePage)
+    fetch("/api/v1/teachers/archive/page?page=" + activePage)
       .then((response) => response.json())
-      .then((jsonRespones) => setPrograms(jsonRespones));
+      .then((jsonRespones) => setTeachers(jsonRespones));
   }, []);
 
-  const restoreProgram = (id) => {
-    fetch("/api/v1/programs/restore/" + id, {
+  const restoreTeacher = (id) => {
+    fetch("/api/v1/teachers/restore/" + id, {
       method: "PATCH",
-    }).then(fetchPagedPrograms);
+    }).then(fetchPagedTeachers);
   };
 
   useEffect(() => {
     if (pagecount !== null) {
-      fetchSinglePrograms();
+      fetchSingleTeachers();
     }
-  }, [programs]);
+  }, [teachers]);
 
   useEffect(() => {
-    fetchPagedPrograms();
+    fetchPagedTeachers();
   }, [activePage]);
 
   return (
@@ -77,7 +77,7 @@ export function ViewTeachersArchive() {
                 <Table.Header>
                   <Table.Row>
                     <Table.HeaderCell>
-                      Archyvas. Programos pavadinimas
+                      Archyvas. Mokytojo vardas
                     </Table.HeaderCell>
                     <Table.HeaderCell collapsing textAlign="center">
                       Veiksmai
@@ -85,9 +85,9 @@ export function ViewTeachersArchive() {
                   </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                  {programs.map((program) => (
-                    <Table.Row key={program.id}>
-                      <Table.Cell disabled>{program.name}</Table.Cell>
+                  {teachers.map((teacher) => (
+                    <Table.Row key={teacher.id}>
+                      <Table.Cell disabled>{teacher.name}</Table.Cell>
                       <Table.Cell>
                         <Button
                           textAlign="center"
@@ -95,7 +95,7 @@ export function ViewTeachersArchive() {
                           compact
                           title="Atstatyti"
                           icon="undo"
-                          onClick={() => restoreProgram(program.id)}
+                          onClick={() => restoreTeacher(teacher.id)}
                         ></Button>
                       </Table.Cell>
                     </Table.Row>

@@ -2,13 +2,8 @@ package lt.techin.AlpineOctopusScheduler.api.dto.mapper;
 
 import lt.techin.AlpineOctopusScheduler.api.dto.ProgramDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ProgramEntityDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.SubjectDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.ProgramTestDto;
 import lt.techin.AlpineOctopusScheduler.model.Program;
-import lt.techin.AlpineOctopusScheduler.model.Subject;
-
-import java.util.List;
-import java.util.Objects;
 
 public class ProgramMapper {
 
@@ -58,4 +53,12 @@ public class ProgramMapper {
 
         return program;
     }
+
+    public static ProgramTestDto toProgramTestDto(Program program) {
+        var programDto = new ProgramTestDto();
+
+        programDto.setId(program.getId());
+        return programDto;
+    }
+
 }
