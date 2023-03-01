@@ -4,9 +4,11 @@ import lt.techin.AlpineOctopusScheduler.api.dto.GroupsEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupsMapper;
 import lt.techin.AlpineOctopusScheduler.dao.GroupsRepository;
 import lt.techin.AlpineOctopusScheduler.dao.ProgramRepository;
+import lt.techin.AlpineOctopusScheduler.dao.ShiftRepository;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Groups;
 import lt.techin.AlpineOctopusScheduler.model.Program;
+import lt.techin.AlpineOctopusScheduler.model.Shift;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
@@ -31,12 +33,15 @@ public class GroupService {
     private final ProgramRepository programRepository;
 
     private final Validator validator;
+    private final ShiftRepository shiftRepository;
 
     @Autowired
-    public GroupService(GroupsRepository groupsRepository, ProgramRepository programRepository, Validator validator) {
+    public GroupService(GroupsRepository groupsRepository, ProgramRepository programRepository, Validator validator,
+                        ShiftRepository shiftRepository) {
         this.groupsRepository = groupsRepository;
         this.programRepository = programRepository;
         this.validator = validator;
+        this.shiftRepository = shiftRepository;
     }
 
     void validateInputWithInjectedValidator(Groups groups) {
@@ -103,13 +108,16 @@ public class GroupService {
 //                .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
     }
 
-    public Groups create(Groups groups, Long programId) {
+    public Groups create(Groups groups, Long programId, Long shiftId) {
         validateInputWithInjectedValidator(groups);
         Program createdProgram = programRepository.findById(programId)
                 .orElseThrow(() -> new SchedulerValidationException("Program doesn't exist", "Program", "Program not found", programId.toString()));
+        Shift createdShift = shiftRepository.findById(shiftId)
+                .orElseThrow(() -> new SchedulerValidationException("Shift doesn't exist", "Shift", "Shift not found", shiftId.toString()));
 
         if (schoolYearIsValid(groups)) {
             groups.setProgram(createdProgram);
+            groups.setShift(createdShift);
             return groupsRepository.save(groups);
         } else {
             throw new SchedulerValidationException("Invalid year value", "School year", "School year must be between 2023-3023", groups.getSchoolYear().toString());
@@ -117,15 +125,17 @@ public class GroupService {
     }
 
     //    .getById(programId)
-    public Groups update(Long id, Groups groups, Long programId) {
+    public Groups update(Long id, Groups groups, Long programId, Long shiftId) {
         validateInputWithInjectedValidator(groups);
         Program createdProgram = programRepository.findById(programId)
                 .orElseThrow(() -> new SchedulerValidationException("Program doesn't exist", "Program", "Program not found", programId.toString()));
+        Shift createdShift = shiftRepository.findById(shiftId)
+                .orElseThrow(() -> new SchedulerValidationException("Shift doesn't exist", "Shift", "Shift not found", shiftId.toString()));
         Groups existingGroups = groupsRepository.findById(id)
                 .orElseThrow(() -> new SchedulerValidationException("Group doesn't exist", "id", "Group doesn't exist", id.toString()));
 
         existingGroups.setName(groups.getName());
-        existingGroups.setShift(groups.getShift());
+        existingGroups.setShift(createdShift);
         existingGroups.setProgram(createdProgram);
         existingGroups.setSchoolYear(groups.getSchoolYear());
         existingGroups.setStudentAmount(groups.getStudentAmount());

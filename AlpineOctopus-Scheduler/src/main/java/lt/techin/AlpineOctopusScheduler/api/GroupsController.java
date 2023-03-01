@@ -131,11 +131,11 @@ public class GroupsController {
     }
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE,})
-    public ResponseEntity<GroupsDto> createGroup(@Valid @RequestBody GroupsDto groupsDto, Long programId) {
+    public ResponseEntity<GroupsDto> createGroup(@Valid @RequestBody GroupsDto groupsDto, Long programId, Long shiftId) {
         if (groupService.groupNameIsUnique(toGroup(groupsDto))) {
             if (groupService.studentAmountIsValid(toGroup(groupsDto))) {
                 if (groupService.schoolYearIsValid(toGroup(groupsDto))) {
-                    var createdGroup = groupService.create(toGroup(groupsDto), programId);
+                    var createdGroup = groupService.create(toGroup(groupsDto), programId, shiftId);
                     return ok(toGroupDto(createdGroup));
                 } else {
                     throw new SchedulerValidationException("Invalid year value", "School year", "School year must be between 2023-3023", groupsDto.getSchoolYear().toString());
@@ -159,25 +159,25 @@ public class GroupsController {
         }
     }
 
-    @PutMapping("/{groupId}")
-    public ResponseEntity<GroupsDto> replaceGroup(@PathVariable Long groupId, @Valid @RequestBody GroupsDto groupsDto) {
-        if (groupService.studentAmountIsValid(toGroup(groupsDto))) {
-            if (groupService.schoolYearIsValid(toGroup(groupsDto))) {
-                var updatedGroup = groupService.replace(groupId, toGroup(groupsDto));
-                return ok(toGroupDto(updatedGroup));
-            } else {
-                throw new SchedulerValidationException("Invalid year value", "School year", "School year must be between 2023-3023", groupsDto.getSchoolYear().toString());
-            }
-        } else {
-            throw new SchedulerValidationException("Invalid student amount", "Student amount", "Student amount must be between 1-300", groupsDto.getStudentAmount().toString());
-        }
-    }
+//    @PutMapping("/{groupId}")
+//    public ResponseEntity<GroupsDto> replaceGroup(@PathVariable Long groupId, @Valid @RequestBody GroupsDto groupsDto) {
+//        if (groupService.studentAmountIsValid(toGroup(groupsDto))) {
+//            if (groupService.schoolYearIsValid(toGroup(groupsDto))) {
+//                var updatedGroup = groupService.replace(groupId, toGroup(groupsDto));
+//                return ok(toGroupDto(updatedGroup));
+//            } else {
+//                throw new SchedulerValidationException("Invalid year value", "School year", "School year must be between 2023-3023", groupsDto.getSchoolYear().toString());
+//            }
+//        } else {
+//            throw new SchedulerValidationException("Invalid student amount", "Student amount", "Student amount must be between 1-300", groupsDto.getStudentAmount().toString());
+//        }
+//    }
 
     @PatchMapping("/{groupId}")
-    public ResponseEntity<GroupsDto> updateGroup(@PathVariable Long groupId, @Valid @RequestBody GroupsDto groupsDto, Long programId) {
+    public ResponseEntity<GroupsDto> updateGroup(@PathVariable Long groupId, @Valid @RequestBody GroupsDto groupsDto, Long programId, Long shiftId) {
         if (groupService.studentAmountIsValid(toGroup(groupsDto))) {
             if (groupService.schoolYearIsValid(toGroup(groupsDto))) {
-                var updatedGroup = groupService.update(groupId, toGroup(groupsDto), programId);
+                var updatedGroup = groupService.update(groupId, toGroup(groupsDto), programId, shiftId);
                 return ok(toGroupDto(updatedGroup));
             } else {
                 throw new SchedulerValidationException("Invalid year value", "School year", "School year must be between 2023-3023", groupsDto.getSchoolYear().toString());
