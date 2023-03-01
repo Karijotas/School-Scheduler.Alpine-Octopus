@@ -19,6 +19,8 @@ public interface GroupsRepository extends JpaRepository<Groups, Long> {
     List<Groups> findAllByDeletedAndNameContainingIgnoreCase(Boolean deleted, String nameText, Pageable pageable);
 
     List<Groups> findAllByDeletedOrderByModifiedDateDesc(Boolean deleted);
+
+    List<Groups> findAllByDeletedAndProgram_nameContainingIgnoreCaseOrderByModifiedDateDesc(Boolean deleted, String programText);
 }
 
 
