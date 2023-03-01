@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Form, Grid, Icon, Segment } from "semantic-ui-react";
-import MainMenu from "../../../Components/MainMenu";
 import { EditMenu } from '../../../Components/EditMenu';
+import MainMenu from "../../../Components/MainMenu";
 
 
 const JSON_HEADERS = {
@@ -31,7 +31,7 @@ export function CreateRoom() {
 
   const createRoom = () => {
     fetch(
-      '/api/v1/rooms', {
+      '/scheduler/api/v1/rooms', {
       method: 'POST',
       headers: JSON_HEADERS,
       body: JSON.stringify({

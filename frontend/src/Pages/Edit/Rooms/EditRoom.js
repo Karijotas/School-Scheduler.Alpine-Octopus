@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button, Grid, Icon, Input, Segment, Table } from 'semantic-ui-react';
-import MainMenu from '../../../Components/MainMenu';
 import { EditMenu } from '../../../Components/EditMenu';
+import MainMenu from '../../../Components/MainMenu';
 
 
 
@@ -29,7 +29,7 @@ export function EditRoom() {
     });
 
     useEffect(() => {
-        fetch('/api/v1/rooms/' + params.id)
+        fetch('/scheduler/api/v1/rooms/' + params.id)
             .then(response => response.json())
             .then(setRooms);
     }, []);
@@ -45,7 +45,7 @@ export function EditRoom() {
     }
 
     const updateRooms = () => {
-        fetch('/api/v1/rooms/' + params.id, {
+        fetch('/scheduler/api/v1/rooms/' + params.id, {
             method: 'PUT',
             headers: JSON_HEADERS,
             body: JSON.stringify(rooms)

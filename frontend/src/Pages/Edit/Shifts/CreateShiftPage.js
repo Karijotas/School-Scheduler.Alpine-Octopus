@@ -30,7 +30,7 @@ export function CreateShiftPage() {
   };
 
   const createShift = () => {
-    fetch("/api/v1/shifts", {
+    fetch("/scheduler/api/v1/shifts", {
       method: "POST",
       headers: JSON_HEADERS,
       body: JSON.stringify({
@@ -42,7 +42,7 @@ export function CreateShiftPage() {
   };
 
   const fetchShifts = async () => {
-    fetch(`/api/v1/shifts/`)
+    fetch(`/scheduler/api/v1/shifts/`)
       .then((response) => response.json())
       .then((jsonRespones) => setShifts(jsonRespones));
   };

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useHref } from 'react-router-dom';
-import { Button, Form, Grid, Icon, Segment, Select } from "semantic-ui-react";
+import { Button, Form, Grid, Icon, Segment } from "semantic-ui-react";
 import { EditMenu } from '../../../Components/EditMenu';
 import MainMenu from '../../../Components/MainMenu';
 
@@ -34,7 +34,7 @@ export function CreateSubjecPage() {
   };
 
   const createSubject = () => {
-    fetch("/api/v1/subjects?moduleId=" + moduleId, {
+    fetch("/scheduler/api/v1/subjects?moduleId=" + moduleId, {
       method: "POST",
       headers: JSON_HEADERS,
       body: JSON.stringify({
@@ -48,7 +48,7 @@ export function CreateSubjecPage() {
   };
 
   useEffect(() => {
-    fetch("/api/v1/modules/")
+    fetch("/scheduler/api/v1/modules/")
       .then((response) => response.json())
       .then((data) =>
         setModules(
@@ -60,7 +60,7 @@ export function CreateSubjecPage() {
   }, []);
 
   useEffect(() => {
-    fetch("/api/v1/teachers/")
+    fetch("/scheduler/api/v1/teachers/")
       .then((response) => response.json())
       .then((data) =>
         setTeachers(
@@ -72,7 +72,7 @@ export function CreateSubjecPage() {
   }, []);
 
   useEffect(() => {
-    fetch("/api/v1/rooms/")
+    fetch("/scheduler/api/v1/rooms/")
       .then((response) => response.json())
       .then((data) =>
         setRooms(

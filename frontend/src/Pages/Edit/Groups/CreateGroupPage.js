@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useHref } from 'react-router-dom';
 import { Button, Form, Grid, Icon, Input, Segment, Select } from "semantic-ui-react";
-import MainMenu from '../../../Components/MainMenu';
-import { EditMenu } from '../../../Components/EditMenu';
 import { YEAR_OPTIONS } from '../../../Components/const';
+import { EditMenu } from '../../../Components/EditMenu';
+import MainMenu from '../../../Components/MainMenu';
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -54,7 +54,7 @@ export function CreateGroupPage() {
 
   const createGroup = () => {
     fetch(
-      '/api/v1/groups?programId=' + programId, {
+      '/scheduler/api/v1/groups?programId=' + programId, {
       method: 'POST',
       headers: JSON_HEADERS,
       body: JSON.stringify({
@@ -67,7 +67,7 @@ export function CreateGroupPage() {
 
   };
   useEffect(() => {
-    fetch("/api/v1/programs/")
+    fetch("/scheduler/api/v1/programs/")
       .then((response) => response.json())
       .then((data) =>
         setPrograms(

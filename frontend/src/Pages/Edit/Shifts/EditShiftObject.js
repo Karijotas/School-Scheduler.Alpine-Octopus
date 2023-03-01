@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import {
   Button,
-  Divider,
-  Icon,
-  Input,
-  Table,
-  Grid,
-  Segment,
+  Divider, Grid, Icon,
+  Input, Segment, Table
 } from "semantic-ui-react";
-import { ViewShifts } from "./ViewShifts";
-import MainMenu from "../../../Components/MainMenu";
 import { EditMenu } from '../../../Components/EditMenu';
-import { useParams } from "react-router-dom";
+import MainMenu from "../../../Components/MainMenu";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -31,7 +26,7 @@ export function EditShiftObject() {
   });
 
   useEffect(() => {
-    fetch("/api/v1/shifts/" + params.id)
+    fetch("/scheduler/api/v1/shifts/" + params.id)
       .then((response) => response.json())
       .then(setShifts);
   }, [active, params]);
@@ -41,7 +36,7 @@ export function EditShiftObject() {
   };
 
   const updateShifts = () => {
-    fetch("/api/v1/shifts/" + params.id, {
+    fetch("/scheduler/api/v1/shifts/" + params.id, {
       method: "PUT",
       headers: JSON_HEADERS,
       body: JSON.stringify(shifts),

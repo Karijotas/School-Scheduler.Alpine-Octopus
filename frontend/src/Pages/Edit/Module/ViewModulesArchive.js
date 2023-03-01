@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from 'react-router-dom';
 import {
   Button,
-  ButtonGroup, Confirm, Divider, Grid, Icon,
-  Input,
-  Segment,
+  ButtonGroup, Divider, Grid, Icon, Segment,
   Table
 } from "semantic-ui-react";
-import MainMenu from '../../../Components/MainMenu';
 import { EditMenu } from '../../../Components/EditMenu';
+import MainMenu from '../../../Components/MainMenu';
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -23,26 +20,26 @@ export function ViewModulesArchive() {
 
 
   const fetchSingleModules = () => {
-    fetch("/api/v1/modules/archive/")
+    fetch("/scheduler/api/v1/modules/archive/")
       .then((response) => response.json())
       .then((jsonResponse) => setModulesForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(modulesforPaging.length / 10)));
   };
 
   const fetchPagedModules = async () => {
-    fetch('/api/v1/modules/archive/page?page=' + activePage)
+    fetch('/scheduler/api/v1/modules/archive/page?page=' + activePage)
       .then((response) => response.json())
       .then((jsonResponse) => setModules(jsonResponse));
   };
 
   const fetchModules = async () => {
-    fetch(`/api/v1/modules/archive/`)
+    fetch(`/scheduler/api/v1/modules/archive/`)
       .then((response) => response.json())
       .then((jsonRespones) => setModules(jsonRespones));
   };
 
   useEffect(() => {
-    fetch("/api/v1/modules/archive/page?page=" + activePage)
+    fetch("/scheduler/api/v1/modules/archive/page?page=" + activePage)
       .then((response) => response.json())
       .then((jsonRespones) => setModules(jsonRespones));
   }, []);
@@ -52,7 +49,7 @@ export function ViewModulesArchive() {
   }, [activePage]);
 
   const restoreModule = (id) => {
-    fetch("/api/v1/modules/restore/" + id, {
+    fetch("/scheduler/api/v1/modules/restore/" + id, {
       method: "PATCH",
     }).then(fetchPagedModules);
   };

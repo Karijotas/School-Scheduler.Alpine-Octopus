@@ -5,8 +5,8 @@ import {
 } from "semantic-ui-react";
 
 import { NavLink, useHref } from 'react-router-dom';
-import MainMenu from '../../../Components/MainMenu';
 import { EditMenu } from '../../../Components/EditMenu';
+import MainMenu from '../../../Components/MainMenu';
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -47,7 +47,7 @@ export function CreateProgramPage() {
   };
 
   const createProgram = () => {
-    fetch("/api/v1/programs", {
+    fetch("/scheduler/api/v1/programs", {
       method: "POST",
       headers: JSON_HEADERS,
       body: JSON.stringify({

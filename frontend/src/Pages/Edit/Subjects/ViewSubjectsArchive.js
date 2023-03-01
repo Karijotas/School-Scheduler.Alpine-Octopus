@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import {
   Button,
-  ButtonGroup, Divider, Grid, Icon, 
+  ButtonGroup, Divider, Grid, Icon,
   Segment,
   Table
 } from "semantic-ui-react";
+import { EditMenu } from '../../../Components/EditMenu';
 import MainMenu from "../../../Components/MainMenu";
-import {EditMenu} from '../../../Components/EditMenu';
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -20,32 +20,32 @@ export function ViewSubjectsArchive() {
   const [pagecount, setPageCount] = useState();
 
   const fetchSingleSubject = async () => {
-    fetch('/api/v1/subjects/archive/')
+    fetch('/scheduler/api/v1/subjects/archive/')
       .then((response) => response.json())
       .then((jsonResponse) => setSubjectsForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(subjectsForPaging.length / 10)));
   };
 
   const fetchPagedSubjects = async () => {
-    fetch('/api/v1/subjects/archive/page?page=' + activePage)
+    fetch('/scheduler/api/v1/subjects/archive/page?page=' + activePage)
       .then((response) => response.json())
       .then((jsonResponse) => setSubjects(jsonResponse));
   };
 
   const fetchSubjects = async () => {
-    fetch(`/api/v1/subjects/archive/`)
+    fetch(`/scheduler/api/v1/subjects/archive/`)
       .then((response) => response.json())
       .then((jsonRespones) => setSubjects(jsonRespones));
   };
 
   useEffect(() => {
-    fetch("/api/v1/subjects/archive/page?page=" + activePage)
+    fetch("/scheduler/api/v1/subjects/archive/page?page=" + activePage)
       .then((response) => response.json())
       .then((jsonRespones) => setSubjects(jsonRespones));
   }, []);
 
   const restoreSubject = (id) => {
-    fetch("/api/v1/subjects/restore/" + id, {
+    fetch("/scheduler/api/v1/subjects/restore/" + id, {
       method: "PATCH",
     }).then(fetchPagedSubjects);
   };

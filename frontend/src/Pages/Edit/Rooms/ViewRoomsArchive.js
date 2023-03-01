@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from 'react-router-dom';
 import {
   Button,
-  ButtonGroup, Confirm, Divider, Grid, Icon,
+  ButtonGroup, Divider, Grid, Icon,
   Input,
   Segment,
   Table
 } from "semantic-ui-react";
+import { EditMenu } from '../../../Components/EditMenu';
 import MainMenu from "../../../Components/MainMenu";
-import {EditMenu} from '../../../Components/EditMenu';
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -25,26 +24,26 @@ export function ViewRoomsArchive() {
   const [pagecount, setPageCount] = useState();
 
   const fetchFilterPrograms = async () => {
-    fetch(`/api/v1/programs/page/starting-with/${nameText}?page=` + activePage)
+    fetch(`/scheduler/api/v1/programs/page/starting-with/${nameText}?page=` + activePage)
       .then((response) => response.json())
       .then((jsonRespone) => setPrograms(jsonRespone));
   };
 
   const fetchSinglePrograms = () => {
-    fetch("/api/v1/programs")
+    fetch("/scheduler/api/v1/programs")
       .then((response) => response.json())
       .then((jsonResponse) => setGroupsForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(groupsforPaging.length / 10)));
   };
 
   const fetchPrograms = async () => {
-    fetch(`/api/v1/programs/archive/`)
+    fetch(`/scheduler/api/v1/programs/archive/`)
       .then((response) => response.json())
       .then((jsonRespones) => setPrograms(jsonRespones));
   };
 
   const removeProgram = (id) => {
-    fetch("/api/v1/programs/" + id, {
+    fetch("/scheduler/api/v1/programs/" + id, {
       method: "DELETE",
       headers: JSON_HEADERS,
     }).then(fetchPrograms)

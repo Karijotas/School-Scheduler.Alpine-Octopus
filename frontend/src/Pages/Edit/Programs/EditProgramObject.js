@@ -11,10 +11,10 @@ import {
   Segment,
   Select,
   Table,
-  TextArea,
+  TextArea
 } from "semantic-ui-react";
+import { EditMenu } from "../../../Components/EditMenu";
 import MainMenu from "../../../Components/MainMenu";
-import  {EditMenu} from "../../../Components/EditMenu";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -40,33 +40,33 @@ export function EditProgramObject() {
   }); 
 
   useEffect(() => {
-    fetch("/api/v1/programs/" + params.id)
+    fetch("/scheduler/api/v1/programs/" + params.id)
       .then((response) => response.json())
       .then(setPrograms);
   }, [totalHours, active, params]);
 
   useEffect(() => {
-    fetch(`/api/v1/programs/${params.id}/subjects`)
+    fetch(`/scheduler/api/v1/programs/${params.id}/subjects`)
       .then((response) => response.json())
       .then(setSubjectsInProgram)
       .then(console.log(subjectsInProgram));
   }, [params, totalHours, subjectHours]);
 
   const getSubjectsInProgram = () => {
-    fetch(`/api/v1/programs/${params.id}/subjects`)
+    fetch(`/scheduler/api/v1/programs/${params.id}/subjects`)
       .then((response) => response.json())
       .then(setSubjectsInProgram)
       .then(console.log(subjectsInProgram));
   };
 
   useEffect(() => {
-    fetch(`/api/v1/programs/${params.id}/subjects/hours`)
+    fetch(`/scheduler/api/v1/programs/${params.id}/subjects/hours`)
       .then((response) => response.json())
       .then(setTotalHours);
   }, [subjectsInProgram]);
 
   const removeSubject = (programId, subjectId, hours) => {
-    fetch(`/api/v1/programs/${programId}/subjects/${subjectId}/${hours}`, {
+    fetch(`/scheduler/api/v1/programs/${programId}/subjects/${subjectId}/${hours}`, {
       method: "DELETE",
       headers: JSON_HEADERS,
     })
@@ -79,7 +79,7 @@ export function EditProgramObject() {
 
   const addSubjectAndHours = (programId, subjectId, hours) => {
     fetch(
-      `/api/v1/programs/${programId}/subjects/${subjectId}/${hours}/newSubjectsWithHours`,
+      `/scheduler/api/v1/programs/${programId}/subjects/${subjectId}/${hours}/newSubjectsWithHours`,
       {
         method: "POST",
         header: JSON_HEADERS,
@@ -103,7 +103,7 @@ export function EditProgramObject() {
 
 
   useEffect(() => {
-    fetch(`/api/v1/programs/${params.id}/availableSubjects`)
+    fetch(`/scheduler/api/v1/programs/${params.id}/availableSubjects`)
       .then((response) => response.json())
       .then((data) =>
         setSubjects(
@@ -119,7 +119,7 @@ export function EditProgramObject() {
   };
 
   const updatePrograms = () => {
-    fetch("/api/v1/programs/" + params.id, {
+    fetch("/scheduler/api/v1/programs/" + params.id, {
       method: "PATCH",
       headers: JSON_HEADERS,
       body: JSON.stringify(programs),

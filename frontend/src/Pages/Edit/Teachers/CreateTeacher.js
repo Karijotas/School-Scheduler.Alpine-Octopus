@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useHref } from 'react-router-dom';
-import { Button, Form, Grid, Icon, Segment, Select } from "semantic-ui-react";
+import { Button, Form, Grid, Icon, Segment } from "semantic-ui-react";
 import { EditMenu } from '../../../Components/EditMenu';
 import MainMenu from '../../../Components/MainMenu';
 
@@ -34,7 +34,7 @@ export function CreateTeacher() {
   };
 
   const createTeacher = () => {
-    fetch("/api/v1/teachers?subjectId=" + subjectId, {
+    fetch("/scheduler/api/v1/teachers?subjectId=" + subjectId, {
       method: "POST",
       headers: JSON_HEADERS,
       body: JSON.stringify({
@@ -49,7 +49,7 @@ export function CreateTeacher() {
   };
 
   useEffect(() => {
-    fetch("/api/v1/subjects/")
+    fetch("/scheduler/api/v1/subjects/")
       .then((response) => response.json())
       .then((data) =>
         setSubjects(

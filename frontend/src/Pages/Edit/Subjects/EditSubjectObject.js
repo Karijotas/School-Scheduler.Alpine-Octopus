@@ -1,21 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import {
   Button,
-  Divider,
-  Icon,
-  Input,
-  Table,
-  Grid,
-  Segment,
-  List,
-  Form,
-  Select,
-  TextArea,
+  Divider, Form, Grid, Icon,
+  Input, List, Segment, Select, Table, TextArea
 } from "semantic-ui-react";
-import { ViewSubjects } from "./ViewSubjects";
-import MainMenu from "../../../Components/MainMenu";
 import { EditMenu } from "../../../Components/EditMenu";
-import { useParams } from "react-router-dom";
+import MainMenu from "../../../Components/MainMenu";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -49,7 +40,7 @@ export function EditSubjectObject() {
   });
 
   useEffect(() => {
-    fetch("/api/v1/subjects/" + params.id)
+    fetch("/scheduler/api/v1/subjects/" + params.id)
       .then((response) => response.json())
       .then(setSubjects);
   }, [active, params]);
@@ -65,49 +56,49 @@ export function EditSubjectObject() {
   // };
 
   const getModulesInSubjects = () => {
-    fetch(`/api/v1/subjects/${params.id}/modules`)
+    fetch(`/scheduler/api/v1/subjects/${params.id}/modules`)
       .then((response) => response.json())
       .then(setModulesInSubjects)
       .then(console.log(modulesInSubjects));
   };
 
   useEffect(() => {
-    fetch(`/api/v1/subjects/${params.id}/modules`)
+    fetch(`/scheduler/api/v1/subjects/${params.id}/modules`)
       .then((response) => response.json())
       .then(setModulesInSubjects)
       .then(console.log(modulesInSubjects));
   }, [params]);
 
   const getRoomsInSubjects = () => {
-    fetch(`/api/v1/subjects/${params.id}/rooms`)
+    fetch(`/scheduler/api/v1/subjects/${params.id}/rooms`)
       .then((response) => response.json())
       .then(setRoomsInSubjects)
       .then(console.log(roomsInSubjects));
   };
 
   useEffect(() => {
-    fetch(`/api/v1/subjects/${params.id}/rooms`)
+    fetch(`/scheduler/api/v1/subjects/${params.id}/rooms`)
       .then((response) => response.json())
       .then(setRoomsInSubjects)
       .then(console.log(roomsInSubjects));
   }, [params]);
 
   const getTeachersInSubjects = () => {
-    fetch(`/api/v1/subjects/${params.id}/teachers`)
+    fetch(`/scheduler/api/v1/subjects/${params.id}/teachers`)
       .then((response) => response.json())
       .then(setTeachersInSubjects)
       .then(console.log(teachersInSubjects));
   };
 
   useEffect(() => {
-    fetch(`/api/v1/subjects/${params.id}/teachers`)
+    fetch(`/scheduler/api/v1/subjects/${params.id}/teachers`)
       .then((response) => response.json())
       .then(setTeachersInSubjects)
       .then(console.log(teachersInSubjects));
   }, [params]);
 
   const updateSubjects = () => {
-    fetch("/api/v1/subjects/" + params.id, {
+    fetch("/scheduler/api/v1/subjects/" + params.id, {
       method: "PUT",
       headers: JSON_HEADERS,
       body: JSON.stringify(subjects),
