@@ -449,8 +449,7 @@ export function EditSubjectObject() {
                                 <Divider hidden />
                                 <List.Content floated="left">
                                   <Button
-                                  color="teal"
-                                  //id='details'
+                                  id='details'
                                     onClick={() =>
                                       addModule(params.id, moduleId)
                                     }
@@ -520,8 +519,7 @@ export function EditSubjectObject() {
                                 <Divider hidden />
                                 <List.Content floated="left">
                                   <Button
-                                  color="teal"
-                                  //id='details'
+                                  id='details'
                                     onClick={() =>
                                       addTeacher(params.id, teacherId)
                                     }
@@ -589,8 +587,7 @@ export function EditSubjectObject() {
                                 <Divider hidden />
                                 <List.Content floated="left">
                                   <Button
-                                  color="teal"
-                                  //id='details'
+                                  id='details'
                                     onClick={() => addRoom(params.id, roomId)}
                                     // onClose={fetch(
                                     //   `/api/v1/subjects/${params.id}/rooms`

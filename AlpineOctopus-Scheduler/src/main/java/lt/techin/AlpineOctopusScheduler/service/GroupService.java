@@ -21,6 +21,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupsMapper.toGroupEntityDto;
+
 
 @Service
 public class GroupService {
@@ -72,13 +74,13 @@ public class GroupService {
 
     @Transactional(readOnly = true)
     public List<GroupsEntityDto> getGroupsByNameContaining(String nameText) {
-        return groupsRepository.findByNameContainingIgnoreCase(nameText).stream()
+        return groupsRepository.findAllByDeletedAndNameContainingIgnoreCase(Boolean.FALSE, nameText).stream()
                 .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public List<GroupsEntityDto> getGroupsBySchoolYear(Integer schoolYearText) {
-        return groupsRepository.findBySchoolYear(schoolYearText).stream()
+        return groupsRepository.findAllByDeletedAndSchoolYear(Boolean.FALSE, schoolYearText).stream()
 
                 .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
     }
@@ -86,7 +88,7 @@ public class GroupService {
     @Transactional(readOnly = true)
     public List<GroupsEntityDto> getGroupsByProgram(String programText) {
 
-        Program createdProgram = programRepository.findByNameContainingIgnoreCase(programText)
+        Program createdProgram = programRepository.findAllByDeletedAndNameContainingIgnoreCase(Boolean.FALSE, programText)
                 .stream()
                 .findFirst().get();
         return groupsRepository.findAll()
@@ -137,5 +139,47 @@ public class GroupService {
         } catch (EmptyResultDataAccessException e) {
             return false;
         }
+    }
+
+    public List<GroupsEntityDto> getAllAvailablePagedGroups(int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return groupsRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE, pageable).stream()
+                .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
+    }
+
+    public List<GroupsEntityDto> getAllDeletedPagedGroups(int page, int pageSize) {
+
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        return groupsRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.TRUE, pageable).stream()
+                .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
+    }
+
+    public List<GroupsEntityDto> getAllAvailableGroups() {
+        return groupsRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE).stream()
+                .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
+    }
+
+    public List<GroupsEntityDto> getAllDeletedGroups() {
+        return groupsRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.TRUE).stream()
+                .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
+    }
+
+    public GroupsEntityDto restoreGroup(Long groupId) {
+
+        var existingGroup = groupsRepository.findById(groupId).orElseThrow(() -> new SchedulerValidationException("Group does not exist",
+                "id", "Group not found", groupId.toString()));
+        existingGroup.setDeleted(Boolean.FALSE);
+        groupsRepository.save(existingGroup);
+        return toGroupEntityDto(existingGroup);
+    }
+
+    public GroupsEntityDto deleteGroup(Long groupId) {
+
+        var existingGroup = groupsRepository.findById(groupId).orElseThrow(() -> new SchedulerValidationException("Group does not exist",
+                "id", "Group not found", groupId.toString()));
+        existingGroup.setDeleted(Boolean.TRUE);
+        groupsRepository.save(existingGroup);
+        return toGroupEntityDto(existingGroup);
     }
 }

@@ -28,8 +28,10 @@ public interface ProgramRepository extends JpaRepository<Program, Long> {
     List<Program> findAllByDeletedOrderByModifiedDateDesc(Boolean deleted, Pageable pageable);
 
     List<Program> findAllByDeletedAndNameContainingIgnoreCase(Boolean deleted, String nameText, Pageable pageable);
-    List<Program> findAllByDeletedOrderByModifiedDateDesc(Boolean deleted);
 
+    List<Program> findAllByDeletedAndNameContainingIgnoreCase(Boolean deleted, String nameText);
+
+    List<Program> findAllByDeletedOrderByModifiedDateDesc(Boolean deleted);
 
 
 }
