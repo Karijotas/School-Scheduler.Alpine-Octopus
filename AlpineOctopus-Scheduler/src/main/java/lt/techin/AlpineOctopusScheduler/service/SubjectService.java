@@ -111,7 +111,7 @@ public class SubjectService {
     @Transactional(readOnly = true)
     public List<SubjectEntityDto> getPagedSubjectsByModuleContaining(String nameText, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        var filtered = moduleRepository.findByNameContainingIgnoreCase(nameText, pageable).stream()
+        var filtered = moduleRepository.findByNameContainingIgnoreCaseOrderByModifiedDateDesc(nameText, pageable).stream()
                 .sorted(Comparator.comparing(Module::getModifiedDate).reversed())
                 .filter(module -> module.equals(nameText))
                 .map(ModuleMapper::toModuleEntityDto).collect(Collectors.toList());
@@ -124,7 +124,7 @@ public class SubjectService {
     @Transactional(readOnly = true)
     public List<SubjectEntityDto> getPagedSubjectsByNameAndByModuleContaining(String nameText, String moduleText, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        var createdModule = moduleRepository.findByNameContainingIgnoreCase(moduleText, pageable).stream()
+        var createdModule = moduleRepository.findByNameContainingIgnoreCaseOrderByModifiedDateDesc(moduleText, pageable).stream()
                 .findFirst();
         return subjectRepository.findAll().stream().
                 filter(subjects -> subjects.getSubjectModules().contains(createdModule)).sorted(Comparator.comparing(Subject::getModifiedDate).reversed())

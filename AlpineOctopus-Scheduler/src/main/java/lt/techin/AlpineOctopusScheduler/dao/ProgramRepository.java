@@ -20,16 +20,16 @@ public interface ProgramRepository extends JpaRepository<Program, Long> {
 //    @Query("DELETE FROM ProgramSubjectHours WHERE ProgramSubjectHours.program.id = :pid AND ProgramSubjectHours.subject.id = :sid")
 //    List<Subject> DeleteSubjectByIdInProgram(@Param("pid") Long programId, @Param("sid") Long subjectId);
 
-    List<Program> findByNameContainingIgnoreCase(String nameText);
+    List<Program> findByNameContainingIgnoreCaseOrderByModifiedDateDesc(String nameText);
 
     List<Program> findByNameContainingIgnoreCase(String nameText, Pageable pageable);
 
 
     List<Program> findAllByDeletedOrderByModifiedDateDesc(Boolean deleted, Pageable pageable);
 
-    List<Program> findAllByDeletedAndNameContainingIgnoreCase(Boolean deleted, String nameText, Pageable pageable);
+    List<Program> findAllByDeletedAndNameContainingIgnoreCaseOrderByModifiedDateDesc(Boolean deleted, String nameText, Pageable pageable);
 
-    List<Program> findAllByDeletedAndNameContainingIgnoreCase(Boolean deleted, String nameText);
+    List<Program> findAllByDeletedAndNameContainingIgnoreCaseOrderByModifiedDateDesc(Boolean deleted, String nameText);
 
     List<Program> findAllByDeletedOrderByModifiedDateDesc(Boolean deleted);
 

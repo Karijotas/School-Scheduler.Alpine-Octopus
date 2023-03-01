@@ -83,14 +83,14 @@ public class ProgramService {
 
     @Transactional(readOnly = true)
     public List<ProgramEntityDto> getProgramsByNameContaining(String nameText) {
-        return programRepository.findByNameContainingIgnoreCase(nameText).stream()
+        return programRepository.findByNameContainingIgnoreCaseOrderByModifiedDateDesc(nameText).stream()
                 .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public List<ProgramEntityDto> getPagedProgramsByNameContaining(String nameText, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        return programRepository.findAllByDeletedAndNameContainingIgnoreCase(Boolean.FALSE, nameText, pageable).stream()
+        return programRepository.findAllByDeletedAndNameContainingIgnoreCaseOrderByModifiedDateDesc(Boolean.FALSE, nameText, pageable).stream()
                 .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
