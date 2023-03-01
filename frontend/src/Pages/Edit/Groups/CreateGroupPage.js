@@ -47,18 +47,18 @@ export function CreateGroupPage() {
   const [nameError, setNameError] = useState("Negali būti tuščias!")
   const [studentError, setStudentError] = useState("")
   // const [yearError, setYearError] = useState("*Privaloma")
-  const [programError, setProgramError] = useState("*Privaloma")
-  const [shiftError, setShiftError] = useState("*Privaloma")
+  // const [programError, setProgramError] = useState("*Privaloma")
+  // const [shiftError, setShiftError] = useState("*Privaloma")
 
   const [formValid, setFormValid] = useState(false)
 
   useEffect(() => {
-    if (nameError || studentError || programError || shiftError) {
+    if (nameError || studentError) {
       setFormValid(false)
     } else {
       setFormValid(true)
     }
-  }, [nameError, studentError, programError, shiftError])
+  }, [nameError, studentError])
 
   const blurHandler = (e) => {
     switch (e.target.name) {
@@ -94,13 +94,13 @@ export function CreateGroupPage() {
   }
 
 
-  const selectShiftHandler = () => {
-    setShiftError("")
-  }
+  // const selectShiftHandler = () => {
+  //   setShiftError("")
+  // }
 
-  const selectProgramHandler = () => {
-    setProgramError("")
-  }
+  // const selectProgramHandler = () => {
+  //   setProgramError("")
+  // }
 
   // const selectYearHandler = () => {
   //   setYearError("")
@@ -188,14 +188,14 @@ export function CreateGroupPage() {
             <Form.Group widths='equal'>
               <Form.Field>
                 <label>Programa</label>
-                {(programError) && <div style={{ color: "red" }}>{programError}</div>}
-                <Select options={programs} placeholder='Programa' onClose={() => console.log(programId)} onChange={((e, data) => setProgramId(data.value), selectProgramHandler)} />
+                {/* {(programError) && <div style={{ color: "red" }}>{programError}</div>} */}
+                <Select options={programs} placeholder='Programa' onClose={() => console.log(programId)} onChange={(e, data) => setProgramId(data.value)} />
 
               </Form.Field>
               <Form.Field >
                 <label>Pamaina</label>
-                {(shiftError) && <div style={{ color: "red" }}>{shiftError}</div>}
-                <Select options={shifts} placeholder='Pamaina' onClose={() => console.log(shiftId)} onChange={((e, data) => setShiftId(data.value), selectShiftHandler)} />
+                {/* {(shiftError) && <div style={{ color: "red" }}>{shiftError}</div>} */}
+                <Select options={shifts} placeholder='Pamaina' onClose={() => console.log(shiftId)} onChange={(e, data) => setShiftId(data.value)} />
               </Form.Field>
             </Form.Group>
             <div ><Button icon labelPosition="left" className="" as={NavLink} exact to='/view/groups'><Icon name="arrow left" />Atgal</Button>
