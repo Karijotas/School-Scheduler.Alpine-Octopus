@@ -56,6 +56,10 @@ public class GroupService {
         return groups.getSchoolYear() >= 2023 && groups.getSchoolYear() <= 3032;
     }
 
+    public boolean studentAmountIsValid(Groups groups) {
+        return groups.getStudentAmount() >= 1 && groups.getStudentAmount() <= 300;
+    }
+
     public List<Groups> getAll() {
         return groupsRepository.findAll();
     }

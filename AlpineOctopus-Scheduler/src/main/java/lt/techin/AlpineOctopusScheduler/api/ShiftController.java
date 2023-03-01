@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.ShiftDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ShiftEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ShiftMapper;
+import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Shift;
 import lt.techin.AlpineOctopusScheduler.service.ShiftService;
 import org.slf4j.Logger;
@@ -61,9 +62,12 @@ public class ShiftController {
 
     @PostMapping
     public ResponseEntity<ShiftDto> createShift(@Valid @RequestBody ShiftDto shiftDto) {
-
-        var createdShift = shiftService.create(toShift(shiftDto));
-        return ok(toShiftDto(createdShift));
+        if (shiftService.shiftNameIsUnique(toShift(shiftDto))) {
+            var createdShift = shiftService.create(toShift(shiftDto));
+            return ok(toShiftDto(createdShift));
+        } else {
+            throw new SchedulerValidationException("Shift already exists", "Shift name", "Already exists", shiftDto.getName());
+        }
     }
 
     @DeleteMapping("/{shiftId}")

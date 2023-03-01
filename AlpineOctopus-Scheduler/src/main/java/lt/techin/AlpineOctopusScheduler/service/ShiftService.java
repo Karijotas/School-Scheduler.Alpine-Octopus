@@ -12,8 +12,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,11 +24,26 @@ public class ShiftService {
 
     ShiftRepository shiftRepository;
 
+    private final Validator validator;
+
     @Autowired
-    public ShiftService(ShiftRepository shiftRepository) {
+    public ShiftService(ShiftRepository shiftRepository, Validator validator) {
         this.shiftRepository = shiftRepository;
+        this.validator = validator;
     }
 
+    void validateInputWithInjectedValidator(Shift shift) {
+        Set<ConstraintViolation<Shift>> violations = validator.validate(shift);
+        if (!violations.isEmpty()) {
+            throw new SchedulerValidationException(violations.toString(), "Shift", "Error in shift entity", shift.toString());
+        }
+    }
+
+    public boolean shiftNameIsUnique(Shift shift) {
+        return shiftRepository.findAll()
+                .stream()
+                .noneMatch(shift1 -> shift1.getName().equals(shift.getName()));
+    }
 
     public List<Shift> getAll() {
         return shiftRepository.findAll();
