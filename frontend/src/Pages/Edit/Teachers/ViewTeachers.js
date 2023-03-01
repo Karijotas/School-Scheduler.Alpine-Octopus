@@ -92,12 +92,12 @@ export function ViewTeachers() {
       .then(console.log(teacherSubjects));
   };
 
-  useEffect(() => {
-    fetch(`/api/v1/teachers/${teacherId}/subjects`)
-      .then((response) => response.json())
-      .then(setTeacherSubjects)
-      .then(console.log(teacherSubjects));
-  }, [teacherId]);
+  // useEffect(() => {
+  //   fetch(`/api/v1/teachers/${teacherId}/subjects`)
+  //     .then((response) => response.json())
+  //     .then(setTeacherSubjects)
+  //     .then(console.log(teacherSubjects));
+  // }, [teacherId]);
 
   // useEffect((teacherId) => {
   //   fetch(`/api/v1/teachers/${teacherId}/subjects`)

@@ -11,7 +11,6 @@
 //import java.util.Optional;
 //
 //import static lt.techin.AlpineOctopusScheduler.stubs.ModuleCreator.createModule;
-//import static lt.techin.AlpineOctopusScheduler.stubs.SubjectCreator.createSubject;
 //import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 //import static org.mockito.Mockito.when;
 //
