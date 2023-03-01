@@ -110,6 +110,7 @@ export function ViewModules() {
                   primary
                   className="controls"
                   as={NavLink}
+                  id='details'
                   exact to='/create/modules'>
                   <Icon name="database" />
                   Kurti naują modulį
@@ -141,6 +142,7 @@ export function ViewModules() {
                           </Table.Cell> */}
                         <Table.Cell collapsing>
                           <Button
+                          id="icocolor"
                             href={'#/view/modules/edit/' + module.id}
                             basic                            
                             compact
@@ -149,6 +151,7 @@ export function ViewModules() {
                             onClick={() => setActive(module.id)}
                           ></Button>
                           <Button
+                          id="icocolor"
                             basic                            
                             compact
                             title="Suarchyvuoti"

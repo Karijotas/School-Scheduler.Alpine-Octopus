@@ -10,10 +10,11 @@ import {
   List,
   Form,
   Select,
+  TextArea,
 } from "semantic-ui-react";
 import { ViewSubjects } from "./ViewSubjects";
 import MainMenu from "../../../Components/MainMenu";
-import { EditMenu } from '../../../Components/EditMenu';
+import { EditMenu } from "../../../Components/EditMenu";
 import { useParams } from "react-router-dom";
 
 const JSON_HEADERS = {
@@ -63,7 +64,7 @@ export function EditSubjectObject() {
   //         .then(jsonResponse => setModulesInSubjects(jsonResponse));
   // };
 
-  const getModulesInSubjects = ()  => {
+  const getModulesInSubjects = () => {
     fetch(`/api/v1/subjects/${params.id}/modules`)
       .then((response) => response.json())
       .then(setModulesInSubjects)
@@ -77,7 +78,7 @@ export function EditSubjectObject() {
       .then(console.log(modulesInSubjects));
   }, [params]);
 
-  const getRoomsInSubjects = ()  => {
+  const getRoomsInSubjects = () => {
     fetch(`/api/v1/subjects/${params.id}/rooms`)
       .then((response) => response.json())
       .then(setRoomsInSubjects)
@@ -91,7 +92,7 @@ export function EditSubjectObject() {
       .then(console.log(roomsInSubjects));
   }, [params]);
 
-  const getTeachersInSubjects = ()  => {
+  const getTeachersInSubjects = () => {
     fetch(`/api/v1/subjects/${params.id}/teachers`)
       .then((response) => response.json())
       .then(setTeachersInSubjects)
@@ -103,7 +104,7 @@ export function EditSubjectObject() {
       .then((response) => response.json())
       .then(setTeachersInSubjects)
       .then(console.log(teachersInSubjects));
-  }, [params]); 
+  }, [params]);
 
   const updateSubjects = () => {
     fetch("/api/v1/subjects/" + params.id, {
@@ -119,7 +120,7 @@ export function EditSubjectObject() {
         }
       })
       .then(applyResult);
-  }; 
+  };
 
   const updateProperty = (property, event) => {
     setSubjects({
@@ -190,8 +191,7 @@ export function EditSubjectObject() {
     fetch(`/api/v1/subjects/${subjectId}/modules/${moduleId}`, {
       method: "DELETE",
       headers: JSON_HEADERS,
-    })
-    .then(getModulesInSubjects);
+    }).then(getModulesInSubjects);
   };
 
   const addTeacher = (subjectId, teacherId) => {
@@ -267,11 +267,10 @@ export function EditSubjectObject() {
           <Segment raised color="teal">
             {active && !hide && (
               <div>
-                <Table celled color="violet">
+                <Table celled>
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Dalyko pavadinimas</Table.HeaderCell>
-                      <Table.HeaderCell>Aprašymas</Table.HeaderCell>
                       <Table.HeaderCell>
                         Paskutinis atnaujinimas:
                       </Table.HeaderCell>
@@ -282,14 +281,29 @@ export function EditSubjectObject() {
                   <Table.Body>
                     <Table.Row>
                       <Table.Cell>{subjects.name}</Table.Cell>
-                      <Table.Cell>{subjects.description}</Table.Cell>
                       <Table.Cell collapsing>
                         {" "}
                         {subjects.modifiedDate}{" "}
                       </Table.Cell>
                       <Table.Cell collapsing>
-                        <Button onClick={editThis}>Redaguoti</Button>
+                        <Button id="details" onClick={editThis}>
+                          Redaguoti
+                        </Button>
                       </Table.Cell>
+                    </Table.Row>
+                  </Table.Body>
+                </Table>
+                <Divider hidden />
+                <Table celled>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>Aprašymas</Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
+
+                  <Table.Body>
+                    <Table.Row>
+                      <Table.Cell>{subjects.description}</Table.Cell>
                     </Table.Row>
                   </Table.Body>
                 </Table>
@@ -326,9 +340,7 @@ export function EditSubjectObject() {
                       <Table.Body>
                         {teachersInSubjects.map((teacher) => (
                           <Table.Row key={teacher.id}>
-                            <Table.Cell>
-                              {teacher.name}
-                            </Table.Cell>
+                            <Table.Cell>{teacher.name}</Table.Cell>
                           </Table.Row>
                         ))}
                       </Table.Body>
@@ -367,12 +379,11 @@ export function EditSubjectObject() {
             )}
             {!active && !hide && (
               <div>
-                <Table celled color="violet">
+                <Table celled>
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Dalyko pavadinimas</Table.HeaderCell>
-                      <Table.HeaderCell>Aprašymas</Table.HeaderCell>
-                      <Table.HeaderCell>
+                      <Table.HeaderCell collapsing>
                         Paskutinis atnaujinimas:
                       </Table.HeaderCell>
                     </Table.Row>
@@ -387,18 +398,36 @@ export function EditSubjectObject() {
                         />
                       </Table.Cell>
                       <Table.Cell collapsing>
-                        <Input
-                          value={subjects.description} 
-                          onChange={(e) => updateProperty("description", e)}
-                        />
-                      </Table.Cell>
-                      <Table.Cell collapsing>
                         {" "}
                         {subjects.modifiedDate}{" "}
                       </Table.Cell>
                     </Table.Row>
                   </Table.Body>
                 </Table>
+
+                <Table celled>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>Aprašymas</Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
+
+                  <Table.Body>
+                    <Table.Row>
+                      <Table.Cell collapsing>
+                        <Form>
+                          <TextArea
+                            fluid
+                            style={{ minHeight: 60 }}
+                            value={subjects.description}
+                            onChange={(e) => updateProperty("description", e)}
+                          />
+                        </Form>
+                      </Table.Cell>
+                    </Table.Row>
+                  </Table.Body>
+                </Table>
+
                 <Grid columns={3}>
                   <Grid.Column>
                     <Table>
@@ -418,6 +447,7 @@ export function EditSubjectObject() {
                                   <Table.Cell>{module.name}</Table.Cell>
                                   <Table.Cell collapsing>
                                     <Button
+                                    id='details' 
                                       basic
                                       compact
                                       icon="remove"
@@ -449,6 +479,7 @@ export function EditSubjectObject() {
                                 <Divider hidden />
                                 <List.Content floated="left">
                                   <Button
+                                  id='details' 
                                     onClick={() =>
                                       addModule(params.id, moduleId)
                                     }
@@ -482,9 +513,7 @@ export function EditSubjectObject() {
                             <Table.Body>
                               {teachersInSubjects.map((teacher) => (
                                 <Table.Row key={teacher.id}>
-                                  <Table.Cell>
-                                    {teacher.name}
-                                  </Table.Cell>
+                                  <Table.Cell>{teacher.name}</Table.Cell>
                                   <Table.Cell collapsing>
                                     <Button
                                       basic
@@ -518,6 +547,7 @@ export function EditSubjectObject() {
                                 <Divider hidden />
                                 <List.Content floated="left">
                                   <Button
+                                  id='details' 
                                     onClick={() =>
                                       addTeacher(params.id, teacherId)
                                     }
@@ -585,7 +615,9 @@ export function EditSubjectObject() {
                                 <Divider hidden />
                                 <List.Content floated="left">
                                   <Button
-                                    onClick={() => addRoom(params.id, roomId)}
+                                  id='details' 
+                                    onClick={() => 
+                                      addRoom(params.id, roomId)}
                                     // onClose={fetch(
                                     //   `/api/v1/subjects/${params.id}/rooms`
                                     // )}
@@ -603,7 +635,7 @@ export function EditSubjectObject() {
                 </Grid>
                 <Divider hidden></Divider>
                 <Button onClick={() => setActive(true)}>Atšaukti</Button>
-                <Button floated="right" primary onClick={updateSubjects}>
+                <Button floated="right" id='details'  primary onClick={updateSubjects}>
                   Atnaujinti
                 </Button>
               </div>

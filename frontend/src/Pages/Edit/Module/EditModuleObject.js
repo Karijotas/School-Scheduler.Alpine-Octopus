@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
-import { Button, Grid, Icon, Input, Segment, Table, Divider, List, Form, Select } from "semantic-ui-react";
+import { Button, Grid, Icon, Input, Segment, Table, Divider, List, Form, Select, TextArea } from "semantic-ui-react";
 import MainMenu from '../../../Components/MainMenu';
 import { EditMenu } from '../../../Components/EditMenu';
 
@@ -132,7 +132,7 @@ export function EditModuleObject() {
           <Segment id='segment' color='teal'>
             {active && !hide && (
               <div>
-                <Table celled color="violet">
+                <Table celled>
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Modulio pavadinimas</Table.HeaderCell>
@@ -148,18 +148,18 @@ export function EditModuleObject() {
                       <Table.Cell>{modules.description}</Table.Cell>
                       <Table.Cell collapsing> {modules.modifiedDate} </Table.Cell>
                       <Table.Cell collapsing>
-                        <Button onClick={editThis}>Redaguoti</Button>
+                        <Button onClick={editThis} id='details'>Redaguoti</Button>
                       </Table.Cell>
                     </Table.Row>
                   </Table.Body>
                 </Table>
 
-                <Grid columns={2} divided>
+                <Grid columns={3} divided>
                   <Grid.Column>
-                    <Table width={6}>
+                    <Table width={4}>
                       <Table.Header>
                         <Table.Row>
-                          <Table.HeaderCell width={6}>
+                          <Table.HeaderCell width={4}>
                             Dalykai:
                           </Table.HeaderCell>
                         </Table.Row>
@@ -205,12 +205,11 @@ export function EditModuleObject() {
             )}
             {!active && !hide && (
               <div>
-                <Table celled color="violet">
+                <Table celled>
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Modulio pavadinimas</Table.HeaderCell>
-                      <Table.HeaderCell>Aprašymas</Table.HeaderCell>
-                      <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
+                      <Table.HeaderCell >Paskutinis atnaujinimas:</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
 
@@ -222,13 +221,28 @@ export function EditModuleObject() {
                           onChange={(e) => updateProperty("name", e)}
                         />
                       </Table.Cell>
-                      <Table.Cell collapsing>
-                        <Input
-                          value={modules.description}
-                          onChange={(e) => updateProperty("description", e)}
-                        />
-                      </Table.Cell>
                       <Table.Cell collapsing> {modules.modifiedDate} </Table.Cell>
+                    </Table.Row>
+                  </Table.Body>
+                </Table>
+                <Table>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>Aprašymas</Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
+                  <Table.Body>
+                    <Table.Row>
+                      <Table.Cell>
+                        <Form>
+                          <TextArea
+                            fluid
+                            style={{ minHeight: 60 }}
+                            value={modules.description}
+                            onChange={(e) => updateProperty("description", e)}
+                          />
+                        </Form>
+                      </Table.Cell>
                     </Table.Row>
                   </Table.Body>
                 </Table>
@@ -272,10 +286,10 @@ export function EditModuleObject() {
                                       placeholder="Dalykai"
                                       value={subject}
                                       onChange={(e, data) => (
-                                        setSubjects(e.target.value),
+                                        setSubject(e.target.value),
                                         setSubjectId(data.value)
                                       )}
-                                      onClose={() => console.log(subjectId)}
+                                      // onClose={() => console.log(subjectId)}
                                     />
                                   </Form.Field>
                                 </Form.Group>
@@ -284,7 +298,7 @@ export function EditModuleObject() {
                                   <Button
                                     onClick={() =>
                                       addSubject(params.id, subjectId)
-                                    }
+                                    } id='details'
                                   >
                                     Pridėti
                                   </Button>

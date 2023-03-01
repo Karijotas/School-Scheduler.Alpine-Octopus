@@ -20,6 +20,7 @@ const JSON_HEADERS = {
 };
 
 export function ViewTeachers() {
+  
   const [open, setOpen] = useState(false);
   const [close, setClose] = useState(false);
   const [active, setActive] = useState();
@@ -27,15 +28,23 @@ export function ViewTeachers() {
   const [teachers, setTeachers] = useState([]);
   const [teachersforPaging, setTeachersForPaging] = useState([]);
   const [nameText, setNameText] = useState("");
+  const [shifts, setShifts] = useState([]);
   const [shiftText, setShiftText] = useState("");
   const [activePage, setActivePage] = useState(0);
   const [pagecount, setPageCount] = useState();
   const [teacherSubjects, setTeacherSubjects] = useState([]);
+  const [teacherId, setTeacherId] = useState(1);
 
   const fetchFilterTeachers = async () => {
     fetch(`/api/v1/teachers/page/name-filter/${nameText}?page=` + activePage)
       .then((response) => response.json())
       .then((jsonRespone) => setTeachers(jsonRespone));
+  };
+
+  const fetchTeachersByShifts = async () => {
+    fetch(`/api/v1/teachers/page/shift-filter/${shiftText}`)
+      .then((response) => response.json())
+      .then((jsonResponse) => setShifts(jsonResponse));
   };
 
   const fetchSingleTeachers = () => {
@@ -58,21 +67,44 @@ export function ViewTeachers() {
     }).then(fetchTeachers);
   };
 
-  const fetchSubjectsById = (teacherId) => {
-    fetch(`/api/v1/teachers/${teacherId}/subjects?page= + activePage`)
-      .then((response) => response.json())
-      .then((jsonResponse) => setTeacherSubjects(jsonResponse));
-  };
+  // const fetchSubjectsById = (teacherId) => {
+  //   fetch(`/api/v1/teachers/${teacherId}/subjects?page= + activePage`)
+  //     .then((response) => response.json())
+  //     .then((jsonResponse) => setTeacherSubjects(jsonResponse));
+  // };
 
   useEffect(() => {
-    nameText.length > 0 ? fetchFilterTeachers() : fetchTeachers();
-  }, [activePage, nameText]);
+    nameText.length > 0 ? fetchFilterTeachers() : (shiftText.length >0 ? fetchTeachersByShifts():fetchTeachers());
+  }, [activePage, nameText, shiftText]);
+
 
   useEffect(() => {
     if (pagecount !== null) {
       fetchSingleTeachers();
     }
   }, [teachers]);
+
+
+  const fetchTeacherSubjects = async ()  => {
+    fetch(`/api/v1/teachers/${teacherId}/subjects`)
+      .then((response) => response.json())
+      .then(setTeacherSubjects)
+      .then(console.log(teacherSubjects));
+  };
+
+  // useEffect(() => {
+  //   fetch(`/api/v1/teachers/${teacherId}/subjects`)
+  //     .then((response) => response.json())
+  //     .then(setTeacherSubjects)
+  //     .then(console.log(teacherSubjects));
+  // }, [teacherId]);
+
+  // useEffect((teacherId) => {
+  //   fetch(`/api/v1/teachers/${teacherId}/subjects`)
+  //     .then((response) => response.json())
+  //     .then(setTeacherSubjects)
+  //     .then(console.log(teacherSubjects));
+  // }, [teacherSubjects]);
 
   return (
     <div>
@@ -109,6 +141,7 @@ export function ViewTeachers() {
 
                 <Button
                   icon
+                  id='details'
                   labelPosition="left"
                   primary
                   className="controls"
@@ -133,25 +166,26 @@ export function ViewTeachers() {
                   </Table.Header>
 
                   <Table.Body>
-                    {teachers.map((teacher) => (
-                      <Table.Row key={teacher.id}>
-                        <Table.Cell>{teacher.name}</Table.Cell>
+                    {teachers.map((teacher, i) => (                      
+                      <Table.Row key={i}>                        
+                        <Table.Cell>{teacher.name} </Table.Cell>
                         <Table.Cell>
-                          {/* <List bulleted>
-                        {console.log(teacher.teacherSubjects)}
-                            {teacher.teacherSubjects.map((subject) => (
+                          <List bulleted>                           
+                            {teacherSubjects.map((subject) => (
                               <List.Content key={subject.id}>
                                 <List.Item>{subject.name}</List.Item>
                               </List.Content>
+                              
                             ))}
-                          </List> */}
-                          <List bulleted>
+                            {console.log(teacherSubjects)}
+                          </List>
+                          {/* <List bulleted>
                             <List.Content>
                               <List.Item>a</List.Item>
                               <List.Item>b</List.Item>
                               <List.Item>c</List.Item>
                             </List.Content>
-                          </List>
+                          </List> */}
                         </Table.Cell>
                         <Table.Cell>{teacher.workHoursPerWeek}</Table.Cell>
                         <Table.Cell>
@@ -165,8 +199,8 @@ export function ViewTeachers() {
                         </Table.Cell>
                         <Table.Cell collapsing>
                           <Button
+                          id="icocolor"
                             basic
-                            primary
                             compact
                             icon="eye"
                             title="Peržiūrėti"
@@ -174,8 +208,8 @@ export function ViewTeachers() {
                             onClick={() => setActive(teacher.id)}
                           ></Button>
                           <Button
+                          id="icocolor"
                             basic
-                            color="black"
                             compact
                             title="Ištrinti"
                             icon="trash alternate"
@@ -197,7 +231,6 @@ export function ViewTeachers() {
                     ))}
                   </Table.Body>
                 </Table>
-                <Divider hidden></Divider>
 
                 <Divider hidden></Divider>
 
