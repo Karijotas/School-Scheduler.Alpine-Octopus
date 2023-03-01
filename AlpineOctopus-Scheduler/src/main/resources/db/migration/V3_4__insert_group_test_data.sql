@@ -1,4 +1,3 @@
-
 INSERT INTO GROUPS  (NAME,SCHOOL_YEAR,STUDENT_AMOUNT,program_id,SHIFT,created_date,modified_date,created_by,modified_by, DELETED) VALUES
     ('G1',2025, 13, 2, 'rytas', null,null,'Mantas', 'Mantas', TRUE),
     ('type',2024, 10,2, 'vakaras', '2023-02-08 00:36:54.344','2023-02-18 02:45:54.344','Mantas', 'Mantas', FALSE),
@@ -24,4 +23,3 @@ INSERT INTO GROUPS  (NAME,SCHOOL_YEAR,STUDENT_AMOUNT,program_id,SHIFT,created_da
         ('internal',2023, 10,2, 'vakaras', '2023-02-08 00:36:54.344','2023-02-18 02:45:54.344','Mantas', 'Mantas', TRUE),
         ('G11',2023, 12,2, 'rytas', '2023-02-08 00:36:54.344','2023-02-18 02:45:54.344','Mantas', 'Mantas', TRUE),
         ('G12',2023, 14,2, 'vakaras', '2023-02-08 00:36:54.344','2023-02-18 02:45:54.344','Mantas', 'Mantas', TRUE);
-
