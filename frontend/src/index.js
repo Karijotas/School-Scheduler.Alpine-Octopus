@@ -38,11 +38,11 @@ import { ViewModulesArchive } from './Pages/Edit/Module/ViewModulesArchive';
 
 
 
-
+// basename={process.env.REACT_APP_PUBLIC_URL}
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <HashRouter basename={process.env.REACT_APP_PUBLIC_URL}>
+    <HashRouter >
       <Routes>
         <Route path='/' element={<App />} />
         {/* EDIT MENU ROUTES */}

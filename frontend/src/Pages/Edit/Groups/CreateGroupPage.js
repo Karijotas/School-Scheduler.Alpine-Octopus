@@ -37,7 +37,8 @@ export function CreateGroupPage() {
   const [studentAmount, setStudentAmount] = useState('')
   const [programs, setPrograms] = useState([])
   const [programId, setProgramId] = useState()
-  const [shift, setShift] = useState('')
+  const [shifts, setShifts] = useState([]);
+  const [shiftId, setShiftId] = useState();
 
   const applyResult = (result) => {
     const clear = () => {
@@ -54,20 +55,19 @@ export function CreateGroupPage() {
 
   const createGroup = () => {
     fetch(
-      '/scheduler/api/v1/groups?programId=' + programId, {
+      '/api/v1/groups?programId=' + programId + '&shiftId=' + shiftId, {
       method: 'POST',
       headers: JSON_HEADERS,
       body: JSON.stringify({
         name,
         schoolYear,
         studentAmount,
-        shift,
       }),
     }).then(applyResult).then(() => window.location = listUrl);
 
   };
   useEffect(() => {
-    fetch("/scheduler/api/v1/programs/")
+    fetch("/api/v1/programs/")
       .then((response) => response.json())
       .then((data) =>
         setPrograms(
@@ -76,8 +76,18 @@ export function CreateGroupPage() {
           })
         )
       );
-  }, []);
+  }, [shifts]);
 
+  useEffect(() => {
+    fetch('/api/v1/shifts')
+      .then((response) => response.json())
+      .then((data) => setShifts(
+        data.map((x) => {
+          return { key: x.id, text: x.name, value: x.id };
+        })
+      )
+      )
+  }, []);
 
   return (<div className="create-new-page">
     <MainMenu />
@@ -113,7 +123,7 @@ export function CreateGroupPage() {
               </Form.Field>
               <Form.Field >
                 <label>Pamaina</label>
-                <Input options={shiftOptions} placeholder='Pamaina' value={shift} onChange={(e) => setShift(e.target.value)} />
+                <Select options={shifts} placeholder='Pamainos' onClose={() => console.log(shiftId)} onChange={(e, data) => setShiftId(data.value)} />
               </Form.Field>
             </Form.Group>
             <div ><Button icon labelPosition="left" className="" as={NavLink} exact to='/view/groups'><Icon name="arrow left" />Atgal</Button>

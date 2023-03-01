@@ -14,17 +14,11 @@ export function EditGroupObject() {
 
     const params = useParams();
 
-    const [active, setActive] = useState(true)
+    const [active, setActive] = useState(true);
 
-    const [programs, setPrograms] = useState([])
+    const [programs, setPrograms] = useState([]);
 
-
-
-    const shiftOptions = [
-        { key: 'r', value: 'morning', text: 'Rytas' },
-        { key: 'v', value: 'evening', text: 'Vakaras' },
-
-    ]
+    const [shifts, setShifts] = useState([]);
 
     const [error, setError] = useState();
 
@@ -38,22 +32,23 @@ export function EditGroupObject() {
         modifiedDate: '',
     });
 
-    const [programId, setProgramId] = useState()
+    const [programId, setProgramId] = useState();
+
+    const [shiftId, setShiftId] = useState();
 
 
     useEffect(() => {
-        fetch('/scheduler/api/v1/groups/' + params.id)
+        fetch('/api/v1/groups/' + params.id)
             .then(response => response.json())
             .then(setGroups);
     }, [active, params]);
 
     const applyResult = () => {
         setActive(true)
-
     }
 
     const updateGroups = () => {
-        fetch('/scheduler/api/v1/groups/' + params.id + '?programId=' + programId, {
+        fetch('/api/v1/groups/' + params.id + '?programId=' + programId + '&shiftId=' + shiftId, {
             method: 'PATCH',
             headers: JSON_HEADERS,
             body: JSON.stringify(groups,)
@@ -80,7 +75,7 @@ export function EditGroupObject() {
     }
 
     useEffect(() => {
-        fetch('/scheduler/api/v1/programs/')
+        fetch('/api/v1/programs/')
             .then((response) => response.json())
             .then((data) =>
                 setPrograms(
@@ -88,7 +83,18 @@ export function EditGroupObject() {
                         return { key: x.id, text: x.name, value: x.id };
                     })
                 )
-            );
+            )
+    }, []);
+
+    useEffect(() => {
+        fetch('/api/v1/shifts')
+            .then((response) => response.json())
+            .then((data) => setShifts(
+                data.map((x) => {
+                    return { key: x.id, text: x.name, value: x.id };
+                })
+            )
+            )
     }, []);
 
     const [updated, setUpdated] = useState();
@@ -101,8 +107,6 @@ export function EditGroupObject() {
 
 
         <div>
-
-
             <MainMenu />
             <Grid columns={2}>
                 <Grid.Column width={2} id='main'>
@@ -145,7 +149,7 @@ export function EditGroupObject() {
                                     <Table.Row  >
                                         <Table.Cell width={6} >{groups.studentAmount}</Table.Cell>
                                         <Table.Cell >{groups.program.name} </Table.Cell>
-                                        <Table.Cell width={4}>{groups.shift}</Table.Cell>
+                                        <Table.Cell width={4}>{groups.shift.name} </Table.Cell>
                                     </Table.Row>
                                 </ Table.Body >
                             </Table>
@@ -171,7 +175,7 @@ export function EditGroupObject() {
                                         </Table.Cell>
                                         <Table.Cell >
 
-                                            <select  value={groups.schoolYear} onChange={(e) => updateProperty('schoolYear', e)} >
+                                            <select value={groups.schoolYear} onChange={(e) => updateProperty('schoolYear', e)} >
                                                 {Object.entries(YEAR_OPTIONS)
                                                     .map(([key, value]) => <option value={key}>{value}</option>)
                                                 }
@@ -199,7 +203,8 @@ export function EditGroupObject() {
                                         <Table.Cell collapsing >
                                             <Select options={programs} placeholder={groups.program.name} onChange={(e, data) => setProgramId(data.value)} />
                                         </Table.Cell >
-                                        <Table.Cell width={4}><Input options={shiftOptions} placeholder={groups.shift} value={groups.shift} onChange={(e) => updateProperty('shift', e)} />
+                                        <Table.Cell width={4}>
+                                            <Select options={shifts} placeholder={groups.shift.name} onChange={(e, data) => setShiftId(data.value)} />
                                         </Table.Cell>
                                     </Table.Row>
                                 </ Table.Body >
