@@ -6,6 +6,7 @@ import lt.techin.AlpineOctopusScheduler.dao.ModuleRepository;
 import lt.techin.AlpineOctopusScheduler.dao.SubjectRepository;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Module;
+import lt.techin.AlpineOctopusScheduler.model.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
@@ -110,6 +111,25 @@ public class ModuleService {
                 .map(ModuleMapper::toModuleEntityDto).collect(Collectors.toList());
     }
 
+
+    public List<Subject> getAllSubjectsById(Long moduleId) {
+        return subjectRepository.findAllBySubjectModules_Id(moduleId);
+    }
+
+    public boolean deleteSubjectInModuleById(Long moduleId, Long subjectId) {
+        try {
+            var existingModule = moduleRepository.findById(moduleId).get();
+            var existingSubject = subjectRepository.findAllBySubjectModules_Id(existingModule.getId())
+                    .remove(subjectId);
+//            existingModule.getSubjectModules().remove(moduleRepository.findById(moduleId).get());
+            moduleRepository.save(existingModule);
+            return true;
+        } catch (EmptyResultDataAccessException exception) {
+            return false;
+        }
+
+    }
+
     public List<ModuleEntityDto> getAllAvailablePagedModules(int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
         return moduleRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE, pageable).stream()
@@ -152,47 +172,37 @@ public class ModuleService {
         return toModuleEntityDto(existingModule);
     }
 
+    public void addSubjectToModule(Long moduleId, Long subjectId) {
+        var existingModule = moduleRepository.findById(moduleId)
+                .orElseThrow(() -> new SchedulerValidationException("Module does not exist",
+                        "id", "Module not found", moduleId.toString()));
 
-//    public Module addSubjectToModule(Long moduleId, Long subjectId) {
-//        var existingModule = moduleRepository.findById(moduleId)
-//                .orElseThrow(() -> new SchedulerValidationException("Module does not exist",
-//                        "id", "Module not found", moduleId.toString()));
-//
-//        var existingSubject = subjectRepository.findById(subjectId)
-//                .orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
-//                        "id", "Subject not found", subjectId.toString()));
-//
-//        Set<Subject> existingSubjectList = existingModule.getModulesSubjects();
-//        existingSubjectList.add(existingSubject);
-//        existingModule.setModulesSubjects(existingSubjectList);
-//
-//        return moduleRepository.save(existingModule);
-//    }
+        var existingSubject = subjectRepository.findById(subjectId)
+                .orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
+                        "id", "Subject not found", subjectId.toString()));
 
-//    public Set<Subject> getAllSubjectsById (Long moduleId){
-//        return moduleRepository.findById(moduleId).get().getModulesSubjects();
-//    }
+        moduleRepository.insertModuleAndSubject(moduleId, subjectId);
+    }
 
-//    public boolean deleteSubjectFromModuleById(Long moduleId, Long subjectId) {
-//        var existingModule = moduleRepository.findById(moduleId)
-//                .orElseThrow(() -> new SchedulerValidationException("Module does not exist",
-//                        "id", "Module not found", moduleId.toString()));
-//
-//        var existingSubject = subjectRepository.findById(subjectId)
-//                .orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
-//                        "id", "Subject not found", subjectId.toString()));
-//
-//        Set<Subject> existingSubjectList = existingModule.getModulesSubjects();
-//        subjectRepository.deleteAll(existingSubjectList);
-//        existingModule.setModulesSubjects(existingSubjectList);
-//
-//        if (subjectRepository.existsById(subjectId)) {
-//            subjectRepository.deleteById(subjectId);
-//            return true;
-//        }
-//
-//        return false;
-//    }
+
+    public boolean deleteSubjectFromModuleById(Long moduleId, Long subjectId) {
+        var existingModule = moduleRepository.findById(moduleId)
+                .orElseThrow(() -> new SchedulerValidationException("Module does not exist",
+                        "id", "Module not found", moduleId.toString()));
+
+        var existingSubject = subjectRepository.findById(subjectId)
+                .orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
+                        "id", "Subject not found", subjectId.toString()));
+
+        moduleRepository.deleteModuleFromSubject(moduleId, subjectId);
+
+        if (subjectRepository.existsById(subjectId)) {
+            subjectRepository.deleteById(subjectId);
+            return true;
+        }
+
+        return false;
+    }
 }
 
 

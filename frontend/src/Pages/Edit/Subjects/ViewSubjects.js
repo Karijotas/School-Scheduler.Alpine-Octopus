@@ -25,14 +25,11 @@ export function ViewSubjects() {
   const [create, setCreate] = useState("");
   const [nameText, setNameText] = useState("");
   const [subjects, setSubjects] = useState([]);
-  const [modules, setModules] = useState([]);
-  const [subjectId, setSubjectId] = useState("");
 
   const [subjectsforPaging, setSubjectsForPaging] = useState([]);
 
   const [activePage, setActivePage] = useState(0);
   const [pagecount, setPageCount] = useState();
-  const [modulesInSubjects, setModulesInSubjects] = useState([]);
   const [moduleText, setModuleText] = useState("");
 
   const fetchSubjectsByModules = async () => {
@@ -145,7 +142,6 @@ useEffect(() => {
                     <Table.Row>
                       <Table.HeaderCell>Dalyko pavadinimas</Table.HeaderCell>
                       <Table.HeaderCell>Moduliai</Table.HeaderCell>
-                      <Table.HeaderCell>Redagavimo data</Table.HeaderCell>
                       <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
@@ -164,9 +160,9 @@ useEffect(() => {
                             ))}
                           </List>
                         </Table.Cell>
-                        <Table.Cell>{subject.modifiedDate}</Table.Cell>
                         <Table.Cell collapsing>
                           <Button
+                          id="icocolor"
                             basic                            
                             compact
                             icon="eye"
@@ -175,6 +171,7 @@ useEffect(() => {
                             onClick={() => setActive(subject.id)}
                           ></Button>
                           <Button
+                          id="icocolor"
                             basic                            
                             compact
                             title="Ištrinti"

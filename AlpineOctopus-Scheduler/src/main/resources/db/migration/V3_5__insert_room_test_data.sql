@@ -3,17 +3,17 @@ INTO
   room
   (name, building, description,created_date, modified_date, DELETED)
 VALUES
-  ('jp-01', 'pylimo g.3', 'java programavimas1','2023-02-06 04:12:50.254', '2023-02-10 02:45:54.344', FALSE),
-  ('jp-02', 'lakunu g.3', 'java programavimas2', '2023-02-06 04:12:50.254', '2023-02-10 02:45:54.344', FALSE),
-  ('js-01', 'lakunu g.3', 'javascript programavimas1', '2023-02-06 04:12:50.254', '2023-02-10 02:45:54.344', FALSE),
-  ('js-02', 'lvivo g.3', 'javascript programavimas2','2023-02-06 04:12:50.254', '2023-02-10 02:45:54.344', FALSE),
-  ('js-02', 'lakunu g.3', 'javascript programavimas2','2023-02-06 04:12:50.254', '2023-02-10 02:45:54.344', FALSE),
-  ('php-01', 'lakunu g.34', 'java programavimas1','2023-02-06 04:12:50.254', '2023-02-10 02:45:54.344', FALSE),
-  ('php-02', 'lakunu g.34', 'java programavimas2', '2023-02-06 04:12:50.254', '2023-02-10 02:45:54.344', FALSE),
-  ('html-01', 'lakunu g.31', 'javascript programavimas1', '2023-02-06 04:12:50.254', '2023-02-10 02:45:54.344', FALSE),
-  ('html-02', 'lakunu g.31', 'javascript programavimas2','2023-02-06 04:12:50.254', '2023-02-10 02:45:54.344', FALSE),
-  ('te-01', 'basanaviciaus g.311', 'java programavimas1','2023-02-06 04:12:50.254', '2023-02-10 02:45:54.344', TRUE),
-  ('te-01', 'lakunu g.311', 'java programavimas1','2023-02-06 04:12:50.254', '2023-02-10 02:45:54.344', TRUE),
-  ('te-02', 'lakunu g.311', 'java programavimas2', '2023-02-06 04:12:50.254', '2023-02-10 02:45:54.344', TRUE),
-  ('it-01', 'lakunu g.322', 'javascript programavimas1', '2023-02-06 04:12:50.254', '2023-02-10 02:45:54.344', TRUE),
-  ('it-02', 'lakunu g.322', 'javascript programavimas2','2023-02-06 04:12:50.254', '2023-02-10 02:45:54.344', TRUE);
+  ('JP-01', 'Pylimo g.3', 'Java programavimas1','2023-02-06 04:12:50.254', '2023-02-10 02:45:54.344', FALSE),
+  ('JP-02', 'Lakunu g.3', 'Java programavimas2', '2023-02-06 04:12:50.254', '2023-02-10 02:45:54.344', FALSE),
+  ('JS-01', 'Lakunu g.3', 'Javascript programavimas1', '2023-02-06 04:12:50.254', '2023-02-10 02:45:54.344', FALSE),
+  ('JS-02', 'Lvivo g.3', 'Javascript programavimas2','2023-02-06 04:12:50.254', '2023-02-10 02:45:54.344', FALSE),
+  ('JS-02', 'Lakunu g.3', 'Javascript programavimas2','2023-02-06 04:12:50.254', '2023-02-10 02:45:54.344', FALSE),
+  ('PHP-01', 'Lakunu g.34', 'Java programavimas1','2023-02-06 04:12:50.254', '2023-02-10 02:45:54.344', FALSE),
+  ('PHP-02', 'Lakunu g.34', 'Java programavimas2', '2023-02-06 04:12:50.254', '2023-02-10 02:45:54.344', FALSE),
+  ('HTML-01', 'Lakunu g.31', 'Javascript programavimas1', '2023-02-06 04:12:50.254', '2023-02-10 02:45:54.344', FALSE),
+  ('HTML-02', 'Lakunu g.31', 'Javascript programavimas2','2023-02-06 04:12:50.254', '2023-02-10 02:45:54.344', FALSE),
+  ('TE-01', 'Basanaviciaus g.31', 'Java programavimas1','2023-02-06 04:12:50.254', '2023-02-10 02:45:54.344', TRUE),
+  ('TE-01', 'Lakunu g.311', 'Java programavimas1','2023-02-06 04:12:50.254', '2023-02-10 02:45:54.344', TRUE),
+  ('TE-02', 'Lakunu g.311', 'Java programavimas2', '2023-02-06 04:12:50.254', '2023-02-10 02:45:54.344', TRUE),
+  ('IT-01', 'Lakunu g.322', 'Javascript programavimas1', '2023-02-06 04:12:50.254', '2023-02-10 02:45:54.344', TRUE),
+  ('IT-02', 'Lakunu g.322', 'Javascript programavimas2','2023-02-06 04:12:50.254', '2023-02-10 02:45:54.344', TRUE);

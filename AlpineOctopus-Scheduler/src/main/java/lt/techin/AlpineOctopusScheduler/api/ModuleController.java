@@ -5,6 +5,7 @@ import lt.techin.AlpineOctopusScheduler.api.dto.ModuleDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ModuleEntityDto;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Module;
+import lt.techin.AlpineOctopusScheduler.model.Subject;
 import lt.techin.AlpineOctopusScheduler.service.ModuleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -164,11 +165,26 @@ public class ModuleController {
         return moduleService.getPagedModulesByNameContaining(nameText, page, pageSize);
     }
 
-//    @PutMapping("/{moduleId}/subjects/{subjectId}")
-//    public ResponseEntity<ModuleDto> addSubjectToModule(@PathVariable Long moduleId, @RequestBody Long subjectId) {
-//        var updatedModule = moduleService.addSubjectToModule(moduleId, subjectId);
-//
-//        return ok(toModuleDto(updatedModule));
-//    }
+    @GetMapping(value = "/{moduleId}/subjects")
+    @ResponseBody
+    public List<Subject> getAllSubjectsById(@PathVariable Long moduleId) {
+        return moduleService.getAllSubjectsById(moduleId);
+    }
+
+    @PostMapping("/{moduleId}/subjects/{subjectId}/newSubjects")
+    public void addSubjectToModule(@PathVariable Long moduleId, @PathVariable Long subjectId) {
+        moduleService.addSubjectToModule(moduleId, subjectId);
+    }
+
+    @DeleteMapping("/{moduleId}/subjects/{subjectId}")
+    public ResponseEntity<Void> deleteModuleFromSubjectByModuleId(@PathVariable Long moduleId, @PathVariable Long subjectId) {
+        boolean deleted = moduleService.deleteSubjectFromModuleById(moduleId, subjectId);
+        if (deleted) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }
 

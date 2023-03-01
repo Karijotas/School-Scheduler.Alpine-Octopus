@@ -180,7 +180,7 @@ public class SubjectController {
     }
 
 
-    @PutMapping("/{subjectId}/teachers/{teacherId}/newTeachers")
+    @PostMapping("/{subjectId}/teachers/{teacherId}/newTeachers")
     public ResponseEntity<SubjectDto> addTeacherToSubject(@PathVariable Long subjectId, @Valid @PathVariable Long teacherId) {
 
         var updatedSubject = subjectService.addTeacherToSubject(subjectId, teacherId);

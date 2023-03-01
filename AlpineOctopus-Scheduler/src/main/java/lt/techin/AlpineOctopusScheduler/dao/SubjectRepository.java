@@ -15,6 +15,13 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
 
     List<Subject> findByNameContainingIgnoreCase(String nameText, Pageable pageable);
 
+    List<Subject> findAllBySubjectModules_NameContainingIgnoreCase(String moduleText, Pageable pageable);
+
+    List<Subject> findAllBySubjectTeachers_Id(Long teachersId);
+
+    List<Subject> findAllBySubjectModules_Id(Long modulesId);
+
+
     List<Subject> findAllByDeletedAndNameContainingIgnoreCaseOrderByModifiedDateDesc(Boolean deleted, String nameText, Pageable pageable);
 
     List<Subject> findAllByDeletedAndSubjectModules_NameContainingIgnoreCase(Boolean deleted, String moduleText);

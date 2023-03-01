@@ -72,7 +72,7 @@ export function ViewGroupsArchive() {
         </Grid.Column>
         <Grid.Column textAlign="left" verticalAlign="top" width={13}>
           <Segment id="segment" raised color="grey">
-            <div id="programs">
+            <div id="groups">
               <Table selectable>
                 <Table.Header>
                   <Table.Row>

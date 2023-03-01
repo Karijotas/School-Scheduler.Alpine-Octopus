@@ -262,7 +262,6 @@ public class ProgramService {
         return subjectRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE);
     }
 //    public boolean deleteAllSubjectsForCreate(){
-//
 //        return programSubjectHourListRepository.deleteAll();
 //    }
 }

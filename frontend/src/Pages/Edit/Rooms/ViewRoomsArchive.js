@@ -75,7 +75,7 @@ export function ViewRoomsArchive() {
         <Grid.Column textAlign='left' verticalAlign='top' width={13}>
           <Segment id='segment' raised color='grey'>
 
-           <div id="modules">
+           <div id="rooms">
               {/* <Input
                 value={nameText}
                 onChange={(e) => setNameText(e.target.value)}

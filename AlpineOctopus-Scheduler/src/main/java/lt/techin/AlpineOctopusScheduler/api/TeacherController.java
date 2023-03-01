@@ -1,11 +1,13 @@
 package lt.techin.AlpineOctopusScheduler.api;
 
-//Mantvydas Juršys
 
+import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.TeacherMapper;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
+import lt.techin.AlpineOctopusScheduler.model.Shift;
+import lt.techin.AlpineOctopusScheduler.model.Subject;
 import lt.techin.AlpineOctopusScheduler.model.Teacher;
 import lt.techin.AlpineOctopusScheduler.service.TeacherService;
 import org.slf4j.Logger;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.TeacherMapper.toTeacher;
@@ -31,7 +34,7 @@ public class TeacherController {
 
     public static Logger logger = LoggerFactory.getLogger(TeacherController.class);
     private final TeacherService teacherService;
-    
+
     public TeacherController(TeacherService teacherService) {
 
         this.teacherService = teacherService;
@@ -64,7 +67,7 @@ public class TeacherController {
         }
     }
 
-    @DeleteMapping("/{teacherId}")
+    @DeleteMapping("/delete/{teacherId}")
     public ResponseEntity<Void> deleteTeacher(@PathVariable Long teacherId) {
         var teacherDeleted = teacherService.deleteById(teacherId);
         if (teacherDeleted) {
@@ -92,5 +95,57 @@ public class TeacherController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
 
         return responseEntity;
+    }
+
+    @GetMapping(value = "/{teacherId}/shifts")
+    @ResponseBody
+    public Set<Shift> getAllShiftsById(@PathVariable Long teacherId) {
+        return teacherService.getAllShiftsById(teacherId);
+    }
+
+    @GetMapping(value = "/{teacherId}/subjects")
+    @ResponseBody
+    public List<Subject> getAllSubjectsById(@PathVariable Long teacherId) {
+        return teacherService.getAllSubjectsById(teacherId);
+    }
+
+    @PostMapping("/{teacherId}/shifts/{shiftId}/newShifts")
+    public ResponseEntity<TeacherDto> addShiftToTeacher(@PathVariable Long teacherId, @Valid @PathVariable Long shiftId) {
+
+        var updatedTeacher = teacherService.addShiftToTeacher(teacherId, shiftId);
+
+        return ok(toTeacherDto(updatedTeacher));
+    }
+
+    @DeleteMapping("/{teacherId}/shifts/{shiftId}")
+    public ResponseEntity<Void> deleteShiftFromTeacherByShiftId(@PathVariable Long teacherId, @PathVariable Long shiftId) {
+        boolean deleted = teacherService.deleteShiftInTeacherById(teacherId, shiftId);
+        if (deleted) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/{teacherId}/subjects/{subjectId}/newSubjects")
+    public void addSubjectToTeacher(@PathVariable Long teacherId, @PathVariable Long subjectId) {
+        teacherService.addSubjectToTeacher(teacherId, subjectId);
+    }
+
+    @DeleteMapping("/{teacherId}/subjects/{subjectId}")
+    public ResponseEntity<Void> deleteTeacherFromSubjectByTeacherId(@PathVariable Long teacherId, @PathVariable Long subjectId) {
+        boolean deleted = teacherService.deleteSubjectFromTeacherById(teacherId, subjectId);
+        if (deleted) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping(path = "page/shift-filter/{shiftText}")
+    @ApiOperation(value = "Get Paged Teachers starting with", notes = "Returns list of Teachers starting with passed String")
+    @ResponseBody
+    public List<TeacherEntityDto> getPagedTeachersByShiftContaining(@PathVariable String shiftText) {
+        return teacherService.getPagedTeachersByShiftNameContaining(shiftText);
     }
 }
