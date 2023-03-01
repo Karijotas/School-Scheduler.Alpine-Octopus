@@ -45,7 +45,7 @@ export function EditProgramObject() {
     
     const [descriptionError, setDescriptionError] = useState("")
     const [hoursError, setHoursError] = useState("")
-
+    
     const [selectErrorSubject, setSelectErrorSubject] = useState("*Privaloma")
 
     const [formValid, setFormValid] = useState(false)
@@ -104,7 +104,7 @@ export function EditProgramObject() {
         if(!/^\d+$/.test(value)){
           setHoursError("Įveskite tik skaičius")
           if(!value){
-            setHoursError("")
+            setHoursError("*Privaloma")
           }
         }
       };

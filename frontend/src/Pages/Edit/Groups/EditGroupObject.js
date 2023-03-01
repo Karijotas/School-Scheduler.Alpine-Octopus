@@ -43,7 +43,7 @@ export function EditGroupObject() {
     const [studentAmountError, setstudentAmountError] = useState("")
     
 
-    // const [selectErrorYear, setSelectErrorYear] = useState("*Privaloma")
+    const [selectErrorYear, setSelectErrorYear] = useState("")
     const [selectErrorProgram, setSelectErrorProgram] = useState("*Privaloma") 
     const [selectErrorShift, setSelectErrorShift] = useState("*Privaloma")
 
