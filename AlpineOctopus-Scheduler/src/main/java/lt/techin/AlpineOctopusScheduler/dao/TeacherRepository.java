@@ -32,5 +32,6 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long> {
             nativeQuery = true)
     void deleteTeacherFromSubject(@Param("TEACHER_ID") Long teacherId, @Param("SUBJECT_ID") Long subjectId);
 
+    List<Teacher> findDistinctByDeletedAndTeacherShifts_NameContainingIgnoreCaseOrderByModifiedDateDesc(Boolean deleted, String shiftText);
 
 }

@@ -85,7 +85,7 @@ export function EditShiftObject() {
           <Segment raised color="teal">
             {active && !hide && (
               <div>
-                <Table celled color="violet">
+                <Table celled>
                   <Table.Header>
                     <Table.Row>
                     <Table.HeaderCell>Pavadinimas</Table.HeaderCell>
@@ -106,7 +106,7 @@ export function EditShiftObject() {
                         {shifts.modifiedDate}{" "}
                       </Table.Cell>
                       <Table.Cell collapsing>
-                        <Button onClick={editThis}>Redaguoti</Button>
+                        <Button onClick={editThis} id='details' >Redaguoti</Button>
                       </Table.Cell>
                     </Table.Row>
                   </Table.Body>
@@ -127,14 +127,13 @@ export function EditShiftObject() {
             )}
             {!active && !hide && (
               <div>
-                <Table celled color="violet">
+                <Table celled>
                   <Table.Header>
                     <Table.Row>
                     <Table.HeaderCell>Pavadinimas</Table.HeaderCell>
                       <Table.HeaderCell>Pamokos nuo:</Table.HeaderCell>
                       <Table.HeaderCell>Pamokos iki:</Table.HeaderCell>
                       <Table.HeaderCell>Redagavimo data</Table.HeaderCell>
-                      <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
 
@@ -167,7 +166,7 @@ export function EditShiftObject() {
                 </Table>
                 <Divider hidden></Divider>
                 <Button onClick={() => setActive(true)}>Atšaukti</Button>
-                <Button floated="right" primary onClick={updateShifts}>
+                <Button floated="right" primary onClick={updateShifts} id='details'>
                   Atnaujinti
                 </Button>
               </div>

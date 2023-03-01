@@ -132,7 +132,7 @@ export function EditModuleObject() {
           <Segment id='segment' color='teal'>
             {active && !hide && (
               <div>
-                <Table celled color="violet">
+                <Table celled>
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Modulio pavadinimas</Table.HeaderCell>
@@ -148,7 +148,7 @@ export function EditModuleObject() {
                       <Table.Cell>{modules.description}</Table.Cell>
                       <Table.Cell collapsing> {modules.modifiedDate} </Table.Cell>
                       <Table.Cell collapsing>
-                        <Button onClick={editThis}>Redaguoti</Button>
+                        <Button onClick={editThis} id='details'>Redaguoti</Button>
                       </Table.Cell>
                     </Table.Row>
                   </Table.Body>
@@ -284,7 +284,7 @@ export function EditModuleObject() {
                                   <Button
                                     onClick={() =>
                                       addSubject(params.id, subjectId)
-                                    }
+                                    } id='details'
                                   >
                                     Pridėti
                                   </Button>

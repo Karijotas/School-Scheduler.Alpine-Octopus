@@ -82,7 +82,7 @@ export function EditRoom() {
             <Grid.Column textAlign='left' verticalAlign='top' width={13}>
                 <Segment id='segment' color='teal'>{active && !hide && (<div >
 
-                    <Table celled color='violet'>
+                    <Table celled>
                         <Table.Header >
                             <Table.Row  >
                                 <Table.HeaderCell >Klasės pavadinimas</Table.HeaderCell>
@@ -102,7 +102,7 @@ export function EditRoom() {
 
                                 <Table.Cell collapsing > {rooms.modifiedDate}  </Table.Cell>
 
-                                <Table.Cell collapsing ><Button onClick={editThis}>Redaguoti</Button>
+                                <Table.Cell collapsing ><Button onClick={editThis} id='details'>Redaguoti</Button>
                                 </Table.Cell>
 
 
@@ -117,7 +117,7 @@ export function EditRoom() {
                 )}
                     {!active && !hide && (<div >
 
-                        <Table celled color='violet'>
+                        <Table celled>
                             <Table.Header >
                                 <Table.Row  >
                                     <Table.HeaderCell >Klasės pavadinimas</Table.HeaderCell>
@@ -141,7 +141,7 @@ export function EditRoom() {
 
                                     <Table.Cell collapsing >
                                         <Button onClick={() => setActive(true)}>Atšaukti</Button>
-                                        <Button primary onClick={updateRooms}>Atnaujinti</Button>
+                                        <Button primary onClick={updateRooms} id='details'>Atnaujinti</Button>
                                     </Table.Cell>
 
 

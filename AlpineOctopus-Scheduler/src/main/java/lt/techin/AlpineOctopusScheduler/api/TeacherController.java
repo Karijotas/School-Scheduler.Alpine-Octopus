@@ -1,6 +1,7 @@
 package lt.techin.AlpineOctopusScheduler.api;
 
 
+import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.TeacherMapper;
@@ -139,5 +140,12 @@ public class TeacherController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping(path = "page/shift-filter/{shiftText}")
+    @ApiOperation(value = "Get Paged Teachers starting with", notes = "Returns list of Teachers starting with passed String")
+    @ResponseBody
+    public List<TeacherEntityDto> getPagedTeachersByShiftContaining(@PathVariable String shiftText) {
+        return teacherService.getPagedTeachersByShiftNameContaining(shiftText);
     }
 }

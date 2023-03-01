@@ -118,7 +118,7 @@ export function ViewShifts() {
                   </Table.Header>
                   <Table.Body>
                     {shifts.map((shift) => (
-                      <Table.Row key={shift.id}>
+                      <Table.Row key={shift.id} onChange={() => console.log(shift.id)}>
                         <Table.Cell>{shift.name}</Table.Cell>
                         <Table.Cell>{shift.starts}</Table.Cell>
                         <Table.Cell>{shift.ends}</Table.Cell>

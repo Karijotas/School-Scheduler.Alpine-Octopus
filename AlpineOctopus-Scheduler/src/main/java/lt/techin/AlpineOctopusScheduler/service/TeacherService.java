@@ -185,4 +185,9 @@ public class TeacherService {
 
         return false;
     }
+
+    @Transactional(readOnly = true)
+    public List<TeacherEntityDto> getPagedTeachersByShiftNameContaining(String shiftText) {
+        return teacherRepository.findDistinctByDeletedAndTeacherShifts_NameContainingIgnoreCaseOrderByModifiedDateDesc(Boolean.FALSE, shiftText).stream().map(TeacherMapper::toTeacherEntityDto).collect(Collectors.toList());
+    }
 }

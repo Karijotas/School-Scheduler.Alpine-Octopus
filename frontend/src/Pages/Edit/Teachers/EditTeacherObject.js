@@ -288,7 +288,7 @@ export function EditTeacherObject() {
                   icon
                   labelPosition="left"
                   className=""
-                  href="#/view/subjects"
+                  href="#/view/teachers"
                 >
                   <Icon name="arrow left" />
                   Atgal
@@ -398,7 +398,7 @@ export function EditTeacherObject() {
                                   <Form.Field>
                                     <Select
                                       options={shifts}
-                                      placeholder="Kabinetai"
+                                      placeholder="Pamainos"
                                       value={shift}
                                       onChange={(e, data) => (
                                         setShift(e.target.value),
@@ -465,7 +465,6 @@ export function EditTeacherObject() {
                                         setSubject(e.target.value),
                                         setSubjectId(data.value)
                                       )}
-                                      // onClose={() => console.log(subjectId)}
                                     />
                                   </Form.Field>
                                 </Form.Group>
