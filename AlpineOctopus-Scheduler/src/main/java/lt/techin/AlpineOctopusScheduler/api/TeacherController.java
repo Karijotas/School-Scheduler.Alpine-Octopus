@@ -104,7 +104,7 @@ public class TeacherController {
     public List<Subject> getAllSubjectsById(@PathVariable Long teacherId) {
         return teacherService.getAllSubjectsById(teacherId);
     }
-
+    
     @PostMapping("/{teacherId}/shifts/{shiftId}/newShifts")
     public ResponseEntity<TeacherDto> addShiftToTeacher(@PathVariable Long teacherId, @Valid @PathVariable Long shiftId) {
 

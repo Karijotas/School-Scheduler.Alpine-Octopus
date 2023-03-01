@@ -46,11 +46,15 @@ code {
   color: rgb(248, 248, 248);
 }
 #icocolor{
+<<<<<<< HEAD
   color:rgb(12,72,84) !important;
 }
 
 #adddetails{
   background-color:rgb(24, 141, 164) !important;
+=======
+  color:rgb(12,72,84) !important; 
+>>>>>>> validation_front
 }
 
 #left{

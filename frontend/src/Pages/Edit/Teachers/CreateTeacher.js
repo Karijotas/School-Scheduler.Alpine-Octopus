@@ -20,6 +20,97 @@ export function CreateTeacher() {
   const [subjectId, setSubjectId] = useState("");
   const [subjects, setSubjects] = useState([]);
 
+  //Validation
+  const [nameDirty, setNameDirty] = useState(false);
+  const [loginEmailDirty, setLoginEmailDirty] = useState(false);
+
+  const [nameError, setNameError] = useState("Negali būti tuščias!")
+  const [loginEmailError, setloginEmailError] = useState("Negali būti tuščias!")
+  const [contactEmailError, setContactEmailError] = useState("")
+  const [phoneError, setPhoneError] = useState("")
+  const [workHoursError, setWorkHoursError] = useState("")
+  
+  const [formValid, setFormValid] = useState(false)
+
+  useEffect(() => {
+    if(nameError || loginEmailError || contactEmailError || workHoursError) {
+      setFormValid(false)
+    } else {
+      setFormValid(true)
+    }
+  }, [nameError,loginEmailError, contactEmailError, workHoursError])
+
+  const blurHandler = (e) => {
+    switch (e.target.name){
+      case 'name':
+        setNameDirty(true);
+        break
+        case 'teams': 
+        setLoginEmailDirty(true);
+          break
+    }
+  }
+  
+  const nameHandler = (e) => {
+    setName(e.target.value)
+    if(!/^[\p{L}ĄČĘĖĮŠŲŪŽąčęėįšųūž\s-]+$/iu.test(e.target.value)){
+      setNameError("Įveskite tik raides")
+      if(!e.target.value){
+        setNameError("Negali būti tuščias!")
+      }
+    } else if (e.target.value.length <2 || e.target.value.length > 40){
+      setNameError("Įveskite nuo 2 iki 40 simbolių!")
+      
+    } else {
+      setNameError("") 
+    }
+
+
+
+
+
+  }
+
+  const teamsLoginHandler = (e) => {
+    setLoginEmail(e.target.value)
+    if(!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(e.target.value)){
+      setloginEmailError("Neteisingas pašto formatas!")
+      if(!e.target.value){
+        setloginEmailError("Negali būti tuščias!")
+      }
+    } else {
+      setloginEmailError("")
+    }
+  }
+
+  const emailHandler = (e) => {
+    setContactEmail(e.target.value)
+    if(!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(e.target.value)){
+      setContactEmailError("Neteisingas pašto formatas!")
+    } else {
+      setContactEmailError("")
+    }
+  }
+  const phoneHandler = (e) => {
+    setPhone(e.target.value)
+    
+    if(!/^(\+370|8)\d{8}$/.test(e.target.value)){
+      setPhoneError("Neteisingas numerio formatas!")
+    } else {
+      setPhoneError("")
+    }
+  }
+  const hoursHandler = (e) => {
+    setWorkHoursPerWeek(e.target.value)
+    
+    if(!/^\d+$/.test(e.target.value)){
+      setWorkHoursError("Įveskite tik skaičius")
+      if(!e.target.value){
+        setWorkHoursError("")
+      }
+    }
+  }
+
 
   const applyResult = (result) => {
     const clear = () => {
@@ -75,42 +166,51 @@ export function CreateTeacher() {
           <Form>
             <Form.Field>
               <label>Vardas ir pavardė</label>
+              {(nameDirty && nameError) && <div style={{color: "red"}}>{nameError}</div>}
               <input
                 placeholder="Vardas ir pavardė"
+                onBlur={blurHandler}
+                name="name"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => nameHandler(e)}
               />
             </Form.Field>
             <Form.Field>
               <label>Teams vartotojo vardas</label>
+              {(loginEmailDirty && loginEmailError) && <div style={{color: "red"}}>{loginEmailError}</div>}
               <input
                 placeholder="Teams vartotojo vardas"
+                onBlur={blurHandler}
+                name="teams"
                 value={loginEmail}
-                onChange={(e) => setLoginEmail(e.target.value)}
+                onChange={(e) => teamsLoginHandler(e)}
               />
             </Form.Field>
             <Form.Field>
               <label>El. paštas</label>
+              {(contactEmailError) && <div style={{color: "red"}}>{contactEmailError}</div>}
               <input
                 placeholder="El. paštas"
                 value={contactEmail}
-                onChange={(e) => setContactEmail(e.target.value)}
+                onChange={(e) => emailHandler(e)}
               />
             </Form.Field>
             <Form.Field>
               <label>Telefono nr.</label>
+              {(phoneError) && <div style={{color: "red"}}>{phoneError}</div>}
               <input
                 placeholder="Telefono nr."
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={(e) => phoneHandler(e)}
               />
             </Form.Field>
             <Form.Field>
               <label>Užimtumas (val. per savaitę)</label>
+              {(workHoursError) && <div style={{color: "red"}}>{workHoursError}</div>}
               <input
                 placeholder="Užimtumas (val. per savaitę)"
                 value={workHoursPerWeek}
-                onChange={(e) => setWorkHoursPerWeek(e.target.value)}
+                onChange={(e) => hoursHandler(e)}
               />
             </Form.Field>
 
@@ -128,6 +228,7 @@ export function CreateTeacher() {
                 type="submit"
                 className="controls"
                 primary
+                disabled={!formValid}
                 onClick={createTeacher}
               >
                 Sukurti

@@ -9,7 +9,8 @@ import {
   Icon,
   Input,
   Segment,
-  Table
+  Table,
+  List,
 } from "semantic-ui-react";
 import { EditMenu } from '../../../Components/EditMenu';
 import MainMenu from '../../../Components/MainMenu';

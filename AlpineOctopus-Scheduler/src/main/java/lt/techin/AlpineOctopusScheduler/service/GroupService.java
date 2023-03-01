@@ -89,8 +89,8 @@ public class GroupService {
 
     @Transactional(readOnly = true)
     public List<GroupsEntityDto> getGroupsBySchoolYear(Integer schoolYearText) {
-        return groupsRepository.findAllByDeletedAndSchoolYear(Boolean.FALSE, schoolYearText).stream()
 
+        return groupsRepository.findAllByDeletedAndSchoolYear(Boolean.FALSE, schoolYearText).stream()
                 .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
     }
 
@@ -106,6 +106,7 @@ public class GroupService {
 //                .stream()
 //                .filter(groups -> groups.getProgram().equals(createdProgram))
 //                .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
+
     }
 
     public Groups create(Groups groups, Long programId, Long shiftId) {

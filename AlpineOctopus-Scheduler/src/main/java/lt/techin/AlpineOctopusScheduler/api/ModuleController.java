@@ -174,6 +174,7 @@ public class ModuleController {
 
     @DeleteMapping("/{moduleId}/subjects/{subjectId}")
     public ResponseEntity<Void> deleteModuleFromSubjectByModuleId(@PathVariable Long moduleId, @PathVariable Long subjectId) {
+
         boolean deleted = moduleService.deleteSubjectFromModuleById(moduleId, subjectId);
         if (deleted) {
             return ResponseEntity.noContent().build();

@@ -63,13 +63,13 @@ export function ViewGroups() {
   };
 
   const fetchGroups = async () => {
-    fetch("/api/v1/groups/page?page=" + activePage)
+    fetch("/scheduler/api/v1/groups/page?page=" + activePage)
       .then((response) => response.json())
       .then((jsonResponse) => setGroups(jsonResponse));
   };
 
   const fetchSingleGroups = async () => {
-    fetch("/api/v1/groups/")
+    fetch("/scheduler/api/v1/groups/")
       .then((response) => response.json())
       .then((jsonResponse) => setGroupsForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(groupsforPaging.length / 10)));

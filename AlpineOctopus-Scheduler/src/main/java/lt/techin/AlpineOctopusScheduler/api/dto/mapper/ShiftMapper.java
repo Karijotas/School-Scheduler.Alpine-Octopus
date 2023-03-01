@@ -45,6 +45,7 @@ public class ShiftMapper {
     public static Shift toShift(ShiftEntityDto shiftEntityDto) {
         var shift = new Shift();
         shift.setId(shiftEntityDto.getId());
+
         shift.setName(shiftEntityDto.getName());
         shift.setStarts(shiftEntityDto.getStarts());
         shift.setEnds(shiftEntityDto.getEnds());

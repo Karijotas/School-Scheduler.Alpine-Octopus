@@ -62,6 +62,7 @@ public class ShiftController {
 
     @PostMapping
     public ResponseEntity<ShiftDto> createShift(@Valid @RequestBody ShiftDto shiftDto) {
+
         if (shiftService.shiftNameIsUnique(toShift(shiftDto))) {
             var createdShift = shiftService.create(toShift(shiftDto));
             return ok(toShiftDto(createdShift));

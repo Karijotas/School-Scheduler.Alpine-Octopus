@@ -260,6 +260,7 @@ public class ProgramService {
 
     public List<Subject> getFreeSubjects(Long programId) {
         return subjectRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE);
+
     }
 //    public boolean deleteAllSubjectsForCreate(){
 //        return programSubjectHourListRepository.deleteAll();

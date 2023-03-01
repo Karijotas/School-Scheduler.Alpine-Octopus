@@ -39,6 +39,59 @@ export function EditSubjectObject() {
     modifiedDate: "",
   });
 
+
+  const [state, setState] = useState("")
+  const [nameError, setNameError] = useState("")
+    
+    const [descriptionError, setDescriptionError] = useState("")
+    
+
+   
+
+    const [formValid, setFormValid] = useState(false)
+
+
+    useEffect(() => {
+        if(nameError || descriptionError) {
+          setFormValid(false)
+        } else {
+          setFormValid(true)
+        }
+      }, [nameError, descriptionError]) 
+
+    
+
+    const handleNameInputChange = (e) => {
+        subjects.name = e.target.value
+        setState(e.target.value);
+        validateNameInput(e.target.value);
+      };
+
+    const handleDescriptionInputChange = (e) => {
+      subjects.description = e.target.value
+      setState(e.target.value);
+        validateDescriptionInput(e.target.value);
+      };
+      
+    const validateNameInput = (value) => {
+        if (value.length <2 || value.length > 40) {
+            setNameError("Įveskite nuo 2 iki 40 simbolių!")
+            if(!value){
+                setNameError("Pavadinimas negali būti tuščias!")
+              } 
+        } else {
+            setNameError("")
+        }
+      };
+
+      const validateDescriptionInput = (value) => {
+        if (value.length > 100) {
+            setDescriptionError("Aprašymas negali viršyti 100 symbolių!")
+        } else {
+            setDescriptionError("") 
+        }
+      };
+
   useEffect(() => {
     fetch("/scheduler/api/v1/subjects/" + params.id)
       .then((response) => response.json())
@@ -55,7 +108,7 @@ export function EditSubjectObject() {
   //         .then(jsonResponse => setModulesInSubjects(jsonResponse));
   // };
 
-  const getModulesInSubjects = () => {
+  const getModulesInSubjects = ()  => {
     fetch(`/scheduler/api/v1/subjects/${params.id}/modules`)
       .then((response) => response.json())
       .then(setModulesInSubjects)
@@ -69,7 +122,7 @@ export function EditSubjectObject() {
       .then(console.log(modulesInSubjects));
   }, [params]);
 
-  const getRoomsInSubjects = () => {
+  const getRoomsInSubjects = ()  => {
     fetch(`/scheduler/api/v1/subjects/${params.id}/rooms`)
       .then((response) => response.json())
       .then(setRoomsInSubjects)
@@ -83,7 +136,7 @@ export function EditSubjectObject() {
       .then(console.log(roomsInSubjects));
   }, [params]);
 
-  const getTeachersInSubjects = () => {
+  const getTeachersInSubjects = ()  => {
     fetch(`/scheduler/api/v1/subjects/${params.id}/teachers`)
       .then((response) => response.json())
       .then(setTeachersInSubjects)
@@ -95,7 +148,7 @@ export function EditSubjectObject() {
       .then((response) => response.json())
       .then(setTeachersInSubjects)
       .then(console.log(teachersInSubjects));
-  }, [params]);
+  }, [params]); 
 
   const updateSubjects = () => {
     fetch("/scheduler/api/v1/subjects/" + params.id, {
@@ -111,7 +164,7 @@ export function EditSubjectObject() {
         }
       })
       .then(applyResult);
-  };
+  }; 
 
   const updateProperty = (property, event) => {
     setSubjects({
@@ -382,10 +435,11 @@ export function EditSubjectObject() {
 
                   <Table.Body>
                     <Table.Row>
-                      <Table.Cell collapsing>
+                    <Table.Cell collapsing>
+                      {(nameError) && <div style={{color: "red"}}>{nameError}</div>}
                         <Input
                           value={subjects.name}
-                          onChange={(e) => updateProperty("name", e)}
+                          onChange={(e) => handleNameInputChange(e)}
                         />
                       </Table.Cell>
                       <Table.Cell collapsing>
@@ -395,6 +449,7 @@ export function EditSubjectObject() {
                     </Table.Row>
                   </Table.Body>
                 </Table>
+               
 
                 <Table celled>
                   <Table.Header>
@@ -407,12 +462,14 @@ export function EditSubjectObject() {
                     <Table.Row>
                       <Table.Cell collapsing>
                         <Form>
+                        {(descriptionError) && <div style={{color: "red"}}>{descriptionError}</div>}
                           <TextArea
                             fluid
                             style={{ minHeight: 60 }}
                             value={subjects.description}
-                            onChange={(e) => updateProperty("description", e)}
+                            onChange={(e) => handleDescriptionInputChange(e)}
                           />
+                          
                         </Form>
                       </Table.Cell>
                     </Table.Row>
@@ -624,7 +681,7 @@ export function EditSubjectObject() {
                 </Grid>
                 <Divider hidden></Divider>
                 <Button onClick={() => setActive(true)}>Atšaukti</Button>
-                <Button floated="right" primary onClick={updateSubjects}>
+                <Button disabled={!formValid} floated="right" primary onClick={updateSubjects}>
                   Atnaujinti
                 </Button>
               </div>

@@ -39,6 +39,77 @@ export function EditProgramObject() {
     modifiedDate: "",
   }); 
 
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [nameError, setNameError] = useState("")
+    
+    const [descriptionError, setDescriptionError] = useState("")
+    const [hoursError, setHoursError] = useState("")
+
+    const [selectErrorSubject, setSelectErrorSubject] = useState("*Privaloma")
+
+    const [formValid, setFormValid] = useState(false)
+
+
+    useEffect(() => {
+        if(nameError || descriptionError || selectErrorSubject || hoursError) {
+          setFormValid(false)
+        } else {
+          setFormValid(true)
+        }
+      }, [nameError, descriptionError, selectErrorSubject, hoursError]) 
+
+      const selectSubjectHandler = () => {
+        setSelectErrorSubject("")
+      }
+
+    const handleNameInputChange = (e) => {
+        programs.name = e.target.value
+        setName(e.target.value);
+        validateNameInput(e.target.value);
+      };
+
+    const handleDescriptionInputChange = (e) => {
+      programs.description = e.target.value
+        setDescription(e.target.value);
+        validateDescriptionInput(e.target.value);
+      };
+
+      const handleHoursInputChange = (e) => {
+        setSubjectHours(e.target.value);
+        validateHoursnInput(e.target.value);
+      };
+      
+    
+    const validateNameInput = (value) => {
+        if (value.length <2 || value.length > 40) {
+            setNameError("Įveskite nuo 2 iki 40 simbolių!")
+            if(!value){
+                setNameError("Pavadinimas negali būti tuščias!")
+              } 
+        } else {
+            setNameError("")
+        }
+      };
+
+      const validateDescriptionInput = (value) => {
+        if (value.length > 100) {
+            setDescriptionError("Aprašymas negali viršyti 100 symbolių!")
+        } else {
+            setDescriptionError("") 
+        }
+      };
+
+      const validateHoursnInput = (value) => {
+        if(!/^\d+$/.test(value)){
+          setHoursError("Įveskite tik skaičius")
+          if(!value){
+            setHoursError("")
+          }
+        }
+      };
+      
+
   useEffect(() => {
     fetch("/scheduler/api/v1/programs/" + params.id)
       .then((response) => response.json())
@@ -264,10 +335,12 @@ export function EditProgramObject() {
                   <Table.Body>
                     <Table.Row>
                       <Table.Cell>
+                        {(nameError) && <div style={{color: "red"}}>{nameError}</div>}
                         <Input fluid
+                        name="name"
                           value={programs.name}
-                          onChange={(e) => (
-                            updateProperty("name", e))}
+                          
+                          onChange={(e) => (handleNameInputChange(e))}
                         />
                       </Table.Cell>
                       <Table.Cell collapsing>
@@ -287,10 +360,12 @@ export function EditProgramObject() {
                   <Table.Body>
                     <Table.Row>                      
                       <Table.Cell>
-                        <Form>                        
-                          <TextArea fluid style={{ minHeight: 60 }}                                                     
+                        <Form>   
+                        {(descriptionError) && <div style={{color: "red"}}>{descriptionError}</div>}                     
+                          <TextArea fluid style={{ minHeight: 60 }}    
+                                                                           
                             value={programs.description}                           
-                            onChange={(e) => updateProperty("description", e)}
+                            onChange={(e) => handleDescriptionInputChange(e)}
                           />
                           </Form>                                            
                       </Table.Cell>  
@@ -317,13 +392,15 @@ export function EditProgramObject() {
                           <List.Item>
                             <Form.Group widths="equal">
                               <Form.Field>
+                              {(selectErrorSubject) && <div style={{color: "red"}}>{selectErrorSubject}</div>}
                                 <Select
                                   options={subjects}
                                   placeholder="Dalykai"
                                   value={subject}
                                   onChange={(e, data) => (
                                     setSubject(e.target.value),
-                                    setSubjectId(data.value)
+                                    setSubjectId(data.value),
+                                    selectSubjectHandler(e)
                                   )}
                                   onClose={() => console.log(subjectId)}
                                 />
@@ -331,11 +408,14 @@ export function EditProgramObject() {
                             </Form.Group>
                             <Divider hidden />
                             <List.Content>
+                         
+                            {(hoursError) && <div style={{color: "red"}}>{hoursError}</div>}
                               <Input
                                 placeholder="Valandų skaičius"
                                 value={subjectHours}
                                 onChange={(e) =>
-                                  setSubjectHours(e.target.value)
+                                  handleHoursInputChange(e)
+                                    
                                 }
                               />
                             </List.Content>
@@ -343,7 +423,9 @@ export function EditProgramObject() {
                             <List.Content floated="left">
                               <Button
                                id='details'
+                              
                                 onClick={() =>
+                                  
                                   addSubjectAndHours(
                                     params.id,
                                     subjectId,
@@ -399,7 +481,7 @@ export function EditProgramObject() {
                   </Table.Body>
                 </Table>
                 <Button onClick={() => setActive(true)}>Atšaukti</Button>
-                <Button  id='details' floated="right" primary onClick={updatePrograms}>
+                <Button  id='details' disabled={!formValid} floated="right" primary onClick={updatePrograms}>
                   Atnaujinti
                 </Button>
               </div>
