@@ -88,6 +88,7 @@ export function CreateModulePage() {
                     type="submit"
                     className="controls"
                     primary
+                    id="details"
                     onClick={createModule}
                   >
                     Sukurti

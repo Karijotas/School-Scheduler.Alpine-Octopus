@@ -56,6 +56,11 @@ public class ModuleController {
         return moduleService.getAllAvailableModules();
     }
 
+    @GetMapping(path = "/all")
+    @ResponseBody
+    public List<ModuleEntityDto> getAllModules() {
+        return moduleService.getAllModules();
+    }
 
     @GetMapping(path = "/archive/", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody

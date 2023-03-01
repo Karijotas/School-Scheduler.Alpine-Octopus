@@ -136,7 +136,6 @@ export function EditModuleObject() {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Modulio pavadinimas</Table.HeaderCell>
-                      <Table.HeaderCell>Aprašymas</Table.HeaderCell>
                       <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
                       <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                     </Table.Row>
@@ -145,11 +144,23 @@ export function EditModuleObject() {
                   <Table.Body>
                     <Table.Row>
                       <Table.Cell>{modules.name}</Table.Cell>
-                      <Table.Cell>{modules.description}</Table.Cell>
                       <Table.Cell collapsing> {modules.modifiedDate} </Table.Cell>
                       <Table.Cell collapsing>
                         <Button onClick={editThis} id='details'>Redaguoti</Button>
                       </Table.Cell>
+                    </Table.Row>
+                  </Table.Body>
+                </Table>
+                <Table celled>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>Aprašymas</Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
+
+                  <Table.Body>
+                    <Table.Row>
+                      <Table.Cell>{modules.description}</Table.Cell>
                     </Table.Row>
                   </Table.Body>
                 </Table>
@@ -209,7 +220,7 @@ export function EditModuleObject() {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Modulio pavadinimas</Table.HeaderCell>
-                      <Table.HeaderCell >Paskutinis atnaujinimas:</Table.HeaderCell>
+                      <Table.HeaderCell width={3}>Paskutinis atnaujinimas:</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
 

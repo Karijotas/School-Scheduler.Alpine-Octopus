@@ -55,6 +55,10 @@ public class ModuleService {
                 .noneMatch(module1 -> module1.getName().equals(module.getName()));
     }
 
+    public List<ModuleEntityDto> getAllModules() {
+        return moduleRepository.findAll().stream().map(ModuleMapper::toModuleEntityDto).collect(Collectors.toList());
+    }
+
     public List<Module> getAll() {
 
         return moduleRepository.findAll();

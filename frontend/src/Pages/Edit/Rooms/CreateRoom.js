@@ -69,7 +69,7 @@ export function CreateRoom() {
               <input placeholder='Aprasymas' value={description} onChange={(e) => setDescription(e.target.value)} />
             </Form.Field>
             <div><Button icon labelPosition="left" className="" href='#/view/rooms'><Icon name="arrow left" />Atgal</Button>
-              <Button type='submit' className="controls" primary onClick={createRoom}>Sukurti</Button></div>
+              <Button type='submit' id="details" className="controls" primary onClick={createRoom}>Sukurti</Button></div>
           </Form>
         </Segment>
       </Grid.Column>

@@ -128,6 +128,7 @@ export function CreateTeacher() {
                 type="submit"
                 className="controls"
                 primary
+                id="details"
                 onClick={createTeacher}
               >
                 Sukurti
