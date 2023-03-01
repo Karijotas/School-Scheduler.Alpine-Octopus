@@ -20,6 +20,7 @@ const JSON_HEADERS = {
 };
 
 export function ViewTeachers() {
+  
   const [open, setOpen] = useState(false);
   const [close, setClose] = useState(false);
   const [active, setActive] = useState();
@@ -32,7 +33,7 @@ export function ViewTeachers() {
   const [activePage, setActivePage] = useState(0);
   const [pagecount, setPageCount] = useState();
   const [teacherSubjects, setTeacherSubjects] = useState([]);
-  const [teacherId, setTeacherId] = useState("");
+  const [teacherId, setTeacherId] = useState(1);
 
   const fetchFilterTeachers = async () => {
     fetch(`/api/v1/teachers/page/name-filter/${nameText}?page=` + activePage)
@@ -90,6 +91,13 @@ export function ViewTeachers() {
       .then(setTeacherSubjects)
       .then(console.log(teacherSubjects));
   };
+
+  useEffect(() => {
+    fetch(`/api/v1/teachers/${teacherId}/subjects`)
+      .then((response) => response.json())
+      .then(setTeacherSubjects)
+      .then(console.log(teacherSubjects));
+  }, [teacherId]);
 
   // useEffect((teacherId) => {
   //   fetch(`/api/v1/teachers/${teacherId}/subjects`)
@@ -158,17 +166,18 @@ export function ViewTeachers() {
                   </Table.Header>
 
                   <Table.Body>
-                    {teachers.map((teacher) => (
-                      <Table.Row key={teacher.id}>
-                        <Table.Cell>{teacher.name}</Table.Cell>
+                    {teachers.map((teacher, i) => (                      
+                      <Table.Row key={i}>                        
+                        <Table.Cell>{teacher.name} </Table.Cell>
                         <Table.Cell>
-                          <List bulleted>
-                        {console.log(teacherSubjects)}
+                          <List bulleted>                           
                             {teacherSubjects.map((subject) => (
                               <List.Content key={subject.id}>
                                 <List.Item>{subject.name}</List.Item>
                               </List.Content>
+                              
                             ))}
+                            {console.log(teacherSubjects)}
                           </List>
                           {/* <List bulleted>
                             <List.Content>

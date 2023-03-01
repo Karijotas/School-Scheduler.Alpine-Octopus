@@ -383,7 +383,7 @@ export function EditSubjectObject() {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Dalyko pavadinimas</Table.HeaderCell>
-                      <Table.HeaderCell>
+                      <Table.HeaderCell collapsing>
                         Paskutinis atnaujinimas:
                       </Table.HeaderCell>
                     </Table.Row>
@@ -447,6 +447,7 @@ export function EditSubjectObject() {
                                   <Table.Cell>{module.name}</Table.Cell>
                                   <Table.Cell collapsing>
                                     <Button
+                                    id='details' 
                                       basic
                                       compact
                                       icon="remove"
@@ -478,6 +479,7 @@ export function EditSubjectObject() {
                                 <Divider hidden />
                                 <List.Content floated="left">
                                   <Button
+                                  id='details' 
                                     onClick={() =>
                                       addModule(params.id, moduleId)
                                     }
@@ -545,6 +547,7 @@ export function EditSubjectObject() {
                                 <Divider hidden />
                                 <List.Content floated="left">
                                   <Button
+                                  id='details' 
                                     onClick={() =>
                                       addTeacher(params.id, teacherId)
                                     }
@@ -612,6 +615,7 @@ export function EditSubjectObject() {
                                 <Divider hidden />
                                 <List.Content floated="left">
                                   <Button
+                                  id='details' 
                                     onClick={() => 
                                       addRoom(params.id, roomId)}
                                     // onClose={fetch(
@@ -631,7 +635,7 @@ export function EditSubjectObject() {
                 </Grid>
                 <Divider hidden></Divider>
                 <Button onClick={() => setActive(true)}>Atšaukti</Button>
-                <Button floated="right" primary onClick={updateSubjects}>
+                <Button floated="right" id='details'  primary onClick={updateSubjects}>
                   Atnaujinti
                 </Button>
               </div>

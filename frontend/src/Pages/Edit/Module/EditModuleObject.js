@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
-import { Button, Grid, Icon, Input, Segment, Table, Divider, List, Form, Select } from "semantic-ui-react";
+import { Button, Grid, Icon, Input, Segment, Table, Divider, List, Form, Select, TextArea } from "semantic-ui-react";
 import MainMenu from '../../../Components/MainMenu';
 import { EditMenu } from '../../../Components/EditMenu';
 
@@ -209,8 +209,7 @@ export function EditModuleObject() {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Modulio pavadinimas</Table.HeaderCell>
-                      <Table.HeaderCell>Aprašymas</Table.HeaderCell>
-                      <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
+                      <Table.HeaderCell >Paskutinis atnaujinimas:</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
 
@@ -222,13 +221,28 @@ export function EditModuleObject() {
                           onChange={(e) => updateProperty("name", e)}
                         />
                       </Table.Cell>
-                      <Table.Cell collapsing>
-                        <Input
-                          value={modules.description}
-                          onChange={(e) => updateProperty("description", e)}
-                        />
-                      </Table.Cell>
                       <Table.Cell collapsing> {modules.modifiedDate} </Table.Cell>
+                    </Table.Row>
+                  </Table.Body>
+                </Table>
+                <Table>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>Aprašymas</Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
+                  <Table.Body>
+                    <Table.Row>
+                      <Table.Cell>
+                        <Form>
+                          <TextArea
+                            fluid
+                            style={{ minHeight: 60 }}
+                            value={modules.description}
+                            onChange={(e) => updateProperty("description", e)}
+                          />
+                        </Form>
+                      </Table.Cell>
                     </Table.Row>
                   </Table.Body>
                 </Table>
