@@ -8,11 +8,11 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/public/asset-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/public/asset-manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/public/static/js/main.7f30524d.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/public/static/js/main.7f30524d.js.LICENSE.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/public/static/js/main.7f30524d.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/public/static/js/main.53a7f790.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/public/static/js/main.53a7f790.js.LICENSE.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/public/static/js/main.53a7f790.js.map" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Groups/CreateGroupPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Groups/CreateGroupPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Programs/EditProgramObject.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Programs/EditProgramObject.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Groups/ViewGroupsArchive.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Groups/ViewGroupsArchive.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,9 +104,9 @@
       <command value="mvn clean" />
       <command value="spring-boot:run -Pprod" />
       <command value="mvn flyway:repair" />
-      <command value="mvn spring-boot:run" />
       <command value="mvn flyway:clean" />
       <command value="mvn flyway:migrate" />
+      <command value="mvn spring-boot:run" />
       <command value="mvn clean install" />
       <command value="mvn cargo:run" />
     </option>

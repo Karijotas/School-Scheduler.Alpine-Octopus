@@ -90,7 +90,7 @@ export function ViewGroupsArchive() {
                       <Table.Cell>
                         <Button
                           textAlign="center"
-                          basic                          
+                          basic
                           compact
                           title="Atstatyti"
                           icon="undo"
@@ -104,12 +104,12 @@ export function ViewGroupsArchive() {
               <Divider hidden></Divider>
 
               <ButtonGroup compact basic>
-                                <Button title='Atgal' onClick={() => setActivePage(activePage <= 0 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
-                                {[...Array(pagecount)].map((e, i) => {
-                                    return <Button title={i + 1} key={i} active={activePage === i ? true : false} onClick={() => setActivePage(i)}>{i + 1}</Button>
-                                })}
-                                <Button title='Pirmyn' onClick={() => setActivePage(activePage >= pagecount - 1 ? activePage : activePage + 1)} icon><Icon name="arrow right" />  </Button>
-                            </ButtonGroup>
+                <Button title='Atgal' onClick={() => setActivePage(activePage <= 0 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
+                {[...Array(pagecount)].map((e, i) => {
+                  return <Button title={i + 1} key={i} active={activePage === i ? true : false} onClick={() => setActivePage(i)}>{i + 1}</Button>
+                })}
+                <Button title='Pirmyn' onClick={() => setActivePage(activePage >= pagecount - 1 ? activePage : activePage + 1)} icon><Icon name="arrow right" />  </Button>
+              </ButtonGroup>
             </div>
           </Segment>
         </Grid.Column>
