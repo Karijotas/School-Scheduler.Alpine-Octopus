@@ -53,15 +53,16 @@ export function CreateTeacher() {
   
   const nameHandler = (e) => {
     setName(e.target.value)
-    if(!/^[A-Za-z\s]*$/.test(e.target.value)){
+    if(!/^[\p{L}ĄČĘĖĮŠŲŪŽąčęėįšųūž\s-]+$/iu.test(e.target.value)){
       setNameError("Įveskite tik raides")
-    } else if (e.target.value.length <2 || e.target.value.length > 40){
-      setNameError("Įveskite nuo 2 iki 40 simbolių!")
       if(!e.target.value){
         setNameError("Negali būti tuščias!")
       }
+    } else if (e.target.value.length <2 || e.target.value.length > 40){
+      setNameError("Įveskite nuo 2 iki 40 simbolių!")
+      
     } else {
-      setNameError("")
+      setNameError("") 
     }
 
 

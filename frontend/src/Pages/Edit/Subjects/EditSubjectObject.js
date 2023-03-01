@@ -47,6 +47,59 @@ export function EditSubjectObject() {
     modifiedDate: "",
   });
 
+
+  const [state, setState] = useState("")
+  const [nameError, setNameError] = useState("")
+    
+    const [descriptionError, setDescriptionError] = useState("")
+    
+
+   
+
+    const [formValid, setFormValid] = useState(false)
+
+
+    useEffect(() => {
+        if(nameError || descriptionError) {
+          setFormValid(false)
+        } else {
+          setFormValid(true)
+        }
+      }, [nameError, descriptionError]) 
+
+    
+
+    const handleNameInputChange = (e) => {
+        subjects.name = e.target.value
+        setState(e.target.value);
+        validateNameInput(e.target.value);
+      };
+
+    const handleDescriptionInputChange = (e) => {
+      subjects.description = e.target.value
+      setState(e.target.value);
+        validateDescriptionInput(e.target.value);
+      };
+      
+    const validateNameInput = (value) => {
+        if (value.length <2 || value.length > 40) {
+            setNameError("Įveskite nuo 2 iki 40 simbolių!")
+            if(!value){
+                setNameError("Pavadinimas negali būti tuščias!")
+              } 
+        } else {
+            setNameError("")
+        }
+      };
+
+      const validateDescriptionInput = (value) => {
+        if (value.length > 100) {
+            setDescriptionError("Aprašymas negali viršyti 100 symbolių!")
+        } else {
+            setDescriptionError("") 
+        }
+      };
+
   useEffect(() => {
     fetch("/api/v1/subjects/" + params.id)
       .then((response) => response.json())
@@ -381,15 +434,17 @@ export function EditSubjectObject() {
                   <Table.Body>
                     <Table.Row>
                       <Table.Cell collapsing>
+                      {(nameError) && <div style={{color: "red"}}>{nameError}</div>}
                         <Input
                           value={subjects.name}
-                          onChange={(e) => updateProperty("name", e)}
+                          onChange={(e) => handleNameInputChange(e)}
                         />
                       </Table.Cell>
                       <Table.Cell collapsing>
+                      {(descriptionError) && <div style={{color: "red"}}>{descriptionError}</div>}
                         <Input
                           value={subjects.description} 
-                          onChange={(e) => updateProperty("description", e)}
+                          onChange={(e) => handleDescriptionInputChange(e)}
                         />
                       </Table.Cell>
                       <Table.Cell collapsing>
@@ -603,7 +658,7 @@ export function EditSubjectObject() {
                 </Grid>
                 <Divider hidden></Divider>
                 <Button onClick={() => setActive(true)}>Atšaukti</Button>
-                <Button floated="right" primary onClick={updateSubjects}>
+                <Button disabled={!formValid} floated="right" primary onClick={updateSubjects}>
                   Atnaujinti
                 </Button>
               </div>

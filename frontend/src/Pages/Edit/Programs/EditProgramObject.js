@@ -42,8 +42,9 @@ export function EditProgramObject() {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [nameError, setNameError] = useState("")
-    const [buildingError, setBuildingError] = useState("")
+    
     const [descriptionError, setDescriptionError] = useState("")
+    const [hoursError, setHoursError] = useState("")
 
     const [selectErrorSubject, setSelectErrorSubject] = useState("*Privaloma")
 
@@ -51,12 +52,12 @@ export function EditProgramObject() {
 
 
     useEffect(() => {
-        if(nameError || descriptionError || selectErrorSubject) {
+        if(nameError || descriptionError || selectErrorSubject || hoursError) {
           setFormValid(false)
         } else {
           setFormValid(true)
         }
-      }, [nameError, descriptionError, selectErrorSubject])
+      }, [nameError, descriptionError, selectErrorSubject, hoursError]) 
 
       const selectSubjectHandler = () => {
         setSelectErrorSubject("")
@@ -73,6 +74,12 @@ export function EditProgramObject() {
         setDescription(e.target.value);
         validateDescriptionInput(e.target.value);
       };
+
+      const handleHoursInputChange = (e) => {
+        setSubjectHours(e.target.value);
+        validateHoursnInput(e.target.value);
+      };
+      
     
     const validateNameInput = (value) => {
         if (value.length <2 || value.length > 40) {
@@ -89,9 +96,19 @@ export function EditProgramObject() {
         if (value.length > 100) {
             setDescriptionError("Aprašymas negali viršyti 100 symbolių!")
         } else {
-            setDescriptionError("")
+            setDescriptionError("") 
         }
       };
+
+      const validateHoursnInput = (value) => {
+        if(!/^\d+$/.test(value)){
+          setHoursError("Įveskite tik skaičius")
+          if(!value){
+            setHoursError("")
+          }
+        }
+      };
+      
 
   useEffect(() => {
     fetch("/api/v1/programs/" + params.id)
@@ -132,6 +149,7 @@ export function EditProgramObject() {
 
 
   const addSubjectAndHours = (programId, subjectId, hours) => {
+    
     fetch(
       `/api/v1/programs/${programId}/subjects/${subjectId}/${hours}/newSubjectsWithHours`,
       {
@@ -391,11 +409,14 @@ export function EditProgramObject() {
                             </Form.Group>
                             <Divider hidden />
                             <List.Content>
+                         
+                            {(hoursError) && <div style={{color: "red"}}>{hoursError}</div>}
                               <Input
                                 placeholder="Valandų skaičius"
                                 value={subjectHours}
                                 onChange={(e) =>
-                                  setSubjectHours(e.target.value)
+                                  handleHoursInputChange(e)
+                                    
                                 }
                               />
                             </List.Content>
@@ -403,7 +424,9 @@ export function EditProgramObject() {
                             <List.Content floated="left">
                               <Button
                                id='details'
+                              
                                 onClick={() =>
+                                  
                                   addSubjectAndHours(
                                     params.id,
                                     subjectId,

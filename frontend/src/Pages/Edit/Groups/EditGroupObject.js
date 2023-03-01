@@ -40,6 +40,69 @@ export function EditGroupObject() {
 
     const [programId, setProgramId] = useState()
 
+    const [name, setName] = useState('');
+    const [studentAmount, setstudentAmount] = useState('');
+
+    const [nameError, setNameError] = useState("")
+    const [studentAmountError, setstudentAmountError] = useState("")
+    
+
+    // const [selectErrorYear, setSelectErrorYear] = useState("*Privaloma")
+    const [selectErrorProgram, setSelectErrorProgram] = useState("*Privaloma") 
+    const [selectErrorShift, setSelectErrorShift] = useState("*Privaloma")
+
+    const [formValid, setFormValid] = useState(false)
+
+
+    useEffect(() => {
+        if(nameError || studentAmountError  || selectErrorProgram || selectErrorShift) {
+          setFormValid(false)
+        } else {
+          setFormValid(true)
+        }
+      }, [nameError, studentAmountError, selectErrorProgram, selectErrorShift]) 
+
+      const selectProgramHandler = () => {
+        setSelectErrorProgram("")
+      }
+      const selectShiftHandler = () => {
+        setSelectErrorShift("")
+      }
+
+    const handleNameInputChange = (e) => {
+        groups.name = e.target.value
+        setName(e.target.value);
+        validateNameInput(e.target.value);
+      };
+
+    const handleStudentAmountInputChange = (e) => {
+        groups.studentAmount = e.target.value
+      setstudentAmount(e.target.value);
+      validateStudentAmountInput(e.target.value);
+      };
+      
+    
+    const validateNameInput = (value) => {
+        if (value.length <2 || value.length > 40) {
+            setNameError("Įveskite nuo 2 iki 40 simbolių!")
+            if(!value){
+                setNameError("Pavadinimas negali būti tuščias!")
+              } 
+        } else {
+            setNameError("")
+        }
+      };
+
+      const validateStudentAmountInput = (value) => {
+        if(!/^\d+$/.test(value)){
+            setstudentAmountError("Įveskite tik skaičius")
+            if(!value){
+                setstudentAmountError("")
+            }
+          }
+      };
+
+
 
     useEffect(() => {
         fetch('/api/v1/groups/' + params.id)
@@ -167,7 +230,9 @@ export function EditGroupObject() {
                                 </Table.Header>
                                 <Table.Body>
                                     <Table.Row  >
-                                        <Table.Cell width={6}><Input value={groups.name} onChange={(e) => updateProperty('name', e)} />
+                                        <Table.Cell width={6}>
+                                            {(nameError) && <div style={{color: "red"}}>{nameError}</div>}
+                                            <Input value={groups.name} onChange={(e) => handleNameInputChange(e)} />
                                         </Table.Cell>
                                         <Table.Cell >
 
@@ -194,19 +259,24 @@ export function EditGroupObject() {
 
                                 <Table.Body>
                                     <Table.Row  >
-                                        <Table.Cell width={6}><Input value={groups.studentAmount} onChange={(e) => updateProperty('studentAmount', e)} />
+                                    
+                                        <Table.Cell width={6}>{(studentAmountError) && <div style={{color: "red"}}>{studentAmountError}</div>}
+                                        <Input value={groups.studentAmount} onChange={(e) => handleStudentAmountInputChange(e)} />
                                         </Table.Cell>
                                         <Table.Cell collapsing >
-                                            <Select options={programs} placeholder={groups.program.name} onChange={(e, data) => setProgramId(data.value)} />
+                                        {(selectErrorProgram) && <div style={{color: "red"}}>{selectErrorProgram}</div>}
+                                            <Select options={programs} placeholder={groups.program.name} onChange={((e, data) => setProgramId(data.value),selectProgramHandler)} />
                                         </Table.Cell >
-                                        <Table.Cell width={4}><Input options={shiftOptions} placeholder={groups.shift} value={groups.shift} onChange={(e) => updateProperty('shift', e)} />
+                                        <Table.Cell width={4}>
+                                        {(selectErrorShift) && <div style={{color: "red"}}>{selectErrorShift}</div>}
+                                            <Input options={shiftOptions} placeholder={groups.shift} value={groups.shift} onChange={((e) => updateProperty('shift', e),selectShiftHandler)} />
                                         </Table.Cell>
                                     </Table.Row>
                                 </ Table.Body >
                             </Table>
 
                             <Button onClick={() => setActive(true)}>Atšaukti</Button>
-                            <Button className='controls' id='details' onClick={updateGroups}>Atnaujinti</Button>
+                            <Button disabled={!formValid} className='controls' id='details' onClick={updateGroups}>Atnaujinti</Button>
 
 
                         </div>)}
