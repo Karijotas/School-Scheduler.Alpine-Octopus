@@ -12,10 +12,10 @@ public class AlpineOctopusSchedulerApplication extends SpringBootServletInitiali
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(AlpineOctopusSchedulerApplicationTest.class);
+        return application.sources(AlpineOctopusSchedulerApplication.class);
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(AlpineOctopusSchedulerApplicationTest.class, args);
+        SpringApplication.run(AlpineOctopusSchedulerApplication.class, args);
     }
 }
