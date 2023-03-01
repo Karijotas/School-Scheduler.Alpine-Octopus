@@ -88,13 +88,15 @@ public class GroupService {
     @Transactional(readOnly = true)
     public List<GroupsEntityDto> getGroupsByProgram(String programText) {
 
-        Program createdProgram = programRepository.findAllByDeletedAndNameContainingIgnoreCase(Boolean.FALSE, programText)
-                .stream()
-                .findFirst().get();
-        return groupsRepository.findAll()
-                .stream()
-                .filter(groups -> groups.getProgram().equals(createdProgram))
-                .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
+        return groupsRepository.findAllByProgram_nameContainingIgnoreCase(programText)
+                .stream().map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
+//        Program createdProgram = programRepository.findAllByDeletedAndNameContainingIgnoreCase(Boolean.FALSE, programText)
+//                .stream()
+//                .findFirst().get();
+//        return groupsRepository.findAll()
+//                .stream()
+//                .filter(groups -> groups.getProgram().equals(createdProgram))
+//                .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
     }
 
     public Groups create(Groups groups, Long programId) {
