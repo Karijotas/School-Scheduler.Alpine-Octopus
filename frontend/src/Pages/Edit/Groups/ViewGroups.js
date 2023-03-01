@@ -9,7 +9,7 @@ import {
   Icon,
   Input,
   Segment,
-  Table
+  Table,
 } from "semantic-ui-react";
 import { YEAR_OPTIONS } from "../../../Components/const";
 import { EditMenu } from "../../../Components/EditMenu";
@@ -76,13 +76,13 @@ export function ViewGroups() {
     // .then(console.log('pages:' + pagecount));
   };
 
-  // const removeGroup = (id) => {
-  //     fetch('/api/v1/groups/' + id, {
-  //         method: 'DELETE',
-  //         headers: JSON_HEADERS
-  //     }).then(fetchGroups)
-  //         .then(setOpen(false));
-  // }
+  const removeGroup = (id) => {
+    fetch("/scheduler/api/v1/groups/delete/" + id, {
+      method: "PATCH",
+    })
+      .then(fetchGroups)
+      .then(setOpen(false));
+  };
 
   useEffect(() => {
     if (
@@ -203,19 +203,19 @@ export function ViewGroups() {
                         id="icocolor"
                           basic
                           compact
-                          title="Ištrinti"
-                          icon="trash alternate"
+                          title="Suarchyvuoti"
+                          icon="archive"
                           onClick={() => setOpen(group.id)}
                         ></Button>
 
                         <Confirm
                           open={open}
                           header="Dėmesio!"
-                          content="Ar tikrai norite ištrinti?"
+                          content="Ar tikrai norite perkelti į archyvą?"
                           cancelButton="Grįžti atgal"
-                          confirmButton="Ištrinti"
+                          confirmButton="Taip"
                           onCancel={() => setOpen(false)}
-                          // onConfirm={() => removeGroup(open)}
+                          onConfirm={() => removeGroup(open)}
                           size="small"
                         />
                       </Table.Cell>
