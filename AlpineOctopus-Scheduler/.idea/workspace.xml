@@ -11,6 +11,7 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/service/RoomService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/service/RoomService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/db/migration/V3_5__insert_room_test_data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/db/migration/V3_5__insert_room_test_data.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Groups/CreateGroupPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Groups/CreateGroupPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Groups/EditGroupObject.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Groups/EditGroupObject.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Module/CreateModulePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Module/CreateModulePage.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Module/EditModuleObject.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Module/EditModuleObject.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Programs/CreateProgramPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Programs/CreateProgramPage.js" afterDir="false" />
@@ -20,7 +21,9 @@
       <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Rooms/ViewRooms.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Rooms/ViewRooms.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Shifts/CreateShiftPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Shifts/CreateShiftPage.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Subjects/CreateSubjectPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Subjects/CreateSubjectPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Subjects/EditSubjectObject.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Subjects/EditSubjectObject.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Teachers/CreateTeacher.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Teachers/CreateTeacher.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Teachers/EditTeacherObject.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Teachers/EditTeacherObject.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

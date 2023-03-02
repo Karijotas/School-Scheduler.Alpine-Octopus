@@ -46,22 +46,20 @@ export function EditProgramObject() {
     const [descriptionError, setDescriptionError] = useState("")
     const [hoursError, setHoursError] = useState("")
 
-    const [selectErrorSubject, setSelectErrorSubject] = useState("*Privaloma")
+    
 
     const [formValid, setFormValid] = useState(false)
 
 
     useEffect(() => {
-        if(nameError || descriptionError || selectErrorSubject || hoursError) {
+        if(nameError || descriptionError  || hoursError) {
           setFormValid(false)
         } else {
           setFormValid(true)
         }
-      }, [nameError, descriptionError, selectErrorSubject, hoursError]) 
+      }, [nameError, descriptionError,  hoursError]) 
 
-      const selectSubjectHandler = () => {
-        setSelectErrorSubject("")
-      }
+     
 
     const handleNameInputChange = (e) => {
         programs.name = e.target.value
@@ -393,15 +391,14 @@ export function EditProgramObject() {
                           <List.Item>
                             <Form.Group widths="equal">
                               <Form.Field>
-                              {(selectErrorSubject) && <div style={{color: "red"}}>{selectErrorSubject}</div>}
                                 <Select
                                   options={subjects}
                                   placeholder="Dalykai"
                                   value={subject}
                                   onChange={(e, data) => (
                                     setSubject(e.target.value),
-                                    setSubjectId(data.value),
-                                    selectSubjectHandler(e)
+                                    setSubjectId(data.value)
+                                    
                                   )}
                                   onClose={() => console.log(subjectId)}
                                 />
