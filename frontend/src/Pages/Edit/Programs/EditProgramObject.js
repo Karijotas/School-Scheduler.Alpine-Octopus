@@ -49,7 +49,15 @@ export function EditProgramObject() {
     const [selectErrorSubject, setSelectErrorSubject] = useState("*Privaloma")
 
     const [formValid, setFormValid] = useState(false)
-
+   
+    const validateHoursnInput = (value) => {
+      if(!/^\d+$/.test(value)){
+        setHoursError("Įveskite tik skaičius")
+        if(!value){
+          setHoursError("*Privaloma")
+        }
+      }
+    };
 
     useEffect(() => {
         if(nameError || descriptionError || selectErrorSubject || hoursError) {
@@ -57,7 +65,7 @@ export function EditProgramObject() {
         } else {
           setFormValid(true)
         }
-      }, [nameError, descriptionError, selectErrorSubject, hoursError]) 
+      }, [nameError, descriptionError, selectErrorSubject, hoursError, validateHoursnInput]) 
 
       const selectSubjectHandler = () => {
         setSelectErrorSubject("")
@@ -100,14 +108,7 @@ export function EditProgramObject() {
         }
       };
 
-      const validateHoursnInput = (value) => {
-        if(!/^\d+$/.test(value)){
-          setHoursError("Įveskite tik skaičius")
-          if(!value){
-            setHoursError("*Privaloma")
-          }
-        }
-      };
+    
       
 
   useEffect(() => {
