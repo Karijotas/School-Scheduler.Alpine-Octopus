@@ -16,7 +16,7 @@ import java.util.List;
 public interface TeacherRepository extends JpaRepository<Teacher, Long> {
 
 
-    List<Teacher> findByNameContainingIgnoreCase(String nameText);
+    List<Teacher> findByNameContainingIgnoreCase(String nameText, Pageable pageable);
 
     @Transactional
     @Modifying

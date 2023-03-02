@@ -178,6 +178,15 @@ public class TeacherController {
         }
     }
 
+    @GetMapping(path = "page/name-filter/{nameText}")
+    @ApiOperation(value = "Get Paged Teachers starting with", notes = "Returns list of Teachers starting with passed String")
+    @ResponseBody
+    public List<TeacherEntityDto> getPagedTeachersByNameContaining(@PathVariable String nameText,
+                                                                   @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                                   @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+        return teacherService.getPagedTeachersByNameContaining(nameText, page, pageSize);
+    }
+
     @GetMapping(path = "page/shift-filter/{shiftText}")
     @ApiOperation(value = "Get Paged Teachers starting with", notes = "Returns list of Teachers starting with passed String")
     @ResponseBody

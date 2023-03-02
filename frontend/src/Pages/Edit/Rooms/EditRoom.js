@@ -33,6 +33,7 @@ export function EditRoom() {
   const applyResult = () => {
     setActive(true);
   };
+  
 
   const updateRooms = () => {
     fetch("/scheduler/api/v1/rooms/" + params.id, {
