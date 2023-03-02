@@ -43,9 +43,8 @@ export function ViewRooms() {
   };
 
   const removeRoom = (id) => {
-    fetch("/api/v1/rooms/" + id, {
-      method: "DELETE",
-      headers: JSON_HEADERS,
+    fetch("/api/v1/rooms/delete/" + id, {
+        method: "PATCH",
     })
       .then(fetchRooms)
       .then(setOpen(false));
