@@ -315,7 +315,7 @@ export function EditTeacherObject() {
                     <Table.Row>
                       <Table.HeaderCell>Vardas ir pavardė</Table.HeaderCell>
                       <Table.HeaderCell>Telefono nr.</Table.HeaderCell>
-                      <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
+                      <Table.HeaderCell>Paskutinis atnaujinimas</Table.HeaderCell>
                       <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>

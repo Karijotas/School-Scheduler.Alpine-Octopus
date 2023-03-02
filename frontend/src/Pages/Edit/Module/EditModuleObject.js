@@ -274,12 +274,12 @@ export function EditModuleObject() {
                           onChange={(e) => handleNameInputChange(e)}
                         />{(nameError) && <div style={{color: "red"}}>{nameError}</div>}
                       </Table.Cell>
-                      <Table.Cell collapsing>
+                      {/* <Table.Cell collapsing>
                         <Input
                           value={modules.description}
                           onChange={(e) => handleDescriptionInputChange(e)}
                         />{(descriptionError) && <div style={{color: "red"}}>{descriptionError}</div>}
-                      </Table.Cell>
+                      </Table.Cell> */}
                       <Table.Cell collapsing> {modules.modifiedDate} </Table.Cell>
                     </Table.Row>
                   </Table.Body>
@@ -298,8 +298,9 @@ export function EditModuleObject() {
                             fluid
                             style={{ minHeight: 60 }}
                             value={modules.description}
-                            onChange={(e) => updateProperty("description", e)}
-                          />
+                          onChange={(e) => handleDescriptionInputChange(e)}
+                        />{(descriptionError) && <div style={{color: "red"}}>{descriptionError}</div>}
+                          
                         </Form>
                       </Table.Cell>
                     </Table.Row>
