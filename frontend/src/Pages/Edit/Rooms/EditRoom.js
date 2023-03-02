@@ -80,7 +80,7 @@ export function EditRoom() {
                       <Table.HeaderCell>Klasės pavadinimas</Table.HeaderCell>
                       <Table.HeaderCell>Pastatas</Table.HeaderCell>
                       <Table.HeaderCell>
-                        Paskutinis atnaujinimas:
+                        Paskutinis atnaujinimas
                       </Table.HeaderCell>
                       <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                     </Table.Row>
@@ -134,7 +134,7 @@ export function EditRoom() {
                       <Table.HeaderCell>Klasės pavadinimas</Table.HeaderCell>
                       <Table.HeaderCell>Pastatas</Table.HeaderCell>
                       <Table.HeaderCell>
-                        Paskutinis atnaujinimas:
+                        Paskutinis atnaujinimas
                       </Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>

@@ -108,8 +108,8 @@ export function ViewShifts() {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Pavadinimas</Table.HeaderCell>
-                      <Table.HeaderCell>Pamokos nuo:</Table.HeaderCell>
-                      <Table.HeaderCell>Pamokos iki:</Table.HeaderCell>
+                      <Table.HeaderCell>Pamokos nuo</Table.HeaderCell>
+                      <Table.HeaderCell>Pamokos iki</Table.HeaderCell>
                       <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>

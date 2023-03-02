@@ -142,7 +142,7 @@ export function CreateShiftPage() {
                 </Form.Field>
 
                 <Form.Field>
-                  <label>Pamokos nuo:</label>
+                  <label>Pamokos nuo</label>
                   {(startDirty && startError) && <div style={{color: "red"}}>{startError}</div>}
                   <Input
                     placeholder="Pamokos nuo:"
@@ -154,7 +154,7 @@ export function CreateShiftPage() {
                 </Form.Field>
 
                 <Form.Field>
-                  <label>Pamokos iki:</label>
+                  <label>Pamokos iki</label>
                   {(endDirty && endError) && <div style={{color: "red"}}>{endError}</div>}
                   <Input
                     placeholder="Pamokos iki:"

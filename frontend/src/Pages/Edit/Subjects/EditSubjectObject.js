@@ -316,7 +316,7 @@ export function EditSubjectObject() {
                     <Table.Row>
                       <Table.HeaderCell>Dalyko pavadinimas</Table.HeaderCell>
                       <Table.HeaderCell>
-                        Paskutinis atnaujinimas:
+                        Paskutinis atnaujinimas
                       </Table.HeaderCell>
                       <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                     </Table.Row>
@@ -359,7 +359,7 @@ export function EditSubjectObject() {
                       <Table.Header>
                         <Table.Row>
                           <Table.HeaderCell width={6}>
-                            Moduliai:
+                            Moduliai
                           </Table.HeaderCell>
                         </Table.Row>
                       </Table.Header>
@@ -377,7 +377,7 @@ export function EditSubjectObject() {
                       <Table.Header>
                         <Table.Row>
                           <Table.HeaderCell width={6}>
-                            Mokytojai:
+                            Mokytojai
                           </Table.HeaderCell>
                         </Table.Row>
                       </Table.Header>
@@ -395,7 +395,7 @@ export function EditSubjectObject() {
                       <Table.Header>
                         <Table.Row>
                           <Table.HeaderCell width={6}>
-                            Kabinetai:
+                            Kabinetai
                           </Table.HeaderCell>
                         </Table.Row>
                       </Table.Header>
@@ -428,7 +428,7 @@ export function EditSubjectObject() {
                     <Table.Row>
                       <Table.HeaderCell>Dalyko pavadinimas</Table.HeaderCell>
                       <Table.HeaderCell collapsing>
-                        Paskutinis atnaujinimas:
+                        Paskutinis atnaujinimas
                       </Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>

@@ -358,7 +358,7 @@ export function EditTeacherObject() {
                       <Table.Header>
                         <Table.Row>
                           <Table.HeaderCell width={6}>
-                            Pamainos:
+                            Pamainos
                           </Table.HeaderCell>
                         </Table.Row>
                       </Table.Header>
@@ -376,7 +376,7 @@ export function EditTeacherObject() {
                       <Table.Header>
                         <Table.Row>
                           <Table.HeaderCell width={6}>
-                            Dalykai:
+                            Dalykai
                           </Table.HeaderCell>
                         </Table.Row>
                       </Table.Header>
@@ -411,7 +411,7 @@ export function EditTeacherObject() {
                     <Table.Row>
                       <Table.HeaderCell>Vardas ir pavardė</Table.HeaderCell>
                       <Table.HeaderCell>Telefono nr.</Table.HeaderCell>
-                      <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
+                      <Table.HeaderCell>Paskutinis atnaujinimas</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
 

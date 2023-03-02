@@ -189,7 +189,7 @@ export function EditModuleObject() {
                     <Table.Row>
                       <Table.HeaderCell>Modulio pavadinimas</Table.HeaderCell>
                       <Table.HeaderCell>Aprašymas</Table.HeaderCell>
-                      <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
+                      <Table.HeaderCell>Paskutinis atnaujinimas</Table.HeaderCell>
                       <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
@@ -212,7 +212,7 @@ export function EditModuleObject() {
                       <Table.Header>
                         <Table.Row>
                           <Table.HeaderCell width={4}>
-                            Dalykai:
+                            Dalykai
                           </Table.HeaderCell>
                         </Table.Row>
                       </Table.Header>
@@ -261,7 +261,7 @@ export function EditModuleObject() {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Modulio pavadinimas</Table.HeaderCell>
-                      <Table.HeaderCell >Paskutinis atnaujinimas:</Table.HeaderCell>
+                      <Table.HeaderCell >Paskutinis atnaujinimas</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
 
