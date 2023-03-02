@@ -60,7 +60,7 @@ export function EditProgramObject() {
   };
 
   useEffect(() => {
-    if (nameError || descriptionError || selectErrorSubject || hoursError) {
+    if (nameError || descriptionError) {
       setFormValid(false);
     } else {
       setFormValid(true);
@@ -68,9 +68,6 @@ export function EditProgramObject() {
   }, [
     nameError,
     descriptionError,
-    selectErrorSubject,
-    hoursError,
-    validateHoursnInput,
   ]);
 
   const selectSubjectHandler = () => {
