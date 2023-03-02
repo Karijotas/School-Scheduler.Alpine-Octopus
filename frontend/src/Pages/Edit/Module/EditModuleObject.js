@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
-import { Button, Divider, Form, Grid, Icon, Input, List, Segment, Select, Table, TextArea } from "semantic-ui-react";
-import { EditMenu } from '../../../Components/EditMenu';
+import { Button, Grid, Icon, Input, Segment, Table, Divider, List, Form, Select, TextArea } from "semantic-ui-react";
 import MainMenu from '../../../Components/MainMenu';
+import { EditMenu } from '../../../Components/EditMenu';
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -121,9 +121,9 @@ export function EditModuleObject() {
   };
   const [updated, setUpdated] = useState();
 
-    useEffect(() => {
-        setUpdated(true);
-    }, [setUpdated]);
+  useEffect(() => {
+    setUpdated(true);
+  }, [setUpdated]);
 
 
   const editThis = () => {
@@ -232,8 +232,8 @@ export function EditModuleObject() {
                       </Table.Body>
                     </Table>
                   </Grid.Column>
-                  </Grid>
-                  <Divider hidden />
+                </Grid>
+                <Divider hidden />
 
                 {/* <Divider hidden />
           <Table>
@@ -277,16 +277,9 @@ export function EditModuleObject() {
                       <Table.Cell collapsing>
                         <Input
                           value={modules.name}
-                          
-                          onChange={(e) => handleNameInputChange(e)}
-                        />{(nameError) && <div style={{color: "red"}}>{nameError}</div>}
+                          onChange={(e) => updateProperty("name", e)}
+                        />
                       </Table.Cell>
-                      {/* <Table.Cell collapsing>
-                        <Input
-                          value={modules.description}
-                          onChange={(e) => handleDescriptionInputChange(e)}
-                        />{(descriptionError) && <div style={{color: "red"}}>{descriptionError}</div>}
-                      </Table.Cell> */}
                       <Table.Cell collapsing> {modules.modifiedDate} </Table.Cell>
                     </Table.Row>
                   </Table.Body>
@@ -305,9 +298,8 @@ export function EditModuleObject() {
                             fluid
                             style={{ minHeight: 60 }}
                             value={modules.description}
-                          onChange={(e) => handleDescriptionInputChange(e)}
-                        />{(descriptionError) && <div style={{color: "red"}}>{descriptionError}</div>}
-                          
+                            onChange={(e) => updateProperty("description", e)}
+                          />
                         </Form>
                       </Table.Cell>
                     </Table.Row>
@@ -353,10 +345,10 @@ export function EditModuleObject() {
                                       placeholder="Dalykai"
                                       value={subject}
                                       onChange={(e, data) => (
-                                        setSubjects(e.target.value),
+                                        setSubject(e.target.value),
                                         setSubjectId(data.value)
                                       )}
-                                      onClose={() => console.log(subjectId)}
+                                    // onClose={() => console.log(subjectId)}
                                     />
                                   </Form.Field>
                                 </Form.Group>
@@ -366,7 +358,7 @@ export function EditModuleObject() {
                                   id='details'
                                     onClick={() =>
                                       addSubject(params.id, subjectId)
-                                    }
+                                    } id='details'
                                   >
                                     Pridėti
                                   </Button>
@@ -378,10 +370,10 @@ export function EditModuleObject() {
                       </Table.Body>
                     </Table>
                   </Grid.Column>
-                  </Grid>
-                  <Divider hidden></Divider>
-                  <Button onClick={() => setActive(true)}>Atšaukti</Button>
-                <Button  id='details' disabled={!formValid} floated="right" primary onClick={updateModules}>
+                </Grid>
+                <Divider hidden></Divider>
+                <Button onClick={() => setActive(true)}>Atšaukti</Button>
+                <Button id='details' floated="right" primary onClick={updateModules}>
                   Atnaujinti
                 </Button>
               </div>
