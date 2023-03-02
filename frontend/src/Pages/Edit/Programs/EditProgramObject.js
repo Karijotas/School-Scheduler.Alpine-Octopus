@@ -62,14 +62,14 @@ export function EditProgramObject() {
   };
 
   useEffect(() => {
-    if (nameError || descriptionError) {
+    if (nameError || descriptionError || hoursError) {
       setFormValid(false);
     } else {
       setFormValid(true);
     }
   }, [
     nameError,
-    descriptionError,
+    descriptionError,  hoursError
   ]);
 
   const selectSubjectHandler = () => {
@@ -541,19 +541,22 @@ export function EditProgramObject() {
                           <List.Item>
                             <Form.Group widths="equal">
                               <Form.Field>
+<<<<<<< HEAD
                                 {selectErrorSubject && (
                                   <div style={{ color: "red" }}>
                                     {selectErrorSubject}
                                   </div>
                                 )}
+=======
+>>>>>>> validation_front
                                 <Select
                                   options={subjects}
                                   placeholder="Dalykai"
                                   value={subject}
                                   onChange={(e, data) => (
                                     setSubject(e.target.value),
-                                    setSubjectId(data.value),
-                                    selectSubjectHandler(e)
+                                    setSubjectId(data.value)
+                                    
                                   )}
                                   onClose={() => console.log(subjectId)}
                                 />

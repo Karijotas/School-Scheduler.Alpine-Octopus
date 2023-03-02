@@ -63,28 +63,49 @@ export function CreateShiftPage() {
   }
 
   const startHandler = (e) => {
-    setStarts(e.target.value)
-    if(!/^\d+$/.test(e.target.value)){
-      setStartError("Įveskite tik skaičius!")
-      if(!e.target.value){
-        setStartError("Negali būti tuščias!")
+    const value = e.target.value;
+    setStarts(value);
+    
+    if (!/^\d+$/.test(value)) {
+      setStartError("Įveskite tik skaičius!");
+      
+      if (!value) {
+        setStartError("Negali būti tuščias!");
       }
+    } else if (value < 1 || value > 14) {
+      setStartError("Skaičius turi būti tarp 1 ir 14!");
+    } else if (Number(ends) && Math.abs(value - Number(ends)) > 11) {
+      setStartError("Intervalo skirtumas negali būti didesnis nei 12!");
+    } else if(value > Number(ends)){
+      setStartError("Pamokos negali baigtis vėliau nei prasidėjo")
+      setEndError("");
     } else {
-      setStartError("")
+      setStartError("");
     }
-  }
+  };
 
   const endHandler = (e) => {
-    setEnds(e.target.value)
-    if(!/^\d+$/.test(e.target.value)){
-      setEndError("Įveskite tik skaičius!")
-      if(!e.target.value){
-        setEndError("Negali būti tuščias!")
+    const value = e.target.value;
+    setEnds(value);
+    
+    
+    if (!/^\d+$/.test(value)) {
+      setEndError("Įveskite tik skaičius!");
+      
+      if (!value) {
+        setEndError("Negali būti tuščias!");
       }
+    } else if (value < 1 || value > 14) {
+      setEndError("Skaičius turi būti tarp 1 ir 14!");
+    } else if (Number(starts) && Math.abs(Number(starts) - value) > 11) {
+      setEndError("Intervalo skirtumas negali būti didesnis nei 12!");
+    } else if (Number(starts)>value){
+      setEndError("Pamokos negali baigtis anksčiau nei prasidėjo!")
+      setStartError("");
     } else {
-      setEndError("")
+      setEndError("");
     }
-    }
+  };
      
   
 

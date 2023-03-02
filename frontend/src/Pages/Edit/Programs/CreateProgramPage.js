@@ -16,7 +16,7 @@ const yearOptions = [
   { key: 23, value: 2023, text: "2023" },
   { key: 24, value: 2024, text: "2024" },
   { key: 25, value: 2025, text: "2025" },
-  { key: 26, value: 2026, text: "2026" }, 
+  { key: 26, value: 2026, text: "2026" },
   { key: 27, value: 2027, text: "2027" },
   { key: 28, value: 2028, text: "2028" },
 ];
@@ -34,49 +34,49 @@ export function CreateProgramPage() {
   const [error, setError] = useState();
   const [hours, setHours] = useState("");
 
-   //Validation
-   const [nameDirty, setNameDirty] = useState(false);
-   const [nameError, setNameError] = useState("Negali būti tuščias!")
-   const [descriptionError, setDescriptionError] = useState("")
-   const [formValid, setFormValid] = useState(false)
- 
-   useEffect(() => {
-     if(nameError || descriptionError) {
-       setFormValid(false)
-     } else {
-       setFormValid(true)
-     }
-   }, [nameError, descriptionError])
-   
- 
-   const blurHandler = (e) => {
-     switch (e.target.name){
-       case 'name':
-         setNameDirty(true);
-         break
-     }
-   }
- 
-   const nameHandler = (e) => {
-     setName(e.target.value)
-     if(e.target.value.length <2 || e.target.value.length > 100){
-       setNameError("Įveskite nuo 2 iki 100 simbolių!")
-       if(!e.target.value){
-         setNameError("Negali būti tuščias!")
-       }
-     } else {
-       setNameError("")
-     }
-   }
- 
-   const descriptionHandler = (e) => {
-     setDescription(e.target.value)
-     if(e.target.value.length > 500){
-       setDescriptionError("Aprašymas negali viršyti 500 simbolių!")
-     } else {
-       setDescriptionError("")
-     }
-   }
+  //Validation
+  const [nameDirty, setNameDirty] = useState(false);
+  const [nameError, setNameError] = useState("Negali būti tuščias!")
+  const [descriptionError, setDescriptionError] = useState("")
+  const [formValid, setFormValid] = useState(false)
+
+  useEffect(() => {
+    if (nameError || descriptionError) {
+      setFormValid(false)
+    } else {
+      setFormValid(true)
+    }
+  }, [nameError, descriptionError])
+
+
+  const blurHandler = (e) => {
+    switch (e.target.name) {
+      case 'name':
+        setNameDirty(true);
+        break
+    }
+  }
+
+  const nameHandler = (e) => {
+    setName(e.target.value)
+    if (e.target.value.length < 2 || e.target.value.length > 100) {
+      setNameError("Įveskite nuo 2 iki 100 simbolių!")
+      if (!e.target.value) {
+        setNameError("Negali būti tuščias!")
+      }
+    } else {
+      setNameError("")
+    }
+  }
+
+  const descriptionHandler = (e) => {
+    setDescription(e.target.value)
+    if (e.target.value.length > 500) {
+      setDescriptionError("Aprašymas negali viršyti 500 simbolių!")
+    } else {
+      setDescriptionError("")
+    }
+  }
 
   const applyResult = (result) => {
     const clear = () => {
@@ -99,7 +99,7 @@ export function CreateProgramPage() {
         description,
       }),
     }).then(applyResult)
-    .then(() => window.location = listUrl);
+      .then(() => window.location = listUrl);
   };
 
 
@@ -119,9 +119,9 @@ export function CreateProgramPage() {
               <Form>
                 <Form.Field>
                   <label>Programos pavadinimas</label>
-                  {(nameDirty && nameError) && <div style={{color: "red"}}>{nameError}</div>}
+                  {(nameDirty && nameError) && <div style={{ color: "red" }}>{nameError}</div>}
                   <input
-                  name="name"
+                    name="name"
                     placeholder="Programos pavadinimas"
                     onBlur={blurHandler}
                     value={name}
@@ -131,7 +131,7 @@ export function CreateProgramPage() {
                 <Form.Group widths="equal">
                   <Form.Field>
                     <label>Aprašymas</label>
-                    {(descriptionError) && <div style={{color: "red"}}>{descriptionError}</div>}
+                    {(descriptionError) && <div style={{ color: "red" }}>{descriptionError}</div>}
                     <TextArea
                       placeholder="Aprašymas"
                       style={{ minHeight: 100 }}
@@ -152,7 +152,7 @@ export function CreateProgramPage() {
                     Atgal
                   </Button>
                   <Button
-                   id='details'
+                    id='details'
                     type="submit"
                     className="controls"
                     primary
