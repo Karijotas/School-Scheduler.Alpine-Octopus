@@ -10,7 +10,7 @@ const JSON_HEADERS = {
 
 export function CreateTeacher() {
   // const [create, setCreate] = useState()
-  const listUrl = useHref('/view/subjects');
+  const listUrl = useHref('/view/teachers');
   const [hide, setHide] = useState(false);
   const [name, setName] = useState("");
   const [loginEmail, setLoginEmail] = useState("");
@@ -29,40 +29,40 @@ export function CreateTeacher() {
   const [contactEmailError, setContactEmailError] = useState("")
   const [phoneError, setPhoneError] = useState("")
   const [workHoursError, setWorkHoursError] = useState("")
-  
+
   const [formValid, setFormValid] = useState(false)
 
   useEffect(() => {
-    if(nameError || loginEmailError || contactEmailError || workHoursError) {
+    if (nameError || loginEmailError || contactEmailError || workHoursError) {
       setFormValid(false)
     } else {
       setFormValid(true)
     }
-  }, [nameError,loginEmailError, contactEmailError, workHoursError])
+  }, [nameError, loginEmailError, contactEmailError, workHoursError])
 
   const blurHandler = (e) => {
-    switch (e.target.name){
+    switch (e.target.name) {
       case 'name':
         setNameDirty(true);
         break
-        case 'teams': 
+      case 'teams':
         setLoginEmailDirty(true);
-          break
+        break
     }
   }
-  
+
   const nameHandler = (e) => {
     setName(e.target.value)
-    if(!/^[\p{L}ĄČĘĖĮŠŲŪŽąčęėįšųūž\s-]+$/iu.test(e.target.value)){
+    if (!/^[\p{L}ĄČĘĖĮŠŲŪŽąčęėįšųūž\s-]+$/iu.test(e.target.value)) {
       setNameError("Įveskite tik raides")
-      if(!e.target.value){
+      if (!e.target.value) {
         setNameError("Negali būti tuščias!")
       }
-    } else if (e.target.value.length <2 || e.target.value.length > 40){
+    } else if (e.target.value.length < 2 || e.target.value.length > 40) {
       setNameError("Įveskite nuo 2 iki 40 simbolių!")
-      
+
     } else {
-      setNameError("") 
+      setNameError("")
     }
 
 
@@ -73,9 +73,9 @@ export function CreateTeacher() {
 
   const teamsLoginHandler = (e) => {
     setLoginEmail(e.target.value)
-    if(!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(e.target.value)){
+    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(e.target.value)) {
       setloginEmailError("Neteisingas pašto formatas!")
-      if(!e.target.value){
+      if (!e.target.value) {
         setloginEmailError("Negali būti tuščias!")
       }
     } else {
@@ -85,7 +85,7 @@ export function CreateTeacher() {
 
   const emailHandler = (e) => {
     setContactEmail(e.target.value)
-    if(!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(e.target.value)){
+    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(e.target.value)) {
       setContactEmailError("Neteisingas pašto formatas!")
     } else {
       setContactEmailError("")
@@ -93,8 +93,8 @@ export function CreateTeacher() {
   }
   const phoneHandler = (e) => {
     setPhone(e.target.value)
-    
-    if(!/^(\+370|8)\d{8}$/.test(e.target.value)){
+
+    if (!/^(\+370|8)\d{8}$/.test(e.target.value)) {
       setPhoneError("Neteisingas numerio formatas!")
     } else {
       setPhoneError("")
@@ -102,10 +102,10 @@ export function CreateTeacher() {
   }
   const hoursHandler = (e) => {
     setWorkHoursPerWeek(e.target.value)
-    
-    if(!/^\d+$/.test(e.target.value)){
+
+    if (!/^\d+$/.test(e.target.value)) {
       setWorkHoursError("Įveskite tik skaičius")
-      if(!e.target.value){
+      if (!e.target.value) {
         setWorkHoursError("")
       }
     }
@@ -134,7 +134,7 @@ export function CreateTeacher() {
         contactEmail,
         phone,
         workHoursPerWeek,
-        
+
       }),
     }).then(applyResult).then(() => window.location = listUrl);
   };
@@ -153,92 +153,92 @@ export function CreateTeacher() {
 
   return (
     <div>
-     <MainMenu />
+      <MainMenu />
 
-<Grid columns={2} >
-  <Grid.Column width={2} id='main'>
-    <EditMenu />
-  </Grid.Column>
+      <Grid columns={2} >
+        <Grid.Column width={2} id='main'>
+          <EditMenu />
+        </Grid.Column>
 
-  <Grid.Column floated='left' textAlign='left' verticalAlign='top' width={13}>
-    <Segment id='segment' color='teal'>
-        <div className="create-new-page">
-          <Form>
-            <Form.Field>
-              <label>Vardas ir pavardė</label>
-              {(nameDirty && nameError) && <div style={{color: "red"}}>{nameError}</div>}
-              <input
-                placeholder="Vardas ir pavardė"
-                onBlur={blurHandler}
-                name="name"
-                value={name}
-                onChange={(e) => nameHandler(e)}
-              />
-            </Form.Field>
-            <Form.Field>
-              <label>Teams vartotojo vardas</label>
-              {(loginEmailDirty && loginEmailError) && <div style={{color: "red"}}>{loginEmailError}</div>}
-              <input
-                placeholder="Teams vartotojo vardas"
-                onBlur={blurHandler}
-                name="teams"
-                value={loginEmail}
-                onChange={(e) => teamsLoginHandler(e)}
-              />
-            </Form.Field>
-            <Form.Field>
-              <label>El. paštas</label>
-              {(contactEmailError) && <div style={{color: "red"}}>{contactEmailError}</div>}
-              <input
-                placeholder="El. paštas"
-                value={contactEmail}
-                onChange={(e) => emailHandler(e)}
-              />
-            </Form.Field>
-            <Form.Field>
-              <label>Telefono nr.</label>
-              {(phoneError) && <div style={{color: "red"}}>{phoneError}</div>}
-              <input
-                placeholder="Telefono nr."
-                value={phone}
-                onChange={(e) => phoneHandler(e)}
-              />
-            </Form.Field>
-            <Form.Field>
-              <label>Užimtumas (val. per savaitę)</label>
-              {(workHoursError) && <div style={{color: "red"}}>{workHoursError}</div>}
-              <input
-                placeholder="Užimtumas (val. per savaitę)"
-                value={workHoursPerWeek}
-                onChange={(e) => hoursHandler(e)}
-              />
-            </Form.Field>
+        <Grid.Column floated='left' textAlign='left' verticalAlign='top' width={13}>
+          <Segment id='segment' color='teal'>
+            <div className="create-new-page">
+              <Form>
+                <Form.Field>
+                  <label>Vardas ir pavardė</label>
+                  {(nameDirty && nameError) && <div style={{ color: "red" }}>{nameError}</div>}
+                  <input
+                    placeholder="Vardas ir pavardė"
+                    onBlur={blurHandler}
+                    name="name"
+                    value={name}
+                    onChange={(e) => nameHandler(e)}
+                  />
+                </Form.Field>
+                <Form.Field>
+                  <label>Teams vartotojo vardas</label>
+                  {(loginEmailDirty && loginEmailError) && <div style={{ color: "red" }}>{loginEmailError}</div>}
+                  <input
+                    placeholder="Teams vartotojo vardas"
+                    onBlur={blurHandler}
+                    name="teams"
+                    value={loginEmail}
+                    onChange={(e) => teamsLoginHandler(e)}
+                  />
+                </Form.Field>
+                <Form.Field>
+                  <label>El. paštas</label>
+                  {(contactEmailError) && <div style={{ color: "red" }}>{contactEmailError}</div>}
+                  <input
+                    placeholder="El. paštas"
+                    value={contactEmail}
+                    onChange={(e) => emailHandler(e)}
+                  />
+                </Form.Field>
+                <Form.Field>
+                  <label>Telefono nr.</label>
+                  {(phoneError) && <div style={{ color: "red" }}>{phoneError}</div>}
+                  <input
+                    placeholder="Telefono nr."
+                    value={phone}
+                    onChange={(e) => phoneHandler(e)}
+                  />
+                </Form.Field>
+                <Form.Field>
+                  <label>Užimtumas (val. per savaitę)</label>
+                  {(workHoursError) && <div style={{ color: "red" }}>{workHoursError}</div>}
+                  <input
+                    placeholder="Užimtumas (val. per savaitę)"
+                    value={workHoursPerWeek}
+                    onChange={(e) => hoursHandler(e)}
+                  />
+                </Form.Field>
 
-            <div>
-              <Button
-                icon
-                labelPosition="left"
-                className=""
-                as={NavLink} exact to='/view/teachers'
-              >
-                <Icon name="arrow left" />
-                Atgal
-              </Button>
-              <Button
-                type="submit"
-                className="controls"
-                primary
-                disabled={!formValid}
-                onClick={createTeacher}
-              >
-                Sukurti
-              </Button>
+                <div>
+                  <Button
+                    icon
+                    labelPosition="left"
+                    className=""
+                    as={NavLink} exact to='/view/teachers'
+                  >
+                    <Icon name="arrow left" />
+                    Atgal
+                  </Button>
+                  <Button
+                    type="submit"
+                    className="controls"
+                    primary
+                    disabled={!formValid}
+                    onClick={createTeacher}
+                  >
+                    Sukurti
+                  </Button>
+                </div>
+              </Form>
             </div>
-          </Form>
-        </div>
-        </Segment>
-      </Grid.Column>
-    </Grid>
+          </Segment>
+        </Grid.Column>
+      </Grid>
     </div>
   );
 }

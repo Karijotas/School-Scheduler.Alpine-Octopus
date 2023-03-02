@@ -1,241 +1,197 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { Button, Grid, Icon, Input, Segment, Table } from 'semantic-ui-react';
-import { EditMenu } from '../../../Components/EditMenu';
-import MainMenu from '../../../Components/MainMenu';
-
-
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { Button, Grid, Icon, Input, Segment, Table, Form, TextArea, Divider } from "semantic-ui-react";
+import MainMenu from "../../../Components/MainMenu";
+import { EditMenu } from "../../../Components/EditMenu";
 
 const JSON_HEADERS = {
-    'Content-Type': 'application/json'
+  "Content-Type": "application/json",
 };
 
-
 export function EditRoom() {
+  const params = useParams();
 
-    const params = useParams();
+  const [hide, setHide] = useState(false);
 
-    const [hide, setHide] = useState(false)
+  const [active, setActive] = useState(true);
 
-    const [active, setActive] = useState(true)
+  const [error, setError] = useState();
 
-    const [error, setError] = useState();
+  const [rooms, setRooms] = useState({
+    name: "",
+    building: "",
+    description: "",
+    modifiedDate: "",
+  });
 
-    const [rooms, setRooms] = useState({
-        name: '',
-        building: '',
-        description: '',
-        modifiedDate: '',
+  useEffect(() => {
+    fetch("/scheduler/api/v1/rooms/" + params.id)
+      .then((response) => response.json())
+      .then(setRooms);
+  }, []);
+
+  const applyResult = () => {
+    setHide(true);
+  };
+
+  const updateRooms = () => {
+    fetch("/scheduler/api/v1/rooms/" + params.id, {
+      method: "PUT",
+      headers: JSON_HEADERS,
+      body: JSON.stringify(rooms),
+    })
+      .then((result) => {
+        if (!result.ok) {
+          setError("Update failed");
+        } else {
+          setError();
+        }
+      })
+      .then(applyResult);
+  };
+
+  const updateProperty = (property, event) => {
+    setRooms({
+      ...rooms,
+      [property]: event.target.value,
     });
-    const [name, setName] = useState('');
-    const [building, setBuilding] = useState('');
-    const [description, setDescription] = useState('');
+  };
 
-    const [nameError, setNameError] = useState("")
-    const [buildingError, setBuildingError] = useState("")
-    const [descriptionError, setDescriptionError] = useState("")
+  const editThis = () => {
+    setActive(false);
+  };
 
-    const [formValid, setFormValid] = useState(false)
+  return (
+    <div>
+      <MainMenu />
 
+      <Grid columns={2}>
+        <Grid.Column width={2} id="main">
+          <EditMenu />
+        </Grid.Column>
 
-    useEffect(() => {
-        if(nameError || buildingError || descriptionError) {
-          setFormValid(false)
-        } else {
-          setFormValid(true)
-        }
-      }, [nameError, buildingError, descriptionError])
+        <Grid.Column textAlign="left" verticalAlign="top" width={13}>
+          <Segment id="segment" color="teal">
+            {active && !hide && (
+              <div>
+                <Table celled>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>Klasės pavadinimas</Table.HeaderCell>
+                      <Table.HeaderCell>Pastatas</Table.HeaderCell>
+                      <Table.HeaderCell>
+                        Paskutinis atnaujinimas:
+                      </Table.HeaderCell>
+                      <Table.HeaderCell>Veiksmai</Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
 
-    const handleNameInputChange = (e) => {
-        rooms.name = e.target.value
-        setName(e.target.value);
-        validateNameInput(e.target.value);
-      };
+                  <Table.Body>
+                    <Table.Row>
+                      <Table.Cell>{rooms.name}</Table.Cell>
+                      <Table.Cell>{rooms.building}</Table.Cell>
 
-    const handleBuildingInputChange = (e) => {
-        rooms.building = e.target.value
-        setBuilding(e.target.value);
-        validateBuildingInput(e.target.value);
-      };
+                      <Table.Cell collapsing> {rooms.modifiedDate} </Table.Cell>
 
-    const handleDescriptionInputChange = (e) => {
-        rooms.description = e.target.value
-        setDescription(e.target.value);
-        validateDescriptionInput(e.target.value);
-      };
-    
-    const validateNameInput = (value) => {
-        if (value.length <2 || value.length > 40) {
-            setNameError("Įveskite nuo 2 iki 40 simbolių!")
-            if(!value){
-                setNameError("Pavadinimas negali būti tuščias!")
-              } 
-        } else {
-            setNameError("")
-        }
-      };
+                      <Table.Cell collapsing>
+                        <Button onClick={editThis} id="details">
+                          Redaguoti
+                        </Button>
+                      </Table.Cell>
+                    </Table.Row>
+                  </Table.Body>
+                </Table>
 
-      const validateBuildingInput = (value) => {
-        if (value.length <2 || value.length > 40) {
-            setBuildingError("Įveskite nuo 2 iki 40 simbolių!")
-            if(!value){
-                setBuildingError("Pastatas negali būti tuščias!")
-              } 
-        } else {
-            setBuildingError("")
-        }
-      };
+                <Table celled>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>Aprašymas</Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
+                  <Table.Body>
+                    <Table.Row>
+                      <Table.Cell>{rooms.description}</Table.Cell>
+                    </Table.Row>
+                  </Table.Body>
+                </Table>
 
-      const validateDescriptionInput = (value) => {
-        if (value.length > 100) {
-            setDescriptionError("Aprašymas negali viršyti 100 symbolių!")
-        } else {
-            setDescriptionError("")
-        }
-      };
+                <Button
+                  icon
+                  labelPosition="left"
+                  className=""
+                  href="#/view/rooms"
+                >
+                  <Icon name="arrow left" />
+                  Atgal
+                </Button>
+              </div>
+            )}
+            {!active && !hide && (
+              <div>
+                <Table celled>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>Klasės pavadinimas</Table.HeaderCell>
+                      <Table.HeaderCell>Pastatas</Table.HeaderCell>
+                      <Table.HeaderCell>
+                        Paskutinis atnaujinimas:
+                      </Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
 
-    useEffect(() => {
-        fetch('/scheduler/api/v1/rooms/' + params.id)
-            .then(response => response.json())
-            .then(setRooms);
-            
-    }, [params, active]);
+                  <Table.Body>
+                    <Table.Row>
+                      <Table.Cell collapsing>
+                        <Input
+                          value={rooms.name}
+                          onChange={(e) => updateProperty("name", e)}
+                        />
+                      </Table.Cell>
+                      <Table.Cell collapsing>
+                        <Input
+                          value={rooms.building}
+                          onChange={(e) => updateProperty("building", e)}
+                        />
+                      </Table.Cell>
+                      <Table.Cell collapsing> {rooms.modifiedDate} </Table.Cell>
+                    </Table.Row>
+                  </Table.Body>
+                </Table>
+                <Table celled>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>Aprašymas</Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
 
+                  <Table.Body>
+                    <Table.Row>
+                      <Table.Cell collapsing>
+                        <Form>
+                          <TextArea
+                            fluid
+                            style={{ minHeight: 60 }}
+                            value={rooms.description}
+                            onChange={(e) => updateProperty("description", e)}
+                          />
+                        </Form>
+                      </Table.Cell>
+                    </Table.Row>
+                  </Table.Body>
+                </Table>
+                <Divider hidden></Divider>
+                <Button onClick={() => setActive(true)}>Atšaukti</Button>
+                <Button floated="right" id='details'  primary onClick={updateRooms}>
+                  Atnaujinti
+                </Button>
+              </div>
+            )}
+          </Segment>
+        </Grid.Column>
+      </Grid>
 
-
-
-    const applyResult = () => {
-
-        setActive(true);
-
-
-    }
-
-    const updateRooms = () => {
-        fetch('/scheduler/api/v1/rooms/' + params.id, {
-            method: 'PUT',
-            headers: JSON_HEADERS,
-            body: JSON.stringify(rooms)
-        }).then(result => {
-            if (!result.ok) {
-                setError('Update failed');
-            } else {
-                setError();
-            }
-        }).then(applyResult)
-    };
-
-    const updateProperty = (property, event) => {
-        setRooms({
-            ...rooms,
-            [property]: event.target.value
-        });
-    };
-
-   
-
-    const editThis = () => {
-        setActive(false);
-    }
-
-  
-
-
-
-    return (<div><MainMenu />
-
-        <Grid columns={2} >
-            <Grid.Column width={2} id='main'>
-                <EditMenu />
-            </Grid.Column>
-
-            <Grid.Column textAlign='left' verticalAlign='top' width={13}>
-                <Segment id='segment' color='teal'>{active && !hide && (<div >
-
-                    <Table celled>
-                        <Table.Header >
-                            <Table.Row  >
-                                <Table.HeaderCell >Klasės pavadinimas</Table.HeaderCell>
-                                <Table.HeaderCell>Pastatas</Table.HeaderCell>
-                                <Table.HeaderCell>Aprašymas</Table.HeaderCell>
-                                <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
-                                <Table.HeaderCell>Veiksmai</Table.HeaderCell>
-
-                            </Table.Row>
-                        </Table.Header>
-
-                        <Table.Body>
-                            <Table.Row  >
-                                <Table.Cell >{rooms.name}</Table.Cell>
-                                <Table.Cell >{rooms.building}</Table.Cell>
-                                <Table.Cell >{rooms.description}</Table.Cell>
-
-                                <Table.Cell collapsing > {rooms.modifiedDate}  </Table.Cell>
-
-                                <Table.Cell collapsing ><Button onClick={editThis} id='details'>Redaguoti</Button>
-                                </Table.Cell>
-
-
-                            </Table.Row>
-
-                        </ Table.Body >
-                    </Table>
-                    <Button icon labelPosition="left" className="" href='#/view/rooms'><Icon name="arrow left" />Atgal</Button>
-                </div>
-
-
-                )}
-                    {!active && !hide && (<div >
-
-                        <Table celled>
-                            <Table.Header >
-                                <Table.Row  >
-                                    <Table.HeaderCell >Klasės pavadinimas</Table.HeaderCell>
-                                    <Table.HeaderCell>Pastatas</Table.HeaderCell>
-                                    <Table.HeaderCell>Aprašymas</Table.HeaderCell>
-                                    <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
-                                    <Table.HeaderCell>Veiksmai</Table.HeaderCell>
-
-                                </Table.Row> 
-                            </Table.Header>
-
-                            <Table.Body>
-                                <Table.Row  >
-                                    <Table.Cell collapsing><Input value={rooms.name} onChange={(e) => handleNameInputChange(e)} />
-                                    {(nameError) && <div style={{color: "red"}}>{nameError}</div>}
-                                    </Table.Cell>
-                                    
-                                    <Table.Cell collapsing><Input value={rooms.building} onChange={(e) => handleBuildingInputChange(e)} />
-                                    {(buildingError) && <div style={{color: "red"}}>{buildingError}</div>}
-                                    </Table.Cell>
-                                    
-                                    <Table.Cell collapsing><Input value={rooms.description} onChange={(e) => handleDescriptionInputChange(e)} />
-                                    {(descriptionError) && <div style={{color: "red"}}>{descriptionError}</div>}
-                                    </Table.Cell>
-                                    
-                                    <Table.Cell collapsing> {rooms.modifiedDate}  </Table.Cell>
-
-                                    <Table.Cell collapsing >
-                                        <Button onClick={() => setActive(true)}>Atšaukti</Button>
-                                        <Button primary disabled={!formValid} onClick={updateRooms}>Atnaujinti</Button>
-                                    </Table.Cell>
-
-
-
-                                </Table.Row>
-
-                            </ Table.Body >
-
-
-                        </Table>
-
-                    </div>)}
-                   
-                </Segment>
-            </Grid.Column>
-
-        </Grid>
+      
 
     </div>
-    )
+  );
 }

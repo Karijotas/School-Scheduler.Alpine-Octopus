@@ -10,9 +10,9 @@ import java.util.List;
 @Repository
 public interface GroupsRepository extends JpaRepository<Groups, Long> {
 
-    List<Groups> findAllByDeletedAndNameContainingIgnoreCase(Boolean deleted, String nameText);
+    List<Groups> findAllByDeletedAndNameContainingIgnoreCaseOrderByModifiedDateDesc(Boolean deleted, String nameText);
 
-    List<Groups> findAllByDeletedAndSchoolYear(Boolean deleted, Integer schoolYearText);
+    List<Groups> findAllByDeletedAndSchoolYearOrderByModifiedDateDesc(Boolean deleted, Integer schoolYearText);
 
     List<Groups> findAllByDeletedOrderByModifiedDateDesc(Boolean deleted, Pageable pageable);
 

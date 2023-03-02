@@ -12,6 +12,8 @@ import lt.techin.AlpineOctopusScheduler.model.Teacher;
 import lt.techin.AlpineOctopusScheduler.service.TeacherService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -40,15 +42,52 @@ public class TeacherController {
         this.teacherService = teacherService;
     }
 
+//    @GetMapping(path = "/all")
+//    @ResponseBody
+//    public List<TeacherTestDto> getAllTeachers() {
+//        return teachersService.getAllTeachers();
+//    }
+
     @GetMapping
     @ResponseBody
-    public List<TeacherEntityDto> getTeachers() {
-        return teacherService.getAll().stream()
-                .map(TeacherMapper::toTeacherEntityDto)
-                .collect(toList());
+    public List<TeacherEntityDto> getAvailableTeachers() {
+        return teacherService.getAllAvailableTeachers();
     }
 
+
+    @GetMapping(path = "/archive/", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<TeacherEntityDto> getDeletedTeachers() {
+        return teacherService.getAllDeletedTeachers();
+    }
+
+
     @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<TeacherEntityDto> getPagedAvailableTeachers(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return teacherService.getAllAvailablePagedTeachers(page, pageSize);
+    }
+
+    @GetMapping(path = "/archive/page", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<TeacherEntityDto> getPagedDeletedTeachers(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                          @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+
+        return teacherService.getAllDeletedPagedTeachers(page, pageSize);
+    }
+
+//    @GetMapping
+//    @ResponseBody
+//    public List<TeacherEntityDto> getTeachers() {
+//        return teacherService.getAll().stream()
+//                .map(TeacherMapper::toTeacherEntityDto)
+//                .collect(toList());
+//    }
+
+    @GetMapping(path = "/page/all", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public List<TeacherEntityDto> getPagedAllTeachers(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
                                                       @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
@@ -143,5 +182,17 @@ public class TeacherController {
     @ResponseBody
     public List<TeacherEntityDto> getPagedTeachersByShiftContaining(@PathVariable String shiftText) {
         return teacherService.getPagedTeachersByShiftNameContaining(shiftText);
+    }
+
+    @PatchMapping("/delete/{teacherId}")
+    public ResponseEntity<TeacherEntityDto> removeTeacher(@PathVariable Long teacherId) {
+        var updatedTeacher = teacherService.deleteTeacher(teacherId);
+        return ok(updatedTeacher);
+    }
+
+    @PatchMapping("/restore/{teacherId}")
+    public ResponseEntity<TeacherEntityDto> restoreTeacher(@PathVariable Long teacherId) {
+        var updatedTeacher = teacherService.restoreTeacher(teacherId);
+        return ok(updatedTeacher);
     }
 }

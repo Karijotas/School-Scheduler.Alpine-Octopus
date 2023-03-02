@@ -128,13 +128,12 @@ export function ViewRooms() {
               />
 
               <Button
+                id="details"
                 icon
                 labelPosition="left"
-                primary
                 className="controls"
                 as={NavLink}
                 exact
-                id='details'
                 to="/create/rooms"
               >
                 <Icon name="database" />
@@ -160,7 +159,7 @@ export function ViewRooms() {
 
                       <Table.Cell collapsing>
                         <Button
-                        id="icocolor"
+                          id="icocolor"
                           href={"#/view/rooms/edit/" + room.id}
                           basic
                           compact
@@ -169,18 +168,19 @@ export function ViewRooms() {
                           onClick={() => setActive(room.id)}
                         ></Button>
                         <Button
-                        id="icocolor"
+                          id="icocolor"
                           basic
                           compact
-                          icon="trash alternate"
+                          title="Suarchyvuoti"
+                          icon="archive"
                           onClick={() => setOpen(room.id)}
                         ></Button>
                         <Confirm
                           open={open}
                           header="Dėmesio!"
-                          content="Ar tikrai norite ištrinti?"
+                          content="Ar tikrai norite perkelti į archyvą?"
                           cancelButton="Grįžti atgal"
-                          confirmButton="Ištrinti"
+                          confirmButton="Taip"
                           onCancel={() => setOpen(false)}
                           onConfirm={() => removeRoom(open)}
                           size="small"

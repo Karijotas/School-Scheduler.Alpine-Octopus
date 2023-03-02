@@ -62,9 +62,9 @@ export function ViewSubjects() {
 
   const removeSubject = (id) => {
     fetch("/scheduler/api/v1/subjects/delete/" + id, {
-      method: "PATCH",      
+      method: "PATCH",
     }).then(fetchSubjects)
-    .then(setOpen(false));
+      .then(setOpen(false));
   };
 
   // useEffect(() => {
@@ -75,10 +75,10 @@ export function ViewSubjects() {
   //   moduleText.length > 0 ? fetchSubjectsByModules() : fetchSubjects();
   // }, [activePage, moduleText]);
 
- 
-useEffect(() => {
-  nameText.length > 0? fetchFilterSubjects() : (moduleText.length > 0 ? fetchSubjectsByModules() : fetchSubjects())
-}, [activePage, nameText, moduleText]);
+
+  useEffect(() => {
+    nameText.length > 0 ? fetchFilterSubjects() : (moduleText.length > 0 ? fetchSubjectsByModules() : fetchSubjects())
+  }, [activePage, nameText, moduleText]);
 
 
   const [open, setOpen] = useState(false);
@@ -125,7 +125,7 @@ useEffect(() => {
                   icon
                   labelPosition="left"
                   className="controls"
-                  id='details'                                    
+                  id='details'
                   as={NavLink}
                   exact
                   to="/create/subjects"
@@ -140,7 +140,6 @@ useEffect(() => {
                     <Table.Row>
                       <Table.HeaderCell>Dalyko pavadinimas</Table.HeaderCell>
                       <Table.HeaderCell>Moduliai</Table.HeaderCell>
-                      <Table.HeaderCell>Redagavimo data</Table.HeaderCell>
                       <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
@@ -159,11 +158,10 @@ useEffect(() => {
                             ))}
                           </List>
                         </Table.Cell>
-                        <Table.Cell>{subject.modifiedDate}</Table.Cell>
                         <Table.Cell collapsing>
                           <Button
-                          id="icocolor"
-                            basic                            
+                            id="icocolor"
+                            basic
                             compact
                             icon="eye"
                             title="Peržiūrėti"
@@ -171,10 +169,10 @@ useEffect(() => {
                             onClick={() => setActive(subject.id)}
                           ></Button>
                           <Button
-                          id="icocolor"
-                            basic                            
+                            id="icocolor"
+                            basic
                             compact
-                            title="Ištrinti"
+                            title="Suarchyvuoti"
                             icon="archive"
                             onClick={() => setOpen(subject.id)}
                           ></Button>

@@ -427,7 +427,7 @@ export function EditSubjectObject() {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Dalyko pavadinimas</Table.HeaderCell>
-                      <Table.HeaderCell>
+                      <Table.HeaderCell collapsing>
                         Paskutinis atnaujinimas:
                       </Table.HeaderCell>
                     </Table.Row>
@@ -495,6 +495,7 @@ export function EditSubjectObject() {
                                   <Table.Cell>{module.name}</Table.Cell>
                                   <Table.Cell collapsing>
                                     <Button
+                                    id='details' 
                                       basic
                                       compact
                                       icon="remove"
@@ -681,7 +682,7 @@ export function EditSubjectObject() {
                 </Grid>
                 <Divider hidden></Divider>
                 <Button onClick={() => setActive(true)}>Atšaukti</Button>
-                <Button disabled={!formValid} floated="right" primary onClick={updateSubjects}>
+                <Button id='details' disabled={!formValid} floated="right" primary onClick={updateSubjects}>
                   Atnaujinti
                 </Button>
               </div>

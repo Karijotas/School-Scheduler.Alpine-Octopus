@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
-import { Button, Divider, Form, Grid, Icon, Input, List, Segment, Select, Table } from "semantic-ui-react";
+import { Button, Divider, Form, Grid, Icon, Input, List, Segment, Select, Table, TextArea } from "semantic-ui-react";
 import { EditMenu } from '../../../Components/EditMenu';
 import MainMenu from '../../../Components/MainMenu';
 
@@ -261,8 +261,7 @@ export function EditModuleObject() {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Modulio pavadinimas</Table.HeaderCell>
-                      <Table.HeaderCell>Aprašymas</Table.HeaderCell>
-                      <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
+                      <Table.HeaderCell >Paskutinis atnaujinimas:</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
 
@@ -282,6 +281,27 @@ export function EditModuleObject() {
                         />{(descriptionError) && <div style={{color: "red"}}>{descriptionError}</div>}
                       </Table.Cell>
                       <Table.Cell collapsing> {modules.modifiedDate} </Table.Cell>
+                    </Table.Row>
+                  </Table.Body>
+                </Table>
+                <Table>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>Aprašymas</Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
+                  <Table.Body>
+                    <Table.Row>
+                      <Table.Cell>
+                        <Form>
+                          <TextArea
+                            fluid
+                            style={{ minHeight: 60 }}
+                            value={modules.description}
+                            onChange={(e) => updateProperty("description", e)}
+                          />
+                        </Form>
+                      </Table.Cell>
                     </Table.Row>
                   </Table.Body>
                 </Table>

@@ -47,10 +47,10 @@ export function ViewShifts() {
   };
 
   const removeShift = (id) => {
-    fetch("/scheduler/api/v1/shifts/" + id, {
-      method: "DELETE",
-      headers: JSON_HEADERS,
-    }).then(fetchShifts);
+    fetch("/scheduler/api/v1/shifts/delete/" + id, {
+      method: "PATCH",
+    }).then(fetchShifts)
+    .then(setOpen(false));
   };
 
   useEffect(() => {
@@ -92,8 +92,7 @@ export function ViewShifts() {
 
                 <Button
                   icon
-                  labelPosition="left"
-                  primary
+                  labelPosition="left"                  
                   className="controls"
                   as={NavLink}
                   exact
@@ -134,17 +133,17 @@ export function ViewShifts() {
                           id="icocolor"
                             basic
                             compact
-                            title="Ištrinti"
-                            icon="trash alternate"
+                            title="Suarchyvuoti"
+                            icon="archive"
                             onClick={() => setOpen(shift.id)}
                           ></Button>
 
                           <Confirm
                             open={open}
                             header="Dėmesio!"
-                            content="Ar tikrai norite ištrinti?"
-                            cancelButton="Grįžti atgal"
-                            confirmButton="Ištrinti"
+                            content="Ar tikrai norite perkelti į archyvą?"
+                          cancelButton="Grįžti atgal"
+                          confirmButton="Taip"
                             onCancel={() => setOpen(false)}
                             onConfirm={() => removeShift(open)}
                             size="small"

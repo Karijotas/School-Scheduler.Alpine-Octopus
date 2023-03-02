@@ -83,21 +83,22 @@ public class GroupService {
 
     @Transactional(readOnly = true)
     public List<GroupsEntityDto> getGroupsByNameContaining(String nameText) {
-        return groupsRepository.findAllByDeletedAndNameContainingIgnoreCase(Boolean.FALSE, nameText).stream()
+        return groupsRepository.findAllByDeletedAndNameContainingIgnoreCaseOrderByModifiedDateDesc(Boolean.FALSE, nameText).stream()
                 .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public List<GroupsEntityDto> getGroupsBySchoolYear(Integer schoolYearText) {
 
-        return groupsRepository.findAllByDeletedAndSchoolYear(Boolean.FALSE, schoolYearText).stream()
+        return groupsRepository.findAllByDeletedAndSchoolYearOrderByModifiedDateDesc(Boolean.FALSE, schoolYearText).stream()
                 .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public List<GroupsEntityDto> getGroupsByProgram(String programText) {
 
-        return groupsRepository.findAllByDeletedAndProgram_nameContainingIgnoreCaseOrderByModifiedDateDesc(false, programText)
+
+        return groupsRepository.findAllByDeletedAndProgram_nameContainingIgnoreCaseOrderByModifiedDateDesc(Boolean.FALSE, programText)
                 .stream().map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
 //        Program createdProgram = programRepository.findAllByDeletedAndNameContainingIgnoreCase(Boolean.FALSE, programText)
 //                .stream()

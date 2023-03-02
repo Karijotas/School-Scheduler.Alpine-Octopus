@@ -329,7 +329,7 @@ export function EditTeacherObject() {
                         {teachers.modifiedDate}{" "}
                       </Table.Cell>
                       <Table.Cell collapsing>
-                        <Button onClick={editThis}>Redaguoti</Button>
+                        <Button onClick={editThis} id='details'>Redaguoti</Button>
                       </Table.Cell>
                     </Table.Row>
                   </Table.Body>
@@ -522,8 +522,8 @@ export function EditTeacherObject() {
                                 </Form.Group>
                                 <Divider hidden />
                                 <List.Content floated="left">
-                                  <Button
-                                    onClick={() =>
+                                  <Button id='details' 
+                                    onClick={() => 
                                       addShift(params.id, shiftId)}
                                   >
                                     Pridėti
@@ -584,6 +584,7 @@ export function EditTeacherObject() {
                                 <Divider hidden />
                                 <List.Content floated="left">
                                   <Button
+                                  id='details' 
                                     onClick={() =>
                                       addSubject(params.id, subjectId)
                                     }
@@ -602,7 +603,7 @@ export function EditTeacherObject() {
                 </Grid>
                 <Divider hidden></Divider>
                 <Button onClick={() => setActive(true)}>Atšaukti</Button>
-                <Button disabled={!formValid} floated="right" primary onClick={updateTeachers}>
+                <Button id='details' disabled={!formValid} floated="right" primary onClick={updateTeachers}>
                   Atnaujinti
                 </Button>
               </div>

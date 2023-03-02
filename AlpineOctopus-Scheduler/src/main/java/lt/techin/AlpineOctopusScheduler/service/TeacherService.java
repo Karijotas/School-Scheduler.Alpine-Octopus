@@ -23,6 +23,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.TeacherMapper.toTeacherEntityDto;
+
 //Mantvydas Juršys
 
 
@@ -177,4 +179,45 @@ public class TeacherService {
         return teacherRepository.findDistinctByDeletedAndTeacherShifts_NameContainingIgnoreCaseOrderByModifiedDateDesc(Boolean.FALSE, shiftText).stream().map(TeacherMapper::toTeacherEntityDto).collect(Collectors.toList());
     }
 
+    public List<TeacherEntityDto> getAllAvailablePagedTeachers(int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return teacherRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE, pageable).stream()
+                .map(TeacherMapper::toTeacherEntityDto).collect(Collectors.toList());
+    }
+
+    public List<TeacherEntityDto> getAllDeletedPagedTeachers(int page, int pageSize) {
+
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        return teacherRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.TRUE, pageable).stream()
+                .map(TeacherMapper::toTeacherEntityDto).collect(Collectors.toList());
+    }
+
+    public List<TeacherEntityDto> getAllAvailableTeachers() {
+        return teacherRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE).stream()
+                .map(TeacherMapper::toTeacherEntityDto).collect(Collectors.toList());
+    }
+
+    public List<TeacherEntityDto> getAllDeletedTeachers() {
+        return teacherRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.TRUE).stream()
+                .map(TeacherMapper::toTeacherEntityDto).collect(Collectors.toList());
+    }
+
+    public TeacherEntityDto restoreTeacher(Long teacherId) {
+
+        var existingTeacher = teacherRepository.findById(teacherId).orElseThrow(() -> new SchedulerValidationException("Teacher does not exist",
+                "id", "Teacher not found", teacherId.toString()));
+        existingTeacher.setDeleted(Boolean.FALSE);
+        teacherRepository.save(existingTeacher);
+        return toTeacherEntityDto(existingTeacher);
+    }
+
+    public TeacherEntityDto deleteTeacher(Long teacherId) {
+
+        var existingTeacher = teacherRepository.findById(teacherId).orElseThrow(() -> new SchedulerValidationException("Teacher does not exist",
+                "id", "Teacher not found", teacherId.toString()));
+        existingTeacher.setDeleted(Boolean.TRUE);
+        teacherRepository.save(existingTeacher);
+        return toTeacherEntityDto(existingTeacher);
+    }
 }

@@ -14,6 +14,7 @@ const JSON_HEADERS = {
 };
 
 export function ViewTeachers() {
+  
   const [open, setOpen] = useState(false);
   const [close, setClose] = useState(false);
   const [active, setActive] = useState();
@@ -26,7 +27,7 @@ export function ViewTeachers() {
   const [activePage, setActivePage] = useState(0);
   const [pagecount, setPageCount] = useState();
   const [teacherSubjects, setTeacherSubjects] = useState([]);
-  const [teacherId, setTeacherId] = useState("");
+  const [teacherId, setTeacherId] = useState(1);
 
   const fetchFilterTeachers = async () => {
     fetch(`/scheduler/api/v1/teachers/page/name-filter/${nameText}?page=` + activePage)
@@ -54,10 +55,10 @@ export function ViewTeachers() {
   };
 
   const removeTeacher = (id) => {
-    fetch("/scheduler/api/v1/teachers/" + id, {
-      method: "DELETE",
-      headers: JSON_HEADERS,
-    }).then(fetchTeachers);
+    fetch("/scheduler/api/v1/teachers/delete/" + id, {
+      method: "PATCH",
+    }).then(fetchTeachers)
+    .then(setOpen(false));
   };
 
   // const fetchSubjectsById = (teacherId) => {
@@ -84,6 +85,13 @@ export function ViewTeachers() {
       .then(setTeacherSubjects)
       .then(console.log(teacherSubjects));
   };
+
+  useEffect(() => {
+    fetch(`/scheduler/api/v1/teachers/${teacherId}/subjects`)
+      .then((response) => response.json())
+      .then(setTeacherSubjects)
+      .then(console.log(teacherSubjects));
+  }, [teacherId]);
 
   // useEffect((teacherId) => {
   //   fetch(`/api/v1/teachers/${teacherId}/subjects`)
@@ -152,17 +160,19 @@ export function ViewTeachers() {
                   </Table.Header>
 
                   <Table.Body>
-                    {teachers.map((teacher) => (
-                      <Table.Row key={teacher.id}>
-                        <Table.Cell>{teacher.name}</Table.Cell>
+                    {teachers.map((teacher) => (                      
+                      <Table.Row key={teacher.id} onKeyUp={() => setTeacherId(teacher.id)}>                        
+                        <Table.Cell>{teacher.name} </Table.Cell>
                         <Table.Cell>
                           <List bulleted>
-                        {console.log(teacherSubjects)}
+                                                       
                             {teacherSubjects.map((subject) => (
                               <List.Content key={subject.id}>
                                 <List.Item>{subject.name}</List.Item>
                               </List.Content>
+                              
                             ))}
+                            {console.log(teacherSubjects)}
                           </List>
                           {/* <List bulleted>
                             <List.Content>
@@ -196,17 +206,17 @@ export function ViewTeachers() {
                           id="icocolor"
                             basic
                             compact
-                            title="Ištrinti"
-                            icon="trash alternate"
+                            title="Suarchyvuoti"
+                          icon="archive"
                             onClick={() => setOpen(teacher.id)}
                           ></Button>
 
                           <Confirm
                             open={open}
                             header="Dėmesio!"
-                            content="Ar tikrai norite ištrinti?"
-                            cancelButton="Grįžti atgal"
-                            confirmButton="Ištrinti"
+                            content="Ar tikrai norite perkelti į archyvą?"
+                          cancelButton="Grįžti atgal"
+                          confirmButton="Taip"
                             onCancel={() => setOpen(false)}
                             onConfirm={() => removeTeacher(open)}
                             size="small"

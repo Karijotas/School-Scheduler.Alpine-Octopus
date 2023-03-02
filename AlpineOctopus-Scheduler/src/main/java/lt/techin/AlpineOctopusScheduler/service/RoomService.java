@@ -19,6 +19,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.RoomMapper.toRoomEntityDto;
+
 @Service
 public class RoomService {
     private final RoomRepository roomRepository;
@@ -39,16 +41,30 @@ public class RoomService {
     }
 
     @Transactional(readOnly = true)
-    public List<RoomEntityDto> getPagedRoomsByNameContaining(String nameText, int page, int pageSize) {
+    public List<RoomEntityDto> getAvailablePagedRoomsByNameContaining(String nameText, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        return roomRepository.findByNameContainingIgnoreCase(nameText, pageable).stream().sorted(Comparator.comparing(Room::getModifiedDate).reversed())
+        return roomRepository.findAllByDeletedAndNameContainingIgnoreCaseOrderByModifiedDateDesc(Boolean.FALSE, nameText, pageable).stream().sorted(Comparator.comparing(Room::getModifiedDate).reversed())
                 .map(RoomMapper::toRoomEntityDto).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public List<RoomEntityDto> getPagedBuildingsByNameContaining(String buildingText, int page, int pageSize) {
+    public List<RoomEntityDto> getAvailablePagedBuildingsByNameContaining(String buildingText, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        return roomRepository.findByBuildingContainingIgnoreCase(buildingText, pageable).stream().sorted(Comparator.comparing(Room::getModifiedDate).reversed())
+        return roomRepository.findByDeletedAndBuildingContainingIgnoreCaseOrderByModifiedDateDesc(Boolean.FALSE, buildingText, pageable).stream().sorted(Comparator.comparing(Room::getModifiedDate).reversed())
+                .map(RoomMapper::toRoomEntityDto).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<RoomEntityDto> getAvailableRoomsByNameContaining(String nameText) {
+
+        return roomRepository.findAllByDeletedAndNameContainingIgnoreCaseOrderByModifiedDateDesc(Boolean.FALSE, nameText).stream().sorted(Comparator.comparing(Room::getModifiedDate).reversed())
+                .map(RoomMapper::toRoomEntityDto).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<RoomEntityDto> getAvailableBuildingsByNameContaining(String buildingText) {
+
+        return roomRepository.findByDeletedAndBuildingContainingIgnoreCaseOrderByModifiedDateDesc(Boolean.FALSE, buildingText).stream().sorted(Comparator.comparing(Room::getModifiedDate).reversed())
                 .map(RoomMapper::toRoomEntityDto).collect(Collectors.toList());
     }
 
@@ -66,7 +82,7 @@ public class RoomService {
     }
 
     public List<Room> getAll() {
-        return roomRepository.findAllByOrderByDeletedAscIdAsc();
+        return roomRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE);
     }
 
     public Optional<Room> getById(Long id) {
@@ -97,5 +113,47 @@ public class RoomService {
             return true;
         }
         return false;
+    }
+
+    public List<RoomEntityDto> getAllAvailablePagedRooms(int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return roomRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE, pageable).stream()
+                .map(RoomMapper::toRoomEntityDto).collect(Collectors.toList());
+    }
+
+    public List<RoomEntityDto> getAllDeletedPagedRooms(int page, int pageSize) {
+
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        return roomRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.TRUE, pageable).stream()
+                .map(RoomMapper::toRoomEntityDto).collect(Collectors.toList());
+    }
+
+    public List<RoomEntityDto> getAllAvailableRooms() {
+        return roomRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE).stream()
+                .map(RoomMapper::toRoomEntityDto).collect(Collectors.toList());
+    }
+
+    public List<RoomEntityDto> getAllDeletedRooms() {
+        return roomRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.TRUE).stream()
+                .map(RoomMapper::toRoomEntityDto).collect(Collectors.toList());
+    }
+
+    public RoomEntityDto restoreRoom(Long roomId) {
+
+        var existingRoom = roomRepository.findById(roomId).orElseThrow(() -> new SchedulerValidationException("Room does not exist",
+                "id", "Room not found", roomId.toString()));
+        existingRoom.setDeleted(Boolean.FALSE);
+        roomRepository.save(existingRoom);
+        return toRoomEntityDto(existingRoom);
+    }
+
+    public RoomEntityDto deleteRoom(Long roomId) {
+
+        var existingRoom = roomRepository.findById(roomId).orElseThrow(() -> new SchedulerValidationException("Room does not exist",
+                "id", "Room not found", roomId.toString()));
+        existingRoom.setDeleted(Boolean.TRUE);
+        roomRepository.save(existingRoom);
+        return toRoomEntityDto(existingRoom);
     }
 }

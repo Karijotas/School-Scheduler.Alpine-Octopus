@@ -17,6 +17,7 @@ const JSON_HEADERS = {
 
 export function ViewProgramsArchive() {
 
+  const [active, setActive] = useState();
   const [programs, setPrograms] = useState([]);
   const [programsforPaging, setProgramsForPaging] = useState([]);
   const [activePage, setActivePage] = useState(0);
@@ -89,7 +90,15 @@ export function ViewProgramsArchive() {
                   {programs.map((program) => (
                     <Table.Row key={program.id}>
                       <Table.Cell disabled>{program.name}</Table.Cell>
-                      <Table.Cell>
+                      <Table.Cell collapsing>
+                      {/* <Button                          
+                          href={"#/view/archives/programs/" + program.id}
+                          basic
+                          compact
+                          icon="eye"
+                          title="Peržiūrėti"
+                          onClick={() => setActive(program.id)}
+                        ></Button> */}
                         <Button
                           textAlign="center"
                           basic                          

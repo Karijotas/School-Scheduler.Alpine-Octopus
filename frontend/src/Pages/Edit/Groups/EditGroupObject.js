@@ -41,62 +41,62 @@ export function EditGroupObject() {
 
     const [nameError, setNameError] = useState("")
     const [studentAmountError, setstudentAmountError] = useState("")
-    
+
 
     const [selectErrorYear, setSelectErrorYear] = useState("")
-    const [selectErrorProgram, setSelectErrorProgram] = useState("*Privaloma") 
+    const [selectErrorProgram, setSelectErrorProgram] = useState("*Privaloma")
     const [selectErrorShift, setSelectErrorShift] = useState("*Privaloma")
 
     const [formValid, setFormValid] = useState(false)
 
 
     useEffect(() => {
-        if(nameError || studentAmountError  || selectErrorProgram || selectErrorShift) {
-          setFormValid(false)
+        if (nameError || studentAmountError) {
+            setFormValid(false)
         } else {
-          setFormValid(true)
+            setFormValid(true)
         }
-      }, [nameError, studentAmountError, selectErrorProgram, selectErrorShift]) 
+    }, [nameError, studentAmountError])
 
-      const selectProgramHandler = () => {
-        setSelectErrorProgram("")
-      }
-      const selectShiftHandler = () => {
-        setSelectErrorShift("")
-      }
+    //   const selectProgramHandler = () => {
+    //     setSelectErrorProgram("")
+    //   }
+    //   const selectShiftHandler = () => {
+    //     setSelectErrorShift("")
+    //   }
 
     const handleNameInputChange = (e) => {
         groups.name = e.target.value
         setName(e.target.value);
         validateNameInput(e.target.value);
-      };
+    };
 
     const handleStudentAmountInputChange = (e) => {
         groups.studentAmount = e.target.value
-      setstudentAmount(e.target.value);
-      validateStudentAmountInput(e.target.value);
-      };
-      
-    
+        setstudentAmount(e.target.value);
+        validateStudentAmountInput(e.target.value);
+    };
+
+
     const validateNameInput = (value) => {
-        if (value.length <2 || value.length > 40) {
+        if (value.length < 2 || value.length > 40) {
             setNameError("Įveskite nuo 2 iki 40 simbolių!")
-            if(!value){
+            if (!value) {
                 setNameError("Pavadinimas negali būti tuščias!")
-              } 
+            }
         } else {
             setNameError("")
         }
-      };
+    };
 
-      const validateStudentAmountInput = (value) => {
-        if(!/^\d+$/.test(value)){
+    const validateStudentAmountInput = (value) => {
+        if (!/^\d+$/.test(value)) {
             setstudentAmountError("Įveskite tik skaičius")
-            if(!value){
+            if (!value) {
                 setstudentAmountError("")
             }
-          }
-      };
+        }
+    };
 
 
 
@@ -135,6 +135,7 @@ export function EditGroupObject() {
     const editThis = () => {
         setActive(false);
         setProgramId(groups.program.id);
+        setShiftId(groups.shift.id)
     }
 
     useEffect(() => {
@@ -222,7 +223,6 @@ export function EditGroupObject() {
 
 
                         {!active && (<div >
-                            {error && (<Message warning className='error'>{error}</Message>)}
 
                             <Table celled >
                                 <Table.Header >
@@ -235,7 +235,7 @@ export function EditGroupObject() {
                                 <Table.Body>
                                     <Table.Row  >
                                         <Table.Cell width={6}>
-                                            {(nameError) && <div style={{color: "red"}}>{nameError}</div>}
+                                            {(nameError) && <div style={{ color: "red" }}>{nameError}</div>}
                                             <Input value={groups.name} onChange={(e) => handleNameInputChange(e)} />
                                         </Table.Cell>
                                         <Table.Cell >
@@ -263,13 +263,13 @@ export function EditGroupObject() {
 
                                 <Table.Body>
                                     <Table.Row  >
-                                    
-                                        <Table.Cell width={6}>{(studentAmountError) && <div style={{color: "red"}}>{studentAmountError}</div>}
-                                        <Input value={groups.studentAmount} onChange={(e) => handleStudentAmountInputChange(e)} />
+
+                                        <Table.Cell width={6}>{(studentAmountError) && <div style={{ color: "red" }}>{studentAmountError}</div>}
+                                            <Input value={groups.studentAmount} onChange={(e) => handleStudentAmountInputChange(e)} />
                                         </Table.Cell>
                                         <Table.Cell collapsing >
-                                        {(selectErrorProgram) && <div style={{color: "red"}}>{selectErrorProgram}</div>}
-                                            <Select options={programs} placeholder={groups.program.name} onChange={((e, data) => setProgramId(data.value),selectProgramHandler)} />
+                                            {/* {(selectErrorProgram) && <div style={{color: "red"}}>{selectErrorProgram}</div>} */}
+                                            <Select options={programs} placeholder={groups.program.name} onChange={(e, data) => setProgramId(data.value)} />
                                         </Table.Cell >
                                         <Table.Cell width={4}>
                                             <Select options={shifts} placeholder={groups.shift.name} onChange={(e, data) => setShiftId(data.value)} />

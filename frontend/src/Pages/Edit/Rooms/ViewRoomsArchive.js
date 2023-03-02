@@ -14,55 +14,53 @@ const JSON_HEADERS = {
 };
 
 export function ViewRoomsArchive() {
-  const [active, setActive] = useState();
-  const [create, setCreate] = useState("");
-  const [nameText, setNameText] = useState("");
-  const [programs, setPrograms] = useState([]);
-  const [groupsforPaging, setGroupsForPaging] = useState([]);
 
+  const [rooms, setRooms] = useState([]);
+  const [roomsforPaging, setRoomsForPaging] = useState([]);
   const [activePage, setActivePage] = useState(0);
   const [pagecount, setPageCount] = useState();
 
-  const fetchFilterPrograms = async () => {
-    fetch(`/scheduler/api/v1/programs/page/starting-with/${nameText}?page=` + activePage)
+
+  const fetchSingleRooms = () => {
+    fetch("/scheduler/api/v1/rooms/archive/")
       .then((response) => response.json())
-      .then((jsonRespone) => setPrograms(jsonRespone));
+      .then((jsonResponse) => setRoomsForPaging(jsonResponse))
+      .then(setPageCount(Math.ceil(roomsforPaging.length / 10)));
   };
 
-  const fetchSinglePrograms = () => {
-    fetch("/scheduler/api/v1/programs")
+  const fetchPagedRooms = async () => {
+    fetch('/scheduler/api/v1/rooms/archive/page?page=' + activePage)
       .then((response) => response.json())
-      .then((jsonResponse) => setGroupsForPaging(jsonResponse))
-      .then(setPageCount(Math.ceil(groupsforPaging.length / 10)));
+      .then((jsonResponse) => setRooms(jsonResponse));
   };
 
-  const fetchPrograms = async () => {
-    fetch(`/scheduler/api/v1/programs/archive/`)
+  const fetchRooms = async () => {
+    fetch(`/scheduler/api/v1/rooms/archive/`)
       .then((response) => response.json())
-      .then((jsonRespones) => setPrograms(jsonRespones));
-  };
-
-  const removeProgram = (id) => {
-    fetch("/scheduler/api/v1/programs/" + id, {
-      method: "DELETE",
-      headers: JSON_HEADERS,
-    }).then(fetchPrograms)
-      .then(setOpen(false));
+      .then((jsonRespones) => setRooms(jsonRespones));
   };
 
   useEffect(() => {
-    nameText.length > 0 ? fetchFilterPrograms() : fetchPrograms();
-  }, [activePage, nameText]);
+    fetch("/scheduler/api/v1/rooms/archive/page?page=" + activePage)
+      .then((response) => response.json())
+      .then((jsonRespones) => setRooms(jsonRespones));
+  }, []);
 
-  const [open, setOpen] = useState(false);
-  const [close, setClose] = useState(false);
+  useEffect(() => {
+    fetchPagedRooms();
+  }, [activePage]);
 
+  const restoreRoom = (id) => {
+    fetch("/scheduler/api/v1/rooms/restore/" + id, {
+      method: "PATCH",
+    }).then(fetchPagedRooms);
+  };
 
   useEffect(() => {
     if (pagecount !== null) {
-      fetchSinglePrograms();
+      fetchSingleRooms();
     }
-  }, [programs]);
+  }, [rooms]);
 
   return (
     <div>
@@ -76,37 +74,36 @@ export function ViewRoomsArchive() {
         <Grid.Column textAlign='left' verticalAlign='top' width={13}>
           <Segment id='segment' raised color='grey'>
 
-            <div id="programs">
-              <Input
+           <div id="rooms">
+              {/* <Input
                 value={nameText}
                 onChange={(e) => setNameText(e.target.value)}
-                placeholder="Ieškoti pagal programą"
-              />
+                placeholder="Ieškoti pagal modulį"
+              /> */} 
               {/* <Button onClick={fetchFilterPrograms}>Filtruoti</Button> */}
 
               
               <Table selectable>
                 <Table.Header>
                   <Table.Row>
-                    <Table.HeaderCell>Programos pavadinimas</Table.HeaderCell>
+                    <Table.HeaderCell>Archyvas. Klasės pavadinimas</Table.HeaderCell>
 
                     <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                   </Table.Row>
                 </Table.Header>
 
                 <Table.Body>
-                  {programs.map((program) => (
-                    <Table.Row key={program.id}>
-                      <Table.Cell>{program.name}</Table.Cell>
+                  {rooms.map((room) => (
+                    <Table.Row key={room.id}>
+                      <Table.Cell disabled>{room.name}</Table.Cell>
 
                       <Table.Cell collapsing>                     
                         <Button
-                          basic
-                          color="black"
+                          basic                          
                           compact
                           title="Atstatyti"
                           icon="undo"
-                          onClick={() => setOpen(program.id)}
+                          onClick={() => restoreRoom(room.id)}
                         ></Button>
                       </Table.Cell>
                     </Table.Row>
