@@ -26,7 +26,7 @@ export function EditShiftObject() {
   });
 
   useEffect(() => {
-    fetch("/scheduler/api/v1/shifts/" + params.id)
+    fetch("/api/v1/shifts/" + params.id)
       .then((response) => response.json())
       .then(setShifts);
   }, [active, params]);
@@ -36,7 +36,7 @@ export function EditShiftObject() {
   };
 
   const updateShifts = () => {
-    fetch("/scheduler/api/v1/shifts/" + params.id, {
+    fetch("/api/v1/shifts/" + params.id, {
       method: "PUT",
       headers: JSON_HEADERS,
       body: JSON.stringify(shifts),

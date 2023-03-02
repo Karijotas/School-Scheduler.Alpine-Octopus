@@ -91,7 +91,7 @@ export function CreateProgramPage() {
   };
 
   const createProgram = () => {
-    fetch("/scheduler/api/v1/programs", {
+    fetch("/api/v1/programs", {
       method: "POST",
       headers: JSON_HEADERS,
       body: JSON.stringify({

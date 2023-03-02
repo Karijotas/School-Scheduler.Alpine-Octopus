@@ -22,26 +22,26 @@ export function ViewRoomsArchive() {
 
 
   const fetchSingleRooms = () => {
-    fetch("/scheduler/api/v1/rooms/archive/")
+    fetch("/api/v1/rooms/archive/")
       .then((response) => response.json())
       .then((jsonResponse) => setRoomsForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(roomsforPaging.length / 10)));
   };
 
   const fetchPagedRooms = async () => {
-    fetch('/scheduler/api/v1/rooms/archive/page?page=' + activePage)
+    fetch('/api/v1/rooms/archive/page?page=' + activePage)
       .then((response) => response.json())
       .then((jsonResponse) => setRooms(jsonResponse));
   };
 
   const fetchRooms = async () => {
-    fetch(`/scheduler/api/v1/rooms/archive/`)
+    fetch(`/api/v1/rooms/archive/`)
       .then((response) => response.json())
       .then((jsonRespones) => setRooms(jsonRespones));
   };
 
   useEffect(() => {
-    fetch("/scheduler/api/v1/rooms/archive/page?page=" + activePage)
+    fetch("/api/v1/rooms/archive/page?page=" + activePage)
       .then((response) => response.json())
       .then((jsonRespones) => setRooms(jsonRespones));
   }, []);
@@ -51,7 +51,7 @@ export function ViewRoomsArchive() {
   }, [activePage]);
 
   const restoreRoom = (id) => {
-    fetch("/scheduler/api/v1/rooms/restore/" + id, {
+    fetch("/api/v1/rooms/restore/" + id, {
       method: "PATCH",
     }).then(fetchPagedRooms);
   };

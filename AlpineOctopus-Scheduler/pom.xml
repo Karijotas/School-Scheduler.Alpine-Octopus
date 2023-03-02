@@ -85,7 +85,7 @@
     </repositories>
 
     <build>
-        <finalName>scheduler</finalName>
+        <!--        <finalName>scheduler</finalName>-->
         <plugins>
             <plugin>
                 <groupId>org.codehaus.cargo</groupId>
