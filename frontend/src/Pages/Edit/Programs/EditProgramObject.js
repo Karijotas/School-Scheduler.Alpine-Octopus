@@ -56,6 +56,8 @@ export function EditProgramObject() {
       if (!value) {
         setHoursError("*Privaloma");
       }
+    } else {
+      setHoursError("");
     }
   };
 
