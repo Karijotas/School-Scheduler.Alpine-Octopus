@@ -16,6 +16,7 @@ const JSON_HEADERS = {
 
 export function ViewGroupsArchive() {
 
+  const [active, setActive] = useState();
   const [groups, setGroups] = useState([]);
   const [groupsforPaging, setGroupsForPaging] = useState([]);
   const [activePage, setActivePage] = useState(0);
@@ -88,7 +89,15 @@ export function ViewGroupsArchive() {
                   {groups.map((group) => (
                     <Table.Row key={group.id}>
                       <Table.Cell disabled>{group.name}</Table.Cell>
-                      <Table.Cell>
+                      <Table.Cell collapsing>
+                      <Button                        
+                          href={"#/view/archives/groups/" + group.id}
+                          basic
+                          compact
+                          icon="eye"
+                          title="Peržiūrėti"
+                          onClick={() => setActive(group.id)}
+                        ></Button>
                         <Button
                           textAlign="center"
                           basic                          

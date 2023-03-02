@@ -35,7 +35,7 @@ export function ViewTeachersArchive() {
   };
 
   const fetchTeachers = async () => {
-    fetch(`/api/v1/pteachers/archive/`)
+    fetch(`/api/v1/teachers/archive/`)
       .then((response) => response.json())
       .then((jsonRespones) => setTeachers(jsonRespones));
   };

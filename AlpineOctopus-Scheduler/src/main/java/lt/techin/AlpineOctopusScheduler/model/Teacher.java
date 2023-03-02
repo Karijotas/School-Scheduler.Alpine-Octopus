@@ -59,6 +59,17 @@ public class Teacher {
     @LastModifiedBy
     private String modifiedBy;
 
+    @PrePersist
+    public void prePersist() {
+        createdDate = LocalDateTime.now();
+        modifiedDate = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        modifiedDate = LocalDateTime.now();
+    }
+
 
     public Teacher() {
     }

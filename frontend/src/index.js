@@ -32,8 +32,14 @@ import { ViewGroupsArchive } from './Pages/Edit/Groups/ViewGroupsArchive';
 import { ViewShiftsArchive } from './Pages/Edit/Shifts/ViewShiftsArchive';
 import { ViewRoomsArchive } from './Pages/Edit/Rooms/ViewRoomsArchive';
 import { ViewModulesArchive } from './Pages/Edit/Module/ViewModulesArchive';
-
-
+import { ViewArchivedGroup} from './Pages/Edit/Groups/ViewArchivedGroup';
+import { ViewArchivedModule } from './Pages/Edit/Module/ViewArchivedModule';
+import { ViewArchivedRooms } from './Pages/Edit/Rooms/ViewArchivedRoom';
+import { ViewArchivedProgram } from './Pages/Edit/Programs/ViewArchivedProgram';
+import { ViewArchivedShift } from './Pages/Edit/Shifts/ViewArchivedShift';
+import { ViewArchivedSubject } from './Pages/Edit/Subjects/ViewArchivedSubject';
+import { ViewArchivedTeacher } from './Pages/Edit/Teachers/ViewArchivedTeachers';
+           
 
 
 
@@ -85,12 +91,20 @@ root.render(
 
         {/* Archive routes: */}
         <Route path='/view/archives/subjects' element={<ViewSubjectsArchive />} />
+        <Route path='/view/archives/subjects/:id' element={<ViewArchivedSubject />} />
         <Route path='/view/archives/teachers' element={<ViewTeachersArchive />} />
+        <Route path='/view/archives/teachers/:id' element={<ViewArchivedTeacher />} />
         <Route path='/view/archives/groups' element={<ViewGroupsArchive />} />
+        <Route path='/view/archives/groups/:id' element={<ViewArchivedGroup />} />
         <Route path='/view/archives/shifts' element={<ViewShiftsArchive />} />
+        <Route path='/view/archives/shifts/:id' element={<ViewArchivedShift />} />
         <Route path='/view/archives/rooms' element={<ViewRoomsArchive />} />
+        <Route path='/view/archives/rooms/:id' element={<ViewArchivedRooms />} />
         <Route path='/view/archives/programs' element={<ViewProgramsArchive />} />
+        <Route path='/view/archives/programs/:id' element={<ViewArchivedProgram />} />
         <Route path='/view/archives/modules' element={<ViewModulesArchive />} />
+        <Route path='/view/archives/modules/:id' element={<ViewArchivedModule />} />
+
 
       </Routes>
     </HashRouter>
