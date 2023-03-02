@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import {
-  Button, Confirm, Divider,
+  Button, ButtonGroup, Confirm, Divider,
   Grid,
   Icon,
   Input,
@@ -155,6 +155,42 @@ export function ViewShifts() {
                 </Table>
               </div>
             )}
+            <Divider hidden></Divider>
+
+<ButtonGroup compact basic>
+  <Button
+    title="Atgal"
+    onClick={() =>
+      setActivePage(activePage <= 0 ? activePage : activePage - 1)
+    }
+    icon
+  >
+    <Icon name="arrow left" />{" "}
+  </Button>
+  {/* {[...Array(pagecount)].map((e, i) => {
+    return (
+      <Button
+        title={i + 1}
+        key={i}
+        active={activePage === i ? true : false}
+        onClick={() => setActivePage(i)}
+      >
+        {i + 1}
+      </Button>
+    );
+  })} */}
+  <Button
+    title="Pirmyn"
+    onClick={() =>
+      setActivePage(
+        activePage >= pagecount - 1 ? activePage : activePage + 1
+      )
+    }
+    icon
+  >
+    <Icon name="arrow right" />{" "}
+  </Button>
+</ButtonGroup>
           </Segment>
         </Grid.Column>
       </Grid>
