@@ -31,7 +31,7 @@ export function EditRoom() {
   }, []);
 
   const applyResult = () => {
-    setHide(true);
+    setActive(true);
   };
 
   const updateRooms = () => {
@@ -181,7 +181,7 @@ export function EditRoom() {
                 </Table>
                 <Divider hidden></Divider>
                 <Button onClick={() => setActive(true)}>Atšaukti</Button>
-                <Button floated="right" id='details'  primary onClick={updateRooms}>
+                <Button floated="right" id='details' primary onClick={updateRooms}>
                   Atnaujinti
                 </Button>
               </div>
@@ -190,7 +190,7 @@ export function EditRoom() {
         </Grid.Column>
       </Grid>
 
-      
+
 
     </div>
   );

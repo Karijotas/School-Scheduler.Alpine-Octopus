@@ -264,11 +264,9 @@ export function ViewGroups() {
               <Pagination
                 boundaryRange={0}
                 defaultActivePage={1}
-                ellipsisItem={null}
-                firstItem={null}
-                lastItem={null}
-                siblingRange={1}
+                value={activePage}
                 totalPages={groups.totalPages}
+                // onPageChange={handleChange}
               />
             </div>
           </Segment>
