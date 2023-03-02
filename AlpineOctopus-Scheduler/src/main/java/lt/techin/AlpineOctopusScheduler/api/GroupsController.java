@@ -3,8 +3,6 @@ package lt.techin.AlpineOctopusScheduler.api;
 import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.GroupsDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.GroupsEntityDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.GroupsTestDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupsMapper;
 import lt.techin.AlpineOctopusScheduler.dao.GroupsRepository;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Groups;
@@ -51,7 +49,6 @@ public class GroupsController {
     public List<GroupsEntityDto> getDeletedGroups() {
         return groupService.getAllDeletedGroups();
     }
-
 
 
     @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -135,19 +132,20 @@ public class GroupsController {
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE,})
     public ResponseEntity<GroupsDto> createGroup(@Valid @RequestBody GroupsDto groupsDto, Long programId, Long shiftId) {
         if (groupService.groupNameIsUnique(toGroup(groupsDto))) {
-            if (groupService.studentAmountIsValid(toGroup(groupsDto))) {
-                if (groupService.schoolYearIsValid(toGroup(groupsDto))) {
-                    var createdGroup = groupService.create(toGroup(groupsDto), programId, shiftId);
-                    return ok(toGroupDto(createdGroup));
-                } else {
-                    throw new SchedulerValidationException("Invalid year value", "School year", "School year must be between 2023-3023", groupsDto.getSchoolYear().toString());
-                }
+//            if (groupService.studentAmountIsValid(toGroup(groupsDto))) {
+            if (groupService.schoolYearIsValid(toGroup(groupsDto))) {
+                var createdGroup = groupService.create(toGroup(groupsDto), programId, shiftId);
+                return ok(toGroupDto(createdGroup));
             } else {
-                throw new SchedulerValidationException("Group already exists", "Group name", "Already exists", groupsDto.getName());
+                throw new SchedulerValidationException("Invalid year value", "School year", "School year must be between 2023-3023", groupsDto.getSchoolYear().toString());
             }
         } else {
-            throw new SchedulerValidationException("Invalid student amount", "Student amount", "Student amount must be between 1-300", groupsDto.getStudentAmount().toString());
+            throw new SchedulerValidationException("Group already exists", "Group name", "Already exists", groupsDto.getName());
         }
+//        }
+//        else {
+//            throw new SchedulerValidationException("Invalid student amount", "Student amount", "Student amount must be between 1-300", groupsDto.getStudentAmount().toString());
+//        }
     }
 
     @DeleteMapping("/{groupId}")

@@ -31,12 +31,12 @@ export function CreateGroupPage() {
   const listUrl = useHref('/view/groups');
 
   // const [create, setCreate] = useState()
-  const [hide, setHide] = useState(false)
+  const [hide, setHide] = useState(false);
   const [name, setName] = useState('');
-  const [schoolYear, setSchoolYear] = useState('')
-  const [studentAmount, setStudentAmount] = useState('')
-  const [programs, setPrograms] = useState([])
-  const [programId, setProgramId] = useState()
+  const [schoolYear, setSchoolYear] = useState(2023);
+  const [studentAmount, setStudentAmount] = useState('');
+  const [programs, setPrograms] = useState([]);
+  const [programId, setProgramId] = useState();
   const [shifts, setShifts] = useState([]);
   const [shiftId, setShiftId] = useState();
 
@@ -44,8 +44,8 @@ export function CreateGroupPage() {
   const [nameDirty, setNameDirty] = useState(false);
   const [studentDirty, setStudentDirty] = useState(false);
 
-  const [nameError, setNameError] = useState("Negali būti tuščias!")
-  const [studentError, setStudentError] = useState("")
+  const [nameError, setNameError] = useState("Negali būti tuščias!");
+  const [studentError, setStudentError] = useState("");
   // const [yearError, setYearError] = useState("*Privaloma")
   // const [programError, setProgramError] = useState("*Privaloma")
   // const [shiftError, setShiftError] = useState("*Privaloma")
