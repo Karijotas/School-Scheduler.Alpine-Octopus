@@ -26,16 +26,12 @@ export function EditModuleObject() {
     modifiedDate: "",
   });
 
-
-
-
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [nameError, setNameError] = useState("")
-    const [buildingError, setBuildingError] = useState("")
-    const [descriptionError, setDescriptionError] = useState("")
-
-    const [formValid, setFormValid] = useState(false)
+  const [buildingError, setBuildingError] = useState("")
+  const [descriptionError, setDescriptionError] = useState("")
+  const [formValid, setFormValid] = useState(false)
 
 
     useEffect(() => {
@@ -59,8 +55,8 @@ export function EditModuleObject() {
       };
     
     const validateNameInput = (value) => {
-        if (value.length <2 || value.length > 40) {
-            setNameError("Įveskite nuo 2 iki 40 simbolių!")
+        if (value.length <2 || value.length > 100) {
+            setNameError("Įveskite nuo 2 iki 100 simbolių!")
             if(!value){
                 setNameError("Pavadinimas negali būti tuščias!")
               } 
@@ -188,7 +184,6 @@ export function EditModuleObject() {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Modulio pavadinimas</Table.HeaderCell>
-                      <Table.HeaderCell>Aprašymas</Table.HeaderCell>
                       <Table.HeaderCell>Paskutinis atnaujinimas</Table.HeaderCell>
                       <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                     </Table.Row>
@@ -273,7 +268,7 @@ export function EditModuleObject() {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Modulio pavadinimas</Table.HeaderCell>
-                      <Table.HeaderCell >Paskutinis atnaujinimas</Table.HeaderCell>
+                      <Table.HeaderCell width={3}>Paskutinis atnaujinimas</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
 
@@ -368,6 +363,7 @@ export function EditModuleObject() {
                                 <Divider hidden />
                                 <List.Content floated="left">
                                   <Button
+                                  id='details'
                                     onClick={() =>
                                       addSubject(params.id, subjectId)
                                     }

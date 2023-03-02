@@ -43,7 +43,7 @@ export function EditSubjectObject() {
   const [state, setState] = useState("")
   const [nameError, setNameError] = useState("")
     
-    const [descriptionError, setDescriptionError] = useState("")
+  const [descriptionError, setDescriptionError] = useState("")
     
 
    
