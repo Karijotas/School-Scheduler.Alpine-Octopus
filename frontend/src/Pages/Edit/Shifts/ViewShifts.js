@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import {
-  Button,
-  Divider,
+  Button, Confirm, Divider,
   Grid,
   Icon,
   Input,
   Segment,
-  Table,
-  Confirm,
+  Table
 } from "semantic-ui-react";
-import MainMenu from "../../../Components/MainMenu";
 import { EditMenu } from "../../../Components/EditMenu";
+import MainMenu from "../../../Components/MainMenu";
 import { CreateShiftPage } from "./CreateShiftPage";
 
 const JSON_HEADERS = {
@@ -30,29 +28,29 @@ export function ViewShifts() {
   const [pagecount, setPageCount] = useState();
 
   const fetchFilterShifts = async () => {
-    fetch(`/api/v1/shifts/page/name-filter/${nameText}?page=` + activePage)
+    fetch(`/scheduler/api/v1/shifts/page/name-filter/${nameText}?page=` + activePage)
       .then((response) => response.json())
       .then((jsonRespone) => setShifts(jsonRespone));
   };
 
   const fetchSingleShifts = () => {
-    fetch("/api/v1/shifts")
+    fetch("/scheduler/api/v1/shifts")
       .then((response) => response.json())
       .then((jsonResponse) => setShiftsForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(shiftsforPaging.length / 10)));
   };
 
   const fetchShifts = async () => {
-    fetch(`/api/v1/shifts/page?page=` + activePage)
+    fetch(`/scheduler/api/v1/shifts/page?page=` + activePage)
       .then((response) => response.json())
       .then((jsonRespones) => setShifts(jsonRespones));
   };
 
   const removeShift = (id) => {
-    fetch("/api/v1/shifts/" + id, {
-      method: "DELETE",
-      headers: JSON_HEADERS,
-    }).then(fetchShifts);
+    fetch("/scheduler/api/v1/shifts/delete/" + id, {
+      method: "PATCH",
+    }).then(fetchShifts)
+    .then(setOpen(false));
   };
 
   useEffect(() => {
@@ -94,8 +92,7 @@ export function ViewShifts() {
 
                 <Button
                   icon
-                  labelPosition="left"
-                  primary
+                  labelPosition="left"                  
                   className="controls"
                   as={NavLink}
                   exact
@@ -111,8 +108,8 @@ export function ViewShifts() {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Pavadinimas</Table.HeaderCell>
-                      <Table.HeaderCell>Pamokos nuo:</Table.HeaderCell>
-                      <Table.HeaderCell>Pamokos iki:</Table.HeaderCell>
+                      <Table.HeaderCell>Pamokos nuo</Table.HeaderCell>
+                      <Table.HeaderCell>Pamokos iki</Table.HeaderCell>
                       <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
@@ -136,17 +133,17 @@ export function ViewShifts() {
                           id="icocolor"
                             basic
                             compact
-                            title="Ištrinti"
-                            icon="trash alternate"
+                            title="Suarchyvuoti"
+                            icon="archive"
                             onClick={() => setOpen(shift.id)}
                           ></Button>
 
                           <Confirm
                             open={open}
                             header="Dėmesio!"
-                            content="Ar tikrai norite ištrinti?"
-                            cancelButton="Grįžti atgal"
-                            confirmButton="Ištrinti"
+                            content="Ar tikrai norite perkelti į archyvą?"
+                          cancelButton="Grįžti atgal"
+                          confirmButton="Taip"
                             onCancel={() => setOpen(false)}
                             onConfirm={() => removeShift(open)}
                             size="small"

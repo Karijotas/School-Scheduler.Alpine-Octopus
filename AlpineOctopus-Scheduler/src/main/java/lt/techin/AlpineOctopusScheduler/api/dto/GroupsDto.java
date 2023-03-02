@@ -11,7 +11,7 @@ public class GroupsDto {
     private String name;
     private Integer schoolYear;
     private Integer studentAmount;
-    private String shift;
+    private Long shiftId;
     private Long programId;
 
     private Boolean deleted;
@@ -28,11 +28,11 @@ public class GroupsDto {
     public GroupsDto() {
     }
 
-    public GroupsDto(String name, Integer schoolYear, Integer studentAmount, String shift, Long programId, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy, Boolean deleted) {
+    public GroupsDto(String name, Integer schoolYear, Integer studentAmount, Long shiftId, Long programId, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy, Boolean deleted) {
         this.name = name;
         this.schoolYear = schoolYear;
         this.studentAmount = studentAmount;
-        this.shift = shift;
+        this.shiftId = shiftId;
         this.programId = programId;
         this.createdDate = createdDate;
         this.modifiedDate = modifiedDate;
@@ -105,12 +105,12 @@ public class GroupsDto {
         this.studentAmount = studentAmount;
     }
 
-    public String getShift() {
-        return shift;
+    public Long getShiftId() {
+        return shiftId;
     }
 
-    public void setShift(String shift) {
-        this.shift = shift;
+    public void setShiftId(Long shiftId) {
+        this.shiftId = shiftId;
     }
 
     public Boolean getDeleted() {
@@ -123,15 +123,16 @@ public class GroupsDto {
 
     @Override
     public boolean equals(Object o) {
+
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GroupsDto groupsDto = (GroupsDto) o;
-        return Objects.equals(name, groupsDto.name) && Objects.equals(schoolYear, groupsDto.schoolYear) && Objects.equals(studentAmount, groupsDto.studentAmount) && Objects.equals(shift, groupsDto.shift) && Objects.equals(programId, groupsDto.programId) && Objects.equals(deleted, groupsDto.deleted) && Objects.equals(createdDate, groupsDto.createdDate) && Objects.equals(modifiedDate, groupsDto.modifiedDate) && Objects.equals(createdBy, groupsDto.createdBy) && Objects.equals(modifiedBy, groupsDto.modifiedBy);
+        return Objects.equals(getName(), groupsDto.getName()) && Objects.equals(getSchoolYear(), groupsDto.getSchoolYear()) && Objects.equals(getStudentAmount(), groupsDto.getStudentAmount()) && Objects.equals(shiftId, groupsDto.shiftId) && Objects.equals(getProgramId(), groupsDto.getProgramId()) && Objects.equals(getDeleted(), groupsDto.getDeleted()) && Objects.equals(getCreatedDate(), groupsDto.getCreatedDate()) && Objects.equals(getModifiedDate(), groupsDto.getModifiedDate()) && Objects.equals(getCreatedBy(), groupsDto.getCreatedBy()) && Objects.equals(getModifiedBy(), groupsDto.getModifiedBy());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, schoolYear, studentAmount, shift, programId, deleted, createdDate, modifiedDate, createdBy, modifiedBy);
+        return Objects.hash(getName(), getSchoolYear(), getStudentAmount(), shiftId, getProgramId(), getDeleted(), getCreatedDate(), getModifiedDate(), getCreatedBy(), getModifiedBy());
     }
 
     @Override
@@ -140,7 +141,7 @@ public class GroupsDto {
                 "name='" + name + '\'' +
                 ", schoolYear=" + schoolYear +
                 ", studentAmount=" + studentAmount +
-                ", shift='" + shift + '\'' +
+                ", shiftId=" + shiftId +
                 ", programId=" + programId +
                 ", deleted=" + deleted +
                 ", createdDate=" + createdDate +

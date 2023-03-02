@@ -5,9 +5,11 @@ import lt.techin.AlpineOctopusScheduler.api.dto.GroupsTestDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupsMapper;
 import lt.techin.AlpineOctopusScheduler.dao.GroupsRepository;
 import lt.techin.AlpineOctopusScheduler.dao.ProgramRepository;
+import lt.techin.AlpineOctopusScheduler.dao.ShiftRepository;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Groups;
 import lt.techin.AlpineOctopusScheduler.model.Program;
+import lt.techin.AlpineOctopusScheduler.model.Shift;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +24,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupsMapper.toGroupEntityDto;
+
 
 @Service
 public class GroupService {
@@ -30,12 +34,15 @@ public class GroupService {
     private final ProgramRepository programRepository;
 
     private final Validator validator;
+    private final ShiftRepository shiftRepository;
 
     @Autowired
-    public GroupService(GroupsRepository groupsRepository, ProgramRepository programRepository, Validator validator) {
+    public GroupService(GroupsRepository groupsRepository, ProgramRepository programRepository, Validator validator,
+                        ShiftRepository shiftRepository) {
         this.groupsRepository = groupsRepository;
         this.programRepository = programRepository;
         this.validator = validator;
+        this.shiftRepository = shiftRepository;
     }
 
     void validateInputWithInjectedValidator(Groups groups) {
@@ -55,6 +62,9 @@ public class GroupService {
         return groups.getSchoolYear() >= 2023 && groups.getSchoolYear() <= 3032;
     }
 
+    public boolean studentAmountIsValid(Groups groups) {
+        return groups.getStudentAmount() >= 1 && groups.getStudentAmount() <= 300;
+    }
     public List<GroupsTestDto> getAllGroups() {
         return groupsRepository.findAll().stream()
                 .map(GroupsMapper::toGroupsTestDto).collect(Collectors.toList());
@@ -78,36 +88,43 @@ public class GroupService {
 
     @Transactional(readOnly = true)
     public List<GroupsEntityDto> getGroupsByNameContaining(String nameText) {
-        return groupsRepository.findByNameContainingIgnoreCase(nameText).stream()
+        return groupsRepository.findAllByDeletedAndNameContainingIgnoreCaseOrderByModifiedDateDesc(Boolean.FALSE, nameText).stream()
                 .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public List<GroupsEntityDto> getGroupsBySchoolYear(Integer schoolYearText) {
-        return groupsRepository.findBySchoolYear(schoolYearText).stream()
 
+        return groupsRepository.findAllByDeletedAndSchoolYearOrderByModifiedDateDesc(Boolean.FALSE, schoolYearText).stream()
                 .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public List<GroupsEntityDto> getGroupsByProgram(String programText) {
 
-        Program createdProgram = programRepository.findByNameContainingIgnoreCase(programText)
-                .stream()
-                .findFirst().get();
-        return groupsRepository.findAll()
-                .stream()
-                .filter(groups -> groups.getProgram().equals(createdProgram))
-                .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
+
+        return groupsRepository.findAllByDeletedAndProgram_nameContainingIgnoreCaseOrderByModifiedDateDesc(Boolean.FALSE, programText)
+                .stream().map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
+//        Program createdProgram = programRepository.findAllByDeletedAndNameContainingIgnoreCase(Boolean.FALSE, programText)
+//                .stream()
+//                .findFirst().get();
+//        return groupsRepository.findAll()
+//                .stream()
+//                .filter(groups -> groups.getProgram().equals(createdProgram))
+//                .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
+
     }
 
-    public Groups create(Groups groups, Long programId) {
+    public Groups create(Groups groups, Long programId, Long shiftId) {
         validateInputWithInjectedValidator(groups);
         Program createdProgram = programRepository.findById(programId)
                 .orElseThrow(() -> new SchedulerValidationException("Program doesn't exist", "Program", "Program not found", programId.toString()));
+        Shift createdShift = shiftRepository.findById(shiftId)
+                .orElseThrow(() -> new SchedulerValidationException("Shift doesn't exist", "Shift", "Shift not found", shiftId.toString()));
 
         if (schoolYearIsValid(groups)) {
             groups.setProgram(createdProgram);
+            groups.setShift(createdShift);
             return groupsRepository.save(groups);
         } else {
             throw new SchedulerValidationException("Invalid year value", "School year", "School year must be between 2023-3023", groups.getSchoolYear().toString());
@@ -115,15 +132,17 @@ public class GroupService {
     }
 
     //    .getById(programId)
-    public Groups update(Long id, Groups groups, Long programId) {
+    public Groups update(Long id, Groups groups, Long programId, Long shiftId) {
         validateInputWithInjectedValidator(groups);
         Program createdProgram = programRepository.findById(programId)
                 .orElseThrow(() -> new SchedulerValidationException("Program doesn't exist", "Program", "Program not found", programId.toString()));
+        Shift createdShift = shiftRepository.findById(shiftId)
+                .orElseThrow(() -> new SchedulerValidationException("Shift doesn't exist", "Shift", "Shift not found", shiftId.toString()));
         Groups existingGroups = groupsRepository.findById(id)
                 .orElseThrow(() -> new SchedulerValidationException("Group doesn't exist", "id", "Group doesn't exist", id.toString()));
 
         existingGroups.setName(groups.getName());
-        existingGroups.setShift(groups.getShift());
+        existingGroups.setShift(createdShift);
         existingGroups.setProgram(createdProgram);
         existingGroups.setSchoolYear(groups.getSchoolYear());
         existingGroups.setStudentAmount(groups.getStudentAmount());
@@ -143,5 +162,47 @@ public class GroupService {
         } catch (EmptyResultDataAccessException e) {
             return false;
         }
+    }
+
+    public List<GroupsEntityDto> getAllAvailablePagedGroups(int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return groupsRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE, pageable).stream()
+                .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
+    }
+
+    public List<GroupsEntityDto> getAllDeletedPagedGroups(int page, int pageSize) {
+
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        return groupsRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.TRUE, pageable).stream()
+                .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
+    }
+
+    public List<GroupsEntityDto> getAllAvailableGroups() {
+        return groupsRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE).stream()
+                .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
+    }
+
+    public List<GroupsEntityDto> getAllDeletedGroups() {
+        return groupsRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.TRUE).stream()
+                .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
+    }
+
+    public GroupsEntityDto restoreGroup(Long groupId) {
+
+        var existingGroup = groupsRepository.findById(groupId).orElseThrow(() -> new SchedulerValidationException("Group does not exist",
+                "id", "Group not found", groupId.toString()));
+        existingGroup.setDeleted(Boolean.FALSE);
+        groupsRepository.save(existingGroup);
+        return toGroupEntityDto(existingGroup);
+    }
+
+    public GroupsEntityDto deleteGroup(Long groupId) {
+
+        var existingGroup = groupsRepository.findById(groupId).orElseThrow(() -> new SchedulerValidationException("Group does not exist",
+                "id", "Group not found", groupId.toString()));
+        existingGroup.setDeleted(Boolean.TRUE);
+        groupsRepository.save(existingGroup);
+        return toGroupEntityDto(existingGroup);
     }
 }

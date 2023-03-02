@@ -8,6 +8,7 @@ import {
   Grid,
   Icon,
   Input,
+  Pagination,
   Segment,
   Table,
 } from "semantic-ui-react";
@@ -46,43 +47,43 @@ export function ViewGroups() {
   const [pagecount, setPageCount] = useState();
 
   const fetchProgramGroups = async () => {
-    fetch("/api/v1/groups/program-filter/" + programText)
+    fetch("/scheduler/api/v1/groups/program-filter/" + programText)
       .then((response) => response.json())
       .then((jsonResponse) => setGroups(jsonResponse));
   };
   const fetchYearGroups = async () => {
-    fetch("/api/v1/groups/year-filter/" + yearText)
+    fetch("/scheduler/api/v1/groups/year-filter/" + yearText)
       .then((response) => response.json())
       .then((jsonResponse) => setGroups(jsonResponse));
   };
 
   const fetchFilterGroups = async () => {
-    fetch("/api/v1/groups/name-filter/" + nameText)
+    fetch("/scheduler/api/v1/groups/name-filter/" + nameText)
       .then((response) => response.json())
       .then((jsonResponse) => setGroups(jsonResponse));
   };
 
   const fetchGroups = async () => {
-    fetch("/api/v1/groups/page?page=" + activePage)
+    fetch("/scheduler/api/v1/groups/page?page=" + activePage)
       .then((response) => response.json())
       .then((jsonResponse) => setGroups(jsonResponse));
   };
 
   const fetchSingleGroups = async () => {
-    fetch("/api/v1/groups/")
+    fetch("/scheduler/api/v1/groups/")
       .then((response) => response.json())
       .then((jsonResponse) => setGroupsForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(groupsforPaging.length / 10)));
     // .then(console.log('pages:' + pagecount));
   };
 
-  // const removeGroup = (id) => {
-  //     fetch('/api/v1/groups/' + id, {
-  //         method: 'DELETE',
-  //         headers: JSON_HEADERS
-  //     }).then(fetchGroups)
-  //         .then(setOpen(false));
-  // }
+  const removeGroup = (id) => {
+    fetch("/scheduler/api/v1/groups/delete/" + id, {
+      method: "PATCH",
+    })
+      .then(fetchGroups)
+      .then(setOpen(false));
+  };
 
   useEffect(() => {
     if (
@@ -191,7 +192,7 @@ export function ViewGroups() {
                       <Table.Cell>{group.programName}</Table.Cell>
                       <Table.Cell collapsing>
                         <Button
-                        id="icocolor"
+                          id="icocolor"
                           href={"#/view/groups/edit/" + group.id}
                           basic
                           compact
@@ -200,22 +201,22 @@ export function ViewGroups() {
                           onClick={() => setActive(group.id)}
                         ></Button>
                         <Button
-                        id="icocolor"
+                          id="icocolor"
                           basic
                           compact
-                          title="Ištrinti"
-                          icon="trash alternate"
+                          title="Suarchyvuoti"
+                          icon="archive"
                           onClick={() => setOpen(group.id)}
                         ></Button>
 
                         <Confirm
                           open={open}
                           header="Dėmesio!"
-                          content="Ar tikrai norite ištrinti?"
+                          content="Ar tikrai norite perkelti į archyvą?"
                           cancelButton="Grįžti atgal"
-                          confirmButton="Ištrinti"
+                          confirmButton="Taip"
                           onCancel={() => setOpen(false)}
-                          // onConfirm={() => removeGroup(open)}
+                          onConfirm={() => removeGroup(open)}
                           size="small"
                         />
                       </Table.Cell>
@@ -259,6 +260,16 @@ export function ViewGroups() {
                   <Icon name="arrow right" />{" "}
                 </Button>
               </ButtonGroup>
+
+              <Pagination
+                boundaryRange={0}
+                defaultActivePage={1}
+                ellipsisItem={null}
+                firstItem={null}
+                lastItem={null}
+                siblingRange={1}
+                totalPages={groups.totalPages}
+              />
             </div>
           </Segment>
         </Grid.Column>

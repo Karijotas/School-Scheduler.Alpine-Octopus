@@ -2,9 +2,7 @@ package lt.techin.AlpineOctopusScheduler.api;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lt.techin.AlpineOctopusScheduler.api.dto.ProgramEntityDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
-import lt.techin.AlpineOctopusScheduler.model.ProgramSubjectHours;
+import lt.techin.AlpineOctopusScheduler.api.dto.ProgramTestDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,12 +13,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper.toProgram;
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper.toSubject;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -29,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class ProgramControllerTest {
 
-//    @MockBean
+    //    @MockBean
 //    ProgramRepository programRepository;
     @Autowired
     ObjectMapper objectMapper;
@@ -43,64 +37,46 @@ class ProgramControllerTest {
     @AfterEach
     void tearDown() {
     }
-//
-//    @Test
-//    void getPrograms_returnsCorrectDtos() throws Exception {
-//        //operacija_kokiusduomenis_expectedresult
-//        Set<ProgramSubjectHours> hours1 = new HashSet<>();
-//        Set<ProgramSubjectHours> hours2 = new HashSet<>();
-//        Set<ProgramSubjectHours> hours3 = new HashSet<>();
-//        Set<ProgramSubjectHours> hours4 = new HashSet<>();
-//        Set<ProgramSubjectHours> hours5 = new HashSet<>();
-//        Set<ProgramSubjectHours> hours6 = new HashSet<>();
-//
-//        Set<ProgramSubjectHours> hours7 = new HashSet<>();
-//        Set<ProgramSubjectHours> hours8 = new HashSet<>();
-//        Set<ProgramSubjectHours> hours9 = new HashSet<>();
-//        Set<ProgramSubjectHours> hours10 = new HashSet<>();
-//
-//
-////        var subjectDto1 = new SubjectEntityDto(1l,"Matematika","skaiciukai", null, null);
-////        var subjectDto2 = new SubjectEntityDto(2l,"FIlosofija","raideles", null, null);
-////        var subjectDto3 = new SubjectEntityDto(3l,"Istorija","pasakos", null, null);
-////        var subjectDto4 = new SubjectEntityDto(4l,"Javascriptas", "kodukai", null, null);
-//
-////        var programDto1 = new ProgramEntityDto(1l, "Belekokio gerumo","apie viska" , null, null);
-////        var programDto2 = new ProgramEntityDto(2l, "Sita kieta is vis", "biski to, biski ano",  null, null);
-////        var programDto3 = new ProgramEntityDto(3l, "Normali", "normalus dalykai", null, null);
-////        var programDto4 = new ProgramEntityDto(4l, "Labai sunki", "aukstoji matematika ir raketu mokslas",  null, null);
-////        var programDto5 = new ProgramEntityDto(5l, "Nuobodoka", "apie kaminus",  null, null);
-////        var programDto6 = new ProgramEntityDto(6l, "Pirmunams", "programavimo visokie dalykeliai",  null, null);
-//
-////        var programSubjectHours1 = new ProgramSubjectHours(1l , toProgram(programDto1) , toSubject(subjectDto2), 20);
-////        var programSubjectHours2 = new ProgramSubjectHours(2l , toProgram(programDto1), toSubject(subjectDto1),24);
-////        var programSubjectHours3 = new ProgramSubjectHours(3l , toProgram(programDto2), toSubject(subjectDto4), 40);
-////        var programSubjectHours4 = new ProgramSubjectHours(4l , toProgram(programDto2), toSubject(subjectDto3), 10);
-////        var programSubjectHours5 = new ProgramSubjectHours(5l , toProgram(programDto3), toSubject(subjectDto1), 8);
-////        var programSubjectHours6 = new ProgramSubjectHours(6l , toProgram(programDto4), toSubject(subjectDto2), 44);
-////        var programSubjectHours7 = new ProgramSubjectHours(7l , toProgram(programDto5), toSubject(subjectDto2), 2);
-////        var programSubjectHours8 = new ProgramSubjectHours(8l , toProgram(programDto5), toSubject(subjectDto2), 18);
-//
-//
-//
-//        var mvcResult = mockMvc.perform(
-//                        MockMvcRequestBuilders
-//                                .get("/api/v1/programs")
-//                                .accept(MediaType.APPLICATION_JSON)
-//                )
-//                .andExpect(status().isOk())
-//                .andReturn();
-//
-//        var mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<ProgramEntityDto>>() {
-//        });
-//
-//        assertThat(mappedResponse)
-//                .containsExactlyInAnyOrder(programDto1, programDto2, programDto3, programDto4, programDto5, programDto6);
 
-//        verify(animalRepository, times(1)).deleteNonRegisteredAnimals();
-//        assertThat(mappedResponse)
-//                .isEqualTo(expectedDtos);
+    @Test
+    void getPrograms_returnsCorrectDtos() throws Exception {
+        //operacija_kokiusduomenis_expectedresult
+
+
+        var programDto1 = new ProgramTestDto(1L);
+        var programDto2 = new ProgramTestDto(2L);
+        var programDto3 = new ProgramTestDto(3L);
+        var programDto4 = new ProgramTestDto(4l);
+        var programDto5 = new ProgramTestDto(5l);
+        var programDto6 = new ProgramTestDto(6l);
+        var programDto7 = new ProgramTestDto(7l);
+        var programDto8 = new ProgramTestDto(8l);
+        var programDto9 = new ProgramTestDto(9l);
+        var programDto10 = new ProgramTestDto(10l);
+        var programDto11 = new ProgramTestDto(11l);
+        var programDto12 = new ProgramTestDto(12l);
+        var programDto13 = new ProgramTestDto(13l);
+        var programDto14 = new ProgramTestDto(14l);
+
+
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .get("/api/v1/programs/all")
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        var mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<ProgramTestDto>>() {
+        });
+
+        assertThat(mappedResponse)
+                .containsExactlyInAnyOrder(programDto1, programDto2, programDto3, programDto4, programDto5, programDto6,
+                        programDto7, programDto8, programDto9, programDto10, programDto11, programDto12, programDto13, programDto14);
+
+//    } );
+//}
     }
-
+}
 
 

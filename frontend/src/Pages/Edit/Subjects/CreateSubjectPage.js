@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useHref } from 'react-router-dom';
-import { Button, Form, Grid, Icon, Segment, Select } from "semantic-ui-react";
+import { Button, Form, Grid, Icon, Segment } from "semantic-ui-react";
 import { EditMenu } from '../../../Components/EditMenu';
 import MainMenu from '../../../Components/MainMenu';
 
@@ -21,6 +21,49 @@ export function CreateSubjecPage() {
   const [rooms, setRooms] = useState([]);
   const [roomId, setRoomId] = useState();
 
+  //Validation
+  const [nameDirty, setNameDirty] = useState(false);
+  const [nameError, setNameError] = useState("Negali būti tuščias!")
+  const [descriptionError, setDescriptionError] = useState("")
+  const [formValid, setFormValid] = useState(false)
+
+  useEffect(() => {
+    if(nameError || descriptionError) {
+      setFormValid(false)
+    } else {
+      setFormValid(true)
+    }
+  }, [nameError, descriptionError])
+
+  const blurHandler = (e) => {
+    switch (e.target.name){
+      case 'name':
+        setNameDirty(true);
+        break
+    }
+  }
+
+  const nameHandler = (e) => {
+    setName(e.target.value)
+    if(e.target.value.length <2 || e.target.value.length > 40){
+      setNameError("Įveskite nuo 2 iki 40 simbolių!")
+      if(!e.target.value){
+        setNameError("Negali būti tuščias!")
+      }
+    } else {
+      setNameError("")
+    }
+  }
+
+  const descriptionHandler = (e) => {
+    setDescription(e.target.value)
+    if(e.target.value.length > 100){
+      setDescriptionError("Aprašymas negali viršyti 100 symbolių!")
+    } else {
+      setDescriptionError("")
+    }
+  }
+
   const applyResult = (result) => {
     const clear = () => {
       setHide(true);
@@ -34,7 +77,7 @@ export function CreateSubjecPage() {
   };
 
   const createSubject = () => {
-    fetch("/api/v1/subjects?moduleId=" + moduleId, {
+    fetch("/scheduler/api/v1/subjects?moduleId=" + moduleId, {
       method: "POST",
       headers: JSON_HEADERS,
       body: JSON.stringify({
@@ -48,7 +91,7 @@ export function CreateSubjecPage() {
   };
 
   useEffect(() => {
-    fetch("/api/v1/modules/")
+    fetch("/scheduler/api/v1/modules/")
       .then((response) => response.json())
       .then((data) =>
         setModules(
@@ -60,7 +103,7 @@ export function CreateSubjecPage() {
   }, []);
 
   useEffect(() => {
-    fetch("/api/v1/teachers/")
+    fetch("/scheduler/api/v1/teachers/")
       .then((response) => response.json())
       .then((data) =>
         setTeachers(
@@ -72,7 +115,7 @@ export function CreateSubjecPage() {
   }, []);
 
   useEffect(() => {
-    fetch("/api/v1/rooms/")
+    fetch("/scheduler/api/v1/rooms/")
       .then((response) => response.json())
       .then((data) =>
         setRooms(
@@ -98,18 +141,22 @@ export function CreateSubjecPage() {
           <Form>
             <Form.Field>
               <label>Dalyko pavadinimas</label>
+              {(nameDirty && nameError) && <div style={{color: "red"}}>{nameError}</div>}
               <input
                 placeholder="Dalyko pavadinimas"
+                onBlur={blurHandler}
+                name="name"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => nameHandler(e)}
               />
             </Form.Field>
             <Form.Field>
               <label>Aprašymas</label>
+              {(descriptionError) && <div style={{color: "red"}}>{descriptionError}</div>}
               <input
                 placeholder="Aprašymas"
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={(e) => descriptionHandler(e)}
               />
             </Form.Field>
             {/* <Form.Group widths="equal">
@@ -153,6 +200,7 @@ export function CreateSubjecPage() {
               </Button>
               <Button
                 type="submit"
+                disabled={!formValid}
                 className="controls"
                 primary
                 id="details"

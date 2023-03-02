@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink, useHref } from 'react-router-dom';
 import { Button, Form, Grid, Icon, Input, Segment } from "semantic-ui-react";
 import { EditMenu } from '../../../Components/EditMenu';
 import MainMenu from '../../../Components/MainMenu';
 
 const JSON_HEADERS = {
-  "Content-Type": "application/json",
+  "Content-Type": "application/json", 
 };
 
 export function CreateModulePage() {
@@ -15,6 +15,51 @@ export function CreateModulePage() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [modules, setModules] = useState("");
+
+   //Validation
+   const [nameDirty, setNameDirty] = useState(false);
+   
+   const [nameError, setNameError] = useState("Negali būti tuščias!")
+   const [descriptionError, setDescriptionError] = useState("")
+   const [formValid, setFormValid] = useState(false)
+ 
+   useEffect(() => {
+     if(nameError || descriptionError) {
+       setFormValid(false)
+     } else {
+       setFormValid(true)
+     }
+   }, [nameError, descriptionError])
+   
+ 
+   const blurHandler = (e) => {
+     switch (e.target.name){
+       case 'name':
+         setNameDirty(true);
+         break
+     }
+   }
+ 
+   const nameHandler = (e) => {
+     setName(e.target.value)
+     if(e.target.value.length <2 || e.target.value.length > 40){
+       setNameError("Įveskite nuo 2 iki 40 simbolių!")
+       if(!e.target.value){
+         setNameError("Negali būti tuščias!")
+       }
+     } else {
+       setNameError("")
+     }
+   }
+ 
+   const descriptionHandler = (e) => {
+     setDescription(e.target.value)
+     if(e.target.value.length > 100){
+       setDescriptionError("Aprašymas negali viršyti 100 symbolių!")
+     } else {
+       setDescriptionError("")
+     }
+   }
 
   const applyResult = (result) => {
     const clear = () => {
@@ -29,7 +74,7 @@ export function CreateModulePage() {
   };
 
   const createModule = () => {
-    fetch("/api/v1/modules", {
+    fetch("/scheduler/api/v1/modules", {
       method: "POST",
       headers: JSON_HEADERS,
       body: JSON.stringify({
@@ -40,7 +85,7 @@ export function CreateModulePage() {
   };
 
   const fetchModules = async () => {
-    fetch(`/api/v1/modules/`)
+    fetch(`/scheduler/api/v1/modules/`)
       .then((response) => response.json())
       .then((jsonRespones) => setModules(jsonRespones));
   };
@@ -58,19 +103,24 @@ export function CreateModulePage() {
               <Form>
                 <Form.Field>
                   <label>Modulio pavadinimas</label>
+                  {(nameDirty && nameError) && <div style={{color: "red"}}>{nameError}</div>}
                   <input
                     placeholder="Modulio pavadinimas"
+                    name="name"
                     value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    onBlur={blurHandler}
+                    onChange={e => nameHandler(e)}
                   />
                 </Form.Field>
 
                 <Form.Field>
                   <label>Aprašymas</label>
+                  {(descriptionError) && <div style={{color: "red"}}>{descriptionError}</div>}
                   <Input
                     placeholder="Aprašymas"
+                    
                     value={description}
-                    onChange={(e) => setDescription(e.target.value)}
+                    onChange={(e) => descriptionHandler(e)}
                   />
                 </Form.Field>
 
@@ -86,9 +136,10 @@ export function CreateModulePage() {
                   </Button>
                   <Button
                     type="submit"
+                    id='details'
                     className="controls"
                     primary
-                    id="details"
+                    disabled={!formValid}
                     onClick={createModule}
                   >
                     Sukurti

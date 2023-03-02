@@ -1,113 +1,100 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from 'react-router-dom';
 import {
   Button,
-  ButtonGroup, Confirm, Divider, Grid, Icon,
+  ButtonGroup, Divider, Grid, Icon,
   Input,
   Segment,
   Table
 } from "semantic-ui-react";
+import { EditMenu } from '../../../Components/EditMenu';
 import MainMenu from "../../../Components/MainMenu";
-import {EditMenu} from '../../../Components/EditMenu';
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
 };
 
 export function ViewTeachersArchive() {
-  const [active, setActive] = useState();
-  const [create, setCreate] = useState("");
-  const [nameText, setNameText] = useState("");
-  const [programs, setPrograms] = useState([]);
-  const [groupsforPaging, setGroupsForPaging] = useState([]);
 
+  const [teachers, setTeachers] = useState([]);
+  const [teachersforPaging, setTeachersForPaging] = useState([]);
   const [activePage, setActivePage] = useState(0);
   const [pagecount, setPageCount] = useState();
 
-  const fetchFilterPrograms = async () => {
-    fetch(`/api/v1/programs/page/starting-with/${nameText}?page=` + activePage)
+  const fetchSingleTeachers = async () => {
+    fetch('/scheduler/api/v1/teachers/archive/')
       .then((response) => response.json())
-      .then((jsonRespone) => setPrograms(jsonRespone));
+      .then((jsonResponse) => setTeachersForPaging(jsonResponse))
+      .then(setPageCount(Math.ceil(teachersforPaging.length / 10)));
   };
 
-  const fetchSinglePrograms = () => {
-    fetch("/api/v1/programs")
+  const fetchPagedTeachers = async () => {
+    fetch('/scheduler/api/v1/teachers/archive/page?page=' + activePage)
       .then((response) => response.json())
-      .then((jsonResponse) => setGroupsForPaging(jsonResponse))
-      .then(setPageCount(Math.ceil(groupsforPaging.length / 10)));
+      .then((jsonResponse) => setTeachers(jsonResponse));
   };
 
-  const fetchPrograms = async () => {
-    fetch(`/api/v1/programs/archive/`)
+  const fetchTeachers = async () => {
+    fetch(`/scheduler/scheduler/api/v1/teachers/archive/`)
       .then((response) => response.json())
-      .then((jsonRespones) => setPrograms(jsonRespones));
-  };
-
-  const removeProgram = (id) => {
-    fetch("/api/v1/programs/" + id, {
-      method: "DELETE",
-      headers: JSON_HEADERS,
-    }).then(fetchPrograms)
-      .then(setOpen(false));
+      .then((jsonRespones) => setTeachers(jsonRespones));
   };
 
   useEffect(() => {
-    nameText.length > 0 ? fetchFilterPrograms() : fetchPrograms();
-  }, [activePage, nameText]);
+    fetch("/scheduler/scheduler/api/v1/teachers/archive/page?page=" + activePage)
+      .then((response) => response.json())
+      .then((jsonRespones) => setTeachers(jsonRespones));
+  }, []);
 
-  const [open, setOpen] = useState(false);
-  const [close, setClose] = useState(false);
-
+  const restoreTeacher = (id) => {
+    fetch("/scheduler/scheduler/api/v1/teachers/restore/" + id, {
+      method: "PATCH",
+    }).then(fetchPagedTeachers);
+  };
 
   useEffect(() => {
     if (pagecount !== null) {
-      fetchSinglePrograms();
+      fetchSingleTeachers();
     }
-  }, [programs]);
+  }, [teachers]);
+
+  useEffect(() => {
+    fetchPagedTeachers();
+  }, [activePage]);
 
   return (
     <div>
       <MainMenu />
 
-      <Grid columns={2} >
-        <Grid.Column width={2} id='main'>
+      <Grid columns={2}>
+        <Grid.Column width={2} id="main">
           <EditMenu />
         </Grid.Column>
-
-        <Grid.Column textAlign='left' verticalAlign='top' width={13}>
-          <Segment id='segment' raised color='grey'>
-
-            <div id="programs">
-              <Input
-                value={nameText}
-                onChange={(e) => setNameText(e.target.value)}
-                placeholder="Ieškoti pagal programą"
-              />
-              {/* <Button onClick={fetchFilterPrograms}>Filtruoti</Button> */}
-
-              
+        <Grid.Column textAlign="left" verticalAlign="top" width={13}>
+          <Segment id="segment" raised color="grey">
+            <div id="teachers">
               <Table selectable>
                 <Table.Header>
                   <Table.Row>
-                    <Table.HeaderCell>Programos pavadinimas</Table.HeaderCell>
-
-                    <Table.HeaderCell>Veiksmai</Table.HeaderCell>
+                    <Table.HeaderCell>
+                      Archyvas. Mokytojo vardas
+                    </Table.HeaderCell>
+                    <Table.HeaderCell collapsing textAlign="center">
+                      Veiksmai
+                    </Table.HeaderCell>
                   </Table.Row>
                 </Table.Header>
-
                 <Table.Body>
-                  {programs.map((program) => (
-                    <Table.Row key={program.id}>
-                      <Table.Cell>{program.name}</Table.Cell>
-
-                      <Table.Cell collapsing>                     
+                  {teachers.map((teacher) => (
+                    <Table.Row key={teacher.id}>
+                      <Table.Cell disabled>{teacher.name}</Table.Cell>
+                      <Table.Cell>
                         <Button
+                          textAlign="center"
                           basic
-                          color="black"
                           compact
                           title="Atstatyti"
                           icon="undo"
-                          onClick={() => setOpen(program.id)}
+                          onClick={() => restoreTeacher(teacher.id)}
                         ></Button>
                       </Table.Cell>
                     </Table.Row>
@@ -124,10 +111,8 @@ export function ViewTeachersArchive() {
                 <Button title='Pirmyn' onClick={() => setActivePage(activePage >= pagecount - 1 ? activePage : activePage + 1)} icon><Icon name="arrow right" />  </Button>
               </ButtonGroup>
             </div>
-
           </Segment>
         </Grid.Column>
-
       </Grid>
     </div>
   );

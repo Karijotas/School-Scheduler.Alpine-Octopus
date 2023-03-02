@@ -1,19 +1,13 @@
+
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Confirm,
-  Divider,
-  Icon,
-  Input,
-  Table,
-  Grid,
-  Segment,
-  ButtonGroup,
-  List,
-} from "semantic-ui-react";
-import MainMenu from "../../../Components/MainMenu";
 import { NavLink } from "react-router-dom";
+import {
+  Button, ButtonGroup, Confirm,
+  Divider, Grid, Icon,
+  Input, List, Segment, Table
+} from "semantic-ui-react";
 import { EditMenu } from "../../../Components/EditMenu";
+import MainMenu from "../../../Components/MainMenu";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -36,35 +30,35 @@ export function ViewTeachers() {
   const [teacherId, setTeacherId] = useState(1);
 
   const fetchFilterTeachers = async () => {
-    fetch(`/api/v1/teachers/page/name-filter/${nameText}?page=` + activePage)
+    fetch(`/scheduler/api/v1/teachers/page/name-filter/${nameText}?page=` + activePage)
       .then((response) => response.json())
       .then((jsonRespone) => setTeachers(jsonRespone));
   };
 
   const fetchTeachersByShifts = async () => {
-    fetch(`/api/v1/teachers/page/shift-filter/${shiftText}`)
+    fetch(`/scheduler/api/v1/teachers/page/shift-filter/${shiftText}`)
       .then((response) => response.json())
       .then((jsonResponse) => setShifts(jsonResponse));
   };
 
   const fetchSingleTeachers = () => {
-    fetch("/api/v1/teachers")
+    fetch("/scheduler/api/v1/teachers")
       .then((response) => response.json())
       .then((jsonResponse) => setTeachersForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(teachersforPaging.length / 10)));
   };
 
   const fetchTeachers = async () => {
-    fetch(`/api/v1/teachers/page?page=` + activePage)
+    fetch(`/scheduler/api/v1/teachers/page?page=` + activePage)
       .then((response) => response.json())
       .then((jsonRespones) => setTeachers(jsonRespones));
   };
 
   const removeTeacher = (id) => {
-    fetch("/api/v1/teachers/" + id, {
-      method: "DELETE",
-      headers: JSON_HEADERS,
-    }).then(fetchTeachers);
+    fetch("/scheduler/api/v1/teachers/delete/" + id, {
+      method: "PATCH",
+    }).then(fetchTeachers)
+    .then(setOpen(false));
   };
 
   // const fetchSubjectsById = (teacherId) => {
@@ -86,18 +80,18 @@ export function ViewTeachers() {
 
 
   const fetchTeacherSubjects = async ()  => {
-    fetch(`/api/v1/teachers/${teacherId}/subjects`)
+    fetch(`/scheduler/api/v1/teachers/${teacherId}/subjects`)
       .then((response) => response.json())
       .then(setTeacherSubjects)
       .then(console.log(teacherSubjects));
   };
 
-  // useEffect(() => {
-  //   fetch(`/api/v1/teachers/${teacherId}/subjects`)
-  //     .then((response) => response.json())
-  //     .then(setTeacherSubjects)
-  //     .then(console.log(teacherSubjects));
-  // }, [teacherId]);
+  useEffect(() => {
+    fetch(`/scheduler/api/v1/teachers/${teacherId}/subjects`)
+      .then((response) => response.json())
+      .then(setTeacherSubjects)
+      .then(console.log(teacherSubjects));
+  }, [teacherId]);
 
   // useEffect((teacherId) => {
   //   fetch(`/api/v1/teachers/${teacherId}/subjects`)
@@ -166,8 +160,8 @@ export function ViewTeachers() {
                   </Table.Header>
 
                   <Table.Body>
-                    {teachers.map((teacher, i) => (                      
-                      <Table.Row key={i}>                        
+                    {teachers.map((teacher) => (                      
+                      <Table.Row key={teacher.id} onKeyUp={() => setTeacherId(teacher.id)}>                        
                         <Table.Cell>{teacher.name} </Table.Cell>
                         {/* <Table.Cell> */}
                           {/* <List bulleted>                           
@@ -210,17 +204,17 @@ export function ViewTeachers() {
                           id="icocolor"
                             basic
                             compact
-                            title="Ištrinti"
-                            icon="trash alternate"
+                            title="Suarchyvuoti"
+                          icon="archive"
                             onClick={() => setOpen(teacher.id)}
                           ></Button>
 
                           <Confirm
                             open={open}
                             header="Dėmesio!"
-                            content="Ar tikrai norite ištrinti?"
-                            cancelButton="Grįžti atgal"
-                            confirmButton="Ištrinti"
+                            content="Ar tikrai norite perkelti į archyvą?"
+                          cancelButton="Grįžti atgal"
+                          confirmButton="Taip"
                             onCancel={() => setOpen(false)}
                             onConfirm={() => removeTeacher(open)}
                             size="small"

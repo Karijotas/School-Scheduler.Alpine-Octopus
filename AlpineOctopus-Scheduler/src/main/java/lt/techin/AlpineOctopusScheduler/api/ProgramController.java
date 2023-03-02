@@ -56,6 +56,13 @@ public class ProgramController {
         this.programSubjectHourListRepository = programSubjectHourListRepository;
     }
 
+
+    @GetMapping(path = "/all")
+    @ResponseBody
+    public List<ProgramTestDto> getAllPrograms() {
+        return programService.getAllPrograms();
+    }
+
     @GetMapping
     @ResponseBody
     public List<ProgramEntityDto> getAvailablePrograms() {

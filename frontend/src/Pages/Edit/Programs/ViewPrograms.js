@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
 import {
   Button,
-  ButtonGroup, Confirm, Divider, Grid, Icon,
+  ButtonGroup,
+  Confirm,
+  Divider,
+  Grid,
+  Icon,
   Input,
   Segment,
-  Table
+  Table,
 } from "semantic-ui-react";
-import MainMenu from '../../../Components/MainMenu';
 import { EditMenu } from '../../../Components/EditMenu';
+import MainMenu from '../../../Components/MainMenu';
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -25,26 +29,26 @@ export function ViewPrograms() {
   const [pagecount, setPageCount] = useState();
 
   const fetchFilterPrograms = async () => {
-    fetch(`/api/v1/programs/page/name-filter/${nameText}`)
+    fetch(`/scheduler/api/v1/programs/page/name-filter/${nameText}`)
       .then((response) => response.json())
       .then((jsonRespone) => setPrograms(jsonRespone));
   };
 
   const fetchSinglePrograms = () => {
-    fetch("/api/v1/programs")
+    fetch("/scheduler/api/v1/programs")
       .then((response) => response.json())
       .then((jsonResponse) => setGroupsForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(groupsforPaging.length / 10)));
   };
 
   const fetchPrograms = async () => {
-    fetch(`/api/v1/programs/page?page=` + activePage)
+    fetch(`/scheduler/api/v1/programs/page?page=` + activePage)
       .then((response) => response.json())
       .then((jsonRespones) => setPrograms(jsonRespones));
   };
 
   const removeProgram = (id) => {
-    fetch("/api/v1/programs/delete/" + id, {
+    fetch("/scheduler/api/v1/programs/delete/" + id, {
       method: "PATCH", 
       })    
     .then(fetchPrograms)
@@ -58,7 +62,6 @@ export function ViewPrograms() {
   const [open, setOpen] = useState(false);
   const [close, setClose] = useState(false);
 
-
   useEffect(() => {
     if (pagecount !== null) {
       fetchSinglePrograms();
@@ -69,14 +72,13 @@ export function ViewPrograms() {
     <div>
       <MainMenu />
 
-      <Grid columns={2} >
-        <Grid.Column width={2} id='main'>
+      <Grid columns={2}>
+        <Grid.Column width={2} id="main">
           <EditMenu />
         </Grid.Column>
 
-        <Grid.Column textAlign='left' verticalAlign='top' width={13}>
-          <Segment id='segment' color='teal'>
-
+        <Grid.Column textAlign="left" verticalAlign="top" width={13}>
+          <Segment id="segment" color="teal">
             <div id="programs">
               <Input
                 value={nameText}
@@ -87,11 +89,13 @@ export function ViewPrograms() {
 
               <Button
                 icon
-                labelPosition="left"                                
+                labelPosition="left"
                 className="controls"
-                id='details'
+                id="details"
                 as={NavLink}
-                exact to='/create/programs'>
+                exact
+                to="/create/programs"
+              >
                 <Icon name="database" />
                 Kurti naują programą
               </Button>
@@ -113,17 +117,17 @@ export function ViewPrograms() {
 
                       <Table.Cell collapsing>
                         <Button
-                        id="icocolor"
-                          href={'#/view/programs/edit/' + program.id}
-                          basic                          
+                          id="icocolor"
+                          href={"#/view/programs/edit/" + program.id}
+                          basic
                           compact
                           icon="eye"
                           title="Peržiūrėti"
                           onClick={() => setActive(program.id)}
                         ></Button>
                         <Button
-                        id="icocolor"
-                          basic                          
+                          id="icocolor"
+                          basic
                           compact
                           title="Suarchyvuoti"
                           icon="archive"
@@ -131,7 +135,7 @@ export function ViewPrograms() {
                         ></Button>
 
                         <Confirm
-                          open={open}                          
+                          open={open}
                           header="Dėmesio!"
                           content="Ar tikrai norite perkelti į archyvą?"
                           cancelButton="Grįžti atgal"
@@ -148,17 +152,42 @@ export function ViewPrograms() {
               <Divider hidden></Divider>
 
               <ButtonGroup compact basic>
-                <Button title='Atgal' onClick={() => setActivePage(activePage <= 0 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
+                <Button
+                  title="Atgal"
+                  onClick={() =>
+                    setActivePage(activePage <= 0 ? activePage : activePage - 1)
+                  }
+                  icon
+                >
+                  <Icon name="arrow left" />{" "}
+                </Button>
                 {[...Array(pagecount)].map((e, i) => {
-                  return <Button title={i + 1} key={i} active={activePage === i ? true : false} onClick={() => setActivePage(i)}>{i + 1}</Button>
+                  return (
+                    <Button
+                      title={i + 1}
+                      key={i}
+                      active={activePage === i ? true : false}
+                      onClick={() => setActivePage(i)}
+                    >
+                      {i + 1}
+                    </Button>
+                  );
                 })}
-                <Button title='Pirmyn' onClick={() => setActivePage(activePage >= pagecount - 1 ? activePage : activePage + 1)} icon><Icon name="arrow right" />  </Button>
+                <Button
+                  title="Pirmyn"
+                  onClick={() =>
+                    setActivePage(
+                      activePage >= pagecount - 1 ? activePage : activePage + 1
+                    )
+                  }
+                  icon
+                >
+                  <Icon name="arrow right" />{" "}
+                </Button>
               </ButtonGroup>
             </div>
-
           </Segment>
         </Grid.Column>
-
       </Grid>
     </div>
   );

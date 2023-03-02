@@ -30,7 +30,9 @@ public class Groups {
     @Valid
     @ManyToOne
     private Program program;
-    private String shift;
+
+    @ManyToOne
+    private Shift shift;
 
     private Boolean deleted = Boolean.FALSE;
 
@@ -107,11 +109,11 @@ public class Groups {
         this.program = program;
     }
 
-    public String getShift() {
+    public Shift getShift() {
         return shift;
     }
 
-    public void setShift(String shift) {
+    public void setShift(Shift shift) {
         this.shift = shift;
     }
 
