@@ -1,6 +1,7 @@
 package lt.techin.AlpineOctopusScheduler.service;
 
 import lt.techin.AlpineOctopusScheduler.api.dto.ShiftEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.ShiftTestDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ShiftMapper;
 import lt.techin.AlpineOctopusScheduler.dao.ShiftRepository;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
@@ -29,6 +30,11 @@ public class ShiftService {
 
     public List<Shift> getAll() {
         return shiftRepository.findAll();
+    }
+
+    public List<ShiftTestDto> getAllShifts() {
+        return shiftRepository.findAll().stream()
+                .map(ShiftMapper::toShiftTestDto).collect(Collectors.toList());
     }
 
     public List<ShiftEntityDto> getPagedAllShifts(int page, int pageSize) {

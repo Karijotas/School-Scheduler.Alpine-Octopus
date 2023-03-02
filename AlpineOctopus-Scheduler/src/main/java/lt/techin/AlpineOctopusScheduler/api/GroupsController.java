@@ -3,6 +3,7 @@ package lt.techin.AlpineOctopusScheduler.api;
 import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.GroupsDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.GroupsEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.GroupsTestDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupsMapper;
 import lt.techin.AlpineOctopusScheduler.dao.GroupsRepository;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
@@ -44,6 +45,12 @@ public class GroupsController {
                 .stream()
                 .map(GroupsMapper::toGroupEntityDto)
                 .collect(toList());
+    }
+
+    @GetMapping(path = "/all")
+    @ResponseBody
+    public List<GroupsTestDto> getAllGroups() {
+        return groupService.getAllGroups();
     }
 
     @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})

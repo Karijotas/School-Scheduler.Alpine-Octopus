@@ -3,6 +3,7 @@ package lt.techin.AlpineOctopusScheduler.api;
 import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.SubjectTestDto;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Module;
 import lt.techin.AlpineOctopusScheduler.model.Room;
@@ -42,6 +43,11 @@ public class SubjectController {
         return subjectService.getAllAvailableSubjects();
     }
 
+    @GetMapping(path = "/all")
+    @ResponseBody
+    public List<SubjectTestDto> getAllSubjects() {
+        return subjectService.getAllSubjects();
+    }
 
     @GetMapping(path = "/archive", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody

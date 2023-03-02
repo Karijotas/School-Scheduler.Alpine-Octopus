@@ -1,6 +1,7 @@
 package lt.techin.AlpineOctopusScheduler.service;
 
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.SubjectTestDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ModuleMapper;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper;
 import lt.techin.AlpineOctopusScheduler.dao.*;
@@ -60,6 +61,11 @@ public class SubjectService {
         return subjectRepository.findAll()
                 .stream()
                 .noneMatch(subject1 -> subject1.getName().equals(subject.getName()));
+    }
+
+    public List<SubjectTestDto> getAllSubjects() {
+        return subjectRepository.findAll().stream()
+                .map(SubjectMapper::toSubjectTestDto).collect(Collectors.toList());
     }
 
     public List<Subject> getAll() {

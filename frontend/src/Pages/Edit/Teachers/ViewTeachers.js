@@ -158,7 +158,7 @@ export function ViewTeachers() {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Mokytojo vardas</Table.HeaderCell>
-                      <Table.HeaderCell>Dalykai</Table.HeaderCell>
+                      {/* <Table.HeaderCell>Dalykai</Table.HeaderCell> */}
                       <Table.HeaderCell>Valandos per savaitę</Table.HeaderCell>
                       <Table.HeaderCell>Pamainos</Table.HeaderCell>
                       <Table.HeaderCell>Veiksmai</Table.HeaderCell>
@@ -169,24 +169,23 @@ export function ViewTeachers() {
                     {teachers.map((teacher, i) => (                      
                       <Table.Row key={i}>                        
                         <Table.Cell>{teacher.name} </Table.Cell>
-                        <Table.Cell>
+                        {/* <Table.Cell> */}
                           {/* <List bulleted>                           
                             {teacherSubjects.map((subject) => (
                               <List.Content key={subject.id}>
                                 <List.Item>{subject.name}</List.Item>
                               </List.Content>
-                              
                             ))}
                             {console.log(teacherSubjects)}
                           </List> */}
-                          <List bulleted>
+                          {/* <List bulleted>
                             <List.Content>
                               <List.Item>a</List.Item>
                               <List.Item>b</List.Item>
                               <List.Item>c</List.Item>
                             </List.Content>
-                          </List>
-                        </Table.Cell>
+                          </List> */}
+                        {/* </Table.Cell> */}
                         <Table.Cell>{teacher.workHoursPerWeek}</Table.Cell>
                         <Table.Cell>
                           <List bulleted>
