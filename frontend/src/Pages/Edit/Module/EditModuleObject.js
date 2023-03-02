@@ -67,7 +67,7 @@ export function EditModuleObject() {
 
       const validateDescriptionInput = (value) => {
         if (value.length > 500) {
-            setDescriptionError("Aprašymas negali viršyti 500 symbolių!")
+            setDescriptionError("Aprašymas negali viršyti 500 simbolių!")
         } else {
             setDescriptionError("")
         }
@@ -277,8 +277,10 @@ export function EditModuleObject() {
                       <Table.Cell collapsing>
                         <Input
                           value={modules.name}
-                          onChange={(e) => updateProperty("name", e)}
-                        />
+                         
+                          onChange={(e) => handleNameInputChange(e)}
+                        />{(nameError) && <div style={{color: "red"}}>{nameError}</div>}
+                        
                       </Table.Cell>
                       <Table.Cell collapsing> {modules.modifiedDate} </Table.Cell>
                     </Table.Row>
@@ -298,8 +300,8 @@ export function EditModuleObject() {
                             fluid
                             style={{ minHeight: 60 }}
                             value={modules.description}
-                            onChange={(e) => updateProperty("description", e)}
-                          />
+                          onChange={(e) => handleDescriptionInputChange(e)}
+                        />{(descriptionError) && <div style={{color: "red"}}>{descriptionError}</div>}
                         </Form>
                       </Table.Cell>
                     </Table.Row>

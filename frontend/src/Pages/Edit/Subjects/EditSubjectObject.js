@@ -86,7 +86,7 @@ export function EditSubjectObject() {
 
       const validateDescriptionInput = (value) => {
         if (value.length > 500) {
-            setDescriptionError("Aprašymas negali viršyti 500 symbolių!")
+            setDescriptionError("Aprašymas negali viršyti 500 simbolių!")
         } else {
             setDescriptionError("") 
         }

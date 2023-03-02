@@ -73,7 +73,7 @@ export function CreateRoom() {
   const descriptionHandler = (e) => {
     setDescription(e.target.value)
     if(e.target.value.length > 500){
-      setDescriptionError("Aprašymas negali viršyti 500 symbolių!")
+      setDescriptionError("Aprašymas negali viršyti 500 simbolių!")
     } else {
       setDescriptionError("")
     }
