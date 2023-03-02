@@ -358,7 +358,7 @@ export function EditModuleObject() {
                                   id='details'
                                     onClick={() =>
                                       addSubject(params.id, subjectId)
-                                    } id='details'
+                                    }
                                   >
                                     Pridėti
                                   </Button>
