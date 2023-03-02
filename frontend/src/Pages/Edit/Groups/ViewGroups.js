@@ -266,7 +266,7 @@ export function ViewGroups() {
                 defaultActivePage={1}
                 value={activePage}
                 totalPages={groups.totalPages}
-                onPageChange={handleChange}
+                // onPageChange={handleChange}
               />
             </div>
           </Segment>
