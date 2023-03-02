@@ -14,7 +14,7 @@ public class GroupsMapper {
         groupDto.setSchoolYear(groups.getSchoolYear());
         groupDto.setStudentAmount(groups.getStudentAmount());
 //        groupDto.setProgram(groups.getProgram());
-        groupDto.setShift(groups.getShift());
+//        groupDto.setShift(groups.getShift());
 //        groupDto.setModifiedDate(groups.getModifiedDate());
 
         return groupDto;
@@ -27,7 +27,7 @@ public class GroupsMapper {
         group.setSchoolYear(groupsDto.getSchoolYear());
         group.setStudentAmount(groupsDto.getStudentAmount());
 //        group.setProgram(groupsDto.getProgram());
-        group.setShift(groupsDto.getShift());
+//        group.setShift(groupsDto.getShift());
 
         return group;
     }
@@ -40,7 +40,7 @@ public class GroupsMapper {
         groupEntityDto.setSchoolYear(groups.getSchoolYear());
         groupEntityDto.setStudentAmount(groups.getStudentAmount());
         groupEntityDto.setProgramName(groups.getProgram().getName());
-        groupEntityDto.setShift(groups.getShift());
+        groupEntityDto.setShiftName(groups.getShift().getName());
 
         groupEntityDto.setModifiedDate(groups.getModifiedDate());
 
@@ -51,12 +51,13 @@ public class GroupsMapper {
     public static Groups toGroup(GroupsEntityDto groupEntityDto) {
         var groups = new Groups();
 
+
         groups.setId(groupEntityDto.getId());
         groups.setName(groupEntityDto.getName());
         groups.setSchoolYear(groupEntityDto.getSchoolYear());
         groups.setStudentAmount(groupEntityDto.getStudentAmount());
 //        group.setProgram(groupEntityDto.getProgram());
-        groups.setShift(groupEntityDto.getShift());
+//        group.setShift(groupEntityDto.getShift());
 
         return groups;
     }

@@ -12,6 +12,18 @@
       <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Module/EditModuleObject.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Module/EditModuleObject.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Rooms/EditRoom.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Rooms/EditRoom.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Subjects/EditSubjectObject.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Subjects/EditSubjectObject.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/migration/V3_7__insert_group_test_data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/db/migration/V3_7__insert_group_test_data.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/public/asset-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/public/asset-manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/public/static/js/main.5a549a85.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/public/static/js/main.5a549a85.js.LICENSE.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/public/static/js/main.5a549a85.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Groups/CreateGroupPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Groups/CreateGroupPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Groups/ViewGroups.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Groups/ViewGroups.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/RoomController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/RoomController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/service/RoomService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/service/RoomService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/migration/V3_4__insert_group_test_data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/db/migration/V3_4__insert_group_test_data.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/lt/techin/AlpineOctopusScheduler/service/ModuleServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/lt/techin/AlpineOctopusScheduler/service/ModuleServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,22 +70,32 @@
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/User/OneDrive/Desktop/main_03.02/AlpineOctopus-Scheduler",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "actions.on.save",
-    "spring.configuration.checksum": "dd5969d8c89564cbf8d5b95640e086b1",
-    "vue.rearranger.settings.migration": "true"
-  }
-}]]></component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Administrator/Desktop/New folder (4)/AlpineOctopus-Scheduler&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;actions.on.save&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;dd5969d8c89564cbf8d5b95640e086b1&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;com.intellij.ide.scratch.LRUPopupBuilder$1/SQL Dialect&quot;: [
+      &quot;MySQL&quot;
+    ]
+
+}
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\User\OneDrive\Desktop\2-teachers\AlpineOctopus-Scheduler\src\main\resources\db\migration" />
@@ -86,20 +108,29 @@
       <recent name="lt.techin.AlpineOctopusScheduler.service" />
       <recent name="lt.techin.AlpineOctopusScheduler.model" />
     </key>
+    },
+  &quot;keyToStringList&quot;: {
+    &quot;com.intellij.ide.scratch.LRUPopupBuilder$1/SQL Dialect&quot;: [
+      &quot;MySQL&quot;
+    ]
+  }
+}
   </component>
   <component name="RunAnythingCache">
     <option name="myCommands">
       <command value="spring-boot:run" />
       <command value="mvn flyway" />
       <command value="./mvnw spring-boot:run" />
-      <command value="mvn flyway:repair" />
       <command value="mvn spring-boot:help" />
       <command value="mvn package" />
       <command value="mvn clean" />
       <command value="spring-boot:run -Pprod" />
+      <command value="mvn flyway:repair" />
+      <command value="mvn spring-boot:run" />
       <command value="mvn flyway:clean" />
       <command value="mvn flyway:migrate" />
-      <command value="mvn spring-boot:run" />
+      <command value="mvn clean install" />
+      <command value="mvn cargo:run" />
     </option>
   </component>
   <component name="RunManager" selected="Application.AlpineOctopusSchedulerApplication">
@@ -148,6 +179,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.AlpineOctopusSchedulerApplication" />
+      <item itemvalue="JUnit.All in AlpineOctopus-Scheduler (2)" />
+      <item itemvalue="JUnit.All in AlpineOctopus-Scheduler (3)" />
+      <item itemvalue="JUnit.All in AlpineOctopus-Scheduler (4)" />
+      <item itemvalue="JUnit.All in AlpineOctopus-Scheduler (5)" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.AlpineOctopusSchedulerApplication" />
@@ -203,7 +241,14 @@
       <workItem from="1677140140740" duration="7365000" />
       <workItem from="1677184660713" duration="1668000" />
       <workItem from="1677226691116" duration="3869000" />
+      <workItem from="1677254874752" duration="22792000" />
+      <workItem from="1677410441673" duration="639000" />
+      <workItem from="1677486092952" duration="3465000" />
+      <workItem from="1677509209528" duration="45000" />
+      <workItem from="1677573521811" duration="7067000" />
+      <workItem from="1677660337008" duration="4884000" />
       <workItem from="1677254874752" duration="22186000" />
+      <workItem from="1677660337008" duration="12316000" />
     </task>
     <servers />
   </component>
@@ -226,6 +271,19 @@
     <select />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$ProgramControllerTest.ic" NAME="ProgramControllerTest Coverage Results" MODIFIED="1675964990724" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>lt.techin.AlpineOctopusScheduler.api.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$AlpineOctopusSchedulerApplication.ic" NAME="AlpineOctopusSchedulerApplication Coverage Results" MODIFIED="1677692928857" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>lt.techin.AlpineOctopusScheduler.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$All_in_AlpineOctopus_Scheduler__2_.ic" NAME="All in AlpineOctopus-Scheduler (2) Coverage Results" MODIFIED="1675965957052" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$All_in_AlpineOctopus_Scheduler__1_.ic" NAME="All in AlpineOctopus-Scheduler (1) Coverage Results" MODIFIED="1675965757179" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$ProgramServiceTest.ic" NAME="ProgramServiceTest Coverage Results" MODIFIED="1675965734640" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>lt.techin.AlpineOctopusScheduler.service.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$All_in_AlpineOctopus_Scheduler__3_.ic" NAME="All in AlpineOctopus-Scheduler (3) Coverage Results" MODIFIED="1676046660569" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$All_in_AlpineOctopus_Scheduler.ic" NAME="All in AlpineOctopus-Scheduler Coverage Results" MODIFIED="1676376250071" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$All_in_AlpineOctopus_Scheduler.ic" NAME="All in AlpineOctopus-Scheduler Coverage Results" MODIFIED="1677756355141" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$All_in_AlpineOctopus_Scheduler__2_.ic" NAME="All in AlpineOctopus-Scheduler (2) Coverage Results" MODIFIED="1677756687006" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$ProgramControllerTest.ic" NAME="ProgramControllerTest Coverage Results" MODIFIED="1675964990724" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">

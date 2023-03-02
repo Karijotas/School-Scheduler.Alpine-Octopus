@@ -193,7 +193,7 @@ public class ModuleService {
 
         moduleRepository.insertModuleAndSubject(moduleId, subjectId);
     }
-
+    
 
     public boolean deleteSubjectFromModuleById(Long moduleId, Long subjectId) {
         var existingModule = moduleRepository.findById(moduleId)

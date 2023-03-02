@@ -9,7 +9,7 @@ import {
   Icon,
   Input,
   Segment,
-  Table,
+  Table
 } from "semantic-ui-react";
 import { EditMenu } from "../../../Components/EditMenu";
 import MainMenu from "../../../Components/MainMenu";
@@ -31,19 +31,19 @@ export function ViewRooms() {
   const [roomsforPaging, setRoomsForPaging] = useState([]);
 
   const fetchRooms = async () => {
-    fetch(`/api/v1/rooms/page?page=` + activePage)
+    fetch(`/scheduler/api/v1/rooms/page?page=` + activePage)
       .then((response) => response.json())
       .then((jsonResponse) => setRooms(jsonResponse));
   };
 
   const fetchFilterRooms = async () => {
-    fetch(`/api/v1/rooms/page/name-filter/${nameText}?page=` + activePage)
+    fetch(`/scheduler/api/v1/rooms/page/name-filter/${nameText}?page=` + activePage)
       .then((response) => response.json())
       .then((jsonRespone) => setRooms(jsonRespone));
   };
 
   const removeRoom = (id) => {
-    fetch("/api/v1/rooms/" + id, {
+    fetch("/scheduler/scheduler/api/v1/rooms/" + id, {
       method: "DELETE",
       headers: JSON_HEADERS,
     })
@@ -53,14 +53,14 @@ export function ViewRooms() {
 
   const fetchBuildingRooms = async () => {
     fetch(
-      `/api/v1/rooms/page/building-filter/${buildingText}?page=` + activePage
+      `/scheduler/api/v1/rooms/page/building-filter/${buildingText}?page=` + activePage
     )
       .then((response) => response.json())
       .then((jsonRespone) => setRooms(jsonRespone));
   };
 
   const fetchSingleRooms = async () => {
-    fetch("/api/v1/rooms/")
+    fetch("/scheduler/api/v1/rooms/")
       .then((response) => response.json())
       .then((jsonResponse) => setRoomsForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(roomsforPaging.length / 10)));
@@ -128,13 +128,12 @@ export function ViewRooms() {
               />
 
               <Button
+                id="details"
                 icon
                 labelPosition="left"
-                primary
                 className="controls"
                 as={NavLink}
                 exact
-                id='details'
                 to="/create/rooms"
               >
                 <Icon name="database" />
@@ -158,7 +157,7 @@ export function ViewRooms() {
 
                       <Table.Cell collapsing>
                         <Button
-                        id="icocolor"
+                          id="icocolor"
                           href={"#/view/rooms/edit/" + room.id}
                           basic
                           compact
@@ -167,18 +166,19 @@ export function ViewRooms() {
                           onClick={() => setActive(room.id)}
                         ></Button>
                         <Button
-                        id="icocolor"
+                          id="icocolor"
                           basic
                           compact
-                          icon="trash alternate"
+                          title="Suarchyvuoti"
+                          icon="archive"
                           onClick={() => setOpen(room.id)}
                         ></Button>
                         <Confirm
                           open={open}
                           header="Dėmesio!"
-                          content="Ar tikrai norite ištrinti?"
+                          content="Ar tikrai norite perkelti į archyvą?"
                           cancelButton="Grįžti atgal"
-                          confirmButton="Ištrinti"
+                          confirmButton="Taip"
                           onCancel={() => setOpen(false)}
                           onConfirm={() => removeRoom(open)}
                           size="small"

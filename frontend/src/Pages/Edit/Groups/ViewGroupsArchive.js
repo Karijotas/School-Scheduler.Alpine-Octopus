@@ -1,113 +1,109 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from 'react-router-dom';
 import {
   Button,
-  ButtonGroup, Confirm, Divider, Grid, Icon,
+  ButtonGroup, Divider, Grid, Icon,
   Input,
   Segment,
   Table
 } from "semantic-ui-react";
+import { EditMenu } from '../../../Components/EditMenu';
 import MainMenu from "../../../Components/MainMenu";
-import {EditMenu} from '../../../Components/EditMenu';
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
 };
 
 export function ViewGroupsArchive() {
-  const [active, setActive] = useState();
-  const [create, setCreate] = useState("");
-  const [nameText, setNameText] = useState("");
-  const [programs, setPrograms] = useState([]);
-  const [groupsforPaging, setGroupsForPaging] = useState([]);
 
+  const [active, setActive] = useState();
+  const [groups, setGroups] = useState([]);
+  const [groupsforPaging, setGroupsForPaging] = useState([]);
   const [activePage, setActivePage] = useState(0);
   const [pagecount, setPageCount] = useState();
 
-  const fetchFilterPrograms = async () => {
-    fetch(`/api/v1/programs/page/starting-with/${nameText}?page=` + activePage)
-      .then((response) => response.json())
-      .then((jsonRespone) => setPrograms(jsonRespone));
-  };
-
-  const fetchSinglePrograms = () => {
-    fetch("/api/v1/programs")
+  const fetchSingleGroups = async () => {
+    fetch('/scheduler/api/v1/groups/archive/')
       .then((response) => response.json())
       .then((jsonResponse) => setGroupsForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(groupsforPaging.length / 10)));
   };
 
-  const fetchPrograms = async () => {
-    fetch(`/api/v1/programs/archive/`)
+  const fetchPagedGroups = async () => {
+    fetch('/scheduler/api/v1/groups/archive/page?page=' + activePage)
       .then((response) => response.json())
-      .then((jsonRespones) => setPrograms(jsonRespones));
+      .then((jsonResponse) => setGroups(jsonResponse));
   };
 
-  const removeProgram = (id) => {
-    fetch("/api/v1/programs/" + id, {
-      method: "DELETE",
-      headers: JSON_HEADERS,
-    }).then(fetchPrograms)
-      .then(setOpen(false));
+  const fetchGroups = async () => {
+    fetch(`/scheduler/api/v1/groups/archive/`)
+      .then((response) => response.json())
+      .then((jsonRespones) => setGroups(jsonRespones));
   };
 
   useEffect(() => {
-    nameText.length > 0 ? fetchFilterPrograms() : fetchPrograms();
-  }, [activePage, nameText]);
+    fetch("/scheduler/api/v1/groups/archive/page?page=" + activePage)
+      .then((response) => response.json())
+      .then((jsonRespones) => setGroups(jsonRespones));
+  }, []);
 
-  const [open, setOpen] = useState(false);
-  const [close, setClose] = useState(false);
-
+  const restoreGroup = (id) => {
+    fetch("/scheduler/api/v1/groups/restore/" + id, {
+      method: "PATCH",
+    }).then(fetchPagedGroups);
+  };
 
   useEffect(() => {
     if (pagecount !== null) {
-      fetchSinglePrograms();
+      fetchSingleGroups();
     }
-  }, [programs]);
+  }, [groups]);
+
+  useEffect(() => {
+    fetchPagedGroups();
+  }, [activePage]);
 
   return (
     <div>
       <MainMenu />
 
-      <Grid columns={2} >
-        <Grid.Column width={2} id='main'>
+      <Grid columns={2}>
+        <Grid.Column width={2} id="main">
           <EditMenu />
         </Grid.Column>
-
-        <Grid.Column textAlign='left' verticalAlign='top' width={13}>
-          <Segment id='segment' raised color='grey'>
-
-            <div id="programs">
-              <Input
-                value={nameText}
-                onChange={(e) => setNameText(e.target.value)}
-                placeholder="Ieškoti pagal programą"
-              />
-              {/* <Button onClick={fetchFilterPrograms}>Filtruoti</Button> */}
-
-              
+        <Grid.Column textAlign="left" verticalAlign="top" width={13}>
+          <Segment id="segment" raised color="grey">
+            <div id="groups">
               <Table selectable>
                 <Table.Header>
                   <Table.Row>
-                    <Table.HeaderCell>Programos pavadinimas</Table.HeaderCell>
-
-                    <Table.HeaderCell>Veiksmai</Table.HeaderCell>
+                    <Table.HeaderCell>
+                      Archyvas. Grupės pavadinimas
+                    </Table.HeaderCell>
+                    <Table.HeaderCell collapsing textAlign="center">
+                      Veiksmai
+                    </Table.HeaderCell>
                   </Table.Row>
                 </Table.Header>
-
                 <Table.Body>
-                  {programs.map((program) => (
-                    <Table.Row key={program.id}>
-                      <Table.Cell>{program.name}</Table.Cell>
-
-                      <Table.Cell collapsing>                     
-                        <Button
+                  {groups.map((group) => (
+                    <Table.Row key={group.id}>
+                      <Table.Cell disabled>{group.name}</Table.Cell>
+                      <Table.Cell collapsing>
+                      <Button                        
+                          href={"#/view/archives/groups/" + group.id}
                           basic
-                          color="black"
+                          compact
+                          icon="eye"
+                          title="Peržiūrėti"
+                          onClick={() => setActive(group.id)}
+                        ></Button>
+                        <Button
+                          textAlign="center"
+                          basic
                           compact
                           title="Atstatyti"
                           icon="undo"
-                          onClick={() => setOpen(program.id)}
+                          onClick={() => restoreGroup(group.id)}
                         ></Button>
                       </Table.Cell>
                     </Table.Row>
@@ -124,10 +120,8 @@ export function ViewGroupsArchive() {
                 <Button title='Pirmyn' onClick={() => setActivePage(activePage >= pagecount - 1 ? activePage : activePage + 1)} icon><Icon name="arrow right" />  </Button>
               </ButtonGroup>
             </div>
-
           </Segment>
         </Grid.Column>
-
       </Grid>
     </div>
   );

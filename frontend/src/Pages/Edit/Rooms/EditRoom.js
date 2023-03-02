@@ -25,18 +25,18 @@ export function EditRoom() {
   });
 
   useEffect(() => {
-    fetch("/api/v1/rooms/" + params.id)
+    fetch("/scheduler/api/v1/rooms/" + params.id)
       .then((response) => response.json())
       .then(setRooms);
   }, []);
 
   const applyResult = () => {
-    setHide(true);
+    setActive(true);
   };
   
 
   const updateRooms = () => {
-    fetch("/api/v1/rooms/" + params.id, {
+    fetch("/scheduler/api/v1/rooms/" + params.id, {
       method: "PUT",
       headers: JSON_HEADERS,
       body: JSON.stringify(rooms),
@@ -81,7 +81,7 @@ export function EditRoom() {
                       <Table.HeaderCell>Klasės pavadinimas</Table.HeaderCell>
                       <Table.HeaderCell>Pastatas</Table.HeaderCell>
                       <Table.HeaderCell>
-                        Paskutinis atnaujinimas:
+                        Paskutinis atnaujinimas
                       </Table.HeaderCell>
                       <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                     </Table.Row>
@@ -134,8 +134,8 @@ export function EditRoom() {
                     <Table.Row>
                       <Table.HeaderCell>Klasės pavadinimas</Table.HeaderCell>
                       <Table.HeaderCell>Pastatas</Table.HeaderCell>
-                      <Table.HeaderCell width={3}>
-                        Paskutinis atnaujinimas:
+                      <Table.HeaderCell>
+                        Paskutinis atnaujinimas
                       </Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
@@ -182,7 +182,7 @@ export function EditRoom() {
                 </Table>
                 <Divider hidden></Divider>
                 <Button onClick={() => setActive(true)}>Atšaukti</Button>
-                <Button floated="right" id='details'  primary onClick={updateRooms}>
+                <Button floated="right" id='details' primary onClick={updateRooms}>
                   Atnaujinti
                 </Button>
               </div>
@@ -191,7 +191,7 @@ export function EditRoom() {
         </Grid.Column>
       </Grid>
 
-      
+
 
     </div>
   );

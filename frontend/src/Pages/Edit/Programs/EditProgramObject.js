@@ -11,10 +11,10 @@ import {
   Segment,
   Select,
   Table,
-  TextArea,
+  TextArea
 } from "semantic-ui-react";
+import { EditMenu } from "../../../Components/EditMenu";
 import MainMenu from "../../../Components/MainMenu";
-import  {EditMenu} from "../../../Components/EditMenu";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -39,34 +39,106 @@ export function EditProgramObject() {
     modifiedDate: "",
   }); 
 
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [nameError, setNameError] = useState("")
+    
+    const [descriptionError, setDescriptionError] = useState("")
+    const [hoursError, setHoursError] = useState("")
+    
+    const [selectErrorSubject, setSelectErrorSubject] = useState("*Privaloma")
+
+    const [formValid, setFormValid] = useState(false)
+   
+    const validateHoursnInput = (value) => {
+      if(!/^\d+$/.test(value)){
+        setHoursError("Įveskite tik skaičius")
+        if(!value){
+          setHoursError("*Privaloma")
+        }
+      }
+    };
+
+    useEffect(() => {
+        if(nameError || descriptionError || selectErrorSubject || hoursError) {
+          setFormValid(false)
+        } else {
+          setFormValid(true)
+        }
+      }, [nameError, descriptionError, selectErrorSubject, hoursError, validateHoursnInput]) 
+
+      const selectSubjectHandler = () => {
+        setSelectErrorSubject("")
+      }
+
+    const handleNameInputChange = (e) => {
+        programs.name = e.target.value
+        setName(e.target.value);
+        validateNameInput(e.target.value);
+      };
+
+    const handleDescriptionInputChange = (e) => {
+      programs.description = e.target.value
+        setDescription(e.target.value);
+        validateDescriptionInput(e.target.value);
+      };
+
+      const handleHoursInputChange = (e) => {
+        setSubjectHours(e.target.value);
+        validateHoursnInput(e.target.value);
+      };
+      
+    
+    const validateNameInput = (value) => {
+        if (value.length <2 || value.length > 40) {
+            setNameError("Įveskite nuo 2 iki 40 simbolių!")
+            if(!value){
+                setNameError("Pavadinimas negali būti tuščias!")
+              } 
+        } else {
+            setNameError("")
+        }
+      };
+
+      const validateDescriptionInput = (value) => {
+        if (value.length > 100) {
+            setDescriptionError("Aprašymas negali viršyti 100 symbolių!")
+        } else {
+            setDescriptionError("") 
+        }
+      };
+
+    
+      
+
   useEffect(() => {
-    fetch("/api/v1/programs/" + params.id)
+    fetch("/scheduler/api/v1/programs/" + params.id)
       .then((response) => response.json())
       .then(setPrograms);
   }, [totalHours, active, params]);
 
   useEffect(() => {
-    fetch(`/api/v1/programs/${params.id}/subjects`)
+    fetch(`/scheduler/api/v1/programs/${params.id}/subjects`)
       .then((response) => response.json())
       .then(setSubjectsInProgram)
       .then(console.log(subjectsInProgram));
   }, [params, totalHours, subjectHours]);
 
   const getSubjectsInProgram = () => {
-    fetch(`/api/v1/programs/${params.id}/subjects`)
+    fetch(`/scheduler/api/v1/programs/${params.id}/subjects`)
       .then((response) => response.json())
       .then(setSubjectsInProgram)
       .then(console.log(subjectsInProgram));
   };
 
   useEffect(() => {
-    fetch(`/api/v1/programs/${params.id}/subjects/hours`)
+    fetch(`/scheduler/api/v1/programs/${params.id}/subjects/hours`)
       .then((response) => response.json())
       .then(setTotalHours);
   }, [subjectsInProgram]);
 
   const removeSubject = (programId, subjectId, hours) => {
-    fetch(`/api/v1/programs/${programId}/subjects/${subjectId}/${hours}`, {
+    fetch(`/scheduler/api/v1/programs/${programId}/subjects/${subjectId}/${hours}`, {
       method: "DELETE",
       headers: JSON_HEADERS,
     })
@@ -79,7 +151,7 @@ export function EditProgramObject() {
 
   const addSubjectAndHours = (programId, subjectId, hours) => {
     fetch(
-      `/api/v1/programs/${programId}/subjects/${subjectId}/${hours}/newSubjectsWithHours`,
+      `/scheduler/api/v1/programs/${programId}/subjects/${subjectId}/${hours}/newSubjectsWithHours`,
       {
         method: "POST",
         header: JSON_HEADERS,
@@ -103,7 +175,7 @@ export function EditProgramObject() {
 
 
   useEffect(() => {
-    fetch(`/api/v1/programs/${params.id}/availableSubjects`)
+    fetch(`/scheduler/api/v1/programs/${params.id}/availableSubjects`)
       .then((response) => response.json())
       .then((data) =>
         setSubjects(
@@ -119,7 +191,7 @@ export function EditProgramObject() {
   };
 
   const updatePrograms = () => {
-    fetch("/api/v1/programs/" + params.id, {
+    fetch("/scheduler/api/v1/programs/" + params.id, {
       method: "PATCH",
       headers: JSON_HEADERS,
       body: JSON.stringify(programs),
@@ -264,10 +336,12 @@ export function EditProgramObject() {
                   <Table.Body>
                     <Table.Row>
                       <Table.Cell>
+                        {(nameError) && <div style={{color: "red"}}>{nameError}</div>}
                         <Input fluid
+                        name="name"
                           value={programs.name}
-                          onChange={(e) => (
-                            updateProperty("name", e))}
+                          
+                          onChange={(e) => (handleNameInputChange(e))}
                         />
                       </Table.Cell>
                       <Table.Cell collapsing>
@@ -287,10 +361,12 @@ export function EditProgramObject() {
                   <Table.Body>
                     <Table.Row>                      
                       <Table.Cell>
-                        <Form>                        
-                          <TextArea fluid style={{ minHeight: 60 }}                                                     
+                        <Form>   
+                        {(descriptionError) && <div style={{color: "red"}}>{descriptionError}</div>}                     
+                          <TextArea fluid style={{ minHeight: 60 }}    
+                                                                           
                             value={programs.description}                           
-                            onChange={(e) => updateProperty("description", e)}
+                            onChange={(e) => handleDescriptionInputChange(e)}
                           />
                           </Form>                                            
                       </Table.Cell>  
@@ -317,13 +393,15 @@ export function EditProgramObject() {
                           <List.Item>
                             <Form.Group widths="equal">
                               <Form.Field>
+                              {(selectErrorSubject) && <div style={{color: "red"}}>{selectErrorSubject}</div>}
                                 <Select
                                   options={subjects}
                                   placeholder="Dalykai"
                                   value={subject}
                                   onChange={(e, data) => (
                                     setSubject(e.target.value),
-                                    setSubjectId(data.value)
+                                    setSubjectId(data.value),
+                                    selectSubjectHandler(e)
                                   )}
                                   onClose={() => console.log(subjectId)}
                                 />
@@ -331,11 +409,14 @@ export function EditProgramObject() {
                             </Form.Group>
                             <Divider hidden />
                             <List.Content>
+                         
+                            {(hoursError) && <div style={{color: "red"}}>{hoursError}</div>}
                               <Input
                                 placeholder="Valandų skaičius"
                                 value={subjectHours}
                                 onChange={(e) =>
-                                  setSubjectHours(e.target.value)
+                                  handleHoursInputChange(e)
+                                    
                                 }
                               />
                             </List.Content>
@@ -343,7 +424,9 @@ export function EditProgramObject() {
                             <List.Content floated="left">
                               <Button
                                id='details'
+                              
                                 onClick={() =>
+                                  
                                   addSubjectAndHours(
                                     params.id,
                                     subjectId,
@@ -399,7 +482,7 @@ export function EditProgramObject() {
                   </Table.Body>
                 </Table>
                 <Button onClick={() => setActive(true)}>Atšaukti</Button>
-                <Button  id='details' floated="right" primary onClick={updatePrograms}>
+                <Button  id='details' disabled={!formValid} floated="right" primary onClick={updatePrograms}>
                   Atnaujinti
                 </Button>
               </div>

@@ -6,10 +6,10 @@ import {
   Grid,
   Icon,
   Segment,
-  Table,
+  Table
 } from "semantic-ui-react";
+import { EditMenu } from '../../../Components/EditMenu';
 import MainMenu from "../../../Components/MainMenu";
-import {EditMenu} from '../../../Components/EditMenu';
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -17,38 +17,39 @@ const JSON_HEADERS = {
 
 export function ViewProgramsArchive() {
 
+  const [active, setActive] = useState();
   const [programs, setPrograms] = useState([]);
   const [programsforPaging, setProgramsForPaging] = useState([]);
   const [activePage, setActivePage] = useState(0);
   const [pagecount, setPageCount] = useState();
 
   const fetchSinglePrograms = async () => {
-    fetch('/api/v1/programs/archive/')
+    fetch('/scheduler/api/v1/programs/archive/')
       .then((response) => response.json())
       .then((jsonResponse) => setProgramsForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(programsforPaging.length / 10)));
   };
 
   const fetchPagedPrograms = async () => {
-    fetch('/api/v1/programs/archive/page?page=' + activePage)
+    fetch('/scheduler/api/v1/programs/archive/page?page=' + activePage)
       .then((response) => response.json())
       .then((jsonResponse) => setPrograms(jsonResponse));
   };
 
   const fetchPrograms = async () => {
-    fetch(`/api/v1/programs/archive/`)
+    fetch(`/scheduler/api/v1/programs/archive/`)
       .then((response) => response.json())
       .then((jsonRespones) => setPrograms(jsonRespones));
   };
 
   useEffect(() => {
-    fetch("/api/v1/programs/archive/page?page=" + activePage)
+    fetch("/scheduler/api/v1/programs/archive/page?page=" + activePage)
       .then((response) => response.json())
       .then((jsonRespones) => setPrograms(jsonRespones));
   }, []);
 
   const restoreProgram = (id) => {
-    fetch("/api/v1/programs/restore/" + id, {
+    fetch("/scheduler/api/v1/programs/restore/" + id, {
       method: "PATCH",
     }).then(fetchPagedPrograms);
   };
@@ -89,7 +90,15 @@ export function ViewProgramsArchive() {
                   {programs.map((program) => (
                     <Table.Row key={program.id}>
                       <Table.Cell disabled>{program.name}</Table.Cell>
-                      <Table.Cell>
+                      <Table.Cell collapsing>
+                      {/* <Button                          
+                          href={"#/view/archives/programs/" + program.id}
+                          basic
+                          compact
+                          icon="eye"
+                          title="Peržiūrėti"
+                          onClick={() => setActive(program.id)}
+                        ></Button> */}
                         <Button
                           textAlign="center"
                           basic                          

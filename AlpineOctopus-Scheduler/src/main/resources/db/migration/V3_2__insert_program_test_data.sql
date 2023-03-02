@@ -1,4 +1,3 @@
-
 INSERT INTO program (name, description, created_date, modified_date, DELETED)
 VALUES ('Laivo virėjo modulinė profesinio mokymo programa', 'Laivo virėjo modulinė profesinio mokymo programa yra skirta kvalifikuotam laivo virėjui parengti, kuris gebėtų savarankiškai organizuoti jūrininkų ir kitų asmenų maitinimą laive, gaminti ir patiekti patiekalus.', '2023-01-12 19:36:54.344', '2023-01-12 19:36:54.344', FALSE),
        ('Policininko modulinė profesinio mokymo programa', 'Policininko modulinė profesinio mokymo programa skirta kvalifikuotam pirminės grandies policijos pareigūnui (policininkui), kuris gebėtų operatyviai reaguoti į gaunamą informaciją apie nusikalstamas veikas ir administracinius nusižengimus, užtikrinti viešąją tvarką, asmens, visuomenės ir eismo saugumą, tinkamai bendrauti su interesantais, ir kitais asmenimis, parengti.', '2023-01-12 19:36:54.447', '2023-01-12 19:36:54.451', FALSE),

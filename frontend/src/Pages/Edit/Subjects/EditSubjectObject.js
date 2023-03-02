@@ -1,21 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import {
   Button,
-  Divider,
-  Icon,
-  Input,
-  Table,
-  Grid,
-  Segment,
-  List,
-  Form,
-  Select,
-  TextArea,
+  Divider, Form, Grid, Icon,
+  Input, List, Segment, Select, Table, TextArea
 } from "semantic-ui-react";
-import { ViewSubjects } from "./ViewSubjects";
-import MainMenu from "../../../Components/MainMenu";
 import { EditMenu } from "../../../Components/EditMenu";
-import { useParams } from "react-router-dom";
+import MainMenu from "../../../Components/MainMenu";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -48,8 +39,61 @@ export function EditSubjectObject() {
     modifiedDate: "",
   });
 
+
+  const [state, setState] = useState("")
+  const [nameError, setNameError] = useState("")
+    
+    const [descriptionError, setDescriptionError] = useState("")
+    
+
+   
+
+    const [formValid, setFormValid] = useState(false)
+
+
+    useEffect(() => {
+        if(nameError || descriptionError) {
+          setFormValid(false)
+        } else {
+          setFormValid(true)
+        }
+      }, [nameError, descriptionError]) 
+
+    
+
+    const handleNameInputChange = (e) => {
+        subjects.name = e.target.value
+        setState(e.target.value);
+        validateNameInput(e.target.value);
+      };
+
+    const handleDescriptionInputChange = (e) => {
+      subjects.description = e.target.value
+      setState(e.target.value);
+        validateDescriptionInput(e.target.value);
+      };
+      
+    const validateNameInput = (value) => {
+        if (value.length <2 || value.length > 40) {
+            setNameError("Įveskite nuo 2 iki 40 simbolių!")
+            if(!value){
+                setNameError("Pavadinimas negali būti tuščias!")
+              } 
+        } else {
+            setNameError("")
+        }
+      };
+
+      const validateDescriptionInput = (value) => {
+        if (value.length > 100) {
+            setDescriptionError("Aprašymas negali viršyti 100 symbolių!")
+        } else {
+            setDescriptionError("") 
+        }
+      };
+
   useEffect(() => {
-    fetch("/api/v1/subjects/" + params.id)
+    fetch("/scheduler/api/v1/subjects/" + params.id)
       .then((response) => response.json())
       .then(setSubjects);
   }, [active, params]);
@@ -64,50 +108,50 @@ export function EditSubjectObject() {
   //         .then(jsonResponse => setModulesInSubjects(jsonResponse));
   // };
 
-  const getModulesInSubjects = () => {
-    fetch(`/api/v1/subjects/${params.id}/modules`)
+  const getModulesInSubjects = ()  => {
+    fetch(`/scheduler/api/v1/subjects/${params.id}/modules`)
       .then((response) => response.json())
       .then(setModulesInSubjects)
       .then(console.log(modulesInSubjects));
   };
 
   useEffect(() => {
-    fetch(`/api/v1/subjects/${params.id}/modules`)
+    fetch(`/scheduler/api/v1/subjects/${params.id}/modules`)
       .then((response) => response.json())
       .then(setModulesInSubjects)
       .then(console.log(modulesInSubjects));
   }, [params]);
 
-  const getRoomsInSubjects = () => {
-    fetch(`/api/v1/subjects/${params.id}/rooms`)
+  const getRoomsInSubjects = ()  => {
+    fetch(`/scheduler/api/v1/subjects/${params.id}/rooms`)
       .then((response) => response.json())
       .then(setRoomsInSubjects)
       .then(console.log(roomsInSubjects));
   };
 
   useEffect(() => {
-    fetch(`/api/v1/subjects/${params.id}/rooms`)
+    fetch(`/scheduler/api/v1/subjects/${params.id}/rooms`)
       .then((response) => response.json())
       .then(setRoomsInSubjects)
       .then(console.log(roomsInSubjects));
   }, [params]);
 
-  const getTeachersInSubjects = () => {
-    fetch(`/api/v1/subjects/${params.id}/teachers`)
+  const getTeachersInSubjects = ()  => {
+    fetch(`/scheduler/api/v1/subjects/${params.id}/teachers`)
       .then((response) => response.json())
       .then(setTeachersInSubjects)
       .then(console.log(teachersInSubjects));
   };
 
   useEffect(() => {
-    fetch(`/api/v1/subjects/${params.id}/teachers`)
+    fetch(`/scheduler/api/v1/subjects/${params.id}/teachers`)
       .then((response) => response.json())
       .then(setTeachersInSubjects)
       .then(console.log(teachersInSubjects));
-  }, [params]);
+  }, [params]); 
 
   const updateSubjects = () => {
-    fetch("/api/v1/subjects/" + params.id, {
+    fetch("/scheduler/api/v1/subjects/" + params.id, {
       method: "PUT",
       headers: JSON_HEADERS,
       body: JSON.stringify(subjects),
@@ -120,7 +164,7 @@ export function EditSubjectObject() {
         }
       })
       .then(applyResult);
-  };
+  }; 
 
   const updateProperty = (property, event) => {
     setSubjects({
@@ -141,7 +185,7 @@ export function EditSubjectObject() {
   // }
 
   useEffect(() => {
-    fetch("/api/v1/modules/")
+    fetch("/scheduler/api/v1/modules/")
       .then((response) => response.json())
       .then((data) =>
         setModules(
@@ -153,7 +197,7 @@ export function EditSubjectObject() {
   }, []);
 
   useEffect(() => {
-    fetch("/api/v1/teachers/")
+    fetch("/scheduler/api/v1/teachers/")
       .then((response) => response.json())
       .then((data) =>
         setTeachers(
@@ -165,7 +209,7 @@ export function EditSubjectObject() {
   }, []);
 
   useEffect(() => {
-    fetch("/api/v1/rooms/")
+    fetch("/scheduler/api/v1/rooms/")
       .then((response) => response.json())
       .then((data) =>
         setRooms(
@@ -177,7 +221,7 @@ export function EditSubjectObject() {
   }, []);
 
   const addModule = (subjectId, moduleId) => {
-    fetch(`/api/v1/subjects/${subjectId}/modules/${moduleId}/newModules`, {
+    fetch(`/scheduler/api/v1/subjects/${subjectId}/modules/${moduleId}/newModules`, {
       method: "POST",
       header: JSON_HEADERS,
       body: JSON.stringify({
@@ -188,14 +232,14 @@ export function EditSubjectObject() {
   };
 
   const removeModule = (subjectId, moduleId) => {
-    fetch(`/api/v1/subjects/${subjectId}/modules/${moduleId}`, {
+    fetch(`/scheduler/api/v1/subjects/${subjectId}/modules/${moduleId}`, {
       method: "DELETE",
       headers: JSON_HEADERS,
     }).then(getModulesInSubjects);
   };
 
   const addTeacher = (subjectId, teacherId) => {
-    fetch(`/api/v1/subjects/${subjectId}/teachers/${teacherId}/newTeachers`, {
+    fetch(`/scheduler/api/v1/subjects/${subjectId}/teachers/${teacherId}/newTeachers`, {
       method: "POST",
       header: JSON_HEADERS,
       body: JSON.stringify({
@@ -206,14 +250,14 @@ export function EditSubjectObject() {
   };
 
   const removeTeacher = (subjectId, teacherId) => {
-    fetch(`/api/v1/subjects/${subjectId}/teachers/${teacherId}`, {
+    fetch(`/scheduler/api/v1/subjects/${subjectId}/teachers/${teacherId}`, {
       method: "DELETE",
       headers: JSON_HEADERS,
     }).then(getTeachersInSubjects);
   };
 
   const addRoom = (subjectId, roomId) => {
-    fetch(`/api/v1/subjects/${subjectId}/rooms/${roomId}/newRooms`, {
+    fetch(`/scheduler/api/v1/subjects/${subjectId}/rooms/${roomId}/newRooms`, {
       method: "POST",
       header: JSON_HEADERS,
       body: JSON.stringify({
@@ -224,28 +268,28 @@ export function EditSubjectObject() {
   };
 
   const removeRoom = (subjectId, roomId) => {
-    fetch(`/api/v1/subjects/${subjectId}/rooms/${roomId}`, {
+    fetch(`/scheduler/api/v1/subjects/${subjectId}/rooms/${roomId}`, {
       method: "DELETE",
       headers: JSON_HEADERS,
     }).then(getRoomsInSubjects);
   };
 
   useEffect(() => {
-    fetch(`/api/v1/subjects/${params.id}/modules`)
+    fetch(`/scheduler/api/v1/subjects/${params.id}/modules`)
       .then((response) => response.json())
       .then(setModulesInSubjects)
       .then(console.log(modulesInSubjects));
   }, [params]);
 
   useEffect(() => {
-    fetch(`/api/v1/subjects/${params.id}/teachers`)
+    fetch(`/scheduler/api/v1/subjects/${params.id}/teachers`)
       .then((response) => response.json())
       .then(setTeachersInSubjects)
       .then(console.log(teachersInSubjects));
   }, [params]);
 
   useEffect(() => {
-    fetch(`/api/v1/subjects/${params.id}/rooms`)
+    fetch(`/scheduler/api/v1/subjects/${params.id}/rooms`)
       .then((response) => response.json())
       .then(setRoomsInSubjects)
       .then(console.log(roomsInSubjects));
@@ -272,7 +316,7 @@ export function EditSubjectObject() {
                     <Table.Row>
                       <Table.HeaderCell>Dalyko pavadinimas</Table.HeaderCell>
                       <Table.HeaderCell>
-                        Paskutinis atnaujinimas:
+                        Paskutinis atnaujinimas
                       </Table.HeaderCell>
                       <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                     </Table.Row>
@@ -315,7 +359,7 @@ export function EditSubjectObject() {
                       <Table.Header>
                         <Table.Row>
                           <Table.HeaderCell width={6}>
-                            Moduliai:
+                            Moduliai
                           </Table.HeaderCell>
                         </Table.Row>
                       </Table.Header>
@@ -333,7 +377,7 @@ export function EditSubjectObject() {
                       <Table.Header>
                         <Table.Row>
                           <Table.HeaderCell width={6}>
-                            Mokytojai:
+                            Mokytojai
                           </Table.HeaderCell>
                         </Table.Row>
                       </Table.Header>
@@ -351,7 +395,7 @@ export function EditSubjectObject() {
                       <Table.Header>
                         <Table.Row>
                           <Table.HeaderCell width={6}>
-                            Kabinetai:
+                            Kabinetai
                           </Table.HeaderCell>
                         </Table.Row>
                       </Table.Header>
@@ -383,18 +427,19 @@ export function EditSubjectObject() {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Dalyko pavadinimas</Table.HeaderCell>
-                      <Table.HeaderCell width={3}>
-                        Paskutinis atnaujinimas:
+                      <Table.HeaderCell collapsing width={3}>
+                        Paskutinis atnaujinimas
                       </Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
 
                   <Table.Body>
                     <Table.Row>
-                      <Table.Cell collapsing>
+                    <Table.Cell collapsing>
+                      {(nameError) && <div style={{color: "red"}}>{nameError}</div>}
                         <Input
                           value={subjects.name}
-                          onChange={(e) => updateProperty("name", e)}
+                          onChange={(e) => handleNameInputChange(e)}
                         />
                       </Table.Cell>
                       <Table.Cell collapsing>
@@ -404,6 +449,7 @@ export function EditSubjectObject() {
                     </Table.Row>
                   </Table.Body>
                 </Table>
+               
 
                 <Table celled>
                   <Table.Header>
@@ -416,12 +462,14 @@ export function EditSubjectObject() {
                     <Table.Row>
                       <Table.Cell collapsing>
                         <Form>
+                        {(descriptionError) && <div style={{color: "red"}}>{descriptionError}</div>}
                           <TextArea
                             fluid
                             style={{ minHeight: 60 }}
                             value={subjects.description}
-                            onChange={(e) => updateProperty("description", e)}
+                            onChange={(e) => handleDescriptionInputChange(e)}
                           />
+                          
                         </Form>
                       </Table.Cell>
                     </Table.Row>
@@ -478,7 +526,7 @@ export function EditSubjectObject() {
                                 <Divider hidden />
                                 <List.Content floated="left">
                                   <Button
-                                  id='details' 
+                                  id='details'
                                     onClick={() =>
                                       addModule(params.id, moduleId)
                                     }
@@ -546,7 +594,7 @@ export function EditSubjectObject() {
                                 <Divider hidden />
                                 <List.Content floated="left">
                                   <Button
-                                  id='details' 
+                                  id='details'
                                     onClick={() =>
                                       addTeacher(params.id, teacherId)
                                     }
@@ -614,9 +662,8 @@ export function EditSubjectObject() {
                                 <Divider hidden />
                                 <List.Content floated="left">
                                   <Button
-                                  id='details' 
-                                    onClick={() => 
-                                      addRoom(params.id, roomId)}
+                                  id='details'
+                                    onClick={() => addRoom(params.id, roomId)}
                                     // onClose={fetch(
                                     //   `/api/v1/subjects/${params.id}/rooms`
                                     // )}
@@ -634,7 +681,7 @@ export function EditSubjectObject() {
                 </Grid>
                 <Divider hidden></Divider>
                 <Button onClick={() => setActive(true)}>Atšaukti</Button>
-                <Button floated="right" id='details'  primary onClick={updateSubjects}>
+                <Button id='details' disabled={!formValid} floated="right" primary onClick={updateSubjects}>
                   Atnaujinti
                 </Button>
               </div>

@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface ModuleRepository extends JpaRepository<Module, Long> {
 
-    List<Module> findByNameContainingIgnoreCase(String nameText, Pageable pageable);
+    List<Module> findByNameContainingIgnoreCaseOrderByModifiedDateDesc(String nameText, Pageable pageable);
 
     List<Module> findByNameContainingIgnoreCase(String nameText);
 
