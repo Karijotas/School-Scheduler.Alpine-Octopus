@@ -10,7 +10,7 @@ public class ProgramCreator {
 
     public static Program createProgram(Long id) {
         var program = new Program();
-        Set<Subject> subjects = new HashSet<>();
+//        Set<Subject> subjects = new HashSet<>();
 
         program.setId(id);
         program.setName("Programa puikioji");
