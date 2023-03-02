@@ -33,7 +33,7 @@ export function CreateGroupPage() {
   // const [create, setCreate] = useState()
   const [hide, setHide] = useState(false)
   const [name, setName] = useState('');
-  const [schoolYear, setSchoolYear] = useState('')
+  const [schoolYear, setSchoolYear] = useState(2023)
   const [studentAmount, setStudentAmount] = useState('')
   const [programs, setPrograms] = useState([])
   const [programId, setProgramId] = useState()
@@ -53,7 +53,7 @@ export function CreateGroupPage() {
   const [formValid, setFormValid] = useState(false)
 
   useEffect(() => {
-    if (studentError || nameError ) {
+    if (studentError || nameError) {
       setFormValid(false)
     } else {
       setFormValid(true)
