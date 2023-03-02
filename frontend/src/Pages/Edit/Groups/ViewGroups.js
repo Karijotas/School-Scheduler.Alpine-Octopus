@@ -8,6 +8,7 @@ import {
   Grid,
   Icon,
   Input,
+  Pagination,
   Segment,
   Table,
 } from "semantic-ui-react";
@@ -191,7 +192,7 @@ export function ViewGroups() {
                       <Table.Cell>{group.programName}</Table.Cell>
                       <Table.Cell collapsing>
                         <Button
-                        id="icocolor"
+                          id="icocolor"
                           href={"#/view/groups/edit/" + group.id}
                           basic
                           compact
@@ -200,7 +201,7 @@ export function ViewGroups() {
                           onClick={() => setActive(group.id)}
                         ></Button>
                         <Button
-                        id="icocolor"
+                          id="icocolor"
                           basic
                           compact
                           title="Suarchyvuoti"
@@ -259,6 +260,16 @@ export function ViewGroups() {
                   <Icon name="arrow right" />{" "}
                 </Button>
               </ButtonGroup>
+
+              <Pagination
+                boundaryRange={0}
+                defaultActivePage={1}
+                ellipsisItem={null}
+                firstItem={null}
+                lastItem={null}
+                siblingRange={1}
+                totalPages={groups.totalPages}
+              />
             </div>
           </Segment>
         </Grid.Column>

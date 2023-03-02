@@ -53,12 +53,12 @@ export function CreateGroupPage() {
   const [formValid, setFormValid] = useState(false)
 
   useEffect(() => {
-    if (nameError || studentError) {
+    if (studentError || nameError ) {
       setFormValid(false)
     } else {
       setFormValid(true)
     }
-  }, [nameError, studentError])
+  }, [studentError, nameError,])
 
   const blurHandler = (e) => {
     switch (e.target.name) {
@@ -84,13 +84,13 @@ export function CreateGroupPage() {
   }
   const studentHandler = (e) => {
     setStudentAmount(e.target.value)
-
-    if (!/^\d+$/.test(e.target.value)) {
-      setStudentError("Įveskite tik skaičius")
-      if (!e.target.value) {
-        setStudentError("Negali būti tuščias!")
+    if (!e.target.value) {
+      setStudentError("Negali būti tuščias!")
+      if (!/^\d+$/.test(e.target.value)) {
+        setStudentError("Įveskite tik skaičius")
       }
     }
+
   }
 
 
