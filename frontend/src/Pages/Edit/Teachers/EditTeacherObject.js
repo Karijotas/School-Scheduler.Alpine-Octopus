@@ -158,7 +158,7 @@ export function EditTeacherObject() {
   //  }
 
   useEffect(() => {
-    fetch("/scheduler/api/v1/teachers/" + params.id)
+    fetch("/api/v1/teachers/" + params.id)
       .then((response) => response.json())
       .then(setTeachers);
   }, [active, params]);
@@ -168,28 +168,28 @@ export function EditTeacherObject() {
   };
 
   const fetchTeacherShifts = () => {
-    fetch(`/scheduler/api/v1/teachers/${params.id}/shifts`)
+    fetch(`/api/v1/teachers/${params.id}/shifts`)
       .then((response) => response.json())
       .then(setTeacherShifts)
       .then(console.log(teacherShifts));
   };
 
   useEffect(() => {
-    fetch(`/scheduler/api/v1/teachers/${params.id}/shifts`)
+    fetch(`/api/v1/teachers/${params.id}/shifts`)
       .then((response) => response.json())
       .then(setTeacherShifts)
       .then(console.log(teacherShifts));
   }, [params]);
 
   const fetchTeacherSubjects = () => {
-    fetch(`/scheduler/api/v1/teachers/${params.id}/subjects`)
+    fetch(`/api/v1/teachers/${params.id}/subjects`)
       .then((response) => response.json())
       .then(setTeacherSubjects)
       .then(console.log(teacherSubjects));
   };
 
   useEffect(() => {
-    fetch(`/scheduler/api/v1/teachers/${params.id}/subjects`)
+    fetch(`/api/v1/teachers/${params.id}/subjects`)
       .then((response) => response.json())
       .then(setTeacherSubjects)
       .then(console.log(teacherSubjects));
@@ -197,7 +197,7 @@ export function EditTeacherObject() {
 
 
   const updateTeachers = () => {
-    fetch("/scheduler/api/v1/teachers/" + params.id, {
+    fetch("/api/v1/teachers/" + params.id, {
       method: "PUT",
       headers: JSON_HEADERS,
       body: JSON.stringify(teachers),
@@ -225,7 +225,7 @@ export function EditTeacherObject() {
 
 
   useEffect(() => {
-    fetch("/scheduler/api/v1/shifts/")
+    fetch("/api/v1/shifts/")
       .then((response) => response.json())
       .then((data) =>
         setShifts(
@@ -237,7 +237,7 @@ export function EditTeacherObject() {
   }, []);
 
   const addShift = (teacherId, shiftId) => {
-    fetch(`/scheduler/api/v1/teachers/${teacherId}/shifts/${shiftId}/newShifts`, {
+    fetch(`/api/v1/teachers/${teacherId}/shifts/${shiftId}/newShifts`, {
       method: "POST",
       header: JSON_HEADERS,
       body: JSON.stringify({
@@ -248,7 +248,7 @@ export function EditTeacherObject() {
   };
 
   const removeShift = (teacherId, shiftId) => {
-    fetch(`/scheduler/api/v1/teachers/${teacherId}/shifts/${shiftId}`, {
+    fetch(`/api/v1/teachers/${teacherId}/shifts/${shiftId}`, {
       method: "DELETE",
       headers: JSON_HEADERS,
     })
@@ -257,13 +257,13 @@ export function EditTeacherObject() {
 
 
   const fetchSingleSubjects = () => {
-    fetch("/scheduler/api/v1/subjects")
+    fetch("/api/v1/subjects")
       .then((response) => response.json())
       .then((jsonResponse) => setSubjects(jsonResponse));
   };
 
   useEffect(() => {
-    fetch("/scheduler/api/v1/subjects/")
+    fetch("/api/v1/subjects/")
       .then((response) => response.json())
       .then((data) =>
         setSubjects(
@@ -275,7 +275,7 @@ export function EditTeacherObject() {
   }, []);
 
   const addSubject = (teacherId, subjectId) => {
-    fetch(`/scheduler/api/v1/teachers/${teacherId}/subjects/${subjectId}/newSubjects`, {
+    fetch(`/api/v1/teachers/${teacherId}/subjects/${subjectId}/newSubjects`, {
       method: "POST",
       header: JSON_HEADERS,
       body: JSON.stringify({
@@ -287,7 +287,7 @@ export function EditTeacherObject() {
 
 
   const removeSubject = (teacherId, subjectId) => {
-    fetch(`/scheduler/api/v1/teachers/${teacherId}/subjects/${subjectId}`, {
+    fetch(`/api/v1/teachers/${teacherId}/subjects/${subjectId}`, {
       method: "DELETE",
       headers: JSON_HEADERS,
     }).then(fetchTeacherSubjects);

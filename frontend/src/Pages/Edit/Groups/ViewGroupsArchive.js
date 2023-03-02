@@ -22,32 +22,32 @@ export function ViewGroupsArchive() {
   const [pagecount, setPageCount] = useState();
 
   const fetchSingleGroups = async () => {
-    fetch('/scheduler/api/v1/groups/archive/')
+    fetch('/api/v1/groups/archive/')
       .then((response) => response.json())
       .then((jsonResponse) => setGroupsForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(groupsforPaging.length / 10)));
   };
 
   const fetchPagedGroups = async () => {
-    fetch('/scheduler/api/v1/groups/archive/page?page=' + activePage)
+    fetch('/api/v1/groups/archive/page?page=' + activePage)
       .then((response) => response.json())
       .then((jsonResponse) => setGroups(jsonResponse));
   };
 
   const fetchGroups = async () => {
-    fetch(`/scheduler/api/v1/groups/archive/`)
+    fetch(`/api/v1/groups/archive/`)
       .then((response) => response.json())
       .then((jsonRespones) => setGroups(jsonRespones));
   };
 
   useEffect(() => {
-    fetch("/scheduler/api/v1/groups/archive/page?page=" + activePage)
+    fetch("/api/v1/groups/archive/page?page=" + activePage)
       .then((response) => response.json())
       .then((jsonRespones) => setGroups(jsonRespones));
   }, []);
 
   const restoreGroup = (id) => {
-    fetch("/scheduler/api/v1/groups/restore/" + id, {
+    fetch("/api/v1/groups/restore/" + id, {
       method: "PATCH",
     }).then(fetchPagedGroups);
   };

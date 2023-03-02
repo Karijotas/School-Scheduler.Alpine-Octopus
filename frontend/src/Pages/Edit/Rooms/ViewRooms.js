@@ -31,19 +31,19 @@ export function ViewRooms() {
   const [roomsforPaging, setRoomsForPaging] = useState([]);
 
   const fetchRooms = async () => {
-    fetch(`/scheduler/api/v1/rooms/page?page=` + activePage)
+    fetch(`/api/v1/rooms/page?page=` + activePage)
       .then((response) => response.json())
       .then((jsonResponse) => setRooms(jsonResponse));
   };
 
   const fetchFilterRooms = async () => {
-    fetch(`/scheduler/api/v1/rooms/page/name-filter/${nameText}?page=` + activePage)
+    fetch(`/api/v1/rooms/page/name-filter/${nameText}?page=` + activePage)
       .then((response) => response.json())
       .then((jsonRespone) => setRooms(jsonRespone));
   };
 
   const removeRoom = (id) => {
-    fetch("/scheduler/scheduler/api/v1/rooms/" + id, {
+    fetch("/api/v1/rooms/" + id, {
       method: "DELETE",
       headers: JSON_HEADERS,
     })
@@ -53,14 +53,14 @@ export function ViewRooms() {
 
   const fetchBuildingRooms = async () => {
     fetch(
-      `/scheduler/api/v1/rooms/page/building-filter/${buildingText}?page=` + activePage
+      `/api/v1/rooms/page/building-filter/${buildingText}?page=` + activePage
     )
       .then((response) => response.json())
       .then((jsonRespone) => setRooms(jsonRespone));
   };
 
   const fetchSingleRooms = async () => {
-    fetch("/scheduler/api/v1/rooms/")
+    fetch("/api/v1/rooms/")
       .then((response) => response.json())
       .then((jsonResponse) => setRoomsForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(roomsforPaging.length / 10)));

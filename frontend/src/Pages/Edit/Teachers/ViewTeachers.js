@@ -30,32 +30,32 @@ export function ViewTeachers() {
   const [teacherId, setTeacherId] = useState(1);
 
   const fetchFilterTeachers = async () => {
-    fetch(`/scheduler/api/v1/teachers/page/name-filter/${nameText}?page=` + activePage)
+    fetch(`/api/v1/teachers/page/name-filter/${nameText}?page=` + activePage)
       .then((response) => response.json())
       .then((jsonRespone) => setTeachers(jsonRespone));
   };
 
   const fetchTeachersByShifts = async () => {
-    fetch(`/scheduler/api/v1/teachers/page/shift-filter/${shiftText}`)
+    fetch(`/api/v1/teachers/page/shift-filter/${shiftText}`)
       .then((response) => response.json())
       .then((jsonResponse) => setShifts(jsonResponse));
   };
 
   const fetchSingleTeachers = () => {
-    fetch("/scheduler/api/v1/teachers")
+    fetch("/api/v1/teachers")
       .then((response) => response.json())
       .then((jsonResponse) => setTeachersForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(teachersforPaging.length / 10)));
   };
 
   const fetchTeachers = async () => {
-    fetch(`/scheduler/api/v1/teachers/page?page=` + activePage)
+    fetch(`/api/v1/teachers/page?page=` + activePage)
       .then((response) => response.json())
       .then((jsonRespones) => setTeachers(jsonRespones));
   };
 
   const removeTeacher = (id) => {
-    fetch("/scheduler/api/v1/teachers/delete/" + id, {
+    fetch("/api/v1/teachers/delete/" + id, {
       method: "PATCH",
     }).then(fetchTeachers)
     .then(setOpen(false));
@@ -80,14 +80,14 @@ export function ViewTeachers() {
 
 
   const fetchTeacherSubjects = async ()  => {
-    fetch(`/scheduler/api/v1/teachers/${teacherId}/subjects`)
+    fetch(`/api/v1/teachers/${teacherId}/subjects`)
       .then((response) => response.json())
       .then(setTeacherSubjects)
       .then(console.log(teacherSubjects));
   };
 
   useEffect(() => {
-    fetch(`/scheduler/api/v1/teachers/${teacherId}/subjects`)
+    fetch(`/api/v1/teachers/${teacherId}/subjects`)
       .then((response) => response.json())
       .then(setTeacherSubjects)
       .then(console.log(teacherSubjects));

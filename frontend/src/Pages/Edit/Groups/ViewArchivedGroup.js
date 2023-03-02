@@ -50,7 +50,7 @@ export function ViewArchivedGroup() {
       };
 
     useEffect(() => {
-        fetch('/scheduler/api/v1/programs/')
+        fetch('/api/v1/programs/')
             .then((response) => response.json())
             .then((data) =>
                 setPrograms(
@@ -62,7 +62,7 @@ export function ViewArchivedGroup() {
     }, []);
 
     useEffect(() => {
-        fetch('/scheduler/api/v1/shifts')
+        fetch('/api/v1/shifts')
             .then((response) => response.json())
             .then((data) => setShifts(
                 data.map((x) => {

@@ -77,7 +77,7 @@ export function CreateSubjecPage() {
   };
 
   const createSubject = () => {
-    fetch("/scheduler/api/v1/subjects?moduleId=" + moduleId, {
+    fetch("/api/v1/subjects?moduleId=" + moduleId, {
       method: "POST",
       headers: JSON_HEADERS,
       body: JSON.stringify({
@@ -91,7 +91,7 @@ export function CreateSubjecPage() {
   };
 
   useEffect(() => {
-    fetch("/scheduler/api/v1/modules/")
+    fetch("/api/v1/modules/")
       .then((response) => response.json())
       .then((data) =>
         setModules(
@@ -103,7 +103,7 @@ export function CreateSubjecPage() {
   }, []);
 
   useEffect(() => {
-    fetch("/scheduler/api/v1/teachers/")
+    fetch("/api/v1/teachers/")
       .then((response) => response.json())
       .then((data) =>
         setTeachers(
@@ -115,7 +115,7 @@ export function CreateSubjecPage() {
   }, []);
 
   useEffect(() => {
-    fetch("/scheduler/api/v1/rooms/")
+    fetch("/api/v1/rooms/")
       .then((response) => response.json())
       .then((data) =>
         setRooms(

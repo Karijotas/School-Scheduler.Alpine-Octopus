@@ -112,33 +112,33 @@ export function EditProgramObject() {
       
 
   useEffect(() => {
-    fetch("/scheduler/api/v1/programs/" + params.id)
+    fetch("/api/v1/programs/" + params.id)
       .then((response) => response.json())
       .then(setPrograms);
   }, [totalHours, active, params]);
 
   useEffect(() => {
-    fetch(`/scheduler/api/v1/programs/${params.id}/subjects`)
+    fetch(`/api/v1/programs/${params.id}/subjects`)
       .then((response) => response.json())
       .then(setSubjectsInProgram)
       .then(console.log(subjectsInProgram));
   }, [params, totalHours, subjectHours]);
 
   const getSubjectsInProgram = () => {
-    fetch(`/scheduler/api/v1/programs/${params.id}/subjects`)
+    fetch(`/api/v1/programs/${params.id}/subjects`)
       .then((response) => response.json())
       .then(setSubjectsInProgram)
       .then(console.log(subjectsInProgram));
   };
 
   useEffect(() => {
-    fetch(`/scheduler/api/v1/programs/${params.id}/subjects/hours`)
+    fetch(`/api/v1/programs/${params.id}/subjects/hours`)
       .then((response) => response.json())
       .then(setTotalHours);
   }, [subjectsInProgram]);
 
   const removeSubject = (programId, subjectId, hours) => {
-    fetch(`/scheduler/api/v1/programs/${programId}/subjects/${subjectId}/${hours}`, {
+    fetch(`/api/v1/programs/${programId}/subjects/${subjectId}/${hours}`, {
       method: "DELETE",
       headers: JSON_HEADERS,
     })
@@ -151,7 +151,7 @@ export function EditProgramObject() {
 
   const addSubjectAndHours = (programId, subjectId, hours) => {
     fetch(
-      `/scheduler/api/v1/programs/${programId}/subjects/${subjectId}/${hours}/newSubjectsWithHours`,
+      `/api/v1/programs/${programId}/subjects/${subjectId}/${hours}/newSubjectsWithHours`,
       {
         method: "POST",
         header: JSON_HEADERS,
@@ -175,7 +175,7 @@ export function EditProgramObject() {
 
 
   useEffect(() => {
-    fetch(`/scheduler/api/v1/programs/${params.id}/availableSubjects`)
+    fetch(`/api/v1/programs/${params.id}/availableSubjects`)
       .then((response) => response.json())
       .then((data) =>
         setSubjects(
@@ -191,7 +191,7 @@ export function EditProgramObject() {
   };
 
   const updatePrograms = () => {
-    fetch("/scheduler/api/v1/programs/" + params.id, {
+    fetch("/api/v1/programs/" + params.id, {
       method: "PATCH",
       headers: JSON_HEADERS,
       body: JSON.stringify(programs),
