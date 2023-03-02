@@ -145,7 +145,6 @@ export function ViewRooms() {
                   <Table.Row>
                     <Table.HeaderCell>Klasės pavadinimas</Table.HeaderCell>
                     <Table.HeaderCell>Pastatas</Table.HeaderCell>
-                    <Table.HeaderCell>Aprašymas</Table.HeaderCell>
                     <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                   </Table.Row>
                 </Table.Header>
@@ -155,7 +154,6 @@ export function ViewRooms() {
                     <Table.Row key={room.id}>
                       <Table.Cell>{room.name}</Table.Cell>
                       <Table.Cell>{room.building}</Table.Cell>
-                      <Table.Cell>{room.description}</Table.Cell>
 
                       <Table.Cell collapsing>
                         <Button

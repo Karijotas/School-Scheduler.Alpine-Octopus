@@ -180,6 +180,7 @@ export function CreateShiftPage() {
                     className="controls"
                     disabled={!formValid}
                     primary
+                    id="details"
                     onClick={createShift}
                   >
                     Sukurti

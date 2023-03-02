@@ -3,6 +3,7 @@ package lt.techin.AlpineOctopusScheduler.api;
 import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.ShiftDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ShiftEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.ShiftTestDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ShiftMapper;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 
@@ -49,13 +50,11 @@ public class ShiftController {
         return shiftService.getAllAvailableShifts();
     }
 
-
     @GetMapping(path = "/archive/", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public List<ShiftEntityDto> getDeletedShifts() {
         return shiftService.getAllDeletedShifts();
     }
-
 
     @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody

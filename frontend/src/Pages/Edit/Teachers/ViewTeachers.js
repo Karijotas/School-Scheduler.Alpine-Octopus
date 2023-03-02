@@ -169,11 +169,9 @@ export function ViewTeachers() {
                               <List.Content key={subject.id}>
                                 <List.Item>{subject.name}</List.Item>
                               </List.Content>
-                              
                             ))}
                             {console.log(teacherSubjects)}
                           </List> */}
-
                           {/* <List bulleted>
                             <List.Content>
                               <List.Item>a</List.Item>

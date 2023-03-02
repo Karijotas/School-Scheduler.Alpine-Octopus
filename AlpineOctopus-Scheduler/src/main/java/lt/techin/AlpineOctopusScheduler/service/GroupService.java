@@ -1,6 +1,7 @@
 package lt.techin.AlpineOctopusScheduler.service;
 
 import lt.techin.AlpineOctopusScheduler.api.dto.GroupsEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.GroupsTestDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupsMapper;
 import lt.techin.AlpineOctopusScheduler.dao.GroupsRepository;
 import lt.techin.AlpineOctopusScheduler.dao.ProgramRepository;
@@ -63,6 +64,10 @@ public class GroupService {
 
     public boolean studentAmountIsValid(Groups groups) {
         return groups.getStudentAmount() >= 1 && groups.getStudentAmount() <= 300;
+    }
+    public List<GroupsTestDto> getAllGroups() {
+        return groupsRepository.findAll().stream()
+                .map(GroupsMapper::toGroupsTestDto).collect(Collectors.toList());
     }
 
     public List<Groups> getAll() {

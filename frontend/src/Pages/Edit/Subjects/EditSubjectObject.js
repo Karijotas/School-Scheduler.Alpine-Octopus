@@ -427,7 +427,7 @@ export function EditSubjectObject() {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Dalyko pavadinimas</Table.HeaderCell>
-                      <Table.HeaderCell collapsing>
+                      <Table.HeaderCell collapsing width={3}>
                         Paskutinis atnaujinimas
                       </Table.HeaderCell>
                     </Table.Row>

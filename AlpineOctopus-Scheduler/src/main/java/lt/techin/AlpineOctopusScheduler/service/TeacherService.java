@@ -1,6 +1,7 @@
 package lt.techin.AlpineOctopusScheduler.service;
 
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.TeacherTestDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.TeacherMapper;
 import lt.techin.AlpineOctopusScheduler.dao.ShiftRepository;
 import lt.techin.AlpineOctopusScheduler.dao.SubjectRepository;
@@ -58,6 +59,11 @@ public class TeacherService {
 
     public List<Teacher> getAll() {
         return teacherRepository.findAll();
+    }
+
+    public List<TeacherTestDto> getAllTeachers() {
+        return teacherRepository.findAll().stream()
+                .map(TeacherMapper::toTeacherTestDto).collect(Collectors.toList());
     }
 
     public Optional<Teacher> getById(Long id) {

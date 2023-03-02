@@ -227,7 +227,7 @@ export function CreateTeacher() {
                   <Button
                     type="submit"
                     className="controls"
-                    primary
+                    id='details'
                     disabled={!formValid}
                     onClick={createTeacher}
                   >

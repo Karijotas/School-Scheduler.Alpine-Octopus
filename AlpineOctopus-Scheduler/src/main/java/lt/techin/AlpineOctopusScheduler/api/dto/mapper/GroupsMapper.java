@@ -2,6 +2,7 @@ package lt.techin.AlpineOctopusScheduler.api.dto.mapper;
 
 import lt.techin.AlpineOctopusScheduler.api.dto.GroupsDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.GroupsEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.GroupsTestDto;
 import lt.techin.AlpineOctopusScheduler.model.Groups;
 
 public class GroupsMapper {
@@ -48,15 +49,24 @@ public class GroupsMapper {
     }
 
     public static Groups toGroup(GroupsEntityDto groupEntityDto) {
-        var group = new Groups();
+        var groups = new Groups();
 
-        group.setId(groupEntityDto.getId());
-        group.setName(groupEntityDto.getName());
-        group.setSchoolYear(groupEntityDto.getSchoolYear());
-        group.setStudentAmount(groupEntityDto.getStudentAmount());
+
+        groups.setId(groupEntityDto.getId());
+        groups.setName(groupEntityDto.getName());
+        groups.setSchoolYear(groupEntityDto.getSchoolYear());
+        groups.setStudentAmount(groupEntityDto.getStudentAmount());
 //        group.setProgram(groupEntityDto.getProgram());
 //        group.setShift(groupEntityDto.getShift());
 
-        return group;
+        return groups;
     }
+
+    public static GroupsTestDto toGroupsTestDto(Groups groups) {
+        var groupsDto = new GroupsTestDto();
+
+        groupsDto.setId(groups.getId());
+        return groupsDto;
+    }
+
 }

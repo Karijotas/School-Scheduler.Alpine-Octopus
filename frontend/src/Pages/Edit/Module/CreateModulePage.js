@@ -136,6 +136,7 @@ export function CreateModulePage() {
                   </Button>
                   <Button
                     type="submit"
+                    id='details'
                     className="controls"
                     primary
                     disabled={!formValid}

@@ -135,7 +135,7 @@ export function CreateRoom() {
               <input input name="description" onBlur={blurHandler} placeholder='Aprasymas' value={description} onChange={e => descriptionHandler(e)} />
             </Form.Field>
             <div><Button icon labelPosition="left" className="" href='#/view/rooms'><Icon name="arrow left" />Atgal</Button>
-              <Button type='submit' disabled={!formValid} className="controls" primary onClick={createRoom}>Sukurti</Button></div>
+              <Button id='details' type='submit' disabled={!formValid} className="controls" primary onClick={createRoom}>Sukurti</Button></div>
           </Form>
         </Segment>
       </Grid.Column>

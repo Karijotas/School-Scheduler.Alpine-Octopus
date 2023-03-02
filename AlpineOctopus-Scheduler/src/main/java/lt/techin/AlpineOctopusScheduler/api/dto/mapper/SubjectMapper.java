@@ -2,6 +2,7 @@ package lt.techin.AlpineOctopusScheduler.api.dto.mapper;
 
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.SubjectTestDto;
 import lt.techin.AlpineOctopusScheduler.model.Subject;
 
 public class SubjectMapper {
@@ -17,7 +18,6 @@ public class SubjectMapper {
         subjectDto.setSubjectModules(subject.getSubjectModules());
         subjectDto.setSubjectRooms(subject.getSubjectRooms());
         subjectDto.setSubjectTeachers(subject.getSubjectTeachers());
-
 
 
         return subjectDto;
@@ -69,6 +69,13 @@ public class SubjectMapper {
 
 
         return subject;
+    }
+
+    public static SubjectTestDto toSubjectTestDto(Subject subject) {
+        var subjectDto = new SubjectTestDto();
+
+        subjectDto.setId(subject.getId());
+        return subjectDto;
     }
 
 }

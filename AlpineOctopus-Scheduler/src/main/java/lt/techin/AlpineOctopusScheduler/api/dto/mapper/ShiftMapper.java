@@ -2,6 +2,7 @@ package lt.techin.AlpineOctopusScheduler.api.dto.mapper;
 
 import lt.techin.AlpineOctopusScheduler.api.dto.ShiftDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ShiftEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.ShiftTestDto;
 import lt.techin.AlpineOctopusScheduler.model.Shift;
 
 public class ShiftMapper {
@@ -53,5 +54,12 @@ public class ShiftMapper {
         shift.setModifiedDate(shiftEntityDto.getModifiedDate());
 
         return shift;
+    }
+
+    public static ShiftTestDto toShiftTestDto(Shift shift) {
+        var shiftDto = new ShiftTestDto();
+
+        shiftDto.setId(shift.getId());
+        return shiftDto;
     }
 }

@@ -86,7 +86,7 @@ export function EditShiftObject() {
                     <Table.HeaderCell>Pavadinimas</Table.HeaderCell>
                       <Table.HeaderCell>Pamokos nuo</Table.HeaderCell>
                       <Table.HeaderCell>Pamokos iki</Table.HeaderCell>
-                      <Table.HeaderCell>Paskutinis atnaujinimas</Table.HeaderCell>
+                      <Table.HeaderCell width={3}>Paskutinis atnaujinimas</Table.HeaderCell>
                       <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>

@@ -327,7 +327,7 @@ export function EditProgramObject() {
                     <Table.Row>
                       <Table.HeaderCell>Programos pavadinimas</Table.HeaderCell>
                       
-                      <Table.HeaderCell collapsing>
+                      <Table.HeaderCell width={3}>
                         Paskutinis atnaujinimas
                       </Table.HeaderCell>
                     </Table.Row>

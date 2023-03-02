@@ -203,6 +203,7 @@ export function CreateSubjecPage() {
                 disabled={!formValid}
                 className="controls"
                 primary
+                id="details"
                 onClick={createSubject}
               >
                 Sukurti
