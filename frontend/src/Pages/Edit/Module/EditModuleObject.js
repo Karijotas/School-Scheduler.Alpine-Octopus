@@ -300,7 +300,7 @@ export function EditModuleObject() {
                                         setSubject(e.target.value),
                                         setSubjectId(data.value)
                                       )}
-                                      // onClose={() => console.log(subjectId)}
+                                      onClose={() => console.log(subjectId)}
                                     />
                                   </Form.Field>
                                 </Form.Group>

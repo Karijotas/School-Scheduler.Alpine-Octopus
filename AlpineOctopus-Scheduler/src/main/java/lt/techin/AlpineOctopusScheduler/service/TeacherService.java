@@ -74,8 +74,9 @@ public class TeacherService {
     }
 
     @Transactional(readOnly = true)
-    public List<TeacherEntityDto> getTeachersByNameContaining(String nameText) {
-        return teacherRepository.findByNameContainingIgnoreCase(nameText).stream().sorted(Comparator.comparing(Teacher::getModifiedDate).reversed())
+    public List<TeacherEntityDto> getPagedTeachersByNameContaining(String nameText, int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return teacherRepository.findByNameContainingIgnoreCase(nameText, pageable).stream()
                 .map(TeacherMapper::toTeacherEntityDto).collect(Collectors.toList());
     }
 

@@ -447,7 +447,6 @@ export function EditSubjectObject() {
                                   <Table.Cell>{module.name}</Table.Cell>
                                   <Table.Cell collapsing>
                                     <Button
-                                    id='details' 
                                       basic
                                       compact
                                       icon="remove"

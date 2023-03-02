@@ -33,6 +33,7 @@ export function EditRoom() {
   const applyResult = () => {
     setHide(true);
   };
+  
 
   const updateRooms = () => {
     fetch("/api/v1/rooms/" + params.id, {
