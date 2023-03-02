@@ -74,8 +74,8 @@ export function EditSubjectObject() {
       };
       
     const validateNameInput = (value) => {
-        if (value.length <2 || value.length > 40) {
-            setNameError("Įveskite nuo 2 iki 40 simbolių!")
+        if (value.length <2 || value.length > 100) {
+            setNameError("Įveskite nuo 2 iki 100 simbolių!")
             if(!value){
                 setNameError("Pavadinimas negali būti tuščias!")
               } 
@@ -85,8 +85,8 @@ export function EditSubjectObject() {
       };
 
       const validateDescriptionInput = (value) => {
-        if (value.length > 100) {
-            setDescriptionError("Aprašymas negali viršyti 100 symbolių!")
+        if (value.length > 500) {
+            setDescriptionError("Aprašymas negali viršyti 500 symbolių!")
         } else {
             setDescriptionError("") 
         }
