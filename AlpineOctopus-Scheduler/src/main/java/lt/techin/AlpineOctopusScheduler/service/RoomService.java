@@ -39,7 +39,7 @@ public class RoomService {
         return roomRepository.findAll(pageable).stream().sorted(Comparator.comparing(Room::getModifiedDate).reversed()).map(RoomMapper::toRoomEntityDto).collect(Collectors.toList());
     }
 
-    public List<RoomTestDto> getAllRoomss() {
+    public List<RoomTestDto> getAllRooms() {
         return roomRepository.findAll().stream()
                 .map(RoomMapper::toRoomTestDto).collect(Collectors.toList());
     }

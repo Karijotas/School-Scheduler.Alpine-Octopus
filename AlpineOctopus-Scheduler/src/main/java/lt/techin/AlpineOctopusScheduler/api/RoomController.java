@@ -47,7 +47,7 @@ public class RoomController {
     @GetMapping(path = "/all")
     @ResponseBody
     public List<RoomTestDto> getAllRoomss() {
-        return roomService.getAllRoomss();
+        return roomService.getAllRooms();
     }
 
     @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
