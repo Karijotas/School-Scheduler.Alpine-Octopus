@@ -10,7 +10,7 @@ const JSON_HEADERS = {
 
 export function CreateTeacher() {
   // const [create, setCreate] = useState()
-  const listUrl = useHref('/view/subjects');
+  const listUrl = useHref('/view/teachers');
   const [hide, setHide] = useState(false);
   const [name, setName] = useState("");
   const [loginEmail, setLoginEmail] = useState("");
@@ -128,7 +128,7 @@ export function CreateTeacher() {
                 type="submit"
                 className="controls"
                 primary
-                id="details"
+                
                 onClick={createTeacher}
               >
                 Sukurti

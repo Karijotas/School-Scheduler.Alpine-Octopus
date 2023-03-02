@@ -3,6 +3,7 @@ package lt.techin.AlpineOctopusScheduler.api;
 import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.ModuleDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ModuleEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.ModuleTestDto;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Module;
 import lt.techin.AlpineOctopusScheduler.model.Subject;
@@ -58,7 +59,7 @@ public class ModuleController {
 
     @GetMapping(path = "/all")
     @ResponseBody
-    public List<ModuleEntityDto> getAllModules() {
+    public List<ModuleTestDto> getAllModules() {
         return moduleService.getAllModules();
     }
 

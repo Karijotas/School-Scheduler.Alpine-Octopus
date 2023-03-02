@@ -170,7 +170,7 @@ export function ViewTeachers() {
                       <Table.Row key={i}>                        
                         <Table.Cell>{teacher.name} </Table.Cell>
                         <Table.Cell>
-                          <List bulleted>                           
+                          {/* <List bulleted>                           
                             {teacherSubjects.map((subject) => (
                               <List.Content key={subject.id}>
                                 <List.Item>{subject.name}</List.Item>
@@ -178,14 +178,14 @@ export function ViewTeachers() {
                               
                             ))}
                             {console.log(teacherSubjects)}
-                          </List>
-                          {/* <List bulleted>
+                          </List> */}
+                          <List bulleted>
                             <List.Content>
                               <List.Item>a</List.Item>
                               <List.Item>b</List.Item>
                               <List.Item>c</List.Item>
                             </List.Content>
-                          </List> */}
+                          </List>
                         </Table.Cell>
                         <Table.Cell>{teacher.workHoursPerWeek}</Table.Cell>
                         <Table.Cell>

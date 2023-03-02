@@ -62,7 +62,7 @@ logging:
             BasicBinder: DEBUG
 Server:
 
-  Port: 8071
+  Port: 8072
 
 
 

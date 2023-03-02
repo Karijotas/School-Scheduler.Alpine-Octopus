@@ -1,50 +1,50 @@
-//package lt.techin.AlpineOctopusScheduler.api;
-//
-//import com.fasterxml.jackson.core.type.TypeReference;
-//import com.fasterxml.jackson.databind.ObjectMapper;
-//import lt.techin.AlpineOctopusScheduler.api.dto.ModuleEntityDto;
-//import org.junit.jupiter.api.AfterEach;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.http.MediaType;
-//import org.springframework.test.web.servlet.MockMvc;
-//import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-//
-//import java.util.List;
-//
-//import static org.assertj.core.api.Assertions.assertThat;
-//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-//
-//@SpringBootTest
-////@MockBeans({@MockBean(RoomController.class), @MockBean(RoomService.class), @MockBean(RoomRepository.class)})
-//@AutoConfigureMockMvc
-//public class ModuleControllerTest {
-//
-//    //@MockBean - tuos kuriuos norime izoliuoti nuo sio testo
-//
-////    @MockBean
-////    SubjectRepository subjectRepository;
-//
-//    @Autowired
-//    ObjectMapper objectMapper;
-//    @Autowired
-//    MockMvc mockMvc;
-//
-//    @BeforeEach
-//    public void setup() {
-//    }
-//
-//    @AfterEach
-//    void tearDown() {
-//    }
-//
-//
-//    @Test
-//    void getModules_returnsCorrectDtos() throws Exception {
-//
+package lt.techin.AlpineOctopusScheduler.api;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lt.techin.AlpineOctopusScheduler.api.dto.ModuleTestDto;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@SpringBootTest
+//@MockBeans({@MockBean(RoomController.class), @MockBean(RoomService.class), @MockBean(RoomRepository.class)})
+@AutoConfigureMockMvc
+public class ModuleControllerTest {
+
+    //@MockBean - tuos kuriuos norime izoliuoti nuo sio testo
+
+//    @MockBean
+//    SubjectRepository subjectRepository;
+
+    @Autowired
+    ObjectMapper objectMapper;
+    @Autowired
+    MockMvc mockMvc;
+
+    @BeforeEach
+    public void setup() {
+    }
+
+    @AfterEach
+    void tearDown() {
+    }
+
+
+    @Test
+    void getModules_returnsCorrectDtos() throws Exception {
+
 //        var moduleDto1 = new ModuleEntityDto("Tinklapiai", "Informacijos išteklis saityne, kuris gali būti pasiektas naudojantis naršykle. Puslapius sujungiant, sudaroma interneto svetainė. Informacija dažniausiai pateikiama HTML[1] arba XHTML, nors šiuo metu tiesiogiai šiomis kalbomis jie rašomi labai retai. Paprastai naudojamos į teksto redaktorius panašios vartotojui draugiškos programos.", null, null, 1l);
 //        var moduleDto2 = new ModuleEntityDto("Technologijos", "Informacinių technologijų modulio studijų dalykai parinkti atsižvelgiant į Informatikos bendrųjų programų projektą (IBPP), akcentuojant skaitmeninį raštingumą, informacinį mąstymą, siekiant ugdyti skaitmeninį intelektą.", null, null, 2l);
 //        var moduleDto3 = new ModuleEntityDto("Kuno kultura", "Palakstykite vaikai.", null, null, 3l);
@@ -60,40 +60,55 @@
 //        var moduleDto13 = new ModuleEntityDto("Geografija", "Graikai yra pirmoji žinoma kultūra, kuri aktyviai domėjosi geografija kaip mokslu ir filosofija, pagrindiniai veikėjai prisidėję prie geografijos plėtros buvo: Talis iš Mileto, Herodotas, Eratostenas, Hiparchas, Aristotelis, Strabonas ir Ptolemėjas. Romėnų sudarinėjami naujai atrastų šalių žemėlapiai papildė geografijos žinias naujais metodais.", null, null, 13l);
 //        var moduleDto14 = new ModuleEntityDto("Fizika", "Gamtos mokslas, tiriantis visas materijos formas:[2] nuo submikroskopinių dalelių, iš kurių sudarytos visos įprastinės medžiagos (dalelių fizika), iki visos materialios Visatos elgesio (kosmologija).Kai kurios fizikos studijuojamos savybės yra bendros visoms materialioms sistemoms, pavyzdžiui, energijos tvermės dėsnis.", null, null, 14l);
 //        var moduleDto15 = new ModuleEntityDto("Matematika", "Matematikai tyrinėja struktūras, kurios turi atitikmenis kituose tiksliuosiuose moksluose, pavyzdžiui, fizikoje, taip pat apibrėžia naujas struktūras. Pasinaudojant jomis galima rasti ryšius, bendrus analizės metodus tarp labai skirtingų mokslo sričių ir jų tyrimų objektų, palengvinti dažnai atliekamus skaičiavimus.", null, null, 15l);
-//
-////        List<ModuleDto> modulesList = new ArrayList<>();
-////        modulesList.add(moduleDto1);
-////        modulesList.add(moduleDto2);
-////        modulesList.add(moduleDto3);
-////        modulesList.add(moduleDto4);
-////        modulesList.add(moduleDto5);
-////        modulesList.add(moduleDto6);
-////        modulesList.add(moduleDto7);
-////        modulesList.add(moduleDto8);
-////        modulesList.add(moduleDto9);
-////        modulesList.add(moduleDto10);
-////        modulesList.add(moduleDto11);
-////        modulesList.add(moduleDto12);
-////        modulesList.add(moduleDto13);
-////        modulesList.add(moduleDto14);
-////        modulesList.add(moduleDto15);
-//
-//
-//        var mvcResult = mockMvc.perform(
-//                        MockMvcRequestBuilders
-//                                .get("/api/v1/modules/all")
-//                                .accept(MediaType.APPLICATION_JSON)
-//                )
-//                .andExpect(status().isOk())
-//                .andReturn();
-//
-//        var mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
-//                new TypeReference<List<ModuleEntityDto>>() {
-//                });
-//
-//        assertThat(mappedResponse)
-//                .containsExactlyInAnyOrder(moduleDto1, moduleDto2, moduleDto3, moduleDto4, moduleDto5, moduleDto6, moduleDto7, moduleDto8, moduleDto9, moduleDto10, moduleDto11, moduleDto12, moduleDto13, moduleDto14, moduleDto15);
-//    }
-//
-//
-//}
+
+//        List<ModuleDto> modulesList = new ArrayList<>();
+//        modulesList.add(moduleDto1);
+//        modulesList.add(moduleDto2);
+//        modulesList.add(moduleDto3);
+//        modulesList.add(moduleDto4);
+//        modulesList.add(moduleDto5);
+//        modulesList.add(moduleDto6);
+//        modulesList.add(moduleDto7);
+//        modulesList.add(moduleDto8);
+//        modulesList.add(moduleDto9);
+//        modulesList.add(moduleDto10);
+//        modulesList.add(moduleDto11);
+//        modulesList.add(moduleDto12);
+//        modulesList.add(moduleDto13);
+//        modulesList.add(moduleDto14);
+//        modulesList.add(moduleDto15);
+
+        var moduleDto1 = new ModuleTestDto(1l);
+        var moduleDto2 = new ModuleTestDto(2l);
+        var moduleDto3 = new ModuleTestDto(3l);
+        var moduleDto4 = new ModuleTestDto(4l);
+        var moduleDto5 = new ModuleTestDto(5l);
+        var moduleDto6 = new ModuleTestDto(6l);
+        var moduleDto7 = new ModuleTestDto(7l);
+        var moduleDto8 = new ModuleTestDto(8l);
+        var moduleDto9 = new ModuleTestDto(9l);
+        var moduleDto10 = new ModuleTestDto(10l);
+        var moduleDto11 = new ModuleTestDto(11l);
+        var moduleDto12 = new ModuleTestDto(12l);
+        var moduleDto13 = new ModuleTestDto(13l);
+        var moduleDto14 = new ModuleTestDto(14l);
+        var moduleDto15 = new ModuleTestDto(15l);
+
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .get("/api/v1/modules/all")
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        var mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+                new TypeReference<List<ModuleTestDto>>() {
+                });
+
+        assertThat(mappedResponse)
+                .containsExactlyInAnyOrder(moduleDto1, moduleDto2, moduleDto3, moduleDto4, moduleDto5, moduleDto6, moduleDto7, moduleDto8, moduleDto9, moduleDto10, moduleDto11, moduleDto12, moduleDto13, moduleDto14, moduleDto15);
+    }
+
+
+}
