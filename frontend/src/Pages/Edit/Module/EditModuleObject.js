@@ -66,8 +66,8 @@ export function EditModuleObject() {
       };
 
       const validateDescriptionInput = (value) => {
-        if (value.length > 100) {
-            setDescriptionError("Aprašymas negali viršyti 100 symbolių!")
+        if (value.length > 500) {
+            setDescriptionError("Aprašymas negali viršyti 500 symbolių!")
         } else {
             setDescriptionError("")
         }

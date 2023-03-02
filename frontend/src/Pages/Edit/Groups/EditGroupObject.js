@@ -79,8 +79,8 @@ export function EditGroupObject() {
 
 
     const validateNameInput = (value) => {
-        if (value.length < 2 || value.length > 40) {
-            setNameError("Įveskite nuo 2 iki 40 simbolių!")
+        if (value.length < 2 || value.length > 100) {
+            setNameError("Įveskite nuo 2 iki 100 simbolių!")
             if (!value) {
                 setNameError("Pavadinimas negali būti tuščias!")
             }

@@ -239,7 +239,7 @@ export function ViewTeachers() {
                   >
                     <Icon name="arrow left" />{" "}
                   </Button>
-                  {[...Array(pagecount)].map((e, i) => {
+                  {/* {[...Array(pagecount)].map((e, i) => {
                     return (
                       <Button
                         title={i + 1}
@@ -250,7 +250,7 @@ export function ViewTeachers() {
                         {i + 1}
                       </Button>
                     );
-                  })}
+                  })} */}
                   <Button
                     title="Pirmyn"
                     onClick={() =>

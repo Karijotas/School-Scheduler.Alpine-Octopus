@@ -75,8 +75,8 @@ export function EditTeacherObject() {
       if (!value) {
         setNameError("Negali būti tuščias!")
       }
-    } else if (value.length < 2 || value.length > 40) {
-      setNameError("Įveskite nuo 2 iki 40 simbolių!")
+    } else if (value.length < 2 || value.length > 100) {
+      setNameError("Įveskite nuo 2 iki 100 simbolių!")
 
     } else {
       setNameError("")
@@ -522,8 +522,8 @@ export function EditTeacherObject() {
                                 </Form.Group>
                                 <Divider hidden />
                                 <List.Content floated="left">
-                                  <Button id='details' 
-                                    onClick={() => 
+                                  <Button id='details'
+                                    onClick={() =>
                                       addShift(params.id, shiftId)}
                                   >
                                     Pridėti
@@ -584,7 +584,7 @@ export function EditTeacherObject() {
                                 <Divider hidden />
                                 <List.Content floated="left">
                                   <Button
-                                  id='details' 
+                                    id='details'
                                     onClick={() =>
                                       addSubject(params.id, subjectId)
                                     }

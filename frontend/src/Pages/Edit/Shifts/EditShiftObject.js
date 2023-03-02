@@ -14,7 +14,7 @@ const JSON_HEADERS = {
 
 export function EditShiftObject() {
   const params = useParams();
-  
+
 
   const [hide, setHide] = useState(false);
   const [active, setActive] = useState(true);
@@ -83,7 +83,7 @@ export function EditShiftObject() {
                 <Table celled>
                   <Table.Header>
                     <Table.Row>
-                    <Table.HeaderCell>Pavadinimas</Table.HeaderCell>
+                      <Table.HeaderCell>Pavadinimas</Table.HeaderCell>
                       <Table.HeaderCell>Pamokos nuo</Table.HeaderCell>
                       <Table.HeaderCell>Pamokos iki</Table.HeaderCell>
                       <Table.HeaderCell width={3}>Paskutinis atnaujinimas</Table.HeaderCell>
@@ -107,7 +107,7 @@ export function EditShiftObject() {
                   </Table.Body>
                 </Table>
 
-                
+
                 <Divider hidden />
                 <Button
                   icon
@@ -125,7 +125,7 @@ export function EditShiftObject() {
                 <Table celled>
                   <Table.Header>
                     <Table.Row>
-                    <Table.HeaderCell>Pavadinimas</Table.HeaderCell>
+                      <Table.HeaderCell>Pavadinimas</Table.HeaderCell>
                       <Table.HeaderCell>Pamokos nuo</Table.HeaderCell>
                       <Table.HeaderCell>Pamokos iki</Table.HeaderCell>
                       <Table.HeaderCell>Paskutinis atnaujinimas</Table.HeaderCell>
@@ -142,13 +142,13 @@ export function EditShiftObject() {
                       </Table.Cell>
                       <Table.Cell collapsing>
                         <Input
-                          value={shifts.starts} 
+                          value={shifts.starts}
                           onChange={(e) => updateProperty("starts", e)}
                         />
                       </Table.Cell>
                       <Table.Cell collapsing>
                         <Input
-                          value={shifts.ends} 
+                          value={shifts.ends}
                           onChange={(e) => updateProperty("ends", e)}
                         />
                       </Table.Cell>

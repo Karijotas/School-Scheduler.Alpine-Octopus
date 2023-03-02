@@ -58,8 +58,8 @@ export function CreateTeacher() {
       if (!e.target.value) {
         setNameError("Negali būti tuščias!")
       }
-    } else if (e.target.value.length < 2 || e.target.value.length > 40) {
-      setNameError("Įveskite nuo 2 iki 40 simbolių!")
+    } else if (e.target.value.length < 2 || e.target.value.length > 100) {
+      setNameError("Įveskite nuo 2 iki 100 simbolių!")
 
     } else {
       setNameError("")

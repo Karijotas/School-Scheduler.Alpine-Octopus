@@ -201,7 +201,7 @@ export function ViewRooms() {
                 >
                   <Icon name="arrow left" />{" "}
                 </Button>
-                {[...Array(pagecount)].map((e, i) => {
+                {/* {[...Array(pagecount)].map((e, i) => {
                   return (
                     <Button
                       title={i + 1}
@@ -212,7 +212,7 @@ export function ViewRooms() {
                       {i + 1}
                     </Button>
                   );
-                })}
+                })} */}
                 <Button
                   title="Pirmyn"
                   onClick={() =>

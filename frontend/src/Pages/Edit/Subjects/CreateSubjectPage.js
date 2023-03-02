@@ -45,8 +45,8 @@ export function CreateSubjecPage() {
 
   const nameHandler = (e) => {
     setName(e.target.value)
-    if(e.target.value.length <2 || e.target.value.length > 40){
-      setNameError("Įveskite nuo 2 iki 40 simbolių!")
+    if(e.target.value.length <2 || e.target.value.length > 100){
+      setNameError("Įveskite nuo 2 iki 100 simbolių!")
       if(!e.target.value){
         setNameError("Negali būti tuščias!")
       }
@@ -57,8 +57,8 @@ export function CreateSubjecPage() {
 
   const descriptionHandler = (e) => {
     setDescription(e.target.value)
-    if(e.target.value.length > 100){
-      setDescriptionError("Aprašymas negali viršyti 100 symbolių!")
+    if(e.target.value.length > 500){
+      setDescriptionError("Aprašymas negali viršyti 500 symbolių!")
     } else {
       setDescriptionError("")
     }
