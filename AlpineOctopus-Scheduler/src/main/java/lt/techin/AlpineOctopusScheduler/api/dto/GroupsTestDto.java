@@ -14,8 +14,8 @@ public class GroupsTestDto extends GroupsDto {
         this.id = id;
     }
 
-    public GroupsTestDto(String name, Integer schoolYear, Integer studentAmount, String shift, Long programId, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy, Boolean deleted) {
-        super(name, schoolYear, studentAmount, shift, programId, createdDate, modifiedDate, createdBy, modifiedBy, deleted);
+    public GroupsTestDto(String name, Integer schoolYear, Integer studentAmount, Long shiftId, Long programId, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy, Boolean deleted, Long id) {
+        super(name, schoolYear, studentAmount, shiftId, programId, createdDate, modifiedDate, createdBy, modifiedBy, deleted);
         this.id = id;
     }
 
