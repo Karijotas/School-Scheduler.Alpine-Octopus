@@ -99,7 +99,7 @@ public class ProgramService {
     }
 
     public Program update(Long id, Program program) {
-        validateInputWithInjectedValidator(program);
+//        validateInputWithInjectedValidator(program);
         var existingProgram = programRepository.findById(id)
                 .orElseThrow(() -> new SchedulerValidationException("Program does not exist",
                         "id", "Program not found", id.toString()));
