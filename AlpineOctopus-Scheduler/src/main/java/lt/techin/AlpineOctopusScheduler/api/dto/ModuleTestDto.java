@@ -3,20 +3,20 @@ package lt.techin.AlpineOctopusScheduler.api.dto;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class ModuleEntityDto extends ModuleDto {
+public class ModuleTestDto extends ModuleDto {
 
     private Long id;
 
-    public ModuleEntityDto() {
-
+    public ModuleTestDto() {
     }
 
-    public ModuleEntityDto(String name, String description, LocalDateTime createdDate, LocalDateTime modifiedDate, Long id, Boolean deleted) {
-        super(name, description, createdDate, modifiedDate, deleted);
+    public ModuleTestDto(Long id) {
         this.id = id;
     }
 
-    public ModuleEntityDto(String name, String description, LocalDateTime createdDate, LocalDateTime modifiedDate, Long id) {
+    public ModuleTestDto(String name, String description, LocalDateTime createdDate, LocalDateTime modifiedDate, Boolean deleted) {
+        super(name, description, createdDate, modifiedDate, deleted);
+        this.id = id;
     }
 
     public Long getId() {
@@ -32,7 +32,7 @@ public class ModuleEntityDto extends ModuleDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        ModuleEntityDto that = (ModuleEntityDto) o;
+        ModuleTestDto that = (ModuleTestDto) o;
         return Objects.equals(id, that.id);
     }
 
@@ -43,9 +43,8 @@ public class ModuleEntityDto extends ModuleDto {
 
     @Override
     public String toString() {
-        return "ModuleEntityDto{" +
+        return "ModuleTestDto{" +
                 "id=" + id +
                 '}';
     }
 }
-

@@ -302,19 +302,19 @@ export function EditTeacherObject() {
                     <Table.Row>
                     <Table.HeaderCell>Vardas ir pavardė</Table.HeaderCell>
                       <Table.HeaderCell>Telefono nr.</Table.HeaderCell>
-                      <Table.HeaderCell>Paskutinis atnaujinimas:</Table.HeaderCell>
+                      <Table.HeaderCell width={3}>Paskutinis atnaujinimas:</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
 
                   <Table.Body>
                     <Table.Row>
-                      <Table.Cell collapsing>
+                      <Table.Cell >
                         <Input
                           value={teachers.name}
                           onChange={(e) => updateProperty("name", e)}
                         />
                       </Table.Cell>
-                      <Table.Cell collapsing>
+                      <Table.Cell >
                         <Input
                           value={teachers.phone} 
                           onChange={(e) => updateProperty("phone", e)}

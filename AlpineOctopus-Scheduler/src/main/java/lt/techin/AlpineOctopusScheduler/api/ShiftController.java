@@ -3,6 +3,7 @@ package lt.techin.AlpineOctopusScheduler.api;
 import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.ShiftDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ShiftEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.ShiftTestDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ShiftMapper;
 import lt.techin.AlpineOctopusScheduler.model.Shift;
 import lt.techin.AlpineOctopusScheduler.service.ShiftService;
@@ -40,6 +41,12 @@ public class ShiftController {
         return shiftService.getAll().stream()
                 .map(ShiftMapper::toShiftEntityDto)
                 .collect(toList());
+    }
+
+    @GetMapping(path = "/all")
+    @ResponseBody
+    public List<ShiftTestDto> getAllShifts() {
+        return shiftService.getAllShifts();
     }
 
     @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})

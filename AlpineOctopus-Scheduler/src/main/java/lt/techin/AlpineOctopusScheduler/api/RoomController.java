@@ -3,6 +3,7 @@ package lt.techin.AlpineOctopusScheduler.api;
 import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.RoomDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.RoomEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.RoomTestDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.RoomMapper;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Room;
@@ -41,6 +42,12 @@ public class RoomController {
         return roomService.getAll().stream()
                 .map(RoomMapper::toRoomEntityDto)
                 .collect(toList());
+    }
+
+    @GetMapping(path = "/all")
+    @ResponseBody
+    public List<RoomTestDto> getAllRoomss() {
+        return roomService.getAllRooms();
     }
 
     @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})

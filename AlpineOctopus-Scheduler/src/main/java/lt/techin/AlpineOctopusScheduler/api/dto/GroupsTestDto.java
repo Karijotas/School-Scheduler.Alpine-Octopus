@@ -3,20 +3,20 @@ package lt.techin.AlpineOctopusScheduler.api.dto;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class ModuleEntityDto extends ModuleDto {
+public class GroupsTestDto extends GroupsDto {
 
     private Long id;
 
-    public ModuleEntityDto() {
-
+    public GroupsTestDto() {
     }
 
-    public ModuleEntityDto(String name, String description, LocalDateTime createdDate, LocalDateTime modifiedDate, Long id, Boolean deleted) {
-        super(name, description, createdDate, modifiedDate, deleted);
+    public GroupsTestDto(Long id) {
         this.id = id;
     }
 
-    public ModuleEntityDto(String name, String description, LocalDateTime createdDate, LocalDateTime modifiedDate, Long id) {
+    public GroupsTestDto(String name, Integer schoolYear, Integer studentAmount, String shift, Long programId, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy, Boolean deleted) {
+        super(name, schoolYear, studentAmount, shift, programId, createdDate, modifiedDate, createdBy, modifiedBy, deleted);
+        this.id = id;
     }
 
     public Long getId() {
@@ -32,7 +32,7 @@ public class ModuleEntityDto extends ModuleDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        ModuleEntityDto that = (ModuleEntityDto) o;
+        GroupsTestDto that = (GroupsTestDto) o;
         return Objects.equals(id, that.id);
     }
 
@@ -43,9 +43,8 @@ public class ModuleEntityDto extends ModuleDto {
 
     @Override
     public String toString() {
-        return "ModuleEntityDto{" +
+        return "GroupsTestDto{" +
                 "id=" + id +
                 '}';
     }
 }
-

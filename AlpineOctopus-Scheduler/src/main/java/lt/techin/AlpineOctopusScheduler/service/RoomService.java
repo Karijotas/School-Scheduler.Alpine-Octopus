@@ -1,6 +1,7 @@
 package lt.techin.AlpineOctopusScheduler.service;
 
 import lt.techin.AlpineOctopusScheduler.api.dto.RoomEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.RoomTestDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.RoomMapper;
 import lt.techin.AlpineOctopusScheduler.dao.RoomRepository;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
@@ -36,6 +37,11 @@ public class RoomService {
         Pageable pageable = PageRequest.of(page, pageSize);
 
         return roomRepository.findAll(pageable).stream().sorted(Comparator.comparing(Room::getModifiedDate).reversed()).map(RoomMapper::toRoomEntityDto).collect(Collectors.toList());
+    }
+
+    public List<RoomTestDto> getAllRooms() {
+        return roomRepository.findAll().stream()
+                .map(RoomMapper::toRoomTestDto).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)

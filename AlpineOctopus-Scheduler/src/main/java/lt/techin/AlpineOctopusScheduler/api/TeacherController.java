@@ -4,6 +4,7 @@ package lt.techin.AlpineOctopusScheduler.api;
 import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.TeacherTestDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.TeacherMapper;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Shift;
@@ -46,6 +47,12 @@ public class TeacherController {
         return teacherService.getAll().stream()
                 .map(TeacherMapper::toTeacherEntityDto)
                 .collect(toList());
+    }
+
+    @GetMapping(path = "/all")
+    @ResponseBody
+    public List<TeacherTestDto> getAllTeachers() {
+        return teacherService.getAllTeachers();
     }
 
     @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})

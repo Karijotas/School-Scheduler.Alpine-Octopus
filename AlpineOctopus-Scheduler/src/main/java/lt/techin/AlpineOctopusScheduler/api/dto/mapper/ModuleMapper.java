@@ -2,6 +2,7 @@ package lt.techin.AlpineOctopusScheduler.api.dto.mapper;
 
 import lt.techin.AlpineOctopusScheduler.api.dto.ModuleDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ModuleEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.ModuleTestDto;
 import lt.techin.AlpineOctopusScheduler.model.Module;
 
 public class ModuleMapper {
@@ -50,6 +51,13 @@ public class ModuleMapper {
         module.setModifiedDate(moduleEntityDto.getModifiedDate());
 
         return module;
+    }
+
+    public static ModuleTestDto toModuleTestDto(Module module) {
+        var moduleDto = new ModuleTestDto();
+
+        moduleDto.setId(module.getId());
+        return moduleDto;
     }
 
 }

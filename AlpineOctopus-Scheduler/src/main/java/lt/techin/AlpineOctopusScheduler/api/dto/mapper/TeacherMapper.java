@@ -2,6 +2,7 @@ package lt.techin.AlpineOctopusScheduler.api.dto.mapper;
 
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.TeacherTestDto;
 import lt.techin.AlpineOctopusScheduler.model.Teacher;
 
 public class TeacherMapper {
@@ -65,5 +66,12 @@ public class TeacherMapper {
         teacher.setTeacherShifts(teacherEntityDto.getTeacherShifts());
 
         return teacher;
+    }
+
+    public static TeacherTestDto toTeacherTestDto(Teacher teacher) {
+        var teacherDto = new TeacherTestDto();
+
+        teacherDto.setId(teacher.getId());
+        return teacherDto;
     }
 }

@@ -99,6 +99,7 @@ export function CreateShiftPage() {
                     type="submit"
                     className="controls"
                     primary
+                    id="details"
                     onClick={createShift}
                   >
                     Sukurti

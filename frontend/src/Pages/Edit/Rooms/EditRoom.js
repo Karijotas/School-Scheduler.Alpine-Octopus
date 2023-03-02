@@ -133,7 +133,7 @@ export function EditRoom() {
                     <Table.Row>
                       <Table.HeaderCell>Klasės pavadinimas</Table.HeaderCell>
                       <Table.HeaderCell>Pastatas</Table.HeaderCell>
-                      <Table.HeaderCell>
+                      <Table.HeaderCell width={3}>
                         Paskutinis atnaujinimas:
                       </Table.HeaderCell>
                     </Table.Row>

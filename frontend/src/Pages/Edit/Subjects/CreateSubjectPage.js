@@ -155,6 +155,7 @@ export function CreateSubjecPage() {
                 type="submit"
                 className="controls"
                 primary
+                id="details"
                 onClick={createSubject}
               >
                 Sukurti

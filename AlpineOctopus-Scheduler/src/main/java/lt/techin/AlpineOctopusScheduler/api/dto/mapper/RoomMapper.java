@@ -2,6 +2,7 @@ package lt.techin.AlpineOctopusScheduler.api.dto.mapper;
 
 import lt.techin.AlpineOctopusScheduler.api.dto.RoomDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.RoomEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.RoomTestDto;
 import lt.techin.AlpineOctopusScheduler.model.Room;
 
 public class RoomMapper {
@@ -47,5 +48,12 @@ public class RoomMapper {
         room.setDescription(roomEntityDto.getDescription());
 
         return room;
+    }
+
+    public static RoomTestDto toRoomTestDto(Room room) {
+        var roomDto = new RoomTestDto();
+
+        roomDto.setId(room.getId());
+        return roomDto;
     }
 }
