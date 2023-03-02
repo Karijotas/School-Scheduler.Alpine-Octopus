@@ -5,7 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="be4542e8-401c-4b51-a94d-0543b0658664" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Module/EditModuleObject.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Module/EditModuleObject.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Groups/ViewGroupsArchive.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Groups/ViewGroupsArchive.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Module/ViewModulesArchive.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Module/ViewModulesArchive.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Programs/ViewProgramsArchive.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Programs/ViewProgramsArchive.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Rooms/ViewRoomsArchive.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Rooms/ViewRoomsArchive.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Shifts/ViewShiftsArchive.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Shifts/ViewShiftsArchive.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Subjects/ViewSubjectsArchive.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Subjects/ViewSubjectsArchive.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Teachers/ViewTeachersArchive.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Teachers/ViewTeachersArchive.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
