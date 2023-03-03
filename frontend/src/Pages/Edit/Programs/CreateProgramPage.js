@@ -24,7 +24,7 @@ const yearOptions = [
 export function CreateProgramPage() {
   // const [create, setCreate] = useState()
 
-  const listUrl = useHref('/view/programs/edit');
+  const listUrl = useHref('/view/programs/edit/' + programId);
   const [hide, setHide] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -86,6 +86,7 @@ export function CreateProgramPage() {
 
     if (result.ok) {
       fetchPrograms();
+      setProgramId
       clear();
     } else {
       window.alert("Nepavyko sukurti: pavadinimas turi būti unikalus!");    
