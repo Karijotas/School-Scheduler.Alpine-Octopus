@@ -45,8 +45,17 @@ export function EditGroupObject() {
 
     const [selectErrorYear, setSelectErrorYear] = useState("")
     const [selectErrorProgram, setSelectErrorProgram] = useState("*Privaloma")
+    const [selectErrorShift, setSelectErrorShift] = useState("*Privaloma")
 
-}, [studentError, nameError, programId, shiftId
+    const [formValid, setFormValid] = useState(false)
+
+
+    useEffect(() => {
+        if (nameError || studentAmountError) {
+            setFormValid(false)
+        } else {
+            setFormValid(true)
+        }
     }, [nameError, studentAmountError])
 
     //   const selectProgramHandler = () => {
