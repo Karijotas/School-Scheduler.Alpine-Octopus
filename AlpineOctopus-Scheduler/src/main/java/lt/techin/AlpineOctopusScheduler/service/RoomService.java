@@ -84,7 +84,7 @@ public class RoomService {
     public boolean classIsUnique(Room room) {
         return roomRepository.findAll()
                 .stream()
-                .noneMatch(room1 -> room1.getName().equals(room.getName()) && room1.getBuilding().equals(room.getBuilding()));
+                .noneMatch(room1 -> room1.getName().equals(room.getName()));
     }
 
     public List<Room> getAll() {
@@ -103,7 +103,7 @@ public class RoomService {
     public Room update(Long id, Room room) {
 //        validateInputWithInjectedValidator(room);
         var existingRoom = roomRepository.findById(id)
-        		.orElseThrow(() -> new SchedulerValidationException("Room does not exist",
+                .orElseThrow(() -> new SchedulerValidationException("Room does not exist",
                         "id", "Room not found", id.toString()));
 
         existingRoom.setName(room.getName());
