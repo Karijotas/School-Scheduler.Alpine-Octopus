@@ -69,7 +69,7 @@ export function EditProgramObject() {
     }
   }, [
     nameError,
-    descriptionError,  hoursError
+    descriptionError, hoursError
   ]);
 
   const selectSubjectHandler = () => {
@@ -94,7 +94,7 @@ export function EditProgramObject() {
   };
 
   const validateNameInput = (value) => {
-    if (value.length < 2 || value.length > 40) {
+    if (value.length < 2 || value.length > 100) {
       setNameError("Įveskite nuo 2 iki 100 simbolių!");
       if (!value) {
         setNameError("Pavadinimas negali būti tuščias!");
@@ -453,13 +453,13 @@ export function EditProgramObject() {
                                 </Table.Row>
                               ))}
                               <Table.Row>
-                                      <Table.Cell>
-                                        <h5>Programos valandų skaičius:</h5>
-                                      </Table.Cell>
-                                      <Table.Cell>
-                                        <h5>{totalHours} val.</h5>
-                                      </Table.Cell>
-                                    </Table.Row>
+                                <Table.Cell>
+                                  <h5>Programos valandų skaičius:</h5>
+                                </Table.Cell>
+                                <Table.Cell>
+                                  <h5>{totalHours} val.</h5>
+                                </Table.Cell>
+                              </Table.Row>
                             </Table.Body>
                             <List>
                               <List.Item>
@@ -476,7 +476,7 @@ export function EditProgramObject() {
                                       )}
                                       onClose={() => console.log(subjectId)}
                                     />
-                                    
+
                                     <Divider hidden />
                                     <List.Content>
                                       {hoursError && (
@@ -505,9 +505,9 @@ export function EditProgramObject() {
                                         subjectHours
                                       )
                                     }
-                                    // onClose={fetch(
-                                    //   `/api/v1/programs/${params.id}/subjects`
-                                    // )}
+                                  // onClose={fetch(
+                                  //   `/api/v1/programs/${params.id}/subjects`
+                                  // )}
                                   >
                                     Pridėti
                                   </Button>
