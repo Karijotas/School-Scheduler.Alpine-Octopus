@@ -152,7 +152,7 @@ export function ViewTeachers() {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Mokytojo vardas</Table.HeaderCell>
-                      {/* <Table.HeaderCell>Dalykai</Table.HeaderCell> */}
+                      <Table.HeaderCell>Dalykai</Table.HeaderCell>
                       <Table.HeaderCell>Valandos per savaitę</Table.HeaderCell>
                       <Table.HeaderCell>Pamainos</Table.HeaderCell>
                       <Table.HeaderCell>Veiksmai</Table.HeaderCell>
@@ -163,15 +163,15 @@ export function ViewTeachers() {
                     {teachers.map((teacher) => (                      
                       <Table.Row key={teacher.id} onKeyUp={() => setTeacherId(teacher.id)}>                        
                         <Table.Cell>{teacher.name} </Table.Cell>
-                        {/* <Table.Cell> */}
-                          {/* <List bulleted>                           
+                        <Table.Cell>
+                          <List bulleted>                           
                             {teacherSubjects.map((subject) => (
                               <List.Content key={subject.id}>
                                 <List.Item>{subject.name}</List.Item>
                               </List.Content>
                             ))}
                             {console.log(teacherSubjects)}
-                          </List> */}
+                          </List>
                           {/* <List bulleted>
                             <List.Content>
                               <List.Item>a</List.Item>
@@ -179,7 +179,7 @@ export function ViewTeachers() {
                               <List.Item>c</List.Item>
                             </List.Content>
                           </List> */}
-                        {/* </Table.Cell> */}
+                        </Table.Cell>
                         <Table.Cell>{teacher.workHoursPerWeek}</Table.Cell>
                         <Table.Cell>
                           <List bulleted>

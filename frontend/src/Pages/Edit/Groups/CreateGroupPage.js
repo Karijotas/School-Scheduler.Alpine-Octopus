@@ -30,7 +30,6 @@ const shiftOptions = [
 export function CreateGroupPage() {
   const listUrl = useHref('/view/groups');
 
-  // const [create, setCreate] = useState()
   const [hide, setHide] = useState(false)
   const [name, setName] = useState('');
   const [schoolYear, setSchoolYear] = useState(2023)
@@ -49,7 +48,6 @@ export function CreateGroupPage() {
   // const [yearError, setYearError] = useState("*Privaloma")
   const [programError, setProgramError] = useState("")
   const [shiftError, setShiftError] = useState("")
-
   const [formValid, setFormValid] = useState(false)
 
   useEffect(() => {
@@ -118,7 +116,7 @@ export function CreateGroupPage() {
       clear()
 
     } else {
-      window.alert("Nepavyko sukurt: " + result.status);
+      window.alert("Nepavyko sukurti: pavadinimas turi būti unikalus!");    
     }
   };
 

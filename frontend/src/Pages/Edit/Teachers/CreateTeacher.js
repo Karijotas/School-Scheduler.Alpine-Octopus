@@ -120,7 +120,7 @@ export function CreateTeacher() {
     if (result.ok) {
       clear();
     } else {
-      window.alert("Nepavyko sukurt: " + result.status);
+      window.alert("Nepavyko sukurti: Teams vartotojo vardas turi būti unikalus!");    
     }
   };
 
