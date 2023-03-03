@@ -37,7 +37,7 @@ export function ViewRooms() {
   };
 
   const fetchFilterRooms = async () => {
-    fetch(`/api/v1/rooms/page/name-filter/${nameText}?page=` + activePage)
+    fetch(`/api/v1/rooms/page/name-filter/${nameText}`)
       .then((response) => response.json())
       .then((jsonRespone) => setRooms(jsonRespone));
   };

@@ -30,7 +30,7 @@ export function ViewTeachers() {
   const [teacherId, setTeacherId] = useState(1);
 
   const fetchFilterTeachers = async () => {
-    fetch(`/api/v1/teachers/page/name-filter/${nameText}?page=` + activePage)
+    fetch(`/api/v1/teachers/page/name-filter/${nameText}`)
       .then((response) => response.json())
       .then((jsonRespone) => setTeachers(jsonRespone));
   };
@@ -38,7 +38,7 @@ export function ViewTeachers() {
   const fetchTeachersByShifts = async () => {
     fetch(`/api/v1/teachers/page/shift-filter/${shiftText}`)
       .then((response) => response.json())
-      .then((jsonResponse) => setShifts(jsonResponse));
+      .then((jsonResponse) => setTeachers(jsonResponse));
   };
 
   const fetchSingleTeachers = () => {
@@ -68,7 +68,7 @@ export function ViewTeachers() {
   // };
 
   useEffect(() => {
-    nameText.length > 0 ? fetchFilterTeachers() : (shiftText.length >0 ? fetchTeachersByShifts():fetchTeachers());
+    nameText.length > 0 ? fetchFilterTeachers() : (shiftText.length > 0 ? fetchTeachersByShifts() : fetchTeachers());
   }, [activePage, nameText, shiftText]);
 
 
