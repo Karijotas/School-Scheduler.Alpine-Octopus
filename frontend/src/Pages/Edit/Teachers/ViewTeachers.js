@@ -27,7 +27,8 @@ export function ViewTeachers() {
   const [activePage, setActivePage] = useState(0);
   const [pagecount, setPageCount] = useState();
   const [teacherSubjects, setTeacherSubjects] = useState([]);
-  const [teacherId, setTeacherId] = useState(1);
+  const [teacherId, setTeacherId] = useState("");
+  const [subjectText, setSubjectText] = useState("");
 
   const fetchFilterTeachers = async () => {
     fetch(`/api/v1/teachers/page/name-filter/${nameText}`)
@@ -39,6 +40,12 @@ export function ViewTeachers() {
     fetch(`/api/v1/teachers/page/shift-filter/${shiftText}`)
       .then((response) => response.json())
       .then((jsonResponse) => setTeachers(jsonResponse));
+  };
+
+  const fetchFilterTeachersBySubjects = async () => {
+    fetch(`/api/v1/teachers/page/subject-filter/${subjectText}?page=` + activePage)
+      .then((response) => response.json())
+      .then((jsonRespone) => setTeachers(jsonRespone));
   };
 
   const fetchSingleTeachers = () => {
@@ -68,8 +75,8 @@ export function ViewTeachers() {
   // };
 
   useEffect(() => {
-    nameText.length > 0 ? fetchFilterTeachers() : (shiftText.length > 0 ? fetchTeachersByShifts() : fetchTeachers());
-  }, [activePage, nameText, shiftText]);
+    nameText.length > 0 ? fetchFilterTeachers() : (shiftText.length > 0 ? fetchTeachersByShifts(): (subjectText.length > 0 ? fetchFilterTeachersBySubjects():fetchTeachers()));
+  }, [activePage, nameText, shiftText, subjectText]);
 
 
   useEffect(() => {
@@ -86,12 +93,12 @@ export function ViewTeachers() {
       .then(console.log(teacherSubjects));
   };
 
-  useEffect(() => {
-    fetch(`/api/v1/teachers/${teacherId}/subjects`)
-      .then((response) => response.json())
-      .then(setTeacherSubjects)
-      .then(console.log(teacherSubjects));
-  }, [teacherId]);
+  // useEffect(() => {
+  //   fetch(`/api/v1/teachers/${teacherId}/subjects`)
+  //     .then((response) => response.json())
+  //     .then(setTeacherSubjects)
+  //     .then(console.log(teacherSubjects));
+  // }, [teacherId]);
 
   // useEffect((teacherId) => {
   //   fetch(`/api/v1/teachers/${teacherId}/subjects`)
@@ -125,9 +132,15 @@ export function ViewTeachers() {
                   onChange={(e) => setNameText(e.target.value)}
                 />
 
-                {/* <Input className='controls1' placeholder='Filtruoti pagal dalykus' value={yearText} onChange={(e) => setYearText(e.target.value)} /> */}
+                <Input
+                
+                  placeholder="Filtruoti pagal dalykus"
+                  value={subjectText}
+                  onChange={(e) => setSubjectText(e.target.value)}
+                />
 
                 <Input
+                className="controls2"
                   placeholder="Filtruoti pagal pamainas"
                   value={shiftText}
                   onChange={(e) => setShiftText(e.target.value)}
@@ -160,12 +173,15 @@ export function ViewTeachers() {
                   </Table.Header>
 
                   <Table.Body>
+                     
+                  {/* {console.log(teachers) + "aaaaaa"}   */}
                     {teachers.map((teacher) => (                      
-                      <Table.Row key={teacher.id} onKeyUp={() => setTeacherId(teacher.id)}>                        
+                      <Table.Row key={teacher.id}>                        
                         <Table.Cell>{teacher.name} </Table.Cell>
                         <Table.Cell>
-                          <List bulleted>                           
-                            {teacherSubjects.map((subject) => (
+                          <List bulleted>   
+                          {/* {console.log(teacher) + "aaaaaa"}                         */}
+                            {teacher.teacherSubjects.map((subject) => (
                               <List.Content key={subject.id}>
                                 <List.Item>{subject.name}</List.Item>
                               </List.Content>

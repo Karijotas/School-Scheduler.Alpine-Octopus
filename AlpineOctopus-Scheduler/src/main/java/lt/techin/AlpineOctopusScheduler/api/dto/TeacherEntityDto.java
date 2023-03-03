@@ -1,6 +1,7 @@
 package lt.techin.AlpineOctopusScheduler.api.dto;
 
 import lt.techin.AlpineOctopusScheduler.model.Shift;
+import lt.techin.AlpineOctopusScheduler.model.Subject;
 
 import java.util.Objects;
 import java.util.Set;
@@ -13,8 +14,12 @@ public class TeacherEntityDto extends TeacherDto {
 
     }
 
-    public TeacherEntityDto(String name, String loginEmail, String contactEmail, double workHoursPerWeek, String phone, Set<Shift> teacherShifts, Boolean deleted, Long id) {
-        super(name, loginEmail, contactEmail, workHoursPerWeek, phone, teacherShifts, deleted);
+    public TeacherEntityDto(Long id) {
+        this.id = id;
+    }
+
+    public TeacherEntityDto(String name, String loginEmail, String contactEmail, double workHoursPerWeek, String phone, Set<Shift> teacherShifts, Set<Subject> teacherSubjects, Boolean deleted, Long id) {
+        super(name, loginEmail, contactEmail, workHoursPerWeek, phone, teacherShifts, teacherSubjects, deleted);
         this.id = id;
     }
 

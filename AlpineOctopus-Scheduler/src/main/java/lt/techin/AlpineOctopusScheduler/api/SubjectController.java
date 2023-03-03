@@ -85,12 +85,6 @@ public class SubjectController {
         return ok(updatedSubject);
     }
 
-//    @GetMapping
-//    public List<SubjectEntityDto> getSubjects() {
-//        return subjectService.getAll().stream()
-//                .map(SubjectMapper::toSubjectEntityDto)
-//                .collect(toList());
-//    }
 
     @GetMapping(value = "/{subjectId}/modules")
     @ResponseBody
@@ -104,19 +98,6 @@ public class SubjectController {
         return subjectService.getAllRoomsById(subjectId);
     }
 
-    @GetMapping(value = "/{subjectId}/teachers")
-    @ResponseBody
-    public Set<Teacher> getAllTeachersById(@PathVariable Long subjectId) {
-        return subjectService.getAllTeachersById(subjectId);
-    }
-
-//    @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
-//    @ResponseBody
-//    public List<SubjectEntityDto> getPagedAllSubjects(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
-//                                                      @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-//
-//        return subjectService.getPagedAllSubjects(page, pageSize);
-//    }
 
     @GetMapping(path = "page/name-filter/{nameText}")
     @ApiOperation(value = "Get Paged Subjects starting with", notes = "Returns list of Subjects starting with passed String")
@@ -186,14 +167,6 @@ public class SubjectController {
     }
 
 
-    @PostMapping("/{subjectId}/teachers/{teacherId}/newTeachers")
-    public ResponseEntity<SubjectDto> addTeacherToSubject(@PathVariable Long subjectId, @Valid @PathVariable Long teacherId) {
-
-        var updatedSubject = subjectService.addTeacherToSubject(subjectId, teacherId);
-
-        return ok(toSubjectDto(updatedSubject));
-    }
-
     @PostMapping("/{subjectId}/rooms/{roomId}/newRooms")
     public ResponseEntity<SubjectDto> addRoomToSubject(@PathVariable Long subjectId, @Valid @PathVariable Long roomId) {
 
@@ -211,17 +184,6 @@ public class SubjectController {
         }
     }
 
-
-    @DeleteMapping("/{subjectId}/teachers/{teacherId}")
-    public ResponseEntity<Void> deleteTeacherFromSubjectByTeacherId(@PathVariable Long subjectId, @PathVariable Long teacherId) {
-        boolean deleted = subjectService.deleteTeacherInSubjectById(subjectId, teacherId);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
     @DeleteMapping("/{subjectId}/rooms/{roomId}")
     public ResponseEntity<Void> deleteRoomFromSubjectByRoomId(@PathVariable Long subjectId, @PathVariable Long roomId) {
         boolean deleted = subjectService.deleteRoomInSubjectById(subjectId, roomId);
@@ -232,4 +194,24 @@ public class SubjectController {
         }
     }
 
+    @GetMapping(value = "/{subjectId}/teachers")
+    @ResponseBody
+    public List<Teacher> getAllTeachersById(@PathVariable Long subjectId) {
+        return subjectService.getAllTeachersById(subjectId);
+    }
+
+    @PostMapping("/{subjectId}/teachers/{teacherId}/newTeachers")
+    public void addTeacherToSubject(@PathVariable Long subjectId, @PathVariable Long teacherId) {
+        subjectService.addTeacherToSubject(subjectId, teacherId);
+    }
+
+    @DeleteMapping("/{subjectId}/subjects/{teacherId}")
+    public ResponseEntity<Void> deleteSubjectFromTeacherBySubjectId(@PathVariable Long subjectId, @PathVariable Long teacherId) {
+        boolean deleted = subjectService.deleteTeacherFromSubjectById(subjectId, teacherId);
+        if (deleted) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
