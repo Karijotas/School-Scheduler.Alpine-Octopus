@@ -40,4 +40,5 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long> {
 
     List<Teacher> findAllByDeletedAndNameContainingIgnoreCaseOrderByModifiedDateDesc(Boolean deleted, String nameText);
 
+
 }

@@ -28,7 +28,7 @@ export function ViewShifts() {
   const [pagecount, setPageCount] = useState();
 
   const fetchFilterShifts = async () => {
-    fetch(`/api/v1/shifts/page/name-filter/${nameText}?page=` + activePage)
+    fetch(`/api/v1/shifts/page/name-filter/${nameText}`)
       .then((response) => response.json())
       .then((jsonRespone) => setShifts(jsonRespone));
   };

@@ -37,7 +37,7 @@ export function ViewSubjects() {
   };
 
   const fetchFilterSubjects = async () => {
-    fetch(`/api/v1/subjects/page/name-filter/${nameText}?page=` + activePage)
+    fetch(`/api/v1/subjects/page/name-filter/${nameText}`)
       .then((response) => response.json())
       .then((jsonRespone) => setSubjects(jsonRespone));
   };
