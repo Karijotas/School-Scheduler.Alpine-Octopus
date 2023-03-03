@@ -86,10 +86,10 @@ export function CreateProgramPage() {
 
     if (result.ok) {
       fetchPrograms();
-      setProgramId
+      setProgramId(programs.size - 1)
       clear();
     } else {
-      window.alert("Nepavyko sukurti: pavadinimas turi būti unikalus!");    
+      window.alert("Nepavyko sukurti: pavadinimas turi būti unikalus!");
     }
   };
 
