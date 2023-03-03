@@ -117,7 +117,7 @@ export function CreateShiftPage() {
     if (result.ok) {
       clear();
     } else {
-      window.alert("Nepavyko sukurt: " + result.status);
+      window.alert("Nepavyko sukurti: pavadinimas turi būti unikalus!");    
     }
   };
 

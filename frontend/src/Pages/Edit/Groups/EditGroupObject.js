@@ -220,8 +220,8 @@ export function EditGroupObject() {
                                 <Table.Body>
                                     <Table.Row  >
                                         <Table.Cell width={6} >{groups.studentAmount}</Table.Cell>
-                                        <Table.Cell >{groups.program.name} </Table.Cell>
-                                        <Table.Cell width={4}>{groups.shift.name} </Table.Cell>
+                                        <Table.Cell >{groups.programName} </Table.Cell>
+                                        <Table.Cell width={4}>{groups.shiftName} </Table.Cell>
                                     </Table.Row>
                                 </ Table.Body >
                             </Table>
@@ -277,10 +277,10 @@ export function EditGroupObject() {
                                         </Table.Cell>
                                         <Table.Cell collapsing >
                                             {/* {(selectErrorProgram) && <div style={{color: "red"}}>{selectErrorProgram}</div>} */}
-                                            <Select options={programs} placeholder={groups.program.name} onChange={(e, data) => setProgramId(data.value)} />
+                                            <Select options={programs} placeholder={groups.programName} onChange={(e, data) => setProgramId(data.value)} />
                                         </Table.Cell >
                                         <Table.Cell width={4}>
-                                            <Select options={shifts} placeholder={groups.shift.name} onChange={(e, data) => setShiftId(data.value)} />
+                                            <Select options={shifts} placeholder={groups.shiftName} onChange={(e, data) => setShiftId(data.value)} />
                                         </Table.Cell>
                                     </Table.Row>
                                 </ Table.Body >

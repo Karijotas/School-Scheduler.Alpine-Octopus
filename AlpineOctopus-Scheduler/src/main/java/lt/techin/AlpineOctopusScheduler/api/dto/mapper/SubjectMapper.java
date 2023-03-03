@@ -17,7 +17,6 @@ public class SubjectMapper {
         subjectDto.setModifiedDate(subject.getModifiedDate());
         subjectDto.setSubjectModules(subject.getSubjectModules());
         subjectDto.setSubjectRooms(subject.getSubjectRooms());
-        subjectDto.setSubjectTeachers(subject.getSubjectTeachers());
 
 
         return subjectDto;
@@ -32,7 +31,6 @@ public class SubjectMapper {
         subject.setModifiedDate(subjectDto.getModifiedDate());
         subject.setSubjectModules(subjectDto.getSubjectModules());
         subject.setSubjectRooms(subjectDto.getSubjectRooms());
-        subject.setSubjectTeachers(subjectDto.getSubjectTeachers());
 
 
         return subject;
@@ -49,7 +47,6 @@ public class SubjectMapper {
         subjectEntityDto.setModifiedDate(subject.getModifiedDate());
         subjectEntityDto.setSubjectModules(subject.getSubjectModules());
         subjectEntityDto.setSubjectRooms(subject.getSubjectRooms());
-        subjectEntityDto.setSubjectTeachers(subject.getSubjectTeachers());
 
 
         return subjectEntityDto;
@@ -65,7 +62,6 @@ public class SubjectMapper {
         subject.setModifiedDate(subjectEntityDto.getModifiedDate());
         subject.setSubjectModules(subjectEntityDto.getSubjectModules());
         subject.setSubjectRooms(subjectEntityDto.getSubjectRooms());
-        subject.setSubjectTeachers(subjectEntityDto.getSubjectTeachers());
 
 
         return subject;

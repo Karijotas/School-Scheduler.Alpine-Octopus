@@ -6,7 +6,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -22,17 +21,16 @@ public class Program {
     private Long id;
     @NotBlank
     @Column(name = "name", unique = true)
-    @Size(min = 5, max = 500)
+    @Size(min = 1, max = 250)
     private String name;
 
-    @NotBlank
-    @Size(min = 1, max = 500)
+    @Size(max = 500)
     private String description;
 
-    @OneToMany(mappedBy = "program")
-    @JsonIgnore
-    @Valid
-    private Set<Groups> groupsSet;
+//    @OneToMany(mappedBy = "program")
+//    @JsonIgnore
+//    @Valid
+//    private Set<Groups> groupsSet;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @CreatedDate
@@ -59,13 +57,13 @@ public class Program {
     @JsonIgnore
     private Set<ProgramSubjectHours> subjectHours;
 
-    @OneToMany(mappedBy = "program")
-    @JsonIgnore
-    private Set<Groups> groups;
+//    @OneToMany(mappedBy = "program")
+//    @JsonIgnore
+//    private Set<Groups> groups;
 
     public Program() {
         subjectHours = new HashSet<>();
-        groups = new HashSet<>();
+//        groups = new HashSet<>();
     }
 
     public Long getId() {
@@ -92,13 +90,13 @@ public class Program {
         this.description = description;
     }
 
-    public Set<Groups> getGroupsSet() {
-        return groupsSet;
-    }
-
-    public void setGroupsSet(Set<Groups> groupsSet) {
-        this.groupsSet = groupsSet;
-    }
+//    public Set<Groups> getGroupsSet() {
+//        return groupsSet;
+//    }
+//
+//    public void setGroupsSet(Set<Groups> groupsSet) {
+//        this.groupsSet = groupsSet;
+//    }
 
     public LocalDateTime getCreatedDate() {
         return createdDate;
@@ -132,24 +130,38 @@ public class Program {
         this.subjectHours = subjectHours;
     }
 
-    public Set<Groups> getGroups() {
-        return groups;
-    }
-
-    public void setGroups(Set<Groups> groups) {
-        this.groups = groups;
-    }
+//    public Set<Groups> getGroups() {
+//        return groups;
+//    }
+//
+//    public void setGroups(Set<Groups> groups) {
+//        this.groups = groups;
+//    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Program program = (Program) o;
-        return Objects.equals(id, program.id) && Objects.equals(name, program.name) && Objects.equals(description, program.description) && Objects.equals(groupsSet, program.groupsSet) && Objects.equals(createdDate, program.createdDate) && Objects.equals(modifiedDate, program.modifiedDate) && Objects.equals(deleted, program.deleted) && Objects.equals(subjectHours, program.subjectHours) && Objects.equals(groups, program.groups);
+        return Objects.equals(id, program.id) && Objects.equals(name, program.name) && Objects.equals(description, program.description) && Objects.equals(createdDate, program.createdDate) && Objects.equals(modifiedDate, program.modifiedDate) && Objects.equals(deleted, program.deleted) && Objects.equals(subjectHours, program.subjectHours);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, groupsSet, createdDate, modifiedDate, deleted, subjectHours, groups);
+        return Objects.hash(id, name, description, createdDate, modifiedDate, deleted, subjectHours);
+    }
+
+    @Override
+    public String toString() {
+        return "Program{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", createdDate=" + createdDate +
+                ", modifiedDate=" + modifiedDate +
+                ", deleted=" + deleted +
+                ", subjectHours=" + subjectHours +
+//                ", groups=" + groups +
+                '}';
     }
 }

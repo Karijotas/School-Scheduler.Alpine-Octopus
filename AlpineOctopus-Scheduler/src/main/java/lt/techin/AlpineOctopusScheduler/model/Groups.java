@@ -28,11 +28,14 @@ public class Groups {
     @NotNull
     private Integer studentAmount;
     @Valid
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "program_id")
     private Program program;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shift_id")
     private Shift shift;
+
 
     private Boolean deleted = Boolean.FALSE;
 

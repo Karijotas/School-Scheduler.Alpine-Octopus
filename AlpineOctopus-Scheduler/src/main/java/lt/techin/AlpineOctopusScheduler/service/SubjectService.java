@@ -187,21 +187,6 @@ public class SubjectService {
         return subjectRepository.save(existingSubject);
     }
 
-    public Subject addTeacherToSubject(Long subjectId, Long teacherId) {
-        var existingSubject = subjectRepository.findById(subjectId)
-                .orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
-                        "id", "Subject not found", subjectId.toString()));
-
-        var existingTeacher = teacherRepository.findById(teacherId)
-                .orElseThrow(() -> new SchedulerValidationException("Teacher does not exist",
-                        "id", "Teacher not found", teacherId.toString()));
-
-        Set<Teacher> existingTeacherList = existingSubject.getSubjectTeachers();
-        existingTeacherList.add(existingTeacher);
-        existingSubject.setSubjectTeachers(existingTeacherList);
-
-        return subjectRepository.save(existingSubject);
-    }
 
     public Subject addRoomToSubject(Long subjectId, Long roomId) {
         var existingSubject = subjectRepository.findById(subjectId)
@@ -268,10 +253,6 @@ public class SubjectService {
         return subjectRepository.findById(subjectId).get().getSubjectRooms();
     }
 
-    public Set<Teacher> getAllTeachersById(Long subjectId) {
-        return subjectRepository.findById(subjectId).get().getSubjectTeachers();
-    }
-
     public boolean deleteModuleInSubjectById(Long subjectId, Long moduleId) {
         try {
             var existingSubject = subjectRepository.findById(subjectId).get();
@@ -284,16 +265,6 @@ public class SubjectService {
 
     }
 
-    public boolean deleteTeacherInSubjectById(Long subjectId, Long teacherId) {
-        try {
-            var existingSubject = subjectRepository.findById(subjectId).get();
-            existingSubject.getSubjectTeachers().remove(teacherRepository.findById(teacherId).get());
-            subjectRepository.save(existingSubject);
-            return true;
-        } catch (EmptyResultDataAccessException exception) {
-            return false;
-        }
-    }
 
     public boolean deleteRoomInSubjectById(Long subjectId, Long roomId) {
         try {
@@ -306,4 +277,39 @@ public class SubjectService {
         }
     }
 
+    public void addTeacherToSubject(Long subjectId, Long teacherId) {
+        var existingTeacher = teacherRepository.findById(teacherId)
+                .orElseThrow(() -> new SchedulerValidationException("Teacher does not exist",
+                        "id", "Teacher not found", teacherId.toString()));
+
+        var existingSubject = subjectRepository.findById(subjectId)
+                .orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
+                        "id", "Subject not found", subjectId.toString()));
+
+        subjectRepository.insertSubjectAndTeacher(subjectId, teacherId);
+    }
+
+
+    public boolean deleteTeacherFromSubjectById(Long subjectId, Long teacherId) {
+        var existingTeacher = teacherRepository.findById(teacherId)
+                .orElseThrow(() -> new SchedulerValidationException("Teacher does not exist",
+                        "id", "Teacher not found", teacherId.toString()));
+
+        var existingSubject = subjectRepository.findById(subjectId)
+                .orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
+                        "id", "Subject not found", subjectId.toString()));
+
+        subjectRepository.deleteSubjectFromTeacher(subjectId, teacherId);
+
+        if (teacherRepository.existsById(teacherId)) {
+            teacherRepository.deleteById(teacherId);
+            return true;
+        }
+
+        return false;
+    }
+
+    public List<Teacher> getAllTeachersById(Long subjectId) {
+        return teacherRepository.findAllByTeacherSubjects_Id(subjectId);
+    }
 }

@@ -1,6 +1,6 @@
 INSERT
 INTO
-  teachers_subjects
+  teacher_subjects
   (subject_id, teacher_id)
 VALUES
  (1,1),
