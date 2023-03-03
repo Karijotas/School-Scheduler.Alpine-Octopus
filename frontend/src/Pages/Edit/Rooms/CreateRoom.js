@@ -28,7 +28,7 @@ export function CreateRoom() {
   const [formValid, setFormValid] = useState(false)
 
   useEffect(() => {
-    if(nameError || buildingError || descriptionError) {
+    if (nameError || buildingError || descriptionError) {
       setFormValid(false)
     } else {
       setFormValid(true)
@@ -36,21 +36,21 @@ export function CreateRoom() {
   }, [nameError, buildingError, descriptionError])
 
   const blurHandler = (e) => {
-    switch (e.target.name){
+    switch (e.target.name) {
       case 'name':
         setNameDirty(true);
         break
-        case 'building': 
-          setBuildingDirty(true);
-          break
+      case 'building':
+        setBuildingDirty(true);
+        break
     }
   }
 
   const nameHandler = (e) => {
     setName(e.target.value)
-    if(e.target.value.length <2 || e.target.value.length > 100){
+    if (e.target.value.length < 2 || e.target.value.length > 100) {
       setNameError("Įveskite nuo 2 iki 100 simbolių!")
-      if(!e.target.value){
+      if (!e.target.value) {
         setNameError("Pavadinimas negali būti tuščias!")
       }
     } else {
@@ -60,9 +60,9 @@ export function CreateRoom() {
 
   const buildingHandler = (e) => {
     setBuilding(e.target.value)
-    if(e.target.value.length < 2 || e.target.value.length > 100){
+    if (e.target.value.length < 2 || e.target.value.length > 100) {
       setBuildingError("Įveskite nuo 2 iki 100 simbolių!!")
-      if(!e.target.value){
+      if (!e.target.value) {
         setBuildingError("Pastatas negali būti tuščias!")
       }
     } else {
@@ -72,7 +72,7 @@ export function CreateRoom() {
 
   const descriptionHandler = (e) => {
     setDescription(e.target.value)
-    if(e.target.value.length > 500){
+    if (e.target.value.length > 500) {
       setDescriptionError("Aprašymas negali viršyti 500 simbolių!")
     } else {
       setDescriptionError("")
@@ -102,7 +102,7 @@ export function CreateRoom() {
         description,
       })
     }).then(applyResult)
-    .then(() => window.location = listUrl);
+      .then(() => window.location = listUrl);
   };
 
 
@@ -121,17 +121,17 @@ export function CreateRoom() {
 
             <Form.Field >
               <label>Klasės pavadinimas</label>
-              {(nameDirty && nameError) && <div style={{color: "red"}}>{nameError}</div>}
+              {(nameDirty && nameError) && <div style={{ color: "red" }}>{nameError}</div>}
               <input name="name" onBlur={blurHandler} placeholder='Klasės pavadinimas' value={name} onChange={e => nameHandler(e)} />
             </Form.Field>
             <Form.Field >
               <label>Pastatas</label>
-              {(buildingDirty && buildingError) && <div style={{color: "red"}}>{buildingError}</div>}
+              {(buildingDirty && buildingError) && <div style={{ color: "red" }}>{buildingError}</div>}
               <input name="building" onBlur={blurHandler} placeholder='Pastatas' value={building} onChange={e => buildingHandler(e)} />
             </Form.Field>
             <Form.Field >
               <label>Aprašymas</label>
-              {(descriptionError) && <div style={{color: "red"}}>{descriptionError}</div>}
+              {(descriptionError) && <div style={{ color: "red" }}>{descriptionError}</div>}
               <input input name="description" onBlur={blurHandler} placeholder='Aprasymas' value={description} onChange={e => descriptionHandler(e)} />
             </Form.Field>
             <div><Button icon labelPosition="left" className="" href='#/view/rooms'><Icon name="arrow left" />Atgal</Button>

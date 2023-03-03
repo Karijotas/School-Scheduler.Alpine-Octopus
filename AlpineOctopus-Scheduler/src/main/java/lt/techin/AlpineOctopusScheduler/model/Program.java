@@ -22,11 +22,10 @@ public class Program {
     private Long id;
     @NotBlank
     @Column(name = "name", unique = true)
-    @Size(min = 5, max = 500)
+    @Size(min = 1, max = 250)
     private String name;
 
-    @NotBlank
-    @Size(min = 1, max = 500)
+    @Size(max = 500)
     private String description;
 
     @OneToMany(mappedBy = "program")
