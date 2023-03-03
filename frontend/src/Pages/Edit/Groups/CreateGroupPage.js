@@ -45,20 +45,20 @@ export function CreateGroupPage() {
   const [studentDirty, setStudentDirty] = useState(false);
 
   const [nameError, setNameError] = useState("Negali būti tuščias!")
-  const [studentError, setStudentError] = useState("")
+  const [studentError, setStudentError] = useState(" ")
   // const [yearError, setYearError] = useState("*Privaloma")
-  // const [programError, setProgramError] = useState("*Privaloma")
-  // const [shiftError, setShiftError] = useState("*Privaloma")
+  const [programError, setProgramError] = useState("")
+  const [shiftError, setShiftError] = useState("")
 
   const [formValid, setFormValid] = useState(false)
 
   useEffect(() => {
-    if (studentError || nameError) {
+    if (studentError || nameError || programId === undefined || shiftId === undefined) {
       setFormValid(false)
     } else {
       setFormValid(true)
     }
-  }, [studentError, nameError,])
+  }, [studentError, nameError, programId, shiftId])
 
   const blurHandler = (e) => {
     switch (e.target.name) {
@@ -82,25 +82,26 @@ export function CreateGroupPage() {
       setNameError("")
     }
   }
+
+
   const studentHandler = (e) => {
     setStudentAmount(e.target.value)
-    if (!e.target.value) {
-      setStudentError("Negali būti tuščias!")
-      if (!/^\d+$/.test(e.target.value)) {
-        setStudentError("Įveskite tik skaičius")
+
+    if (!/^\d+$/.test(e.target.value)) {
+      setStudentError("Įveskite tik skaičius")
+      if (!e.target.value) {
+        setStudentError("Negali būti tuščias")
       }
+
+    } else if (e.target.value > 300 || e.target.value < 1) {
+      setStudentError("Skaičius turi būti tarp 1 ir 300")
+    } else {
+      setStudentError("");
     }
+  };
 
-  }
 
 
-  // const selectShiftHandler = () => {
-  //   setShiftError("")
-  // }
-
-  // const selectProgramHandler = () => {
-  //   setProgramError("")
-  // }
 
   // const selectYearHandler = () => {
   //   setYearError("")
@@ -188,13 +189,13 @@ export function CreateGroupPage() {
             <Form.Group widths='equal'>
               <Form.Field>
                 <label>Programa</label>
-                {/* {(programError) && <div style={{ color: "red" }}>{programError}</div>} */}
+                {(programError) && <div style={{ color: "red" }}>{programError}</div>}
                 <Select options={programs} placeholder='Programa' onClose={() => console.log(programId)} onChange={(e, data) => setProgramId(data.value)} />
 
               </Form.Field>
               <Form.Field >
                 <label>Pamaina</label>
-                {/* {(shiftError) && <div style={{ color: "red" }}>{shiftError}</div>} */}
+                {(shiftError) && <div style={{ color: "red" }}>{shiftError}</div>}
                 <Select options={shifts} placeholder='Pamaina' onClose={() => console.log(shiftId)} onChange={(e, data) => setShiftId(data.value)} />
               </Form.Field>
             </Form.Group>

@@ -101,9 +101,10 @@ public class RoomService {
     }
 
     public Room update(Long id, Room room) {
-        validateInputWithInjectedValidator(room);
+//        validateInputWithInjectedValidator(room);
         var existingRoom = roomRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Room doesn't exist"));
+        		.orElseThrow(() -> new SchedulerValidationException("Room does not exist",
+                        "id", "Room not found", id.toString()));
 
         existingRoom.setName(room.getName());
         existingRoom.setBuilding(room.getBuilding());

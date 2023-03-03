@@ -172,9 +172,3 @@ public class Subject {
         return Objects.hash(id, name, description, deleted, createdDate, modifiedDate, subjectModules, subjectRooms, subjectTeachers, subjectHours);
     }
 }
-
-
-
-
-
-
