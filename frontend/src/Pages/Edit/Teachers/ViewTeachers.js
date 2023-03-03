@@ -31,7 +31,7 @@ export function ViewTeachers() {
   const [subjectText, setSubjectText] = useState("");
 
   const fetchFilterTeachers = async () => {
-    fetch(`/api/v1/teachers/page/name-filter/${nameText}?page=` + activePage)
+    fetch(`/api/v1/teachers/page/name-filter/${nameText}`)
       .then((response) => response.json())
       .then((jsonRespone) => setTeachers(jsonRespone));
   };

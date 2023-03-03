@@ -34,44 +34,44 @@ export function EditModuleObject() {
   const [formValid, setFormValid] = useState(false)
 
 
-    useEffect(() => {
-        if(nameError || descriptionError) {
-          setFormValid(false)
-        } else {
-          setFormValid(true)
-        }
-      }, [nameError, descriptionError])
+  useEffect(() => {
+    if (nameError || descriptionError) {
+      setFormValid(false)
+    } else {
+      setFormValid(true)
+    }
+  }, [nameError, descriptionError])
 
-    const handleNameInputChange = (e) => {
-        modules.name = e.target.value
-        setName(e.target.value);
-        validateNameInput(e.target.value);
-      };
+  const handleNameInputChange = (e) => {
+    modules.name = e.target.value
+    setName(e.target.value);
+    validateNameInput(e.target.value);
+  };
 
-    const handleDescriptionInputChange = (e) => {
-      modules.description = e.target.value
-        setDescription(e.target.value);
-        validateDescriptionInput(e.target.value);
-      };
-    
-    const validateNameInput = (value) => {
-        if (value.length <2 || value.length > 100) {
-            setNameError("Įveskite nuo 2 iki 100 simbolių!")
-            if(!value){
-                setNameError("Pavadinimas negali būti tuščias!")
-              } 
-        } else {
-            setNameError("")
-        }
-      };
+  const handleDescriptionInputChange = (e) => {
+    modules.description = e.target.value
+    setDescription(e.target.value);
+    validateDescriptionInput(e.target.value);
+  };
 
-      const validateDescriptionInput = (value) => {
-        if (value.length > 500) {
-            setDescriptionError("Aprašymas negali viršyti 500 simbolių!")
-        } else {
-            setDescriptionError("")
-        }
-      };
+  const validateNameInput = (value) => {
+    if (value.length < 2 || value.length > 100) {
+      setNameError("Įveskite nuo 2 iki 100 simbolių!")
+      if (!value) {
+        setNameError("Pavadinimas negali būti tuščias!")
+      }
+    } else {
+      setNameError("")
+    }
+  };
+
+  const validateDescriptionInput = (value) => {
+    if (value.length > 500) {
+      setDescriptionError("Aprašymas negali viršyti 500 simbolių!")
+    } else {
+      setDescriptionError("")
+    }
+  };
 
 
   const fetchModuleSubjects = async () => {
@@ -85,13 +85,13 @@ export function EditModuleObject() {
       .then((response) => response.json())
       .then(setModuleSubjects)
       .then(console.log(moduleSubjects));
-  }, [params]);
+  }, [active, params]);
 
   useEffect(() => {
     fetch("/api/v1/modules/" + params.id)
       .then((response) => response.json())
       .then(setModules);
-  }, [params]);
+  }, [active, params]);
 
   const applyResult = () => {
     setActive(true);
@@ -277,10 +277,10 @@ export function EditModuleObject() {
                       <Table.Cell collapsing>
                         <Input
                           value={modules.name}
-                         
+
                           onChange={(e) => handleNameInputChange(e)}
-                        />{(nameError) && <div style={{color: "red"}}>{nameError}</div>}
-                        
+                        />{(nameError) && <div style={{ color: "red" }}>{nameError}</div>}
+
                       </Table.Cell>
                       <Table.Cell collapsing> {modules.modifiedDate} </Table.Cell>
                     </Table.Row>
@@ -300,8 +300,8 @@ export function EditModuleObject() {
                             fluid
                             style={{ minHeight: 60 }}
                             value={modules.description}
-                          onChange={(e) => handleDescriptionInputChange(e)}
-                        />{(descriptionError) && <div style={{color: "red"}}>{descriptionError}</div>}
+                            onChange={(e) => handleDescriptionInputChange(e)}
+                          />{(descriptionError) && <div style={{ color: "red" }}>{descriptionError}</div>}
                         </Form>
                       </Table.Cell>
                     </Table.Row>
@@ -357,7 +357,7 @@ export function EditModuleObject() {
                                 <Divider hidden />
                                 <List.Content floated="left">
                                   <Button
-                                  id='details'
+                                    id='details'
                                     onClick={() =>
                                       addSubject(params.id, subjectId)
                                     }

@@ -82,7 +82,7 @@ public class ModuleService {
     }
 
     public Module update(Long id, Module module) {
-        validateInputWithInjectedValidator(module);
+//        validateInputWithInjectedValidator(module);
         var existingModule = moduleRepository.findById(id)
                 .orElseThrow(() -> new SchedulerValidationException("Module does not exist",
                         "id", "Module not found", id.toString()));

@@ -92,7 +92,7 @@ public class TeacherService {
 
     public Teacher update(Long id, Teacher teacher) {
 
-        validateInputWithInjectedValidator(teacher);
+//        validateInputWithInjectedValidator(teacher);
         var existingTeacher = teacherRepository.findById(id)
                 .orElseThrow(() -> new SchedulerValidationException("Teacher does not exist",
                         "id", "Teacher not found", id.toString()));
