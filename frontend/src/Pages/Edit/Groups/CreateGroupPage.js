@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useHref } from 'react-router-dom';
 import { Button, Form, Grid, Icon, Input, Segment, Select } from "semantic-ui-react";
-import MainMenu from '../../../Components/MainMenu';
-import { EditMenu } from '../../../Components/EditMenu';
 import { YEAR_OPTIONS } from '../../../Components/const';
+import { EditMenu } from '../../../Components/EditMenu';
+import MainMenu from '../../../Components/MainMenu';
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -33,11 +33,80 @@ export function CreateGroupPage() {
   // const [create, setCreate] = useState()
   const [hide, setHide] = useState(false)
   const [name, setName] = useState('');
-  const [schoolYear, setSchoolYear] = useState('')
+  const [schoolYear, setSchoolYear] = useState(2023)
   const [studentAmount, setStudentAmount] = useState('')
   const [programs, setPrograms] = useState([])
   const [programId, setProgramId] = useState()
-  const [shift, setShift] = useState('')
+  const [shifts, setShifts] = useState([]);
+  const [shiftId, setShiftId] = useState();
+
+  //Validation
+  const [nameDirty, setNameDirty] = useState(false);
+  const [studentDirty, setStudentDirty] = useState(false);
+
+  const [nameError, setNameError] = useState("Negali būti tuščias!")
+  const [studentError, setStudentError] = useState("")
+  // const [yearError, setYearError] = useState("*Privaloma")
+  // const [programError, setProgramError] = useState("*Privaloma")
+  // const [shiftError, setShiftError] = useState("*Privaloma")
+
+  const [formValid, setFormValid] = useState(false)
+
+  useEffect(() => {
+    if (studentError || nameError) {
+      setFormValid(false)
+    } else {
+      setFormValid(true)
+    }
+  }, [studentError, nameError,])
+
+  const blurHandler = (e) => {
+    switch (e.target.name) {
+      case 'name':
+        setNameDirty(true);
+        break
+      case 'student':
+        setStudentDirty(true);
+        break
+    }
+  }
+
+  const nameHandler = (e) => {
+    setName(e.target.value)
+    if (e.target.value.length < 2 || e.target.value.length > 100) {
+      setNameError("Įveskite nuo 2 iki 100 simbolių!")
+      if (!e.target.value) {
+        setNameError("Negali būti tuščias!")
+      }
+    } else {
+      setNameError("")
+    }
+  }
+  const studentHandler = (e) => {
+    setStudentAmount(e.target.value)
+    if (!e.target.value) {
+      setStudentError("Negali būti tuščias!")
+      if (!/^\d+$/.test(e.target.value)) {
+        setStudentError("Įveskite tik skaičius")
+      }
+    }
+
+  }
+
+
+  // const selectShiftHandler = () => {
+  //   setShiftError("")
+  // }
+
+  // const selectProgramHandler = () => {
+  //   setProgramError("")
+  // }
+
+  // const selectYearHandler = () => {
+  //   setYearError("")
+  //     }
+
+
 
   const applyResult = (result) => {
     const clear = () => {
@@ -54,14 +123,13 @@ export function CreateGroupPage() {
 
   const createGroup = () => {
     fetch(
-      '/api/v1/groups?programId=' + programId, {
+      '/api/v1/groups?programId=' + programId + '&shiftId=' + shiftId, {
       method: 'POST',
       headers: JSON_HEADERS,
       body: JSON.stringify({
         name,
         schoolYear,
         studentAmount,
-        shift,
       }),
     }).then(applyResult).then(() => window.location = listUrl);
 
@@ -76,8 +144,18 @@ export function CreateGroupPage() {
           })
         )
       );
-  }, []);
+  }, [shifts]);
 
+  useEffect(() => {
+    fetch('/api/v1/shifts')
+      .then((response) => response.json())
+      .then((data) => setShifts(
+        data.map((x) => {
+          return { key: x.id, text: x.name, value: x.id };
+        })
+      )
+      )
+  }, []);
 
   return (<div className="create-new-page">
     <MainMenu />
@@ -91,33 +169,37 @@ export function CreateGroupPage() {
           <Form >
             <Form.Field >
               <label>"Teams" grupės pavadinimas</label>
-              <input placeholder='"Teams" grupės pavadinimas' value={name} onChange={(e) => setName(e.target.value)} />
+              {(nameDirty && nameError) && <div style={{ color: "red" }}>{nameError}</div>}
+              <input name="name" onBlur={blurHandler} placeholder='"Teams" grupės pavadinimas' value={name} onChange={(e) => nameHandler(e)} />
             </Form.Field>
             <Form.Group widths='equal'>
               <Form.Field >
                 <label>Mokslo metai</label>
-                <select id='selectYear' value={schoolYear} onChange={(e) => setSchoolYear(e.target.value)} >
-                  <option>-</option>
+                {/* {(yearError) && <div style={{color: "red"}}>{yearError}</div>} */}
+                <select id='selectYear' value={schoolYear} onChange={((e) => setSchoolYear(e.target.value))} >
                   {Object.entries(YEAR_OPTIONS)
                     .map(([key, value]) => <option value={key}>{value}</option>)
                   }  </select>   </Form.Field>
               <Form.Field >
+                {(studentError) && <div style={{ color: "red" }}>{studentError}</div>}
                 <label>Studentų skaičius</label>
-                <Input placeholder='Studentų skaičius' value={studentAmount} onChange={(e) => setStudentAmount(e.target.value)} />
+                <Input name="student" placeholder='Studentų skaičius' value={studentAmount} onChange={(e) => studentHandler(e)} />
               </Form.Field> </Form.Group>
             <Form.Group widths='equal'>
               <Form.Field>
                 <label>Programa</label>
+                {/* {(programError) && <div style={{ color: "red" }}>{programError}</div>} */}
                 <Select options={programs} placeholder='Programa' onClose={() => console.log(programId)} onChange={(e, data) => setProgramId(data.value)} />
 
               </Form.Field>
               <Form.Field >
                 <label>Pamaina</label>
-                <Input options={shiftOptions} placeholder='Pamaina' value={shift} onChange={(e) => setShift(e.target.value)} />
+                {/* {(shiftError) && <div style={{ color: "red" }}>{shiftError}</div>} */}
+                <Select options={shifts} placeholder='Pamaina' onClose={() => console.log(shiftId)} onChange={(e, data) => setShiftId(data.value)} />
               </Form.Field>
             </Form.Group>
             <div ><Button icon labelPosition="left" className="" as={NavLink} exact to='/view/groups'><Icon name="arrow left" />Atgal</Button>
-              <Button type='submit' className="controls" id='details' onClick={createGroup}>Sukurti</Button></div>
+              <Button type='submit' disabled={!formValid} className="controls" id='details' onClick={createGroup}>Sukurti</Button></div>
           </Form>
 
         </Segment>

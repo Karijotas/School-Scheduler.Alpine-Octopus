@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 import {
   Button,
   ButtonGroup,
@@ -6,15 +7,12 @@ import {
   Divider,
   Grid,
   Icon,
-  Input,
-  Segment,
-  Table,
-  List,
+  Input, List, Segment,
+  Table
 } from "semantic-ui-react";
-import MainMenu from "../../../Components/MainMenu";
 import { EditMenu } from "../../../Components/EditMenu";
+import MainMenu from "../../../Components/MainMenu";
 import { CreateSubjecPage } from "./CreateSubjectPage";
-import { NavLink } from "react-router-dom";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -33,7 +31,7 @@ export function ViewSubjects() {
   const [moduleText, setModuleText] = useState("");
 
   const fetchSubjectsByModules = async () => {
-    fetch(`/api/v1/subjects/page/module-filter/${moduleText}?page=` + activePage)
+    fetch(`/api/v1/subjects/page/module-filter/${moduleText}`)
       .then((response) => response.json())
       .then((jsonResponse) => setSubjects(jsonResponse));
   };
@@ -63,10 +61,10 @@ export function ViewSubjects() {
   };
 
   const removeSubject = (id) => {
-    fetch("/api/v1/subjects/" + id, {
-      method: "DELETE",
-      headers: JSON_HEADERS,
-    }).then(fetchSubjects);
+    fetch("/api/v1/subjects/delete/" + id, {
+      method: "PATCH",
+    }).then(fetchSubjects)
+      .then(setOpen(false));
   };
 
   // useEffect(() => {
@@ -77,10 +75,10 @@ export function ViewSubjects() {
   //   moduleText.length > 0 ? fetchSubjectsByModules() : fetchSubjects();
   // }, [activePage, moduleText]);
 
- 
-useEffect(() => {
-  nameText.length > 0? fetchFilterSubjects() : (moduleText.length > 0 ? fetchSubjectsByModules() : fetchSubjects())
-}, [activePage, nameText, moduleText]);
+
+  useEffect(() => {
+    nameText.length > 0 ? fetchFilterSubjects() : (moduleText.length > 0 ? fetchSubjectsByModules() : fetchSubjects())
+  }, [activePage, nameText, moduleText]);
 
 
   const [open, setOpen] = useState(false);
@@ -101,7 +99,7 @@ useEffect(() => {
         </Grid.Column>
 
         <Grid.Column stretched textAlign="left" verticalAlign="top" width={13}>
-          <Segment id="segment" raised color="teal">
+          <Segment id="segment" color="teal">
             {create && (
               <div>
                 <CreateSubjecPage />
@@ -126,8 +124,8 @@ useEffect(() => {
                 <Button
                   icon
                   labelPosition="left"
-                  primary
                   className="controls"
+                  id='details'
                   as={NavLink}
                   exact
                   to="/create/subjects"
@@ -142,30 +140,28 @@ useEffect(() => {
                     <Table.Row>
                       <Table.HeaderCell>Dalyko pavadinimas</Table.HeaderCell>
                       <Table.HeaderCell>Moduliai</Table.HeaderCell>
-                      <Table.HeaderCell>Redagavimo data</Table.HeaderCell>
                       <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
 
                   <Table.Body>
-                    {subjects.map((subject) => (
-                      <Table.Row key={subject.id}>
+                    {subjects.map((subject, index) => (
+                      <Table.Row key={index}>
                         <Table.Cell>{subject.name}</Table.Cell>
                         <Table.Cell>
                           <List bulleted>
                             {console.log(subject.subjectModules)}
-                            {subject.subjectModules.map((module) => (
-                              <List.Content key={module.id}>
+                            {subject.subjectModules.map((module, index) => (
+                              <List.Content key={index}>
                                 <List.Item>{module.name}</List.Item>
                               </List.Content>
                             ))}
                           </List>
                         </Table.Cell>
-                        <Table.Cell>{subject.modifiedDate}</Table.Cell>
                         <Table.Cell collapsing>
                           <Button
+                            id="icocolor"
                             basic
-                            primary
                             compact
                             icon="eye"
                             title="Peržiūrėti"
@@ -173,20 +169,20 @@ useEffect(() => {
                             onClick={() => setActive(subject.id)}
                           ></Button>
                           <Button
+                            id="icocolor"
                             basic
-                            color="black"
                             compact
-                            title="Ištrinti"
-                            icon="trash alternate"
+                            title="Suarchyvuoti"
+                            icon="archive"
                             onClick={() => setOpen(subject.id)}
                           ></Button>
 
                           <Confirm
                             open={open}
                             header="Dėmesio!"
-                            content="Ar tikrai norite ištrinti?"
+                            content="Ar tikrai norite perkelti į archyvą?"
                             cancelButton="Grįžti atgal"
-                            confirmButton="Ištrinti"
+                            confirmButton="Taip"
                             onCancel={() => setOpen(false)}
                             onConfirm={() => removeSubject(open)}
                             size="small"
@@ -210,7 +206,7 @@ useEffect(() => {
                   >
                     <Icon name="arrow left" />{" "}
                   </Button>
-                  {[...Array(pagecount)].map((e, i) => {
+                  {/* {[...Array(pagecount)].map((e, i) => {
                     return (
                       <Button
                         title={i + 1}
@@ -221,7 +217,7 @@ useEffect(() => {
                         {i + 1}
                       </Button>
                     );
-                  })}
+                  })} */}
                   <Button
                     title="Pirmyn"
                     onClick={() =>

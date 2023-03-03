@@ -1,7 +1,7 @@
 package lt.techin.AlpineOctopusScheduler.service;
 
-import lt.techin.AlpineOctopusScheduler.dao.ProgramRepository;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.SubjectTestDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ModuleMapper;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper;
 import lt.techin.AlpineOctopusScheduler.dao.*;
@@ -16,9 +16,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
 
 import java.util.Comparator;
 import java.util.List;
@@ -66,6 +63,11 @@ public class SubjectService {
                 .noneMatch(subject1 -> subject1.getName().equals(subject.getName()));
     }
 
+    public List<SubjectTestDto> getAllSubjects() {
+        return subjectRepository.findAll().stream()
+                .map(SubjectMapper::toSubjectTestDto).collect(Collectors.toList());
+    }
+
     public List<Subject> getAll() {
         return subjectRepository.findAll();
     }
@@ -93,16 +95,35 @@ public class SubjectService {
     @Transactional(readOnly = true)
     public List<SubjectEntityDto> getPagedSubjectsByModuleNameContaining(String nameText, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        return subjectRepository.findAllBySubjectModules_NameContainingIgnoreCase(nameText, pageable)
-                .stream()
+        return subjectRepository.findAllByDeletedAndNameContainingIgnoreCaseOrderByModifiedDateDesc(Boolean.FALSE, nameText, pageable).stream()
                 .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
     }
 
+//    @Transactional(readOnly = true)
+//    public List<SubjectEntityDto> getPagedSubjectsByModuleNameContaining(String nameText) {
+//        List<Module> modules = moduleRepository.findByNameContainingIgnoreCase(nameText).stream().collect(Collectors.toList());
+//        List<Subject> subjects = new ArrayList<>(subjectRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE).stream().toList());
+//        List<Subject> containingSubjects = new ArrayList<>();
+//        for (Module module : modules) {
+//            for (Subject subject : subjects) {
+//                if (subject.getSubjectModules().contains(module)) {
+//                    containingSubjects.add(subject);
+//                    subjects.remove(subject);
+//                }
+//            }
+//        }
+//        return containingSubjects.stream().map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
+//    }
+
+    @Transactional(readOnly = true)
+    public List<SubjectEntityDto> getPagedSubjectsByModuleNameContaining(String nameText) {
+        return subjectRepository.findDistinctByDeletedAndSubjectModules_NameContainingIgnoreCaseOrderByModifiedDateDesc(Boolean.FALSE, nameText).stream().map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
+    }
 
     @Transactional(readOnly = true)
     public List<SubjectEntityDto> getPagedSubjectsByModuleContaining(String nameText, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        var filtered = moduleRepository.findByNameContainingIgnoreCase(nameText, pageable).stream()
+        var filtered = moduleRepository.findByNameContainingIgnoreCaseOrderByModifiedDateDesc(nameText, pageable).stream()
                 .sorted(Comparator.comparing(Module::getModifiedDate).reversed())
                 .filter(module -> module.equals(nameText))
                 .map(ModuleMapper::toModuleEntityDto).collect(Collectors.toList());
@@ -115,7 +136,7 @@ public class SubjectService {
     @Transactional(readOnly = true)
     public List<SubjectEntityDto> getPagedSubjectsByNameAndByModuleContaining(String nameText, String moduleText, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        var createdModule = moduleRepository.findByNameContainingIgnoreCase(moduleText, pageable).stream()
+        var createdModule = moduleRepository.findByNameContainingIgnoreCaseOrderByModifiedDateDesc(moduleText, pageable).stream()
                 .findFirst();
         return subjectRepository.findAll().stream().
                 filter(subjects -> subjects.getSubjectModules().contains(createdModule)).sorted(Comparator.comparing(Subject::getModifiedDate).reversed())
@@ -201,13 +222,14 @@ public class SubjectService {
     public Set<Module> getAllModulesById(Long subjectId) {
         return subjectRepository.findById(subjectId).get().getSubjectModules();
 
-  }
+    }
 
-    public List<SubjectEntityDto> getAllAvailablePagedSubjects(int page, int pageSize){
+    public List<SubjectEntityDto> getAllAvailablePagedSubjects(int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
         return subjectRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE, pageable).stream()
                 .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
     }
+
     public List<SubjectEntityDto> getAllDeletedPagedSubjects(int page, int pageSize) {
 
         Pageable pageable = PageRequest.of(page, pageSize);
@@ -216,17 +238,17 @@ public class SubjectService {
                 .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
     }
 
-    public List<SubjectEntityDto> getAllAvailableSubjects(){
+    public List<SubjectEntityDto> getAllAvailableSubjects() {
         return subjectRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE).stream()
                 .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
     }
 
-    public List<SubjectEntityDto> getAllDeletedSubjects(){
+    public List<SubjectEntityDto> getAllDeletedSubjects() {
         return subjectRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.TRUE).stream()
                 .map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toList());
     }
 
-    public Subject restoreSubject(Long subjectId){
+    public Subject restoreSubject(Long subjectId) {
         var existingSubject = subjectRepository.findById(subjectId).orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
                 "id", "Subject not found", subjectId.toString()));
         existingSubject.setDeleted(Boolean.FALSE);
@@ -234,7 +256,7 @@ public class SubjectService {
         return existingSubject;
     }
 
-    public Subject deleteSubject(Long subjectId){
+    public Subject deleteSubject(Long subjectId) {
         var existingSubject = subjectRepository.findById(subjectId).orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
                 "id", "Subject not found", subjectId.toString()));
         existingSubject.setDeleted(Boolean.TRUE);

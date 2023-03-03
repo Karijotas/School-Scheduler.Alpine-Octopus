@@ -3,6 +3,7 @@ package lt.techin.AlpineOctopusScheduler.api;
 import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.SubjectTestDto;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Module;
 import lt.techin.AlpineOctopusScheduler.model.Room;
@@ -42,6 +43,11 @@ public class SubjectController {
         return subjectService.getAllAvailableSubjects();
     }
 
+    @GetMapping(path = "/all")
+    @ResponseBody
+    public List<SubjectTestDto> getAllSubjects() {
+        return subjectService.getAllSubjects();
+    }
 
     @GetMapping(path = "/archive", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
@@ -125,10 +131,8 @@ public class SubjectController {
     @GetMapping(path = "page/module-filter/{moduleText}")
     @ApiOperation(value = "Get Paged Subjects starting with", notes = "Returns list of Subjects starting with passed String")
     @ResponseBody
-    public List<SubjectEntityDto> getPagedSubjectsByModuleContaining(@PathVariable String moduleText,
-                                                                     @RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                                                     @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        return subjectService.getPagedSubjectsByModuleNameContaining(moduleText, page, pageSize);
+    public List<SubjectEntityDto> getPagedSubjectsByModuleContaining(@PathVariable String moduleText) {
+        return subjectService.getPagedSubjectsByModuleNameContaining(moduleText);
     }
 
 
@@ -156,12 +160,9 @@ public class SubjectController {
 
     @PutMapping("/{subjectId}")
     public ResponseEntity<SubjectDto> updateSubject(@PathVariable Long subjectId, @Valid @RequestBody SubjectDto subjectDto) {
-        if (subjectService.subjectNameIsUnique(toSubject(subjectDto))) {
-            var updatedSubject = subjectService.update(subjectId, toSubject(subjectDto));
-            return ok(toSubjectDto(updatedSubject));
-        } else {
-            throw new SchedulerValidationException("Subject already exists", "Subject name", "Already exists", subjectDto.getName());
-        }
+
+        var updatedSubject = subjectService.update(subjectId, toSubject(subjectDto));
+        return ok(toSubjectDto(updatedSubject));
     }
 
     @GetMapping(value = "/{subjectId}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
@@ -177,7 +178,7 @@ public class SubjectController {
 
 
     @PostMapping("/{subjectId}/modules/{moduleId}/newModules")
-    public ResponseEntity<SubjectDto> addModuleToSubject(@PathVariable Long subjectId, @Valid @RequestBody Long moduleId) {
+    public ResponseEntity<SubjectDto> addModuleToSubject(@PathVariable Long subjectId, @Valid @PathVariable Long moduleId) {
 
         var updatedSubject = subjectService.addModuleToSubject(subjectId, moduleId);
 
@@ -185,8 +186,8 @@ public class SubjectController {
     }
 
 
-    @PutMapping("/{subjectId}/teachers/{teacherId}/newTeachers")
-    public ResponseEntity<SubjectDto> addTeacherToSubject(@PathVariable Long subjectId, @Valid @RequestBody Long teacherId) {
+    @PostMapping("/{subjectId}/teachers/{teacherId}/newTeachers")
+    public ResponseEntity<SubjectDto> addTeacherToSubject(@PathVariable Long subjectId, @Valid @PathVariable Long teacherId) {
 
         var updatedSubject = subjectService.addTeacherToSubject(subjectId, teacherId);
 
@@ -194,7 +195,7 @@ public class SubjectController {
     }
 
     @PostMapping("/{subjectId}/rooms/{roomId}/newRooms")
-    public ResponseEntity<SubjectDto> addRoomToSubject(@PathVariable Long subjectId, @Valid @RequestBody Long roomId) {
+    public ResponseEntity<SubjectDto> addRoomToSubject(@PathVariable Long subjectId, @Valid @PathVariable Long roomId) {
 
         var updatedSubject = subjectService.addRoomToSubject(subjectId, roomId);
         return ok(toSubjectDto(updatedSubject));
@@ -209,6 +210,7 @@ public class SubjectController {
             return ResponseEntity.notFound().build();
         }
     }
+
 
     @DeleteMapping("/{subjectId}/teachers/{teacherId}")
     public ResponseEntity<Void> deleteTeacherFromSubjectByTeacherId(@PathVariable Long subjectId, @PathVariable Long teacherId) {

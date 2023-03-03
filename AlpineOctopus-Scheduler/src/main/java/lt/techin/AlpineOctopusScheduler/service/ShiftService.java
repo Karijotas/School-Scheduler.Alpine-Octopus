@@ -1,6 +1,7 @@
 package lt.techin.AlpineOctopusScheduler.service;
 
 import lt.techin.AlpineOctopusScheduler.api.dto.ShiftEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.ShiftTestDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ShiftMapper;
 import lt.techin.AlpineOctopusScheduler.dao.ShiftRepository;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
@@ -12,23 +13,48 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ShiftMapper.toShiftEntityDto;
 
 @Service
 public class ShiftService {
 
     ShiftRepository shiftRepository;
 
+    private final Validator validator;
+
     @Autowired
-    public ShiftService(ShiftRepository shiftRepository) {
+    public ShiftService(ShiftRepository shiftRepository, Validator validator) {
         this.shiftRepository = shiftRepository;
+        this.validator = validator;
     }
 
+    void validateInputWithInjectedValidator(Shift shift) {
+        Set<ConstraintViolation<Shift>> violations = validator.validate(shift);
+        if (!violations.isEmpty()) {
+            throw new SchedulerValidationException(violations.toString(), "Shift", "Error in shift entity", shift.toString());
+        }
+    }
+
+    public boolean shiftNameIsUnique(Shift shift) {
+        return shiftRepository.findAll()
+                .stream()
+                .noneMatch(shift1 -> shift1.getName().equals(shift.getName()));
+    }
 
     public List<Shift> getAll() {
         return shiftRepository.findAll();
+    }
+
+    public List<ShiftTestDto> getAllShifts() {
+        return shiftRepository.findAll().stream()
+                .map(ShiftMapper::toShiftTestDto).collect(Collectors.toList());
     }
 
     public List<ShiftEntityDto> getPagedAllShifts(int page, int pageSize) {
@@ -43,9 +69,16 @@ public class ShiftService {
     }
 
     @Transactional(readOnly = true)
-    public List<ShiftEntityDto> getPagedShiftsByNameContaining(String nameText, int page, int pageSize) {
+    public List<ShiftEntityDto> getAvailablePagedShiftsByNameContaining(String nameText, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        return shiftRepository.findByNameContainingIgnoreCase(nameText, pageable).stream()
+        return shiftRepository.findAllByDeletedAndNameContainingIgnoreCaseOrderByModifiedDateDesc(Boolean.FALSE, nameText, pageable).stream()
+                .map(ShiftMapper::toShiftEntityDto).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<ShiftEntityDto> getAvailableShiftsByNameContaining(String nameText) {
+
+        return shiftRepository.findAllByDeletedAndNameContainingIgnoreCaseOrderByModifiedDateDesc(Boolean.FALSE, nameText).stream()
                 .map(ShiftMapper::toShiftEntityDto).collect(Collectors.toList());
     }
 
@@ -74,6 +107,48 @@ public class ShiftService {
         } catch (EmptyResultDataAccessException e) {
             return false;
         }
+    }
+
+    public List<ShiftEntityDto> getAllAvailablePagedShifts(int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return shiftRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE, pageable).stream()
+                .map(ShiftMapper::toShiftEntityDto).collect(Collectors.toList());
+    }
+
+    public List<ShiftEntityDto> getAllDeletedPagedShifts(int page, int pageSize) {
+
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        return shiftRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.TRUE, pageable).stream()
+                .map(ShiftMapper::toShiftEntityDto).collect(Collectors.toList());
+    }
+
+    public List<ShiftEntityDto> getAllAvailableShifts() {
+        return shiftRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE).stream()
+                .map(ShiftMapper::toShiftEntityDto).collect(Collectors.toList());
+    }
+
+    public List<ShiftEntityDto> getAllDeletedShifts() {
+        return shiftRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.TRUE).stream()
+                .map(ShiftMapper::toShiftEntityDto).collect(Collectors.toList());
+    }
+
+    public ShiftEntityDto restoreShift(Long shiftId) {
+
+        var existingShift = shiftRepository.findById(shiftId).orElseThrow(() -> new SchedulerValidationException("Shift does not exist",
+                "id", "Shift not found", shiftId.toString()));
+        existingShift.setDeleted(Boolean.FALSE);
+        shiftRepository.save(existingShift);
+        return toShiftEntityDto(existingShift);
+    }
+
+    public ShiftEntityDto deleteShift(Long shiftId) {
+
+        var existingShift = shiftRepository.findById(shiftId).orElseThrow(() -> new SchedulerValidationException("Shift does not exist",
+                "id", "Shift not found", shiftId.toString()));
+        existingShift.setDeleted(Boolean.TRUE);
+        shiftRepository.save(existingShift);
+        return toShiftEntityDto(existingShift);
     }
 
 }

@@ -1,20 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import {
   Button,
-  Divider,
-  Icon,
-  Input,
-  Table,
-  Grid,
-  Segment,
-  List,
-  Form,
-  Select,
+  Divider, Form, Grid, Icon,
+  Input, List, Segment, Select, Table, TextArea
 } from "semantic-ui-react";
-import { ViewSubjects } from "./ViewSubjects";
+import { EditMenu } from "../../../Components/EditMenu";
 import MainMenu from "../../../Components/MainMenu";
-import { EditMenu } from '../../../Components/EditMenu';
-import { useParams } from "react-router-dom";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -46,6 +38,59 @@ export function EditSubjectObject() {
     createdDate: "",
     modifiedDate: "",
   });
+
+
+  const [state, setState] = useState("")
+  const [nameError, setNameError] = useState("")
+    
+  const [descriptionError, setDescriptionError] = useState("")
+    
+
+   
+
+    const [formValid, setFormValid] = useState(false)
+
+
+    useEffect(() => {
+        if(nameError || descriptionError) {
+          setFormValid(false)
+        } else {
+          setFormValid(true)
+        }
+      }, [nameError, descriptionError]) 
+
+    
+
+    const handleNameInputChange = (e) => {
+        subjects.name = e.target.value
+        setState(e.target.value);
+        validateNameInput(e.target.value);
+      };
+
+    const handleDescriptionInputChange = (e) => {
+      subjects.description = e.target.value
+      setState(e.target.value);
+        validateDescriptionInput(e.target.value);
+      };
+      
+    const validateNameInput = (value) => {
+        if (value.length <2 || value.length > 100) {
+            setNameError("Įveskite nuo 2 iki 100 simbolių!")
+            if(!value){
+                setNameError("Pavadinimas negali būti tuščias!")
+              } 
+        } else {
+            setNameError("")
+        }
+      };
+
+      const validateDescriptionInput = (value) => {
+        if (value.length > 500) {
+            setDescriptionError("Aprašymas negali viršyti 500 simbolių!")
+        } else {
+            setDescriptionError("") 
+        }
+      };
 
   useEffect(() => {
     fetch("/api/v1/subjects/" + params.id)
@@ -103,7 +148,7 @@ export function EditSubjectObject() {
       .then((response) => response.json())
       .then(setTeachersInSubjects)
       .then(console.log(teachersInSubjects));
-  }, [params]);
+  }, [params]); 
 
   const updateSubjects = () => {
     fetch("/api/v1/subjects/" + params.id, {
@@ -119,7 +164,7 @@ export function EditSubjectObject() {
         }
       })
       .then(applyResult);
-  };
+  }; 
 
   const updateProperty = (property, event) => {
     setSubjects({
@@ -190,8 +235,7 @@ export function EditSubjectObject() {
     fetch(`/api/v1/subjects/${subjectId}/modules/${moduleId}`, {
       method: "DELETE",
       headers: JSON_HEADERS,
-    })
-    .then(getModulesInSubjects);
+    }).then(getModulesInSubjects);
   };
 
   const addTeacher = (subjectId, teacherId) => {
@@ -267,13 +311,12 @@ export function EditSubjectObject() {
           <Segment raised color="teal">
             {active && !hide && (
               <div>
-                <Table celled color="violet">
+                <Table celled>
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Dalyko pavadinimas</Table.HeaderCell>
-                      <Table.HeaderCell>Aprašymas</Table.HeaderCell>
                       <Table.HeaderCell>
-                        Paskutinis atnaujinimas:
+                        Paskutinis atnaujinimas
                       </Table.HeaderCell>
                       <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                     </Table.Row>
@@ -282,14 +325,29 @@ export function EditSubjectObject() {
                   <Table.Body>
                     <Table.Row>
                       <Table.Cell>{subjects.name}</Table.Cell>
-                      <Table.Cell>{subjects.description}</Table.Cell>
                       <Table.Cell collapsing>
                         {" "}
                         {subjects.modifiedDate}{" "}
                       </Table.Cell>
                       <Table.Cell collapsing>
-                        <Button onClick={editThis}>Redaguoti</Button>
+                        <Button id="details" onClick={editThis}>
+                          Redaguoti
+                        </Button>
                       </Table.Cell>
+                    </Table.Row>
+                  </Table.Body>
+                </Table>
+                <Divider hidden />
+                <Table celled>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>Aprašymas</Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
+
+                  <Table.Body>
+                    <Table.Row>
+                      <Table.Cell>{subjects.description}</Table.Cell>
                     </Table.Row>
                   </Table.Body>
                 </Table>
@@ -301,7 +359,7 @@ export function EditSubjectObject() {
                       <Table.Header>
                         <Table.Row>
                           <Table.HeaderCell width={6}>
-                            Moduliai:
+                            Moduliai
                           </Table.HeaderCell>
                         </Table.Row>
                       </Table.Header>
@@ -319,16 +377,14 @@ export function EditSubjectObject() {
                       <Table.Header>
                         <Table.Row>
                           <Table.HeaderCell width={6}>
-                            Mokytojai:
+                            Mokytojai
                           </Table.HeaderCell>
                         </Table.Row>
                       </Table.Header>
                       <Table.Body>
                         {teachersInSubjects.map((teacher) => (
                           <Table.Row key={teacher.id}>
-                            <Table.Cell>
-                              {teacher.name}
-                            </Table.Cell>
+                            <Table.Cell>{teacher.name}</Table.Cell>
                           </Table.Row>
                         ))}
                       </Table.Body>
@@ -339,7 +395,7 @@ export function EditSubjectObject() {
                       <Table.Header>
                         <Table.Row>
                           <Table.HeaderCell width={6}>
-                            Kabinetai:
+                            Kabinetai
                           </Table.HeaderCell>
                         </Table.Row>
                       </Table.Header>
@@ -367,29 +423,23 @@ export function EditSubjectObject() {
             )}
             {!active && !hide && (
               <div>
-                <Table celled color="violet">
+                <Table celled>
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Dalyko pavadinimas</Table.HeaderCell>
-                      <Table.HeaderCell>Aprašymas</Table.HeaderCell>
-                      <Table.HeaderCell>
-                        Paskutinis atnaujinimas:
+                      <Table.HeaderCell collapsing width={3}>
+                        Paskutinis atnaujinimas
                       </Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
 
                   <Table.Body>
                     <Table.Row>
-                      <Table.Cell collapsing>
+                    <Table.Cell collapsing>
+                      {(nameError) && <div style={{color: "red"}}>{nameError}</div>}
                         <Input
                           value={subjects.name}
-                          onChange={(e) => updateProperty("name", e)}
-                        />
-                      </Table.Cell>
-                      <Table.Cell collapsing>
-                        <Input
-                          value={subjects.description} 
-                          onChange={(e) => updateProperty("description", e)}
+                          onChange={(e) => handleNameInputChange(e)}
                         />
                       </Table.Cell>
                       <Table.Cell collapsing>
@@ -399,6 +449,33 @@ export function EditSubjectObject() {
                     </Table.Row>
                   </Table.Body>
                 </Table>
+               
+
+                <Table celled>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>Aprašymas</Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
+
+                  <Table.Body>
+                    <Table.Row>
+                      <Table.Cell collapsing>
+                        <Form>
+                        {(descriptionError) && <div style={{color: "red"}}>{descriptionError}</div>}
+                          <TextArea
+                            fluid
+                            style={{ minHeight: 60 }}
+                            value={subjects.description}
+                            onChange={(e) => handleDescriptionInputChange(e)}
+                          />
+                          
+                        </Form>
+                      </Table.Cell>
+                    </Table.Row>
+                  </Table.Body>
+                </Table>
+
                 <Grid columns={3}>
                   <Grid.Column>
                     <Table>
@@ -436,7 +513,7 @@ export function EditSubjectObject() {
                                   <Form.Field>
                                     <Select
                                       options={modules}
-                                      placeholder="Dalykai"
+                                      placeholder="Moduliai"
                                       value={module}
                                       onChange={(e, data) => (
                                         setModule(e.target.value),
@@ -449,6 +526,7 @@ export function EditSubjectObject() {
                                 <Divider hidden />
                                 <List.Content floated="left">
                                   <Button
+                                  id='details'
                                     onClick={() =>
                                       addModule(params.id, moduleId)
                                     }
@@ -482,9 +560,7 @@ export function EditSubjectObject() {
                             <Table.Body>
                               {teachersInSubjects.map((teacher) => (
                                 <Table.Row key={teacher.id}>
-                                  <Table.Cell>
-                                    {teacher.name}
-                                  </Table.Cell>
+                                  <Table.Cell>{teacher.name}</Table.Cell>
                                   <Table.Cell collapsing>
                                     <Button
                                       basic
@@ -518,6 +594,7 @@ export function EditSubjectObject() {
                                 <Divider hidden />
                                 <List.Content floated="left">
                                   <Button
+                                  id='details'
                                     onClick={() =>
                                       addTeacher(params.id, teacherId)
                                     }
@@ -585,6 +662,7 @@ export function EditSubjectObject() {
                                 <Divider hidden />
                                 <List.Content floated="left">
                                   <Button
+                                  id='details'
                                     onClick={() => addRoom(params.id, roomId)}
                                     // onClose={fetch(
                                     //   `/api/v1/subjects/${params.id}/rooms`
@@ -603,7 +681,7 @@ export function EditSubjectObject() {
                 </Grid>
                 <Divider hidden></Divider>
                 <Button onClick={() => setActive(true)}>Atšaukti</Button>
-                <Button floated="right" primary onClick={updateSubjects}>
+                <Button id='details' disabled={!formValid} floated="right" primary onClick={updateSubjects}>
                   Atnaujinti
                 </Button>
               </div>

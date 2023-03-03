@@ -9,7 +9,8 @@ import {
   Icon,
   Input,
   Segment,
-  Table
+  Table,
+  List,
 } from "semantic-ui-react";
 import { EditMenu } from '../../../Components/EditMenu';
 import MainMenu from '../../../Components/MainMenu';
@@ -23,6 +24,9 @@ export function ViewModules() {
   const [create, setCreate] = useState("");
   const [nameText, setNameText] = useState("");
   const [modules, setModules] = useState([]);
+  const [moduleSubjects, setModuleSubjects] = useState([]);
+  const [moduleId, setModuleId] = useState("");
+  const [subjects, setSubjects] = useState([]);
 
   const [modulesforPaging, setModulesForPaging] = useState([]);
 
@@ -30,11 +34,24 @@ export function ViewModules() {
   const [pagecount, setPageCount] = useState();
 
   const fetchFilterModules = async () => {
-    fetch(`/api/v1/modules/page/name-filter/${nameText}?page=` + activePage)
+    fetch(`/api/v1/modules/page/name-filter/${nameText}`)
       .then((response) => response.json())
       .then((jsonRespone) => setModules(jsonRespone));
 
   };
+
+  // const fetchModuleSubjects = async () => {
+  //   fetch(`/api/v1/modules/${moduleId}/subjects`)
+  //     .then((response) => response.json())
+  //     .then((jsonResponse) => setModuleSubjects(jsonResponse));
+  // };
+
+  // useEffect(() => {
+  //   fetch(`/api/v1/modules/${moduleId}/subjects`)
+  //     .then((response) => response.json())
+  //     .then(setModuleSubjects)
+  //     .then(console.log(moduleSubjects));
+  // }, [modules]);
 
   const fetchSingleModules = () => {
     fetch("/api/v1/modules")
@@ -50,10 +67,10 @@ export function ViewModules() {
   };
 
   const removeModule = (id) => {
-    fetch("/api/v1/modules/" + id, {
-      method: "DELETE",
-      headers: JSON_HEADERS,
-    }).then(fetchModules);
+    fetch("/api/v1/modules/delete/" + id, {
+      method: "PATCH",      
+    }).then(fetchModules)
+    .then(setOpen(false));
   };
 
   useEffect(() => {
@@ -93,6 +110,7 @@ export function ViewModules() {
                   primary
                   className="controls"
                   as={NavLink}
+                  id='details'
                   exact to='/create/modules'>
                   <Icon name="database" />
                   Kurti naują modulį
@@ -103,6 +121,7 @@ export function ViewModules() {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Modulio pavadinimas</Table.HeaderCell>
+                      {/* <Table.HeaderCell>Dalykai</Table.HeaderCell> */}
                       <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
@@ -111,31 +130,41 @@ export function ViewModules() {
                     {modules.map((module) => (
                       <Table.Row key={module.id}>
                         <Table.Cell>{module.name}</Table.Cell>
+                        {/* <Table.Cell>
+                        <List bulleted>
+                            {console.log(module.moduleSubjects)}
+                            {moduleSubjects.map((subject) => (
+                              <List.Content key={subject.id}>
+                                <List.Item>{subject.name}</List.Item>
+                              </List.Content>
+                            ))}
+                          </List>
+                          </Table.Cell> */}
                         <Table.Cell collapsing>
                           <Button
+                          id="icocolor"
                             href={'#/view/modules/edit/' + module.id}
-                            basic
-                            primary
+                            basic                            
                             compact
                             icon="eye"
                             title="Peržiūrėti"
                             onClick={() => setActive(module.id)}
                           ></Button>
                           <Button
-                            basic
-                            color="black"
+                          id="icocolor"
+                            basic                            
                             compact
-                            title="Ištrinti"
-                            icon="trash alternate"
+                            title="Suarchyvuoti"
+                          icon="archive"
                             onClick={() => setOpen(module.id)}
                           ></Button>
 
                           <Confirm
                             open={open}
                             header="Dėmesio!"
-                            content="Ar tikrai norite ištrinti?"
-                            cancelButton="Grįžti atgal"
-                            confirmButton="Ištrinti"
+                            content="Ar tikrai norite perkelti į archyvą?"
+                          cancelButton="Grįžti atgal"
+                          confirmButton="Taip"
                             onCancel={() => setOpen(false)}
                             onConfirm={() => removeModule(open)}
                             size="small"
@@ -149,9 +178,9 @@ export function ViewModules() {
 
                 <ButtonGroup compact basic>
                   <Button title='Atgal' onClick={() => setActivePage(activePage <= 0 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
-                  {[...Array(pagecount)].map((e, i) => {
+                  {/* {[...Array(pagecount)].map((e, i) => {
                     return <Button title={i + 1} key={i} active={activePage === i ? true : false} onClick={() => setActivePage(i)}>{i + 1}</Button>
-                  })}
+                  })} */}
                   <Button title='Pirmyn' onClick={() => setActivePage(activePage >= pagecount - 1 ? activePage : activePage + 1)} icon><Icon name="arrow right" />  </Button>
                 </ButtonGroup>
               </div>

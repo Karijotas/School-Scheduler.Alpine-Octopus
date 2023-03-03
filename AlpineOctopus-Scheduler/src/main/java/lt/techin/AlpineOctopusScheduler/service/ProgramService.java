@@ -1,9 +1,6 @@
 package lt.techin.AlpineOctopusScheduler.service;
 
-import lt.techin.AlpineOctopusScheduler.api.dto.ProgramEntityDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.ProgramSubjectHourListDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.ProgramSubjectHoursDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.ProgramSubjectHoursForCreate;
+import lt.techin.AlpineOctopusScheduler.api.dto.*;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper;
 import lt.techin.AlpineOctopusScheduler.dao.ProgramRepository;
 import lt.techin.AlpineOctopusScheduler.dao.ProgramSubjectHourListRepository;
@@ -13,6 +10,7 @@ import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Program;
 import lt.techin.AlpineOctopusScheduler.model.ProgramSubjectHours;
 import lt.techin.AlpineOctopusScheduler.model.ProgramSubjectHoursList;
+import lt.techin.AlpineOctopusScheduler.model.Subject;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -63,9 +61,9 @@ public class ProgramService {
                 .noneMatch(program1 -> program1.getName().equals(program.getName()));
     }
 
-    public List<ProgramEntityDto> getAllPrograms() {
+    public List<ProgramTestDto> getAllPrograms() {
         return programRepository.findAll().stream()
-                .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
+                .map(ProgramMapper::toProgramTestDto).collect(Collectors.toList());
     }
 
     public List<ProgramEntityDto> getPagedAllPrograms(int page, int pageSize) {
@@ -82,14 +80,14 @@ public class ProgramService {
 
     @Transactional(readOnly = true)
     public List<ProgramEntityDto> getProgramsByNameContaining(String nameText) {
-        return programRepository.findByNameContainingIgnoreCase(nameText).stream()
+        return programRepository.findByNameContainingIgnoreCaseOrderByModifiedDateDesc(nameText).stream()
                 .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public List<ProgramEntityDto> getPagedProgramsByNameContaining(String nameText, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        return programRepository.findAllByDeletedAndNameContainingIgnoreCase(Boolean.FALSE, nameText, pageable).stream()
+        return programRepository.findAllByDeletedAndNameContainingIgnoreCaseOrderByModifiedDateDesc(Boolean.FALSE, nameText, pageable).stream()
                 .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
@@ -110,7 +108,6 @@ public class ProgramService {
 
         return programRepository.save(existingProgram);
     }
-
 
 
     public ProgramSubjectHours updateProgramSubjectHours(Long id, ProgramSubjectHours programSubjectHours) {
@@ -216,11 +213,12 @@ public class ProgramService {
     }
 
 
-    public List<ProgramEntityDto> getAllAvailablePagedPrograms(int page, int pageSize){
+    public List<ProgramEntityDto> getAllAvailablePagedPrograms(int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
         return programRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE, pageable).stream()
                 .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
+
     public List<ProgramEntityDto> getAllDeletedPagedPrograms(int page, int pageSize) {
 
         Pageable pageable = PageRequest.of(page, pageSize);
@@ -229,12 +227,12 @@ public class ProgramService {
                 .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
-    public List<ProgramEntityDto> getAllAvailablePrograms(){
+    public List<ProgramEntityDto> getAllAvailablePrograms() {
         return programRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE).stream()
                 .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
 
-    public List<ProgramEntityDto> getAllDeletedPrograms(){
+    public List<ProgramEntityDto> getAllDeletedPrograms() {
         return programRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.TRUE).stream()
                 .map(ProgramMapper::toProgramEntityDto).collect(Collectors.toList());
     }
@@ -256,8 +254,12 @@ public class ProgramService {
         programRepository.save(existingProgram);
         return toProgramEntityDto(existingProgram);
     }
+
+    public List<Subject> getFreeSubjects(Long programId) {
+        return subjectRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE);
+
+    }
 //    public boolean deleteAllSubjectsForCreate(){
-//
 //        return programSubjectHourListRepository.deleteAll();
 //    }
 }

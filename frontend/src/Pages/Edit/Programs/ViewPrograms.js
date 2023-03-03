@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
 import {
   Button,
-  ButtonGroup, Confirm, Divider, Grid, Icon,
+  ButtonGroup,
+  Confirm,
+  Divider,
+  Grid,
+  Icon,
   Input,
   Segment,
-  Table
+  Table,
 } from "semantic-ui-react";
-import MainMenu from '../../../Components/MainMenu';
 import { EditMenu } from '../../../Components/EditMenu';
+import MainMenu from '../../../Components/MainMenu';
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -58,7 +62,6 @@ export function ViewPrograms() {
   const [open, setOpen] = useState(false);
   const [close, setClose] = useState(false);
 
-
   useEffect(() => {
     if (pagecount !== null) {
       fetchSinglePrograms();
@@ -69,30 +72,30 @@ export function ViewPrograms() {
     <div>
       <MainMenu />
 
-      <Grid columns={2} >
-        <Grid.Column width={2} id='main'>
+      <Grid columns={2}>
+        <Grid.Column width={2} id="main">
           <EditMenu />
         </Grid.Column>
 
-        <Grid.Column textAlign='left' verticalAlign='top' width={13}>
-          <Segment id='segment' color='teal'>
-
+        <Grid.Column textAlign="left" verticalAlign="top" width={13}>
+          <Segment id="segment" color="teal">
             <div id="programs">
               <Input
                 value={nameText}
                 onChange={(e) => setNameText(e.target.value)}
-                placeholder="Ieškoti pagal programą"
+                placeholder="Filtruoti pagal pavadinimą"
               />
               {/* <Button onClick={fetchFilterPrograms}>Filtruoti</Button> */}
 
               <Button
                 icon
                 labelPosition="left"
-                color='teal'
-                
                 className="controls"
+                id="details"
                 as={NavLink}
-                exact to='/create/programs'>
+                exact
+                to="/create/programs"
+              >
                 <Icon name="database" />
                 Kurti naują programą
               </Button>
@@ -114,17 +117,17 @@ export function ViewPrograms() {
 
                       <Table.Cell collapsing>
                         <Button
-                          href={'#/view/programs/edit/' + program.id}
+                          id="icocolor"
+                          href={"#/view/programs/edit/" + program.id}
                           basic
-                          color='teal'
                           compact
                           icon="eye"
                           title="Peržiūrėti"
                           onClick={() => setActive(program.id)}
                         ></Button>
                         <Button
+                          id="icocolor"
                           basic
-                          color="black"
                           compact
                           title="Suarchyvuoti"
                           icon="archive"
@@ -149,17 +152,42 @@ export function ViewPrograms() {
               <Divider hidden></Divider>
 
               <ButtonGroup compact basic>
-                <Button title='Atgal' onClick={() => setActivePage(activePage <= 0 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
-                {[...Array(pagecount)].map((e, i) => {
-                  return <Button title={i + 1} key={i} active={activePage === i ? true : false} onClick={() => setActivePage(i)}>{i + 1}</Button>
-                })}
-                <Button title='Pirmyn' onClick={() => setActivePage(activePage >= pagecount - 1 ? activePage : activePage + 1)} icon><Icon name="arrow right" />  </Button>
+                <Button
+                  title="Atgal"
+                  onClick={() =>
+                    setActivePage(activePage <= 0 ? activePage : activePage - 1)
+                  }
+                  icon
+                >
+                  <Icon name="arrow left" />{" "}
+                </Button>
+                {/* {[...Array(pagecount)].map((e, i) => {
+                  return (
+                    <Button
+                      title={i + 1}
+                      key={i}
+                      active={activePage === i ? true : false}
+                      onClick={() => setActivePage(i)}
+                    >
+                      {i + 1}
+                    </Button>
+                  );
+                })} */}
+                <Button
+                  title="Pirmyn"
+                  onClick={() =>
+                    setActivePage(
+                      activePage >= pagecount - 1 ? activePage : activePage + 1
+                    )
+                  }
+                  icon
+                >
+                  <Icon name="arrow right" />{" "}
+                </Button>
               </ButtonGroup>
             </div>
-
           </Segment>
         </Grid.Column>
-
       </Grid>
     </div>
   );

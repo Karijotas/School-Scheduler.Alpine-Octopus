@@ -1,22 +1,22 @@
 package lt.techin.AlpineOctopusScheduler.api.dto;
 
-import lt.techin.AlpineOctopusScheduler.model.Subject;
-
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Set;
 
-public class ModuleEntityDto extends ModuleDto{
+public class ModuleEntityDto extends ModuleDto {
 
     private Long id;
 
-    public ModuleEntityDto(){
+    public ModuleEntityDto() {
 
     }
 
     public ModuleEntityDto(String name, String description, LocalDateTime createdDate, LocalDateTime modifiedDate, Long id, Boolean deleted) {
         super(name, description, createdDate, modifiedDate, deleted);
         this.id = id;
+    }
+
+    public ModuleEntityDto(String name, String description, LocalDateTime createdDate, LocalDateTime modifiedDate, Long id) {
     }
 
     public Long getId() {

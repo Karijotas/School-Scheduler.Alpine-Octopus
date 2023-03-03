@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useHref } from 'react-router-dom';
-import { Button, Form, Grid, Icon, Segment, Select } from "semantic-ui-react";
+import { Button, Form, Grid, Icon, Segment } from "semantic-ui-react";
 import { EditMenu } from '../../../Components/EditMenu';
 import MainMenu from '../../../Components/MainMenu';
 
@@ -20,6 +20,49 @@ export function CreateSubjecPage() {
   const [teacherId, setTeacherId] = useState();
   const [rooms, setRooms] = useState([]);
   const [roomId, setRoomId] = useState();
+
+  //Validation
+  const [nameDirty, setNameDirty] = useState(false);
+  const [nameError, setNameError] = useState("Negali būti tuščias!")
+  const [descriptionError, setDescriptionError] = useState("")
+  const [formValid, setFormValid] = useState(false)
+
+  useEffect(() => {
+    if(nameError || descriptionError) {
+      setFormValid(false)
+    } else {
+      setFormValid(true)
+    }
+  }, [nameError, descriptionError])
+
+  const blurHandler = (e) => {
+    switch (e.target.name){
+      case 'name':
+        setNameDirty(true);
+        break
+    }
+  }
+
+  const nameHandler = (e) => {
+    setName(e.target.value)
+    if(e.target.value.length <2 || e.target.value.length > 100){
+      setNameError("Įveskite nuo 2 iki 100 simbolių!")
+      if(!e.target.value){
+        setNameError("Negali būti tuščias!")
+      }
+    } else {
+      setNameError("")
+    }
+  }
+
+  const descriptionHandler = (e) => {
+    setDescription(e.target.value)
+    if(e.target.value.length > 500){
+      setDescriptionError("Aprašymas negali viršyti 500 simbolių!")
+    } else {
+      setDescriptionError("")
+    }
+  }
 
   const applyResult = (result) => {
     const clear = () => {
@@ -98,18 +141,22 @@ export function CreateSubjecPage() {
           <Form>
             <Form.Field>
               <label>Dalyko pavadinimas</label>
+              {(nameDirty && nameError) && <div style={{color: "red"}}>{nameError}</div>}
               <input
                 placeholder="Dalyko pavadinimas"
+                onBlur={blurHandler}
+                name="name"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => nameHandler(e)}
               />
             </Form.Field>
             <Form.Field>
               <label>Aprašymas</label>
+              {(descriptionError) && <div style={{color: "red"}}>{descriptionError}</div>}
               <input
                 placeholder="Aprašymas"
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={(e) => descriptionHandler(e)}
               />
             </Form.Field>
             {/* <Form.Group widths="equal">
@@ -153,8 +200,10 @@ export function CreateSubjecPage() {
               </Button>
               <Button
                 type="submit"
+                disabled={!formValid}
                 className="controls"
                 primary
+                id="details"
                 onClick={createSubject}
               >
                 Sukurti

@@ -6,10 +6,10 @@ import {
   Grid,
   Icon,
   Segment,
-  Table,
+  Table
 } from "semantic-ui-react";
+import { EditMenu } from '../../../Components/EditMenu';
 import MainMenu from "../../../Components/MainMenu";
-import {EditMenu} from '../../../Components/EditMenu';
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -17,6 +17,7 @@ const JSON_HEADERS = {
 
 export function ViewProgramsArchive() {
 
+  const [active, setActive] = useState();
   const [programs, setPrograms] = useState([]);
   const [programsforPaging, setProgramsForPaging] = useState([]);
   const [activePage, setActivePage] = useState(0);
@@ -89,11 +90,18 @@ export function ViewProgramsArchive() {
                   {programs.map((program) => (
                     <Table.Row key={program.id}>
                       <Table.Cell disabled>{program.name}</Table.Cell>
-                      <Table.Cell>
+                      <Table.Cell collapsing>
+                      {/* <Button                          
+                          href={"#/view/archives/programs/" + program.id}
+                          basic
+                          compact
+                          icon="eye"
+                          title="Peržiūrėti"
+                          onClick={() => setActive(program.id)}
+                        ></Button> */}
                         <Button
                           textAlign="center"
-                          basic
-                          color="black"
+                          basic                          
                           compact
                           title="Atstatyti"
                           icon="undo"
@@ -108,9 +116,9 @@ export function ViewProgramsArchive() {
 
               <ButtonGroup compact basic>
                                 <Button title='Atgal' onClick={() => setActivePage(activePage <= 0 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
-                                {[...Array(pagecount)].map((e, i) => {
+                                {/* {[...Array(pagecount)].map((e, i) => {
                                     return <Button title={i + 1} key={i} active={activePage === i ? true : false} onClick={() => setActivePage(i)}>{i + 1}</Button>
-                                })}
+                                })} */}
                                 <Button title='Pirmyn' onClick={() => setActivePage(activePage >= pagecount - 1 ? activePage : activePage + 1)} icon><Icon name="arrow right" />  </Button>
                             </ButtonGroup>
             </div>

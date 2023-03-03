@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import {
   Button,
-  ButtonGroup, Divider, Grid, Icon, 
+  ButtonGroup, Divider, Grid, Icon,
   Segment,
   Table
 } from "semantic-ui-react";
+import { EditMenu } from '../../../Components/EditMenu';
 import MainMenu from "../../../Components/MainMenu";
-import {EditMenu} from '../../../Components/EditMenu';
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -89,8 +89,7 @@ export function ViewSubjectsArchive() {
                       <Table.Cell>
                         <Button
                           textAlign="center"
-                          basic
-                          color="black"
+                          basic                          
                           compact
                           title="Atstatyti"
                           icon="undo"
@@ -105,9 +104,9 @@ export function ViewSubjectsArchive() {
 
               <ButtonGroup compact basic>
                                 <Button title='Atgal' onClick={() => setActivePage(activePage <= 0 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
-                                {[...Array(pagecount)].map((e, i) => {
+                                {/* {[...Array(pagecount)].map((e, i) => {
                                     return <Button title={i + 1} key={i} active={activePage === i ? true : false} onClick={() => setActivePage(i)}>{i + 1}</Button>
-                                })}
+                                })} */}
                                 <Button title='Pirmyn' onClick={() => setActivePage(activePage >= pagecount - 1 ? activePage : activePage + 1)} icon><Icon name="arrow right" />  </Button>
                             </ButtonGroup>
             </div>

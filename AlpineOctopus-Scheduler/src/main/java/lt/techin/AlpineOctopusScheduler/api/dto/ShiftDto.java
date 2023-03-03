@@ -1,5 +1,7 @@
 package lt.techin.AlpineOctopusScheduler.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -11,7 +13,9 @@ public class ShiftDto {
     private int starts;
 
     private int ends;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modifiedDate;
     private Boolean deleted;
 
