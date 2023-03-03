@@ -20,7 +20,7 @@ public class Subject {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank(message = "Negali buti tuscias")
-    @Size(min = 1, max = 40)
+    @Size(min = 1, max = 100)
     private String name;
     @Size(max = 500)
     private String description;
@@ -153,9 +153,3 @@ public class Subject {
                 '}';
     }
 }
-
-
-
-
-
-

@@ -16,11 +16,9 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-//Mantvydas Juršys
 
 
 @Entity
-//@Table(name = "TEACHERS")
 public class Teacher {
 
     @Id
