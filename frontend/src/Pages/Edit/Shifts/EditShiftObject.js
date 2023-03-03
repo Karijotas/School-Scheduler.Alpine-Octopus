@@ -121,7 +121,9 @@ export function EditShiftObject() {
   useEffect(() => {
     fetch("/api/v1/shifts/" + params.id)
       .then((response) => response.json())
-      .then(setShifts);
+      .then(setShifts)
+      .then(setStarts(shifts.starts))
+      .then(setEnds(shifts.ends));
   }, [active, params]);
 
   const applyResult = () => {
