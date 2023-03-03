@@ -205,7 +205,7 @@ public class SubjectController {
         subjectService.addTeacherToSubject(subjectId, teacherId);
     }
 
-    @DeleteMapping("/{subjectId}/subjects/{teacherId}")
+    @DeleteMapping("/{subjectId}/teachers/{teacherId}")
     public ResponseEntity<Void> deleteSubjectFromTeacherBySubjectId(@PathVariable Long subjectId, @PathVariable Long teacherId) {
         boolean deleted = subjectService.deleteTeacherFromSubjectById(subjectId, teacherId);
         if (deleted) {
