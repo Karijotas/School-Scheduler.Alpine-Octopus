@@ -17,6 +17,7 @@ public class TeacherMapper {
         teacherDto.setContactEmail(teacher.getContactEmail());
         teacherDto.setPhone(teacher.getPhone());
         teacherDto.setTeacherShifts(teacher.getTeacherShifts());
+        teacherDto.setTeacherSubjects(teacher.getTeacherSubjects());
 
 
         return teacherDto;
@@ -32,7 +33,7 @@ public class TeacherMapper {
         teacher.setWorkHoursPerWeek(teacherDto.getWorkHoursPerWeek());
         teacher.setPhone(teacherDto.getPhone());
         teacher.setTeacherShifts(teacherDto.getTeacherShifts());
-
+        teacher.setTeacherSubjects(teacherDto.getTeacherSubjects());
 
         return teacher;
     }
@@ -48,7 +49,7 @@ public class TeacherMapper {
         teacherEntityDto.setWorkHoursPerWeek(teacher.getWorkHoursPerWeek());
         teacherEntityDto.setPhone(teacher.getPhone());
         teacherEntityDto.setTeacherShifts(teacher.getTeacherShifts());
-
+        teacherEntityDto.setTeacherSubjects(teacher.getTeacherSubjects());
 
         return teacherEntityDto;
     }
@@ -64,6 +65,7 @@ public class TeacherMapper {
         teacher.setWorkHoursPerWeek(teacherEntityDto.getWorkHoursPerWeek());
         teacher.setPhone(teacherEntityDto.getPhone());
         teacher.setTeacherShifts(teacherEntityDto.getTeacherShifts());
+        teacher.setTeacherSubjects(teacherEntityDto.getTeacherSubjects());
 
         return teacher;
     }

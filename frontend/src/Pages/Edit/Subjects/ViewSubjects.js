@@ -67,15 +67,6 @@ export function ViewSubjects() {
       .then(setOpen(false));
   };
 
-  // useEffect(() => {
-  //   nameText.length > 0 ? fetchFilterSubjects() : fetchSubjects();
-  // }, [activePage, nameText]);
-
-  // useEffect(() => {
-  //   moduleText.length > 0 ? fetchSubjectsByModules() : fetchSubjects();
-  // }, [activePage, moduleText]);
-
-
   useEffect(() => {
     nameText.length > 0 ? fetchFilterSubjects() : (moduleText.length > 0 ? fetchSubjectsByModules() : fetchSubjects())
   }, [activePage, nameText, moduleText]);
@@ -150,7 +141,7 @@ export function ViewSubjects() {
                         <Table.Cell>{subject.name}</Table.Cell>
                         <Table.Cell>
                           <List bulleted>
-                            {console.log(subject.subjectModules)}
+                            {/* {console.log(subject) + "ciaaa"} */}
                             {subject.subjectModules.map((module, index) => (
                               <List.Content key={index}>
                                 <List.Item>{module.name}</List.Item>

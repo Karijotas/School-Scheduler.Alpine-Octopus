@@ -75,6 +75,8 @@ ALTER TABLE rooms_subjects ADD CONSTRAINT fk_roosub_on_room FOREIGN KEY (room_id
 
 ALTER TABLE rooms_subjects ADD CONSTRAINT fk_roosub_on_subject FOREIGN KEY (subject_id) REFERENCES subject (id);
 
+
+
 CREATE TABLE teacher (
   id BIGINT AUTO_INCREMENT NOT NULL,
    name VARCHAR(100),
@@ -82,7 +84,6 @@ CREATE TABLE teacher (
    contact_email VARCHAR(255),
    phone VARCHAR(255),
    work_hours_per_week DOUBLE NOT NULL,
-   shift VARCHAR(255),
    created_date TIMESTAMP,
    modified_date TIMESTAMP,
    created_by VARCHAR(255),
@@ -92,15 +93,6 @@ CREATE TABLE teacher (
 );
 
 
-CREATE TABLE teachers_subjects (
-  subject_id BIGINT NOT NULL,
-   teacher_id BIGINT NOT NULL,
-   CONSTRAINT pk_teachers_subjects PRIMARY KEY (subject_id, teacher_id)
-);
-
-ALTER TABLE teachers_subjects ADD CONSTRAINT fk_teasub_on_subject FOREIGN KEY (subject_id) REFERENCES subject (id);
-
-ALTER TABLE teachers_subjects ADD CONSTRAINT fk_teasub_on_teacher FOREIGN KEY (teacher_id) REFERENCES teacher (id);
 
 CREATE TABLE program
 (
@@ -154,3 +146,12 @@ CREATE TABLE teacher_shifts (
 ALTER TABLE teacher_shifts ADD CONSTRAINT fk_teashi_on_shift FOREIGN KEY (shift_id) REFERENCES shift (id);
 
 ALTER TABLE teacher_shifts ADD CONSTRAINT fk_teashi_on_teacher FOREIGN KEY (teacher_id) REFERENCES teacher (id);
+CREATE TABLE teacher_subjects (
+  subject_id BIGINT NOT NULL,
+   teacher_id BIGINT NOT NULL,
+   CONSTRAINT pk_teacher_subjects PRIMARY KEY (subject_id, teacher_id)
+);
+
+ALTER TABLE teacher_subjects ADD CONSTRAINT fk_teasub_on_subject FOREIGN KEY (subject_id) REFERENCES subject (id);
+
+ALTER TABLE teacher_subjects ADD CONSTRAINT fk_teasub_on_teacher FOREIGN KEY (teacher_id) REFERENCES teacher (id);

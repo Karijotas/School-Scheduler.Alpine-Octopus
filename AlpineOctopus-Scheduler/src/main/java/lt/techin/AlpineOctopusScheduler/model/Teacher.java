@@ -43,6 +43,14 @@ public class Teacher {
             inverseJoinColumns = @JoinColumn(name = "shift_id"))
     private Set<Shift> teacherShifts = new HashSet<>();
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @JoinTable(
+            name = "teacher_subjects",
+            joinColumns = @JoinColumn(name = "teacher_id"),
+            inverseJoinColumns = @JoinColumn(name = "subject_id"))
+    private Set<Subject> teacherSubjects = new HashSet<>();
+
     private Boolean deleted = Boolean.FALSE;
 
     @CreatedDate
@@ -70,11 +78,10 @@ public class Teacher {
         modifiedDate = LocalDateTime.now();
     }
 
-
     public Teacher() {
     }
 
-    public Teacher(Long id, String name, String loginEmail, String contactEmail, String phone, double workHoursPerWeek, Set<Shift> teacherShifts, Boolean deleted, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy) {
+    public Teacher(Long id, String name, String loginEmail, String contactEmail, String phone, double workHoursPerWeek, Set<Shift> teacherShifts, Set<Subject> teacherSubjects, Boolean deleted, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy) {
         this.id = id;
         this.name = name;
         this.loginEmail = loginEmail;
@@ -82,6 +89,7 @@ public class Teacher {
         this.phone = phone;
         this.workHoursPerWeek = workHoursPerWeek;
         this.teacherShifts = teacherShifts;
+        this.teacherSubjects = teacherSubjects;
         this.deleted = deleted;
         this.createdDate = createdDate;
         this.modifiedDate = modifiedDate;
@@ -145,6 +153,14 @@ public class Teacher {
         this.teacherShifts = teacherShifts;
     }
 
+    public Set<Subject> getTeacherSubjects() {
+        return teacherSubjects;
+    }
+
+    public void setTeacherSubjects(Set<Subject> teacherSubjects) {
+        this.teacherSubjects = teacherSubjects;
+    }
+
     public Boolean getDeleted() {
         return deleted;
     }
@@ -190,12 +206,12 @@ public class Teacher {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Teacher teacher = (Teacher) o;
-        return Double.compare(teacher.workHoursPerWeek, workHoursPerWeek) == 0 && Objects.equals(id, teacher.id) && Objects.equals(name, teacher.name) && Objects.equals(loginEmail, teacher.loginEmail) && Objects.equals(contactEmail, teacher.contactEmail) && Objects.equals(phone, teacher.phone) && Objects.equals(teacherShifts, teacher.teacherShifts) && Objects.equals(deleted, teacher.deleted) && Objects.equals(createdDate, teacher.createdDate) && Objects.equals(modifiedDate, teacher.modifiedDate) && Objects.equals(createdBy, teacher.createdBy) && Objects.equals(modifiedBy, teacher.modifiedBy);
+        return Double.compare(teacher.workHoursPerWeek, workHoursPerWeek) == 0 && Objects.equals(id, teacher.id) && Objects.equals(name, teacher.name) && Objects.equals(loginEmail, teacher.loginEmail) && Objects.equals(contactEmail, teacher.contactEmail) && Objects.equals(phone, teacher.phone) && Objects.equals(teacherShifts, teacher.teacherShifts) && Objects.equals(teacherSubjects, teacher.teacherSubjects) && Objects.equals(deleted, teacher.deleted) && Objects.equals(createdDate, teacher.createdDate) && Objects.equals(modifiedDate, teacher.modifiedDate) && Objects.equals(createdBy, teacher.createdBy) && Objects.equals(modifiedBy, teacher.modifiedBy);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, loginEmail, contactEmail, phone, workHoursPerWeek, teacherShifts, deleted, createdDate, modifiedDate, createdBy, modifiedBy);
+        return Objects.hash(id, name, loginEmail, contactEmail, phone, workHoursPerWeek, teacherShifts, teacherSubjects, deleted, createdDate, modifiedDate, createdBy, modifiedBy);
     }
 
     @Override
@@ -208,6 +224,7 @@ public class Teacher {
                 ", phone='" + phone + '\'' +
                 ", workHoursPerWeek=" + workHoursPerWeek +
                 ", teacherShifts=" + teacherShifts +
+                ", teacherSubjects=" + teacherSubjects +
                 ", deleted=" + deleted +
                 ", createdDate=" + createdDate +
                 ", modifiedDate=" + modifiedDate +
