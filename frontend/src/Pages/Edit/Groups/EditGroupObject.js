@@ -45,17 +45,8 @@ export function EditGroupObject() {
 
     const [selectErrorYear, setSelectErrorYear] = useState("")
     const [selectErrorProgram, setSelectErrorProgram] = useState("*Privaloma")
-    const [selectErrorShift, setSelectErrorShift] = useState("*Privaloma")
 
-    const [formValid, setFormValid] = useState(false)
-
-
-    useEffect(() => {
-        if (nameError || studentAmountError) {
-            setFormValid(false)
-        } else {
-            setFormValid(true)
-        }
+}, [studentError, nameError, programId, shiftId
     }, [nameError, studentAmountError])
 
     //   const selectProgramHandler = () => {
@@ -73,9 +64,9 @@ export function EditGroupObject() {
 
     const handleStudentAmountInputChange = (e) => {
         groups.studentAmount = e.target.value
-
-        validateStudentAmountInput(e.target.value);
         setstudentAmount(e.target.value);
+        validateStudentAmountInput(e.target.value);
+
     };
 
 
@@ -94,10 +85,13 @@ export function EditGroupObject() {
         if (!/^\d+$/.test(value)) {
             setstudentAmountError("Įveskite tik skaičius")
             if (!value) {
-                setstudentAmountError("")
+                setstudentAmountError("Negali būti tuščias")
             }
+
         } else if (value > 300 || value < 1) {
             setstudentAmountError("Skaičius turi būti tarp 1 ir 300")
+        } else {
+            setstudentAmountError("");
         }
     };
 
@@ -284,7 +278,7 @@ export function EditGroupObject() {
                             </Table>
 
                             <Button onClick={() => setActive(true)}>Atšaukti</Button>
-                            <Button className='controls' id='details' onClick={updateGroups}>Atnaujinti</Button>
+                            <Button disabled={!formValid} className='controls' id='details' onClick={updateGroups}>Atnaujinti</Button>
 
 
                         </div>)}
