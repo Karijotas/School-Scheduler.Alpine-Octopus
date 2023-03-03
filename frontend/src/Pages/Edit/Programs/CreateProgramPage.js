@@ -24,15 +24,16 @@ const yearOptions = [
 export function CreateProgramPage() {
   // const [create, setCreate] = useState()
 
-  const listUrl = useHref('/view/programs');
+  const listUrl = useHref('/view/programs/edit');
   const [hide, setHide] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [subjects, setSubjects] = useState([]);
+  const [programs, setPrograms] = useState([]);
   const [subject, setSubject] = useState("");
   const [subjectHours, setSubjectHours] = [];
   const [error, setError] = useState();
   const [hours, setHours] = useState("");
+  const [programId, setProgramId] = useState('');
 
   //Validation
   const [nameDirty, setNameDirty] = useState(false);
@@ -84,10 +85,17 @@ export function CreateProgramPage() {
     };
 
     if (result.ok) {
+      fetchPrograms();
       clear();
     } else {
       window.alert("Nepavyko sukurti: pavadinimas turi būti unikalus!");    
     }
+  };
+
+  const fetchPrograms = () => {
+    fetch("/api/v1/programs")
+      .then((response) => response.json())
+      .then((jsonResponse) => setPrograms(jsonResponse))
   };
 
   const createProgram = () => {
