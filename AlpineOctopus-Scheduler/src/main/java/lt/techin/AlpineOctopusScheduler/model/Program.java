@@ -25,7 +25,6 @@ public class Program {
     @Size(min = 5, max = 500)
     private String name;
 
-    @NotBlank
     @Size(min = 1, max = 500)
     private String description;
 
