@@ -28,7 +28,7 @@ export function EditRoom() {
     fetch("/api/v1/rooms/" + params.id)
       .then((response) => response.json())
       .then(setRooms);
-  }, []);
+  }, [active, params]);
 
   const applyResult = () => {
     setActive(true);

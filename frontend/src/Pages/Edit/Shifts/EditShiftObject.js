@@ -171,7 +171,7 @@ export function EditShiftObject() {
           width={13}
         >
           <Segment raised color="teal">
-            {active && !hide && (
+            {active && (
               <div>
                 <Table celled>
                   <Table.Header>
@@ -213,7 +213,7 @@ export function EditShiftObject() {
                 </Button>
               </div>
             )}
-            {!active && !hide && (
+            {!active && (
               <div>
                 <Table celled>
                   <Table.Header>
