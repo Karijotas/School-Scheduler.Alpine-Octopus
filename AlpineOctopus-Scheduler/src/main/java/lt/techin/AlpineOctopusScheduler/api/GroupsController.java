@@ -5,7 +5,6 @@ import lt.techin.AlpineOctopusScheduler.api.dto.GroupsDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.GroupsEntityDto;
 import lt.techin.AlpineOctopusScheduler.dao.GroupsRepository;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
-import lt.techin.AlpineOctopusScheduler.model.Groups;
 import lt.techin.AlpineOctopusScheduler.service.GroupService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupsMapper.toGroup;
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupsMapper.toGroupDto;
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupsMapper.*;
 import static org.springframework.http.ResponseEntity.ok;
 
 @Controller
@@ -119,11 +117,11 @@ public class GroupsController {
     }
 
     @GetMapping(value = "/{groupId}", produces = {MediaType.APPLICATION_JSON_VALUE,})
-    public ResponseEntity<Groups> getGroup(@PathVariable Long groupId) {
+    public ResponseEntity<GroupsEntityDto> getGroup(@PathVariable Long groupId) {
         var groupsOptional = groupService.getById(groupId);
 
         var responseEntity = groupsOptional
-                .map(groups -> ok(groups))
+                .map(groups -> ok(toGroupEntityDto(groups)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
 
         return responseEntity;

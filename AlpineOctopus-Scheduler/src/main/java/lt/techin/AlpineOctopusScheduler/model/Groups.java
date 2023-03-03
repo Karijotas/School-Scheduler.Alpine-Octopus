@@ -36,6 +36,7 @@ public class Groups {
     @JoinColumn(name = "shift_id")
     private Shift shift;
 
+
     private Boolean deleted = Boolean.FALSE;
 
     //private Shift shift;
