@@ -41,7 +41,8 @@ public class GroupsMapper {
         groupEntityDto.setStudentAmount(groups.getStudentAmount());
         groupEntityDto.setProgramName(groups.getProgram().getName());
         groupEntityDto.setShiftName(groups.getShift().getName());
-
+        groupEntityDto.setProgramId(groups.getProgram().getId());
+        groupEntityDto.setShiftId(groups.getShift().getId());
         groupEntityDto.setModifiedDate(groups.getModifiedDate());
 
 
@@ -56,8 +57,8 @@ public class GroupsMapper {
         groups.setName(groupEntityDto.getName());
         groups.setSchoolYear(groupEntityDto.getSchoolYear());
         groups.setStudentAmount(groupEntityDto.getStudentAmount());
-//        group.setProgram(groupEntityDto.getProgram());
-//        group.setShift(groupEntityDto.getShift());
+//        groups.set(groupEntityDto.getProgram());
+//        groups.setShift(groupEntityDto.getShift());
 
         return groups;
     }

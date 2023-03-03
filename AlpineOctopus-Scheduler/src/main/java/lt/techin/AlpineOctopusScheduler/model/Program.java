@@ -57,13 +57,13 @@ public class Program {
     @JsonIgnore
     private Set<ProgramSubjectHours> subjectHours;
 
-    @OneToMany(mappedBy = "program")
-    @JsonIgnore
-    private Set<Groups> groups;
+//    @OneToMany(mappedBy = "program")
+//    @JsonIgnore
+//    private Set<Groups> groups;
 
     public Program() {
         subjectHours = new HashSet<>();
-        groups = new HashSet<>();
+//        groups = new HashSet<>();
     }
 
     public Long getId() {
@@ -130,25 +130,25 @@ public class Program {
         this.subjectHours = subjectHours;
     }
 
-    public Set<Groups> getGroups() {
-        return groups;
-    }
-
-    public void setGroups(Set<Groups> groups) {
-        this.groups = groups;
-    }
+//    public Set<Groups> getGroups() {
+//        return groups;
+//    }
+//
+//    public void setGroups(Set<Groups> groups) {
+//        this.groups = groups;
+//    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Program program = (Program) o;
-        return Objects.equals(id, program.id) && Objects.equals(name, program.name) && Objects.equals(description, program.description) && Objects.equals(createdDate, program.createdDate) && Objects.equals(modifiedDate, program.modifiedDate) && Objects.equals(deleted, program.deleted) && Objects.equals(subjectHours, program.subjectHours) && Objects.equals(groups, program.groups);
+        return Objects.equals(id, program.id) && Objects.equals(name, program.name) && Objects.equals(description, program.description) && Objects.equals(createdDate, program.createdDate) && Objects.equals(modifiedDate, program.modifiedDate) && Objects.equals(deleted, program.deleted) && Objects.equals(subjectHours, program.subjectHours);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, createdDate, modifiedDate, deleted, subjectHours, groups);
+        return Objects.hash(id, name, description, createdDate, modifiedDate, deleted, subjectHours);
     }
 
     @Override
@@ -161,7 +161,7 @@ public class Program {
                 ", modifiedDate=" + modifiedDate +
                 ", deleted=" + deleted +
                 ", subjectHours=" + subjectHours +
-                ", groups=" + groups +
+//                ", groups=" + groups +
                 '}';
     }
 }

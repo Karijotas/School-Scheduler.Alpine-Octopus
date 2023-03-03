@@ -256,7 +256,7 @@ export function EditRoom() {
                 </Table>
                 <Divider hidden></Divider>
                 <Button onClick={() => setActive(true)}>Atšaukti</Button>
-                <Button primary disabled={!formValid} onClick={updateRooms}>Atnaujinti</Button>
+                <Button primary className='controls' id='details'  disabled={!formValid} onClick={updateRooms}>Atnaujinti</Button>
               </div>
             )}
           </Segment>
