@@ -45,12 +45,12 @@ export function CreateGroupPage() {
   const [studentDirty, setStudentDirty] = useState(false);
 
   const [nameError, setNameError] = useState("Negali būti tuščias!")
-  const [studentError, setStudentError] = useState("")
+  const [studentError, setStudentError] = useState()
   // const [yearError, setYearError] = useState("*Privaloma")
   // const [programError, setProgramError] = useState("*Privaloma")
   // const [shiftError, setShiftError] = useState("*Privaloma")
 
-  const [formValid, setFormValid] = useState(false)
+  const [formValid, setFormValid] = useState()
 
   useEffect(() => {
     if (studentError || nameError) {
@@ -89,6 +89,8 @@ export function CreateGroupPage() {
       if (!/^\d+$/.test(e.target.value)) {
         setStudentError("Įveskite tik skaičius")
       }
+    } else if (e.target.value > 300 || e.target.value < 1) {
+      setStudentError("Skaičius turi būti tarp 1 ir 300")
     }
 
   }

@@ -73,8 +73,9 @@ export function EditGroupObject() {
 
     const handleStudentAmountInputChange = (e) => {
         groups.studentAmount = e.target.value
-        setstudentAmount(e.target.value);
+
         validateStudentAmountInput(e.target.value);
+        setstudentAmount(e.target.value);
     };
 
 
@@ -95,8 +96,12 @@ export function EditGroupObject() {
             if (!value) {
                 setstudentAmountError("")
             }
+        } else if (value > 300 || value < 1) {
+            setstudentAmountError("Skaičius turi būti tarp 1 ir 300")
         }
     };
+
+
 
 
 
