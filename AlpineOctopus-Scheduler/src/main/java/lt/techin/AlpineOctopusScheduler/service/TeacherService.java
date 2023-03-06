@@ -102,7 +102,6 @@ public class TeacherService {
         existingTeacher.setContactEmail(teacher.getContactEmail());
         existingTeacher.setPhone(teacher.getPhone());
         existingTeacher.setWorkHoursPerWeek(teacher.getWorkHoursPerWeek());
-        existingTeacher.setTeacherShifts(teacher.getTeacherShifts());
 
         return teacherRepository.save(existingTeacher);
     }
