@@ -24,7 +24,6 @@ const yearOptions = [
 export function CreateProgramPage() {
   // const [create, setCreate] = useState()
 
-  const listUrl = useHref('/view/programs/edit/' + programId);
   const [hide, setHide] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -33,7 +32,8 @@ export function CreateProgramPage() {
   const [subjectHours, setSubjectHours] = [];
   const [error, setError] = useState();
   const [hours, setHours] = useState("");
-  const [programId, setProgramId] = useState('');
+  const [createdProgram, setCreatedProgram] = useState();
+  const listUrl = useHref('/view/programs/edit/');
 
   //Validation
   const [nameDirty, setNameDirty] = useState(false);
@@ -83,21 +83,19 @@ export function CreateProgramPage() {
     const clear = () => {
       setHide(true);
     };
-
     if (result.ok) {
-      fetchPrograms();
-      setProgramId(programs.size - 1)
-      clear();
+     let info = result.json() 
+      .then((jsonResponse) => window.location = listUrl + jsonResponse.id);;
     } else {
       window.alert("Nepavyko sukurti: pavadinimas turi būti unikalus!");
     }
   };
 
-  const fetchPrograms = () => {
-    fetch("/api/v1/programs")
-      .then((response) => response.json())
-      .then((jsonResponse) => setPrograms(jsonResponse))
-  };
+  // const fetchPrograms = () => {
+  //   fetch("/api/v1/programs")
+  //     .then((response) => response.json())
+  //     .then((jsonResponse) => setPrograms(jsonResponse))
+  // };
 
   const createProgram = () => {
     fetch("/api/v1/programs", {
@@ -108,7 +106,6 @@ export function CreateProgramPage() {
         description,
       }),
     }).then(applyResult)
-      .then(() => window.location = listUrl);
   };
 
 
