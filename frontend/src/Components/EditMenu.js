@@ -8,8 +8,18 @@ export function EditMenu() {
       <Grid columns={1}>
         <Grid.Column>
           <Menu fluid vertical tabular id="main" className="ui centered grid">
-            <Menu.Item 
-            id="icocolor"           
+            <Menu.Item
+              id="icocolor"
+              name="modules"
+              content="Moduliai"
+              icon="unordered list"
+              as={NavLink}
+              exact
+              to="/view/modules"
+            />
+
+            <Menu.Item
+              id="icocolor"
               name="subjects"
               icon="book"
               content="Dalykai"
@@ -18,7 +28,7 @@ export function EditMenu() {
               to="/view/subjects"
             />
             <Menu.Item
-            id="icocolor"
+              id="icocolor"
               name="teachers"
               icon="user"
               content="Mokytojai"
@@ -27,7 +37,7 @@ export function EditMenu() {
               to="/view/teachers"
             />
             <Menu.Item
-            id="icocolor"
+              id="icocolor"
               name="groups"
               icon="users"
               content="Grupės"
@@ -36,7 +46,7 @@ export function EditMenu() {
               to="/view/groups"
             />
             <Menu.Item
-            id="icocolor"
+              id="icocolor"
               name="shifts"
               content="Pamainos"
               icon="sync"
@@ -45,7 +55,7 @@ export function EditMenu() {
               to="/view/shifts"
             />
             <Menu.Item
-            id="icocolor"
+              id="icocolor"
               name="rooms"
               icon="warehouse"
               content="Klasės"
@@ -54,7 +64,7 @@ export function EditMenu() {
               to="/view/rooms"
             />
             <Menu.Item
-            id="icocolor"
+              id="icocolor"
               name="program"
               icon="file alternate"
               content="Programos"
@@ -62,24 +72,18 @@ export function EditMenu() {
               exact
               to="/view/programs"
             />
-            <Menu.Item
-            id="icocolor"
-              name="modules"
-              content="Moduliai"
-              icon="unordered list"
-              as={NavLink}
-              exact
-              to="/view/modules"
-            />
             <Menu.Item>
               <Dropdown
                 text="Archyvas"
                 content="Archyvas"
                 floating
                 labeled
-                className="icon"               
+                className="icon"
               >
                 <Dropdown.Menu>
+                  <Dropdown.Item as={NavLink} to="/view/archives/modules">
+                    Modulių archyvas
+                  </Dropdown.Item>
                   <Dropdown.Item as={NavLink} to="/view/archives/subjects">
                     Dalykų archyvas
                   </Dropdown.Item>
@@ -98,9 +102,7 @@ export function EditMenu() {
                   <Dropdown.Item as={NavLink} to="/view/archives/programs">
                     Programų archyvas
                   </Dropdown.Item>
-                  <Dropdown.Item as={NavLink} to="/view/archives/modules">
-                    Modulių archyvas
-                  </Dropdown.Item>
+
                 </Dropdown.Menu>
               </Dropdown>
             </Menu.Item>
