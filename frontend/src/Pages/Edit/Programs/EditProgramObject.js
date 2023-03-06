@@ -5,6 +5,7 @@ import {
   Divider,
   Form,
   Grid,
+  GridColumn,
   Icon,
   Input,
   List,
@@ -105,7 +106,7 @@ export function EditProgramObject() {
   };
 
   const validateDescriptionInput = (value) => {
-    if (value.length > 100) {
+    if (value.length > 500) {
       setDescriptionError("Aprašymas negali viršyti 500 simbolių!");
     } else {
       setDescriptionError("");
@@ -282,15 +283,18 @@ export function EditProgramObject() {
                 </Table>
                 <Divider hidden />
 
-                <Grid columns={2}>
+                <Grid columns={3}>
                   <Grid.Column>
                     <Table width={6}>
                       <Table.Header>
                         <Table.Row>
-                          <Table.HeaderCell width={6}>
+                          <Table.HeaderCell >
                             Programos dalykai
                           </Table.HeaderCell>
-                          <Table.HeaderCell width={6}></Table.HeaderCell>
+                          <Table.HeaderCell >
+                            
+                          </Table.HeaderCell>
+                          <Table.HeaderCell ></Table.HeaderCell>
                         </Table.Row>
                       </Table.Header>
                       <Table.Body>
@@ -414,54 +418,22 @@ export function EditProgramObject() {
                 </Table>
 
                 <Grid columns={2}>
-                  <Grid.Column>
+                  <Grid.Column width={9}>
                     <Table>
                       <Table.Header>
                         <Table.Row>
-                          <Table.HeaderCell width={8}>
-                            Programos dalykai
+                          <Table.HeaderCell>
+                            Dalyko pavadinimas
+                          </Table.HeaderCell>
+                          <Table.HeaderCell>
+                            Pridėti dalykai
                           </Table.HeaderCell>
                         </Table.Row>
                       </Table.Header>
                       <Table.Body>
                         <Table.Row>
                           <Table.Cell>
-                            <Table.Body>
-                              {subjectsInProgram.map((subject) => (
-                                <Table.Row key={subject.id}>
-                                  <Table.Cell>
-                                    {subject.subject.name}
-                                  </Table.Cell>
-                                  <Table.Cell>
-                                    {subject.subjectHours} val.
-                                  </Table.Cell>
-                                  <Table.Cell collapsing>
-                                    <Button
-                                      basic
-                                      compact
-                                      icon="remove"
-                                      title="Pašalinti"
-                                      onClick={() =>
-                                        removeSubject(
-                                          params.id,
-                                          subject.subject.id,
-                                          subject.subjectHours
-                                        )
-                                      }
-                                    ></Button>
-                                  </Table.Cell>
-                                </Table.Row>
-                              ))}
-                              <Table.Row>
-                                <Table.Cell>
-                                  <h5>Programos valandų skaičius:</h5>
-                                </Table.Cell>
-                                <Table.Cell>
-                                  <h5>{totalHours} val.</h5>
-                                </Table.Cell>
-                              </Table.Row>
-                            </Table.Body>
-                            <List>
+                          <List>
                               <List.Item>
                                 <Form.Group widths="equal">
                                   <Form.Field>
@@ -515,6 +487,44 @@ export function EditProgramObject() {
                               </List.Item>
                             </List>
                           </Table.Cell>
+                          <Table.Cell>
+                            <Table.Body>
+                              {subjectsInProgram.map((subject) => (
+                                <Table.Row key={subject.id}>
+                                  <Table.Cell>
+                                    {subject.subject.name}
+                                  </Table.Cell>
+                                  <Table.Cell>
+                                    {subject.subjectHours} val.
+                                  </Table.Cell>
+                                  <Table.Cell collapsing>
+                                    <Button
+                                      basic
+                                      compact
+                                      icon="remove"
+                                      title="Pašalinti"
+                                      onClick={() =>
+                                        removeSubject(
+                                          params.id,
+                                          subject.subject.id,
+                                          subject.subjectHours
+                                        )
+                                      }
+                                    ></Button>
+                                  </Table.Cell>
+                                </Table.Row>
+                              ))}
+                              <Table.Row>
+                                      <Table.Cell>
+                                        <h5>Programos valandų skaičius:</h5>
+                                      </Table.Cell>
+                                      <Table.Cell>
+                                        <h5>{totalHours} val.</h5>
+                                      </Table.Cell>
+                                    </Table.Row>
+                            </Table.Body>
+                            
+                          </Table.Cell>
                         </Table.Row>
                       </Table.Body>
                     </Table>
@@ -522,116 +532,119 @@ export function EditProgramObject() {
                 </Grid>
                 <Divider hidden />
 
-                {/* <Table>
-                  <Table.Header>
-                    <Table.Row>
-                      <Table.HeaderCell width={8}>
-                        Dalyko pavadinimas
-                      </Table.HeaderCell>
-                      <Table.HeaderCell width={8}>
-                        Pridėti dalykai
-                      </Table.HeaderCell>
-                    </Table.Row>
-                  </Table.Header>
-                  <Divider hidden />
-                  <Table.Body>
-                    <Table.Row>
-                      <Table.Cell>
-                        <List textAlign="center" divided verticalAlign="middle">
-                          <List.Item>
-                            <Form.Group widths="equal">
-                              <Form.Field>
-<<<<<<< HEAD
-                                {selectErrorSubject && (
-                                  <div style={{ color: "red" }}>
-                                    {selectErrorSubject}
-                                  </div>
-                                )}
-=======
->>>>>>> validation_front
-                                <Select
-                                  options={subjects}
-                                  placeholder="Dalykai"
-                                  value={subject}
-                                  onChange={(e, data) => (
-                                    setSubject(e.target.value),
-                                    setSubjectId(data.value)
-                                    
+                {/* <Grid columns={2}>
+                  <Grid.Column>
+                    <Table>
+                      <Table.Header>
+                        <Table.Row>
+                          <Table.HeaderCell width={8}>
+                            Dalyko pavadinimas
+                          </Table.HeaderCell>
+                          <Table.HeaderCell width={8}>
+                            Pridėti dalykai
+                          </Table.HeaderCell>
+                        </Table.Row>
+                      </Table.Header>
+                      <Divider hidden />
+                      <Table.Body>
+                        <Table.Row>
+                          <Table.Cell>
+                            <List textAlign="center" divided verticalAlign="middle">
+                              <List.Item>
+                                <Form.Group widths="equal">
+                                  <Form.Field>
+                                    {selectErrorSubject && (
+                                      <div style={{ color: "red" }}>
+                                        {selectErrorSubject}
+                                      </div>
+                                    )}
+                                    <Select
+                                      options={subjects}
+                                      placeholder="Dalykai"
+                                      value={subject}
+                                      onChange={(e, data) => (
+                                        setSubject(e.target.value),
+                                        setSubjectId(data.value)
+                    
+                                      )}
+                                      onClose={() => console.log(subjectId)}
+                                    />
+                                  </Form.Field>
+                                </Form.Group>
+                                <Divider hidden />
+                                <List.Content>
+                                  {hoursError && (
+                                    <div style={{ color: "red" }}>{hoursError}</div>
                                   )}
-                                  onClose={() => console.log(subjectId)}
-                                />
-                              </Form.Field>
-                            </Form.Group>
-                            <Divider hidden />
-                            <List.Content>
-                              {hoursError && (
-                                <div style={{ color: "red" }}>{hoursError}</div>
-                              )}
-                              <Input
-                                placeholder="Valandų skaičius"
-                                value={subjectHours}
-                                onChange={(e) => handleHoursInputChange(e)}
-                              />
-                            </List.Content>
-                            <Divider hidden />
-                            <List.Content floated="left">
-                              <Button
-                                id="details"
-                                onClick={() =>
-                                  addSubjectAndHours(
-                                    params.id,
-                                    subjectId,
-                                    subjectHours
-                                  )
-                                }
-                                // onClose={fetch(
-                                //   `/api/v1/programs/${params.id}/subjects`
-                                // )}
-                              >
-                                Pridėti
-                              </Button>
-                            </List.Content>
-                          </List.Item>
-                        </List>
-                      </Table.Cell>
-                      <Table.Cell>
-                        <Table.Body>
-                          {subjectsInProgram.map((subject) => (
-                            <Table.Row key={subject.id}>
-                              <Table.Cell>{subject.subject.name}</Table.Cell>
-                              <Table.Cell>
-                                {subject.subjectHours} val.
-                              </Table.Cell>
-                              <Table.Cell collapsing>
-                                <Button
-                                  basic
-                                  compact
-                                  icon="remove"
-                                  title="Pašalinti"
-                                  onClick={() =>
-                                    removeSubject(
-                                      params.id,
-                                      subject.subject.id,
-                                      subject.subjectHours
-                                    )
-                                  }
-                                ></Button>
-                              </Table.Cell>
-                            </Table.Row>
-                          ))}
-                          <Table.Row>
-                            <Table.Cell>
-                              <h5>Programos valandų skaičius:</h5>
-                            </Table.Cell>
-                            <Table.Cell>
-                              <h5>{totalHours} val.</h5>
-                            </Table.Cell>
-                          </Table.Row>
-                        </Table.Body>
-                      </Table.Cell>
-                    </Table.Row>
-                  </Table.Body>
-                </Table> */}
+                                  <Input
+                                    placeholder="Valandų skaičius"
+                                    value={subjectHours}
+                                    onChange={(e) => handleHoursInputChange(e)}
+                                  />
+                                </List.Content>
+                                <Divider hidden />
+                                <List.Content floated="left">
+                                  <Button
+                                    id="details"
+                                    onClick={() =>
+                                      addSubjectAndHours(
+                                        params.id,
+                                        subjectId,
+                                        subjectHours
+                                      )
+                                    }
+                                    // onClose={fetch(
+                                    //   `/api/v1/programs/${params.id}/subjects`
+                                    // )}
+                                  >
+                                    Pridėti
+                                  </Button>
+                                </List.Content>
+                              </List.Item>
+                            </List>
+                          </Table.Cell>
+                          <Table.Cell>
+                            <Table.Body>
+                              {subjectsInProgram.map((subject) => (
+                                <Table.Row key={subject.id}>
+                                  <Table.Cell>{subject.subject.name}</Table.Cell>
+                                  <Table.Cell>
+                                    {subject.subjectHours} val.
+                                  </Table.Cell>
+                                  <Table.Cell collapsing>
+                                    <Button
+                                      basic
+                                      compact
+                                      icon="remove"
+                                      title="Pašalinti"
+                                      onClick={() =>
+                                        removeSubject(
+                                          params.id,
+                                          subject.subject.id,
+                                          subject.subjectHours
+                                        )
+                                      }
+                                    ></Button>
+                                  </Table.Cell>
+                                </Table.Row>
+                              ))}
+                              <Table.Row>
+                                <Table.Cell>
+                                  <h5>Programos valandų skaičius:</h5>
+                                </Table.Cell>
+                                <Table.Cell>
+                                  <h5>{totalHours} val.</h5>
+                                </Table.Cell>
+                              </Table.Row>
+                            </Table.Body>
+                          </Table.Cell>
+                        </Table.Row>
+                      </Table.Body>
+                    </Table>
+                  </Grid.Column>
+                  <Grid.Column></Grid.Column>
+                 </Grid> */}
+
                 <Button onClick={() => setActive(true)}>Atšaukti</Button>
                 <Button
                   id="details"

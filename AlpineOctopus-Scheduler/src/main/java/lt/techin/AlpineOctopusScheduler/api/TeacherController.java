@@ -206,7 +206,7 @@ public class TeacherController {
         return ok(toTeacherDto(updatedTeacher));
     }
 
-    @DeleteMapping("/{teacherId}/teachers/{subjectId}")
+    @DeleteMapping("/{teacherId}/subjects/{subjectId}")
     public ResponseEntity<Void> deleteSubjectFromTeacherBySubjectId(@PathVariable Long teacherId, @PathVariable Long subjectId) {
         boolean deleted = teacherService.deleteSubjectInTeacherById(teacherId, subjectId);
         if (deleted) {
