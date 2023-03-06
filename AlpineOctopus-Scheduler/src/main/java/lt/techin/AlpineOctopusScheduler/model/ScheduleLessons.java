@@ -1,35 +1,41 @@
 package lt.techin.AlpineOctopusScheduler.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-public class Schedule {
+public class ScheduleLessons {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank
-    private String name;
-    @NotEmpty
-    private LocalDateTime startingDate;
 
-    private LocalDateTime plannedTillDate;
-    @ManyToMany
-    private Lesson lesson;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "schedule_id")
+    @JsonIgnore
+    @Valid
+    Schedule schedule;
 
-    @OneToOne
-    @JoinColumn(name = "group_id")
-    private Groups group;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "lesson_id")
+    @JsonIgnore
+    @Valid
+    Lesson lesson;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDateTime lessonDateDay;
+
+    private Integer lessonNumber;
+
+    private boolean online;
 
     @CreatedDate
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -60,9 +66,6 @@ public class Schedule {
         modifiedBy = "API app";
     }
 
-    public Schedule() {
-    }
-
     public Long getId() {
         return id;
     }
@@ -71,12 +74,12 @@ public class Schedule {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public Schedule getSchedule() {
+        return schedule;
     }
 
-    public void setName() {
-        this.name = group.getName() + "/" + group.getProgram().getName() + "/" + group.getShift().getName();
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
     }
 
     public Lesson getLesson() {
@@ -85,6 +88,30 @@ public class Schedule {
 
     public void setLesson(Lesson lesson) {
         this.lesson = lesson;
+    }
+
+    public LocalDateTime getLessonDateDay() {
+        return lessonDateDay;
+    }
+
+    public void setLessonDateDay(LocalDateTime lessonDateDay) {
+        this.lessonDateDay = lessonDateDay;
+    }
+
+    public Integer getLessonNumber() {
+        return lessonNumber;
+    }
+
+    public void setLessonNumber(Integer lessonNumber) {
+        this.lessonNumber = lessonNumber;
+    }
+
+    public boolean isOnline() {
+        return online;
+    }
+
+    public void setOnline(boolean online) {
+        this.online = online;
     }
 
     public LocalDateTime getCreatedDate() {
@@ -119,34 +146,28 @@ public class Schedule {
         this.modifiedBy = modifiedBy;
     }
 
-    public Groups getGroup() {
-        return group;
-    }
-
-    public void setGroup(Groups group) {
-        this.group = group;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Schedule schedule = (Schedule) o;
-        return Objects.equals(getId(), schedule.getId()) && Objects.equals(getName(), schedule.getName()) && Objects.equals(getLesson(), schedule.getLesson()) && Objects.equals(getGroup(), schedule.getGroup()) && Objects.equals(getCreatedDate(), schedule.getCreatedDate()) && Objects.equals(getModifiedDate(), schedule.getModifiedDate()) && Objects.equals(getCreatedBy(), schedule.getCreatedBy()) && Objects.equals(getModifiedBy(), schedule.getModifiedBy());
+        ScheduleLessons that = (ScheduleLessons) o;
+        return isOnline() == that.isOnline() && Objects.equals(getId(), that.getId()) && Objects.equals(getSchedule(), that.getSchedule()) && Objects.equals(getLesson(), that.getLesson()) && Objects.equals(getLessonDateDay(), that.getLessonDateDay()) && Objects.equals(getLessonNumber(), that.getLessonNumber()) && Objects.equals(getCreatedDate(), that.getCreatedDate()) && Objects.equals(getModifiedDate(), that.getModifiedDate()) && Objects.equals(getCreatedBy(), that.getCreatedBy()) && Objects.equals(getModifiedBy(), that.getModifiedBy());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getLesson(), getGroup(), getCreatedDate(), getModifiedDate(), getCreatedBy(), getModifiedBy());
+        return Objects.hash(getId(), getSchedule(), getLesson(), getLessonDateDay(), getLessonNumber(), isOnline(), getCreatedDate(), getModifiedDate(), getCreatedBy(), getModifiedBy());
     }
 
     @Override
     public String toString() {
-        return "Schedule{" +
+        return "ScheduleLessons{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", schedule=" + schedule +
                 ", lesson=" + lesson +
-                ", group=" + group +
+                ", lessonDateDay=" + lessonDateDay +
+                ", lessonNumber=" + lessonNumber +
+                ", online=" + online +
                 ", createdDate=" + createdDate +
                 ", modifiedDate=" + modifiedDate +
                 ", createdBy='" + createdBy + '\'' +
@@ -154,4 +175,3 @@ public class Schedule {
                 '}';
     }
 }
-
