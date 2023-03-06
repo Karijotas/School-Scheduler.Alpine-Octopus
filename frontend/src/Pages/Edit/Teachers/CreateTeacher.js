@@ -10,7 +10,7 @@ const JSON_HEADERS = {
 
 export function CreateTeacher() {
   // const [create, setCreate] = useState()
-  const listUrl = useHref('/view/teachers');
+  const listUrl = useHref('/view/teachers/edit/');
   const [hide, setHide] = useState(false);
   const [name, setName] = useState("");
   const [loginEmail, setLoginEmail] = useState("");
@@ -118,9 +118,10 @@ export function CreateTeacher() {
     };
 
     if (result.ok) {
-      clear();
+      let info = result.json()
+        .then((jsonResponse) => window.location = listUrl + jsonResponse.id);
     } else {
-      window.alert("Nepavyko sukurti: Teams vartotojo vardas turi būti unikalus!");    
+      window.alert("Nepavyko sukurti: Teams vartotojo vardas turi būti unikalus!");
     }
   };
 
@@ -136,7 +137,7 @@ export function CreateTeacher() {
         workHoursPerWeek,
 
       }),
-    }).then(applyResult).then(() => window.location = listUrl);
+    }).then(applyResult);
   };
 
   useEffect(() => {
