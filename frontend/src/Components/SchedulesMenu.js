@@ -34,18 +34,18 @@ export function SchedulesMenu() {
               name="teachers"
               icon="user"
               content="Mokytojai"
-              as={NavLink}
-              exact
-              to="/view/teachers"
+            //   as={NavLink}
+            //   exact
+            //   to="/view/teachers"
             />
             <Menu.Item
               id="icocolor"
               name="rooms"
               icon="warehouse"
               content="Kabinetai"
-              as={NavLink}
-              exact
-              to="/view/rooms"
+            //   as={NavLink}
+            //   exact
+            //   to="/view/rooms"
             />
           </Menu>
         </Grid.Column>
