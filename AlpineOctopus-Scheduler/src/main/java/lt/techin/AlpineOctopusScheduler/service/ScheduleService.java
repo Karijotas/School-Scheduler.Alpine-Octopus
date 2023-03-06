@@ -1,5 +1,8 @@
 package lt.techin.AlpineOctopusScheduler.service;
 
+import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleTestDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ScheduleMapper;
 import lt.techin.AlpineOctopusScheduler.dao.ScheduleLessonsRepository;
 import lt.techin.AlpineOctopusScheduler.dao.ScheduleRepository;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
@@ -36,8 +39,12 @@ public class ScheduleService {
         }
     }
 
-//    public List<Schedule> getAllSchedules() {
-//    }
+    public List<ScheduleTestDto> getAllSchedules() {
+        return scheduleRepository.findAll()
+                .stream()
+                .map(ScheduleMapper::toScheduleTestDto)
+                .collect(Collectors.toList());
+    }
 
     public List<ScheduleEntityDto> getAllPagedSchedules(int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
@@ -57,13 +64,12 @@ public class ScheduleService {
         return scheduleRepository.save(schedule);
     }
 
-//    public ScheduleLessons update(Long id, ScheduleLessons schedule) {
-//        var existingSchedule = scheduleLessonsRepository.findById(id)
-//                .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", id.toString()));
-//
-//        existingSchedule.s(schedule.getLesson());
-//
-//    }
+    public Schedule update(Long id, Schedule schedule) {
+        var existingSchedule = scheduleRepository.findById(id)
+                .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", id.toString()));
+
+        return existingSchedule;
+    }
 
 
     public boolean deleteById(Long id) {

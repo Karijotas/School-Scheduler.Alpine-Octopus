@@ -63,6 +63,22 @@ public class Schedule {
     public Schedule() {
     }
 
+    public LocalDateTime getStartingDate() {
+        return startingDate;
+    }
+
+    public void setStartingDate(LocalDateTime startingDate) {
+        this.startingDate = startingDate;
+    }
+
+    public LocalDateTime getPlannedTillDate() {
+        return plannedTillDate;
+    }
+
+    public void setPlannedTillDate(LocalDateTime plannedTillDate) {
+        this.plannedTillDate = plannedTillDate;
+    }
+
     public Long getId() {
         return id;
     }
@@ -75,8 +91,8 @@ public class Schedule {
         return name;
     }
 
-    public void setName() {
-        this.name = group.getName() + "/" + group.getProgram().getName() + "/" + group.getShift().getName();
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Lesson getLesson() {
