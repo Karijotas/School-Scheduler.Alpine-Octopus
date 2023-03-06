@@ -22,8 +22,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
 
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper.toSubject;
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper.toSubjectDto;
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper.*;
 import static org.springframework.http.ResponseEntity.ok;
 
 @Controller
@@ -118,10 +117,10 @@ public class SubjectController {
 
 
     @PostMapping
-    public ResponseEntity<SubjectDto> createSubject(@Valid @RequestBody SubjectDto subjectDto) {
+    public ResponseEntity<SubjectEntityDto> createSubject(@Valid @RequestBody SubjectEntityDto subjectDto) {
         if (subjectService.subjectNameIsUnique(toSubject(subjectDto))) {
             var createdSubject = subjectService.create(toSubject(subjectDto));
-            return ok(toSubjectDto(createdSubject));
+            return ok(toSubjectEntityDto(createdSubject));
         } else {
             throw new SchedulerValidationException("Subject already exists", "Subject name", "Already exists", subjectDto.getName());
         }
