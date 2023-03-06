@@ -86,7 +86,7 @@ export function ViewRoomsArchive() {
               <Table selectable>
                 <Table.Header>
                   <Table.Row>
-                    <Table.HeaderCell>Archyvas. Klasės pavadinimas</Table.HeaderCell>
+                    <Table.HeaderCell>Archyvas. Kabineto pavadinimas</Table.HeaderCell>
 
                     <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                   </Table.Row>

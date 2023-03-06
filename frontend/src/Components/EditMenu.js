@@ -58,7 +58,7 @@ export function EditMenu() {
               id="icocolor"
               name="rooms"
               icon="warehouse"
-              content="Klasės"
+              content="Kabinetai"
               as={NavLink}
               exact
               to="/view/rooms"
@@ -97,7 +97,7 @@ export function EditMenu() {
                     Pamainų archyvas
                   </Dropdown.Item>
                   <Dropdown.Item as={NavLink} to="/view/archives/rooms">
-                    Klasių archyvas
+                    Kabinetų archyvas
                   </Dropdown.Item>
                   <Dropdown.Item as={NavLink} to="/view/archives/programs">
                     Programų archyvas
