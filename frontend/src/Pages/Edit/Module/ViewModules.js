@@ -158,7 +158,6 @@ export function ViewModules() {
                           icon="archive"
                             onClick={() => setOpen(module.id)}
                           ></Button>
-
                           <Confirm
                             open={open}
                             header="Dėmesio!"
