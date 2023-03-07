@@ -7,6 +7,8 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -24,6 +26,12 @@ public class Lesson {
     private Room room;
 //    @ManyToMany
 //    private Schedule schedule;
+
+    @NotNull
+    private Integer lessonNumber;
+    @NotBlank
+    private boolean online;
+
 
     @CreatedDate
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -55,6 +63,22 @@ public class Lesson {
     }
 
     public Lesson() {
+    }
+
+    public Integer getLessonNumber() {
+        return lessonNumber;
+    }
+
+    public void setLessonNumber(Integer lessonNumber) {
+        this.lessonNumber = lessonNumber;
+    }
+
+    public boolean isOnline() {
+        return online;
+    }
+
+    public void setOnline(boolean online) {
+        this.online = online;
     }
 
     public Long getId() {
@@ -134,12 +158,12 @@ public class Lesson {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Lesson lesson = (Lesson) o;
-        return Objects.equals(getId(), lesson.getId()) && Objects.equals(getSubject(), lesson.getSubject()) && Objects.equals(getTeacher(), lesson.getTeacher()) && Objects.equals(getRoom(), lesson.getRoom()) && Objects.equals(getCreatedDate(), lesson.getCreatedDate()) && Objects.equals(getModifiedDate(), lesson.getModifiedDate()) && Objects.equals(getCreatedBy(), lesson.getCreatedBy()) && Objects.equals(getModifiedBy(), lesson.getModifiedBy());
+        return isOnline() == lesson.isOnline() && Objects.equals(getId(), lesson.getId()) && Objects.equals(getSubject(), lesson.getSubject()) && Objects.equals(getTeacher(), lesson.getTeacher()) && Objects.equals(getRoom(), lesson.getRoom()) && Objects.equals(getLessonNumber(), lesson.getLessonNumber()) && Objects.equals(getCreatedDate(), lesson.getCreatedDate()) && Objects.equals(getModifiedDate(), lesson.getModifiedDate()) && Objects.equals(getCreatedBy(), lesson.getCreatedBy()) && Objects.equals(getModifiedBy(), lesson.getModifiedBy());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getSubject(), getTeacher(), getRoom(), getCreatedDate(), getModifiedDate(), getCreatedBy(), getModifiedBy());
+        return Objects.hash(getId(), getSubject(), getTeacher(), getRoom(), getLessonNumber(), isOnline(), getCreatedDate(), getModifiedDate(), getCreatedBy(), getModifiedBy());
     }
 
     @Override
@@ -149,6 +173,8 @@ public class Lesson {
                 ", subject=" + subject +
                 ", teacher=" + teacher +
                 ", room=" + room +
+                ", lessonNumber=" + lessonNumber +
+                ", online=" + online +
                 ", createdDate=" + createdDate +
                 ", modifiedDate=" + modifiedDate +
                 ", createdBy='" + createdBy + '\'' +

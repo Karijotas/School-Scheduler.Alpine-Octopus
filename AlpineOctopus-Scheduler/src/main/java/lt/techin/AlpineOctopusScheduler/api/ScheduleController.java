@@ -17,9 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupsMapper.toGroupDto;
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ScheduleMapper.toSchedule;
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ScheduleMapper.toScheduleEntityDto;
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ScheduleMapper.*;
 import static org.springframework.http.ResponseEntity.ok;
 
 @Controller
@@ -60,8 +58,8 @@ public class ScheduleController {
     }
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<ScheduleEntityDto> createSchedule(@Valid @RequestBody ScheduleEntityDto scheduleEntityDto) {
-        var createdSchedule = scheduleService.create(toSchedule(scheduleEntityDto));
+    public ResponseEntity<ScheduleEntityDto> createSchedule(@RequestBody ScheduleEntityDto scheduleEntityDto, Long groupId, Long shiftId) {
+        var createdSchedule = scheduleService.create(toSchedule(scheduleEntityDto), groupId, shiftId);
         return ok(toScheduleEntityDto(createdSchedule));
     }
 
@@ -79,8 +77,8 @@ public class ScheduleController {
     @PatchMapping("/{scheduleId}")
     public ResponseEntity<ScheduleDto> updateSchedule(@PathVariable Long scheduleId, @Valid @RequestBody ScheduleDto scheduleDto, Long groupId, Long shiftId) {
 
-        var updatedSchedule = scheduleService.update(groupId, toGroup(groupsDto), programId, shiftId);
-        return ok(toGroupDto(updatedGroup));
+        var updatedSchedule = scheduleService.update(scheduleId, toSchedule(scheduleDto), groupId, shiftId);
+        return ok(toScheduleDto(updatedSchedule));
 
     }
 }

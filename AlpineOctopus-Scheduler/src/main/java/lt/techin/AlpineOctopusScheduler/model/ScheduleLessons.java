@@ -25,17 +25,13 @@ public class ScheduleLessons {
     @Valid
     Schedule schedule;
 
-    //    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "lesson_id")
-//    @JsonIgnore
-//    @Valid
-//    Lesson lesson;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "lesson_id")
+    @JsonIgnore
+    @Valid
+    Lesson lesson;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime lessonDateDay;
-
-    private Integer lessonNumber;
-
-    private boolean online;
 
     @CreatedDate
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -98,22 +94,6 @@ public class ScheduleLessons {
         this.lessonDateDay = lessonDateDay;
     }
 
-    public Integer getLessonNumber() {
-        return lessonNumber;
-    }
-
-    public void setLessonNumber(Integer lessonNumber) {
-        this.lessonNumber = lessonNumber;
-    }
-
-    public boolean isOnline() {
-        return online;
-    }
-
-    public void setOnline(boolean online) {
-        this.online = online;
-    }
-
     public LocalDateTime getCreatedDate() {
         return createdDate;
     }
@@ -151,12 +131,12 @@ public class ScheduleLessons {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ScheduleLessons that = (ScheduleLessons) o;
-        return isOnline() == that.isOnline() && Objects.equals(getId(), that.getId()) && Objects.equals(getSchedule(), that.getSchedule()) && Objects.equals(getLessonDateDay(), that.getLessonDateDay()) && Objects.equals(getLessonNumber(), that.getLessonNumber()) && Objects.equals(getCreatedDate(), that.getCreatedDate()) && Objects.equals(getModifiedDate(), that.getModifiedDate()) && Objects.equals(getCreatedBy(), that.getCreatedBy()) && Objects.equals(getModifiedBy(), that.getModifiedBy());
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getSchedule(), that.getSchedule()) && Objects.equals(getLessonDateDay(), that.getLessonDateDay()) && Objects.equals(getCreatedDate(), that.getCreatedDate()) && Objects.equals(getModifiedDate(), that.getModifiedDate()) && Objects.equals(getCreatedBy(), that.getCreatedBy()) && Objects.equals(getModifiedBy(), that.getModifiedBy());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getSchedule(), getLessonDateDay(), getLessonNumber(), isOnline(), getCreatedDate(), getModifiedDate(), getCreatedBy(), getModifiedBy());
+        return Objects.hash(getId(), getSchedule(), getLessonDateDay(), getCreatedDate(), getModifiedDate(), getCreatedBy(), getModifiedBy());
     }
 
     @Override
@@ -165,8 +145,6 @@ public class ScheduleLessons {
                 "id=" + id +
                 ", schedule=" + schedule +
                 ", lessonDateDay=" + lessonDateDay +
-                ", lessonNumber=" + lessonNumber +
-                ", online=" + online +
                 ", createdDate=" + createdDate +
                 ", modifiedDate=" + modifiedDate +
                 ", createdBy='" + createdBy + '\'' +
