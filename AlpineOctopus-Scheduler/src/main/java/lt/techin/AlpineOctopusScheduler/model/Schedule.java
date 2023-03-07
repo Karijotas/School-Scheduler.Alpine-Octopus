@@ -8,8 +8,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -21,12 +21,19 @@ public class Schedule {
     private Long id;
     @NotBlank
     private String name;
-    @NotEmpty
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startingDate;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime plannedTillDate;
-    @ManyToMany
-    private Set<ScheduleLessons> lessons;
+    @NotBlank
+    private String status;
+    @ManyToMany(fetch = FetchType.LAZY)
+
+    @JoinTable(
+            name = "schedule_lessons",
+            joinColumns = @JoinColumn(name = "schedule_id"),
+            inverseJoinColumns = @JoinColumn(name = "lesson_id"))
+    private Set<Lesson> lessons = new HashSet<>();
 
     @OneToOne
     @JoinColumn(name = "group_id")
@@ -64,6 +71,22 @@ public class Schedule {
     public Schedule() {
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Set<Lesson> getLessons() {
+        return lessons;
+    }
+
+    public void setLessons(Set<Lesson> lessons) {
+        this.lessons = lessons;
+    }
+
     public LocalDateTime getStartingDate() {
         return startingDate;
     }
@@ -95,14 +118,6 @@ public class Schedule {
     public void setName(String name) {
         this.name = name;
     }
-//
-//    public Lesson getLesson() {
-//        return lesson;
-//    }
-//
-//    public void setLesson(Lesson lesson) {
-//        this.lesson = lesson;
-//    }
 
     public LocalDateTime getCreatedDate() {
         return createdDate;
@@ -149,12 +164,12 @@ public class Schedule {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Schedule schedule = (Schedule) o;
-        return Objects.equals(getId(), schedule.getId()) && Objects.equals(getName(), schedule.getName()) && Objects.equals(getGroup(), schedule.getGroup()) && Objects.equals(getCreatedDate(), schedule.getCreatedDate()) && Objects.equals(getModifiedDate(), schedule.getModifiedDate()) && Objects.equals(getCreatedBy(), schedule.getCreatedBy()) && Objects.equals(getModifiedBy(), schedule.getModifiedBy());
+        return Objects.equals(getId(), schedule.getId()) && Objects.equals(getName(), schedule.getName()) && Objects.equals(getStartingDate(), schedule.getStartingDate()) && Objects.equals(getPlannedTillDate(), schedule.getPlannedTillDate()) && Objects.equals(getStatus(), schedule.getStatus()) && Objects.equals(getLessons(), schedule.getLessons()) && Objects.equals(getGroup(), schedule.getGroup()) && Objects.equals(getCreatedDate(), schedule.getCreatedDate()) && Objects.equals(getModifiedDate(), schedule.getModifiedDate()) && Objects.equals(getCreatedBy(), schedule.getCreatedBy()) && Objects.equals(getModifiedBy(), schedule.getModifiedBy());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getGroup(), getCreatedDate(), getModifiedDate(), getCreatedBy(), getModifiedBy());
+        return Objects.hash(getId(), getName(), getStartingDate(), getPlannedTillDate(), getStatus(), getLessons(), getGroup(), getCreatedDate(), getModifiedDate(), getCreatedBy(), getModifiedBy());
     }
 
     @Override
@@ -162,6 +177,10 @@ public class Schedule {
         return "Schedule{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", startingDate=" + startingDate +
+                ", plannedTillDate=" + plannedTillDate +
+                ", status='" + status + '\'' +
+                ", lessons=" + lessons +
                 ", group=" + group +
                 ", createdDate=" + createdDate +
                 ", modifiedDate=" + modifiedDate +
@@ -170,4 +189,3 @@ public class Schedule {
                 '}';
     }
 }
-

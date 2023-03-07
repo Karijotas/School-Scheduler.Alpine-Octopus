@@ -1,7 +1,10 @@
 package lt.techin.AlpineOctopusScheduler.api.dto;
 
+import lt.techin.AlpineOctopusScheduler.model.Lesson;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Set;
 
 public class ScheduleEntityDto extends ScheduleDto {
     private Long id;
@@ -10,8 +13,8 @@ public class ScheduleEntityDto extends ScheduleDto {
     }
 
 
-    public ScheduleEntityDto(String name, LocalDateTime startingDate, LocalDateTime plannedTillDate, LocalDateTime createdDate, LocalDateTime modifiedDate, Long id) {
-        super(name, startingDate, plannedTillDate, createdDate, modifiedDate);
+    public ScheduleEntityDto(String name, String status, LocalDateTime startingDate, LocalDateTime plannedTillDate, LocalDateTime createdDate, LocalDateTime modifiedDate, Set<Lesson> lessons, String groupName, String shiftName, Long groupId, Long shiftId, Long id) {
+        super(name, status, startingDate, plannedTillDate, createdDate, modifiedDate, lessons, groupName, shiftName, groupId, shiftId);
         this.id = id;
     }
 

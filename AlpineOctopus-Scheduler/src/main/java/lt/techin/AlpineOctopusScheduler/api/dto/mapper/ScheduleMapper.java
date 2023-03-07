@@ -13,6 +13,12 @@ public class ScheduleMapper {
         scheduleDto.setName(schedule.getName());
         scheduleDto.setStartingDate(schedule.getStartingDate());
         scheduleDto.setPlannedTillDate(schedule.getPlannedTillDate());
+        scheduleDto.setStatus(schedule.getStatus());
+        scheduleDto.setLessons(schedule.getLessons());
+        scheduleDto.setGroupName(schedule.getGroup().getName());
+        scheduleDto.setGroupId(schedule.getGroup().getId());
+        scheduleDto.setShiftName(schedule.getGroup().getShift().getName());
+        scheduleDto.setShiftId(schedule.getGroup().getShift().getId());
 
         return scheduleDto;
     }
@@ -23,6 +29,9 @@ public class ScheduleMapper {
         schedule.setName(scheduleDto.getName());
         schedule.setStartingDate(scheduleDto.getStartingDate());
         schedule.setPlannedTillDate(scheduleDto.getPlannedTillDate());
+        schedule.setStatus(scheduleDto.getStatus());
+        schedule.setLessons(scheduleDto.getLessons());
+
 
         return schedule;
     }
@@ -34,6 +43,12 @@ public class ScheduleMapper {
         scheduleEntityDto.setName(schedule.getName());
         scheduleEntityDto.setStartingDate(schedule.getStartingDate());
         scheduleEntityDto.setPlannedTillDate(schedule.getPlannedTillDate());
+        scheduleEntityDto.setStatus(schedule.getStatus());
+        scheduleEntityDto.setLessons(schedule.getLessons());
+        scheduleEntityDto.setGroupName(schedule.getGroup().getName());
+        scheduleEntityDto.setGroupId(schedule.getGroup().getId());
+        scheduleEntityDto.setShiftName(schedule.getGroup().getShift().getName());
+        scheduleEntityDto.setShiftId(schedule.getGroup().getShift().getId());
 
         return scheduleEntityDto;
     }
@@ -47,6 +62,9 @@ public class ScheduleMapper {
         schedule.setPlannedTillDate(scheduleEntityDto.getPlannedTillDate());
         schedule.setModifiedDate(scheduleEntityDto.getModifiedDate());
         schedule.setCreatedDate(scheduleEntityDto.getCreatedDate());
+        schedule.setStatus(scheduleEntityDto.getStatus());
+        schedule.setLessons(scheduleEntityDto.getLessons());
+
 
         return schedule;
     }

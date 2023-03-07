@@ -2,8 +2,6 @@ package lt.techin.AlpineOctopusScheduler.api;
 
 import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleTestDto;
-import lt.techin.AlpineOctopusScheduler.dao.ScheduleLessonsRepository;
-import lt.techin.AlpineOctopusScheduler.dao.ScheduleRepository;
 import lt.techin.AlpineOctopusScheduler.model.Schedule;
 import lt.techin.AlpineOctopusScheduler.service.ScheduleService;
 import org.slf4j.Logger;
@@ -30,17 +28,15 @@ public class ScheduleController {
     public static Logger logger = LoggerFactory.getLogger(ScheduleController.class);
 
     private final ScheduleService scheduleService;
+//
+//    private final ScheduleRepository scheduleRepository;
+//
+//    private final ScheduleLessonsRepository scheduleLessonsRepository;
 
-    private final ScheduleRepository scheduleRepository;
-
-    private final ScheduleLessonsRepository scheduleLessonsRepository;
-
-    public ScheduleController(ScheduleService scheduleService,
-                              ScheduleRepository scheduleRepository,
-                              ScheduleLessonsRepository scheduleLessonsRepository) {
+    public ScheduleController(ScheduleService scheduleService) {
         this.scheduleService = scheduleService;
-        this.scheduleRepository = scheduleRepository;
-        this.scheduleLessonsRepository = scheduleLessonsRepository;
+//        this.scheduleRepository = scheduleRepository;
+//        this.scheduleLessonsRepository = scheduleLessonsRepository;
     }
 
     @GetMapping(path = "/all")
