@@ -1,4 +1,4 @@
-package lt.techin.AlpineOctopusScheduler.model;
-
-public class Lesson {
-}
+//package lt.techin.AlpineOctopusScheduler.model;
+//
+//public class Lesson {
+//}

@@ -10,6 +10,7 @@ import lt.techin.AlpineOctopusScheduler.model.Schedule;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
@@ -18,6 +19,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Service
 public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
@@ -81,5 +83,8 @@ public class ScheduleService {
         }
     }
 
+//    public List<ScheduleLessons> getAllLessonsInScheduleByScheduleId(Long id) {
+//        List<String> lessonList = scheduleRepository.get
+//    }
 
 }

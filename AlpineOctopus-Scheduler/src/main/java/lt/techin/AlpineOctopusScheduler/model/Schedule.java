@@ -11,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Schedule {
@@ -25,7 +26,7 @@ public class Schedule {
 
     private LocalDateTime plannedTillDate;
     @ManyToMany
-    private Lesson lesson;
+    private Set<ScheduleLessons> lessons;
 
     @OneToOne
     @JoinColumn(name = "group_id")
@@ -94,14 +95,14 @@ public class Schedule {
     public void setName(String name) {
         this.name = name;
     }
-
-    public Lesson getLesson() {
-        return lesson;
-    }
-
-    public void setLesson(Lesson lesson) {
-        this.lesson = lesson;
-    }
+//
+//    public Lesson getLesson() {
+//        return lesson;
+//    }
+//
+//    public void setLesson(Lesson lesson) {
+//        this.lesson = lesson;
+//    }
 
     public LocalDateTime getCreatedDate() {
         return createdDate;
@@ -148,12 +149,12 @@ public class Schedule {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Schedule schedule = (Schedule) o;
-        return Objects.equals(getId(), schedule.getId()) && Objects.equals(getName(), schedule.getName()) && Objects.equals(getLesson(), schedule.getLesson()) && Objects.equals(getGroup(), schedule.getGroup()) && Objects.equals(getCreatedDate(), schedule.getCreatedDate()) && Objects.equals(getModifiedDate(), schedule.getModifiedDate()) && Objects.equals(getCreatedBy(), schedule.getCreatedBy()) && Objects.equals(getModifiedBy(), schedule.getModifiedBy());
+        return Objects.equals(getId(), schedule.getId()) && Objects.equals(getName(), schedule.getName()) && Objects.equals(getGroup(), schedule.getGroup()) && Objects.equals(getCreatedDate(), schedule.getCreatedDate()) && Objects.equals(getModifiedDate(), schedule.getModifiedDate()) && Objects.equals(getCreatedBy(), schedule.getCreatedBy()) && Objects.equals(getModifiedBy(), schedule.getModifiedBy());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getLesson(), getGroup(), getCreatedDate(), getModifiedDate(), getCreatedBy(), getModifiedBy());
+        return Objects.hash(getId(), getName(), getGroup(), getCreatedDate(), getModifiedDate(), getCreatedBy(), getModifiedBy());
     }
 
     @Override
@@ -161,7 +162,6 @@ public class Schedule {
         return "Schedule{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", lesson=" + lesson +
                 ", group=" + group +
                 ", createdDate=" + createdDate +
                 ", modifiedDate=" + modifiedDate +
