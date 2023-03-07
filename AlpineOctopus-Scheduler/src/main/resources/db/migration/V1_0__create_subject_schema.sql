@@ -20,6 +20,7 @@ CREATE TABLE schedule (
    planned_till_date TIMESTAMP,
    status VARCHAR(255),
    group_id BIGINT,
+   group_name VARCHAR(255),
    created_date TIMESTAMP,
    modified_date TIMESTAMP,
    created_by VARCHAR(255),

@@ -1,7 +1,7 @@
 package lt.techin.AlpineOctopusScheduler.api;
 
+import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleEntityDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleTestDto;
 import lt.techin.AlpineOctopusScheduler.model.Schedule;
 import lt.techin.AlpineOctopusScheduler.service.ScheduleService;
 import org.slf4j.Logger;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupsMapper.toGroupDto;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ScheduleMapper.toSchedule;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ScheduleMapper.toScheduleEntityDto;
 import static org.springframework.http.ResponseEntity.ok;
@@ -39,11 +40,6 @@ public class ScheduleController {
 //        this.scheduleLessonsRepository = scheduleLessonsRepository;
     }
 
-    @GetMapping(path = "/all")
-    @ResponseBody
-    public List<ScheduleTestDto> getAllSchedules() {
-        return scheduleService.getAllSchedules();
-    }
 
     @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
@@ -69,10 +65,22 @@ public class ScheduleController {
         return ok(toScheduleEntityDto(createdSchedule));
     }
 
-//    @PatchMapping("/{scheduleId}")
-//    public ResponseEntity<ScheduleEntityDto> updateSchedule(@PathVariable Long scheduleId, @Valid @RequestBody ScheduleEntityDto scheduleEntityDto) {
-//        var updatedSchedule = scheduleService.update(scheduleId, toSchedule(scheduleEntityDto))
-//    }
+    @DeleteMapping("/{scheduleId}")
+    public ResponseEntity<Void> deleteSchedule(@PathVariable Long scheduleId) {
+        logger.info("Attempt to delete Schedule by id: {}", scheduleId);
+        boolean deleted = scheduleService.deleteById(scheduleId);
+        if (deleted) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
+    @PatchMapping("/{scheduleId}")
+    public ResponseEntity<ScheduleDto> updateSchedule(@PathVariable Long scheduleId, @Valid @RequestBody ScheduleDto scheduleDto, Long groupId, Long shiftId) {
 
+        var updatedSchedule = scheduleService.update(groupId, toGroup(groupsDto), programId, shiftId);
+        return ok(toGroupDto(updatedGroup));
+
+    }
 }

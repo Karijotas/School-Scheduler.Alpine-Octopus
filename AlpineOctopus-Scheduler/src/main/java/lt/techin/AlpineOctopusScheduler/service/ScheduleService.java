@@ -66,7 +66,7 @@ public class ScheduleService {
         return scheduleRepository.save(schedule);
     }
 
-    public Schedule update(Long id, Schedule schedule) {
+    public Schedule update(Long id, Schedule schedule, Long groupId, Long shiftId) {
         var existingSchedule = scheduleRepository.findById(id)
                 .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", id.toString()));
 
