@@ -23,7 +23,7 @@ const JSON_HEADERS = {
   "Content-Type": "application/json",
 };
 
-export function GroupsSchedules() {
+export function ViewGroupsSchedules() {
   const [nameText, setNameText] = useState("");
   const [dateFrom, setDateFrom] = useState("");
   const [dateUntil, setDateUntil] = useState("");
