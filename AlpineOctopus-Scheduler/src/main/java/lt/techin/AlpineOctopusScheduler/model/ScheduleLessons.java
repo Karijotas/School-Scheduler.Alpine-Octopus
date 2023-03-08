@@ -1,7 +1,7 @@
 package lt.techin.AlpineOctopusScheduler.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -21,7 +21,7 @@ public class ScheduleLessons {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "schedule_id")
-    @JsonIgnore
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @Valid
     Schedule schedule;
 

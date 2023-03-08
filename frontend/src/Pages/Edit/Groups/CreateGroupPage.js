@@ -113,8 +113,8 @@ export function CreateGroupPage() {
     };
 
     if (result.ok) {
-      clear()
-
+      let info = result.json() 
+      .then((jsonResponse) => window.location = listUrl);
     } else {
       window.alert("Nepavyko sukurti: pavadinimas turi būti unikalus!");    
     }
@@ -130,7 +130,7 @@ export function CreateGroupPage() {
         schoolYear,
         studentAmount,
       }),
-    }).then(applyResult).then(() => window.location = listUrl);
+    }).then(applyResult);
 
   };
   useEffect(() => {

@@ -115,9 +115,10 @@ export function CreateShiftPage() {
     };
 
     if (result.ok) {
-      clear();
+      let info = result.json()
+        .then((jsonResponse) => window.location = listUrl + jsonResponse.id);
     } else {
-      window.alert("Nepavyko sukurti: pavadinimas turi būti unikalus!");    
+      window.alert("Nepavyko sukurti: pavadinimas turi būti unikalus!");
     }
   };
 
@@ -130,7 +131,7 @@ export function CreateShiftPage() {
         starts,
         ends,
       }),
-    }).then(applyResult).then(() => window.location = listUrl);
+    }).then(applyResult);
   };
 
   const fetchShifts = async () => {
