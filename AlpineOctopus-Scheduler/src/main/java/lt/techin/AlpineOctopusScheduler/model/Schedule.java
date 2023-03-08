@@ -9,6 +9,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
@@ -22,10 +23,10 @@ public class Schedule {
     private Long id;
     @NotBlank
     private String name;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime startingDate;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime plannedTillDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate startingDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate plannedTillDate;
     @NotBlank
     private String status;
     @ManyToMany(fetch = FetchType.LAZY)
@@ -121,19 +122,19 @@ public class Schedule {
         this.lessons = lessons;
     }
 
-    public LocalDateTime getStartingDate() {
+    public LocalDate getStartingDate() {
         return startingDate;
     }
 
-    public void setStartingDate(LocalDateTime startingDate) {
+    public void setStartingDate(LocalDate startingDate) {
         this.startingDate = startingDate;
     }
 
-    public LocalDateTime getPlannedTillDate() {
+    public LocalDate getPlannedTillDate() {
         return plannedTillDate;
     }
 
-    public void setPlannedTillDate(LocalDateTime plannedTillDate) {
+    public void setPlannedTillDate(LocalDate plannedTillDate) {
         this.plannedTillDate = plannedTillDate;
     }
 
