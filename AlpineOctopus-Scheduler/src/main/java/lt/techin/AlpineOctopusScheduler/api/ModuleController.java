@@ -173,8 +173,10 @@ public class ModuleController {
     }
 
     @PostMapping("/{moduleId}/subjects/{subjectId}/newSubjects")
-    public void addSubjectToModule(@PathVariable Long moduleId, @PathVariable Long subjectId) {
-        moduleService.addSubjectToModule(moduleId, subjectId);
+    public ResponseEntity<ModuleDto> addSubjectToModule(@PathVariable Long moduleId, @PathVariable Long subjectId) {
+        var updatedModule = moduleService.addSubjectToModule(moduleId, subjectId);
+
+        return ok(toModuleDto(updatedModule));
     }
 
     @DeleteMapping("/{moduleId}/subjects/{subjectId}")
