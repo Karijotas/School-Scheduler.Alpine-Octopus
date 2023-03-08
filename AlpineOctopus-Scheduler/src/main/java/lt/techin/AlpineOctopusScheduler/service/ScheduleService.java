@@ -35,12 +35,16 @@ public class ScheduleService {
     private final ShiftRepository shiftRepository;
     private final ProgramRepository programRepository;
     private final ProgramSubjectHoursRepository programSubjectHoursRepository;
+    private final RoomRepository roomRepository;
+    private final TeacherRepository teacherRepository;
 
     public ScheduleService(ScheduleRepository scheduleRepository, ScheduleLessonsRepository scheduleLessonsRepository, Validator validator,
                            GroupsRepository groupsRepository,
                            ShiftRepository shiftRepository,
                            ProgramRepository programRepository,
-                           ProgramSubjectHoursRepository programSubjectHoursRepository) {
+                           ProgramSubjectHoursRepository programSubjectHoursRepository,
+                           RoomRepository roomRepository,
+                           TeacherRepository teacherRepository) {
         this.scheduleRepository = scheduleRepository;
         this.scheduleLessonsRepository = scheduleLessonsRepository;
         this.validator = validator;
@@ -48,6 +52,8 @@ public class ScheduleService {
         this.shiftRepository = shiftRepository;
         this.programRepository = programRepository;
         this.programSubjectHoursRepository = programSubjectHoursRepository;
+        this.roomRepository = roomRepository;
+        this.teacherRepository = teacherRepository;
     }
 
     void validateInputWithInjectedValidator(Schedule schedule) {
@@ -108,41 +114,57 @@ public class ScheduleService {
     }
 
     public Schedule create(Schedule schedule, Long groupId) {
+
+        //Getting group, from it - shift and program
         var createdGroup = groupsRepository.findById(groupId)
                 .orElseThrow(() -> new SchedulerValidationException("Group doesn't exist", "id", "Group doesn't exist", groupId.toString()));
-        var createdShift = shiftRepository.findById(createdGroup.getShift().getId())
-                .orElseThrow(() -> new SchedulerValidationException("Shift doesn't exist", "Shift", "Shift not found", createdGroup.getShift().getId().toString()));
-        var createdProgram = programRepository.findById(createdGroup.getProgram().getId())
-                .orElseThrow(() -> new SchedulerValidationException("Program doesn't exist", "Program", "Program not found", createdGroup.getProgram().getId().toString()));
+        var createdProgram = createdGroup.getProgram().getId();
 
-        Optional<ProgramSubjectHours> subjectHoursList = programSubjectHoursRepository.findById(createdProgram.getId());
-        Set<Lesson> lessonList = subjectHoursList.stream().map(LessonMapper::toLessonFromSubject).collect(Collectors.toSet());
+        //Getting subjects in the program and adding them to the lesson Set
+        List<ProgramSubjectHours> subjectHoursList = programSubjectHoursRepository.findAllByProgramId(createdProgram);
+        Set<Lesson> lessonList = subjectHoursList
+                .stream()
+                .map(LessonMapper::toLessonFromSubject)
+                .collect(Collectors.toSet());
 
-
+        //Creating the Schedule
+        schedule.setName(createdGroup.getName() + " " + createdGroup.getShift().getName() + " " + createdGroup.getSchoolYear().toString());
+        schedule.setStartingDate(LocalDate.now());
         schedule.setGroup(createdGroup);
-        schedule.setShift(createdShift);
+        schedule.setShift(createdGroup.getShift());
+        schedule.setShiftName(createdGroup.getShift().getName());
         schedule.setLessons(lessonList);
+
 
         return scheduleRepository.save(schedule);
     }
 
-    public Schedule update(Long id, Schedule schedule, Long groupId, Long shiftId) {
+    public Schedule updateTeacherAndRoomInASchedule(Long id, Long lessonId, Long teacherId, Long roomId) {
+
+        //finding the schedule in repository
         var existingSchedule = scheduleRepository.findById(id)
                 .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", id.toString()));
-        var existingGroup = groupsRepository.findById(groupId)
-                .orElseThrow(() -> new SchedulerValidationException("Group doesn't exist", "id", "Group doesn't exist", groupId.toString()));
-        var existingShift = shiftRepository.findById(shiftId)
-                .orElseThrow(() -> new SchedulerValidationException("Shift doesn't exist", "Shift", "Shift not found", shiftId.toString()));
+        //finding the teacher
+        var existingTeacher = teacherRepository.findById(teacherId)
+                .orElseThrow(() -> new SchedulerValidationException("Teacher does not exist", "id", "Teacher not found", teacherId.toString()));
+        //setting the teacher
+        existingSchedule.getLessons()
+                .stream()
+                .filter(lesson -> lesson.getId().equals(lessonId))
+                .forEach(lesson -> lesson.setTeacher(existingTeacher));
+        //finding the room
+        var existingRoom = roomRepository.findById(roomId)
+                .orElseThrow(() -> new SchedulerValidationException("Room does not exist", "id", "Room not found", roomId.toString()));
+        //setting the room
+        existingSchedule.getLessons()
+                .stream()
+                .filter(lesson -> lesson.getId().equals(lessonId))
+                .forEach(lesson -> lesson.setRoom(existingRoom));
 
-        existingSchedule.setGroup(existingGroup);
-        existingSchedule.setShift(existingShift);
-        existingSchedule.setName(schedule.getName());
-        existingSchedule.setStartingDate(schedule.getStartingDate());
-        existingSchedule.setPlannedTillDate(schedule.getPlannedTillDate());
-        existingSchedule.setStatus(schedule.getStatus());
-        existingSchedule.setLessons(schedule.getLessons());
-
-        return existingSchedule;
+        //replacing the lessons
+        existingSchedule.setLessons(existingSchedule.getLessons());
+        //save to repository
+        return scheduleRepository.save(existingSchedule);
     }
 
 
@@ -154,9 +176,4 @@ public class ScheduleService {
             return false;
         }
     }
-
-//    public List<ScheduleLessons> getAllLessonsInScheduleByScheduleId(Long id) {
-//        List<String> lessonList = scheduleRepository.get
-//    }
-
 }

@@ -2,6 +2,8 @@ package lt.techin.AlpineOctopusScheduler.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Cascade;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -30,10 +32,12 @@ public class Schedule {
     @NotBlank
     private String status;
     @ManyToMany(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinTable(
             name = "schedule_lessons",
             joinColumns = @JoinColumn(name = "schedule_id"),
             inverseJoinColumns = @JoinColumn(name = "lesson_id"))
+    @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
     private Set<Lesson> lessons = new HashSet<>();
 
     @OneToOne

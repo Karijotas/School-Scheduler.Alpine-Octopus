@@ -48,7 +48,7 @@ CREATE TABLE lesson (
    teacher_id BIGINT,
    room_id BIGINT,
    lesson_number INT NOT NULL,
-   online BOOLEAN NOT NULL,
+   online BOOLEAN ,
    created_date TIMESTAMP,
    modified_date TIMESTAMP,
    created_by VARCHAR(255),

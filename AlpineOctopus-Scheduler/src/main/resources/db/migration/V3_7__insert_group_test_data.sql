@@ -1,6 +1,6 @@
 INSERT INTO GROUPS  (NAME,SCHOOL_YEAR,STUDENT_AMOUNT,program_id,shift_id,deleted,created_date,modified_date,created_by,modified_by) VALUES
      ('Akademija.it JP 22/1',2025, 13,1,1, false, '2023-02-08 00:36:54.344','2023-02-18 02:45:54.344','Mantas', 'Mantas'),
-       ('Akademija.it JP 22/2',2024, 10,2,2, false, '2023-02-08 00:36:54.344','2023-02-18 02:45:54.344','Mantas', 'Mantas'),
+       ('Akademija.it JP 22/2',2024, 10,10,2, false, '2023-02-08 00:36:54.344','2023-02-18 02:45:54.344','Mantas', 'Mantas'),
        ('Akademija.it PT 22/1',2023, 12,3,3, false,'2023-02-08 00:36:54.344','2023-02-19 02:45:54.344','Mantas', 'Mantas'),
        ('Akademija.it PT 22/2',2024, 14,4,4, false, '2023-02-08 00:36:54.344','2023-02-17 02:45:54.344','Mantas', 'Mantas'),
        ('Akademija.it NET 22/2',2023, 13,5,4,  false, '2023-02-08 00:36:54.344','2023-02-16 02:45:54.344','Mantas', 'Mantas'),
