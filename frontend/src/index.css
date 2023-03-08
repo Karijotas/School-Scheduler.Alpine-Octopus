@@ -27,6 +27,12 @@ code {
   padding-left: 5vmin;
   width: 250px;
 }
+.controls3{
+  padding-left: 5vmin;
+  width: 250px;
+  margin-bottom: 15px;
+  
+}
 #main{
   font-size: 1.01em;
 }
@@ -48,6 +54,15 @@ code {
 #icocolor{
   color:rgb(12,72,84) !important;
 }
+
+#okey{
+  color:rgb(1, 94, 1)!important;
+}
+
+#attention{
+  color:rgb(109, 2, 26)!important;
+}
+
 
 #adddetails{
   background-color:rgb(24, 141, 164) !important;

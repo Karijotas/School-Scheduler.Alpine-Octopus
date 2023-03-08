@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -89,8 +90,7 @@ public class ModuleService {
 
         existingModule.setName(module.getName());
         existingModule.setDescription(module.getDescription());
-        existingModule.setCreatedDate(module.getCreatedDate());
-        existingModule.setModifiedDate(module.getModifiedDate());
+        existingModule.setModifiedDate(LocalDateTime.now());
 
         return moduleRepository.save(existingModule);
     }
@@ -182,7 +182,7 @@ public class ModuleService {
         return toModuleEntityDto(existingModule);
     }
 
-    public void addSubjectToModule(Long moduleId, Long subjectId) {
+    public Module addSubjectToModule(Long moduleId, Long subjectId) {
         var existingModule = moduleRepository.findById(moduleId)
                 .orElseThrow(() -> new SchedulerValidationException("Module does not exist",
                         "id", "Module not found", moduleId.toString()));
@@ -192,8 +192,10 @@ public class ModuleService {
                         "id", "Subject not found", subjectId.toString()));
 
         moduleRepository.insertModuleAndSubject(moduleId, subjectId);
+        moduleRepository.save(existingModule);
+        return existingModule;
     }
-    
+
 
     public boolean deleteSubjectFromModuleById(Long moduleId, Long subjectId) {
         var existingModule = moduleRepository.findById(moduleId)
@@ -206,8 +208,9 @@ public class ModuleService {
 
         moduleRepository.deleteModuleFromSubject(moduleId, subjectId);
 
-        if (subjectRepository.existsById(subjectId)) {
-            subjectRepository.deleteById(subjectId);
+        if (moduleRepository.existsById(moduleId) || subjectRepository.existsById(subjectId)) {
+            moduleRepository.deleteModuleFromSubject(moduleId, subjectId);
+            moduleRepository.save(existingModule);
             return true;
         }
 

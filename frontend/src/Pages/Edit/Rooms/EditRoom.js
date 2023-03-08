@@ -158,7 +158,7 @@ export function EditRoom() {
                 <Table celled>
                   <Table.Header>
                     <Table.Row>
-                      <Table.HeaderCell>Klasės pavadinimas</Table.HeaderCell>
+                      <Table.HeaderCell>Kabineto pavadinimas</Table.HeaderCell>
                       <Table.HeaderCell>Pastatas</Table.HeaderCell>
                       <Table.HeaderCell>
                         Paskutinis atnaujinimas
@@ -212,7 +212,7 @@ export function EditRoom() {
                 <Table celled>
                   <Table.Header>
                     <Table.Row>
-                      <Table.HeaderCell>Klasės pavadinimas</Table.HeaderCell>
+                      <Table.HeaderCell>Kabineto pavadinimas</Table.HeaderCell>
                       <Table.HeaderCell>Pastatas</Table.HeaderCell>
                       <Table.HeaderCell>
                         Paskutinis atnaujinimas
