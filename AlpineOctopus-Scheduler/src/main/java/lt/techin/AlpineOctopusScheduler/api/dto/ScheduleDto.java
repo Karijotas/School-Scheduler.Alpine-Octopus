@@ -3,6 +3,7 @@ package lt.techin.AlpineOctopusScheduler.api.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lt.techin.AlpineOctopusScheduler.model.Lesson;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
@@ -12,10 +13,10 @@ public class ScheduleDto {
 
     private String name;
     private String status;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime startingDate;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime plannedTillDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate startingDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate plannedTillDate;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
 
@@ -35,7 +36,7 @@ public class ScheduleDto {
     public ScheduleDto() {
     }
 
-    public ScheduleDto(String name, String status, LocalDateTime startingDate, LocalDateTime plannedTillDate, LocalDateTime createdDate, LocalDateTime modifiedDate, Set<Lesson> lessons, String groupName, String shiftName, Long groupId, Long shiftId) {
+    public ScheduleDto(String name, String status, LocalDate startingDate, LocalDate plannedTillDate, LocalDateTime createdDate, LocalDateTime modifiedDate, Set<Lesson> lessons, String groupName, String shiftName, Long groupId, Long shiftId) {
         this.name = name;
         this.status = status;
         this.startingDate = startingDate;
@@ -105,19 +106,19 @@ public class ScheduleDto {
         this.name = name;
     }
 
-    public LocalDateTime getStartingDate() {
+    public LocalDate getStartingDate() {
         return startingDate;
     }
 
-    public void setStartingDate(LocalDateTime startingDate) {
+    public void setStartingDate(LocalDate startingDate) {
         this.startingDate = startingDate;
     }
 
-    public LocalDateTime getPlannedTillDate() {
+    public LocalDate getPlannedTillDate() {
         return plannedTillDate;
     }
 
-    public void setPlannedTillDate(LocalDateTime plannedTillDate) {
+    public void setPlannedTillDate(LocalDate plannedTillDate) {
         this.plannedTillDate = plannedTillDate;
     }
 

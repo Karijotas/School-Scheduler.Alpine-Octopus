@@ -1,6 +1,7 @@
 package lt.techin.AlpineOctopusScheduler.dao;
 
 import lt.techin.AlpineOctopusScheduler.model.Schedule;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,11 +11,11 @@ import java.util.List;
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
-    List<Schedule> findByNameContainingIgnoreCaseOrderByModifiedDateDesc(String nameText);
+    List<Schedule> findByNameContainingIgnoreCaseOrderByModifiedDateDesc(String nameText, Pageable pageable);
 
-    List<Schedule> findByStartingDateOrderByModifiedDateDesc(LocalDate startingDate);
+    List<Schedule> findByStartingDateOrderByModifiedDateDesc(LocalDate startingDate, Pageable pageable);
 
-    List<Schedule> findByPlannedTillDateOrderByModifiedDateDesc(String plannedTillDate);
+    List<Schedule> findByPlannedTillDateOrderByModifiedDateDesc(LocalDate plannedTillDate, Pageable pageable);
 
 
 }

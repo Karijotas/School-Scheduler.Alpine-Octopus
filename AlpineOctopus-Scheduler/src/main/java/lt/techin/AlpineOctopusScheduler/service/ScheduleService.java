@@ -52,25 +52,29 @@ public class ScheduleService {
     }
 
     @Transactional
-    public List<ScheduleEntityDto> getSchedulesByNameContaining(String nameText) {
-        return scheduleRepository.findByNameContainingIgnoreCaseOrderByModifiedDateDesc(nameText)
+    public List<ScheduleEntityDto> getSchedulesByNameContaining(String nameText, int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return scheduleRepository.findByNameContainingIgnoreCaseOrderByModifiedDateDesc(nameText, pageable)
                 .stream()
                 .map(ScheduleMapper::toScheduleEntityDto)
                 .collect(Collectors.toList());
     }
 
     @Transactional
-    public List<ScheduleEntityDto> getSchedulesByStartingDate(String startingDate) {
+    public List<ScheduleEntityDto> getSchedulesByStartingDate(String startingDate, int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
         var starting = LocalDate.parse(startingDate);
-        return scheduleRepository.findByStartingDateOrderByModifiedDateDesc(starting)
+        return scheduleRepository.findByStartingDateOrderByModifiedDateDesc(starting, pageable)
                 .stream()
                 .map(ScheduleMapper::toScheduleEntityDto)
                 .collect(Collectors.toList());
     }
 
     @Transactional
-    public List<ScheduleEntityDto> getSchedulesByPlannedTill(String nameText) {
-        return scheduleRepository.findByNameContainingIgnoreCaseOrderByModifiedDateDesc(nameText)
+    public List<ScheduleEntityDto> getSchedulesByPlannedTill(String plannedTill, int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        var planned = LocalDate.parse(plannedTill);
+        return scheduleRepository.findByPlannedTillDateOrderByModifiedDateDesc(planned, pageable)
                 .stream()
                 .map(ScheduleMapper::toScheduleEntityDto)
                 .collect(Collectors.toList());
