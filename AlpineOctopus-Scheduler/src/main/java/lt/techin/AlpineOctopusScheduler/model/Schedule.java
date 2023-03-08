@@ -23,14 +23,13 @@ public class Schedule {
     private Long id;
     @NotBlank
     private String name;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate startingDate;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate plannedTillDate;
     @NotBlank
     private String status;
     @ManyToMany(fetch = FetchType.LAZY)
-
     @JoinTable(
             name = "schedule_lessons",
             joinColumns = @JoinColumn(name = "schedule_id"),

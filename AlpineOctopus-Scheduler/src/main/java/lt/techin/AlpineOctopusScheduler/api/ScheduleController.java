@@ -43,7 +43,7 @@ public class ScheduleController {
 
     }
 
-    @GetMapping(path = "page/name-filter/{name-text}")
+    @GetMapping(path = "page/name-filter/{nameText}")
     @ApiOperation(value = "Get paged schedules starting with", notes = "Returns list of schedules starting with passed String")
     @ResponseBody
     public List<ScheduleEntityDto> getPagedSchedulesByNameContaining(@PathVariable String nameText,
@@ -53,7 +53,7 @@ public class ScheduleController {
         return scheduleService.getSchedulesByNameContaining(nameText, page, pageSize);
     }
 
-    @GetMapping(path = "page/starting-date-filter/{starting-date}")
+    @GetMapping(path = "page/starting-date-filter/{startingDate}")
     @ApiOperation(value = "Get paged schedules by starting date", notes = "Returns list of schedules by starting date with passed String")
     @ResponseBody
     public List<ScheduleEntityDto> getPagedSchedulesByStartingDate(@PathVariable String startingDate,
@@ -63,7 +63,7 @@ public class ScheduleController {
         return scheduleService.getSchedulesByStartingDate(startingDate, page, pageSize);
     }
 
-    @GetMapping(path = "page/planned-till-filter/{planned-till}")
+    @GetMapping(path = "page/planned-till-filter/{plannedTill}")
     @ApiOperation(value = "Get paged schedules by plannedTill date", notes = "Returns list of schedules by plannedTill date with passed String")
     @ResponseBody
     public List<ScheduleEntityDto> getPagedSchedulesByPlannedTill(@PathVariable String plannedTill,
