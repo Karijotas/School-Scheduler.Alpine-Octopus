@@ -139,10 +139,10 @@ export function EditGroupScheduleObject() {
   };
 
   useEffect(() => {
-    fetch("/api/v1/groups/" + params.id)
+    fetch("/api/v1/groups/" + schedules.groupName)
       .then((response) => response.json())
       .then(setGroups);
-  }, [active, params]);
+  }, [schedules]);
 
   useEffect(() => {
     fetch("/api/v1/schedule/" + params.id)
@@ -307,7 +307,7 @@ export function EditGroupScheduleObject() {
                   <Table.Body>
                     <Table.Row>
                       <Table.Cell>{groups.programName} </Table.Cell>
-                      <Table.Cell>{groups.shiftName} </Table.Cell>
+                      <Table.Cell>{schedules.shiftName} </Table.Cell>
                     </Table.Row>
                   </Table.Body>
                 </Table>

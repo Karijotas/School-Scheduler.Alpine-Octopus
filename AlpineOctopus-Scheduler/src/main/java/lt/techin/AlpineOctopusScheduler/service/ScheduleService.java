@@ -1,7 +1,6 @@
 package lt.techin.AlpineOctopusScheduler.service;
 
 import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleEntityDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleTestDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.LessonMapper;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ScheduleMapper;
 import lt.techin.AlpineOctopusScheduler.dao.*;
@@ -15,8 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +27,6 @@ public class ScheduleService {
 
     private final ScheduleLessonsRepository scheduleLessonsRepository;
 
-    private final Validator validator;
     private final GroupsRepository groupsRepository;
     private final ShiftRepository shiftRepository;
     private final ProgramRepository programRepository;
@@ -38,7 +34,7 @@ public class ScheduleService {
     private final RoomRepository roomRepository;
     private final TeacherRepository teacherRepository;
 
-    public ScheduleService(ScheduleRepository scheduleRepository, ScheduleLessonsRepository scheduleLessonsRepository, Validator validator,
+    public ScheduleService(ScheduleRepository scheduleRepository, ScheduleLessonsRepository scheduleLessonsRepository,
                            GroupsRepository groupsRepository,
                            ShiftRepository shiftRepository,
                            ProgramRepository programRepository,
@@ -47,20 +43,12 @@ public class ScheduleService {
                            TeacherRepository teacherRepository) {
         this.scheduleRepository = scheduleRepository;
         this.scheduleLessonsRepository = scheduleLessonsRepository;
-        this.validator = validator;
         this.groupsRepository = groupsRepository;
         this.shiftRepository = shiftRepository;
         this.programRepository = programRepository;
         this.programSubjectHoursRepository = programSubjectHoursRepository;
         this.roomRepository = roomRepository;
         this.teacherRepository = teacherRepository;
-    }
-
-    void validateInputWithInjectedValidator(Schedule schedule) {
-        Set<ConstraintViolation<Schedule>> violations = validator.validate(schedule);
-        if (!violations.isEmpty()) {
-            throw new SchedulerValidationException(violations.toString(), "Schedule", "Error in schedule entity", schedule.toString());
-        }
     }
 
     @Transactional
@@ -93,13 +81,6 @@ public class ScheduleService {
     }
 
 
-    public List<ScheduleTestDto> getAllSchedules() {
-        return scheduleRepository.findAll()
-                .stream()
-                .map(ScheduleMapper::toScheduleTestDto)
-                .collect(Collectors.toList());
-    }
-
     public List<ScheduleEntityDto> getAllPagedSchedules(int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
 
@@ -130,7 +111,9 @@ public class ScheduleService {
         //Creating the Schedule
         schedule.setName(createdGroup.getName() + " " + createdGroup.getShift().getName() + " " + createdGroup.getSchoolYear().toString());
         schedule.setStartingDate(LocalDate.now());
+
         schedule.setGroup(createdGroup);
+        schedule.setGroupName(createdGroup.getId().toString());
         schedule.setShift(createdGroup.getShift());
         schedule.setShiftName(createdGroup.getShift().getName());
         schedule.setLessons(lessonList);
