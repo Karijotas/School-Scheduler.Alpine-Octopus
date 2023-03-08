@@ -109,9 +109,11 @@ public class ScheduleService {
         var createdProgram = programRepository.findById(createdGroup.getProgram().getId())
                 .orElseThrow(() -> new SchedulerValidationException("Program doesn't exist", "Program", "Program not found", createdGroup.getProgram().getId().toString()));
 
+//        var
 
         schedule.setGroup(createdGroup);
         schedule.setShift(createdShift);
+//        schedule.setLessons();
 
         return scheduleRepository.save(schedule);
     }
