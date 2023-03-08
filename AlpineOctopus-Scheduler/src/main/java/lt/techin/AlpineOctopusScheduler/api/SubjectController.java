@@ -9,7 +9,10 @@ import lt.techin.AlpineOctopusScheduler.model.Module;
 import lt.techin.AlpineOctopusScheduler.model.Room;
 import lt.techin.AlpineOctopusScheduler.model.Subject;
 import lt.techin.AlpineOctopusScheduler.model.Teacher;
+import lt.techin.AlpineOctopusScheduler.service.ModuleService;
+import lt.techin.AlpineOctopusScheduler.service.RoomService;
 import lt.techin.AlpineOctopusScheduler.service.SubjectService;
+import lt.techin.AlpineOctopusScheduler.service.TeacherService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -19,9 +22,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+
+import static java.util.stream.Collectors.toList;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper.*;
 import static org.springframework.http.ResponseEntity.ok;
 
@@ -32,8 +38,17 @@ public class SubjectController {
     public static Logger logger = LoggerFactory.getLogger(SubjectController.class);
     private final SubjectService subjectService;
 
-    public SubjectController(SubjectService subjectService) {
+    private final TeacherService teacherService;
+
+    private final RoomService roomService;
+
+    private final ModuleService moduleService;
+
+    public SubjectController(SubjectService subjectService, TeacherService teacherService, RoomService roomService, ModuleService moduleService) {
         this.subjectService = subjectService;
+        this.teacherService = teacherService;
+        this.roomService = roomService;
+        this.moduleService = moduleService;
     }
 
     @GetMapping
@@ -200,8 +215,11 @@ public class SubjectController {
     }
 
     @PostMapping("/{subjectId}/teachers/{teacherId}/newTeachers")
-    public void addTeacherToSubject(@PathVariable Long subjectId, @PathVariable Long teacherId) {
-        subjectService.addTeacherToSubject(subjectId, teacherId);
+    public ResponseEntity<SubjectDto> addTeacherToSubject(@PathVariable Long subjectId, @PathVariable Long teacherId) {
+
+        var updatedSubject = subjectService.addTeacherToSubject(subjectId, teacherId);
+
+        return ok(toSubjectDto(updatedSubject));
     }
 
     @DeleteMapping("/{subjectId}/teachers/{teacherId}")
@@ -212,5 +230,34 @@ public class SubjectController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping(value = "/{subjectId}/availableTeachers", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<Teacher> getAvailableTeacherInSubject(@PathVariable Long subjectId) {
+        List<Teacher> teachers = subjectService.getAllTeachersById(subjectId);
+        List<Teacher> teacherList = subjectService.getFreeTeachers();
+        List<Teacher> availableTeachers = teacherList.stream().filter(sub -> !teachers.contains(sub)).collect(toList());
+        return availableTeachers;
+    }
+
+    @GetMapping(value = "/{subjectId}/availableModules", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<Module> getAvailableModulesInSubject(@PathVariable Long subjectId) {
+        List<Module> modules = new ArrayList<>(subjectService.getAllModulesById(subjectId));
+        List<Module> moduleList = subjectService.getFreeModules();
+        List<Module> availableModules = moduleList.stream().filter(sub -> !modules.contains(sub)).collect(toList());
+
+        return availableModules;
+    }
+
+    @GetMapping(value = "/{subjectId}/availableRooms", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<Room> getAvailableRoomsInSubject(@PathVariable Long subjectId) {
+        List<Room> rooms = new ArrayList<>(subjectService.getAllRoomsById(subjectId));
+        List<Room> subjectList = subjectService.getFreeRooms();
+        List<Room> availableRooms = subjectList.stream().filter(sub -> !rooms.contains(sub)).collect(toList());
+
+        return availableRooms;
     }
 }

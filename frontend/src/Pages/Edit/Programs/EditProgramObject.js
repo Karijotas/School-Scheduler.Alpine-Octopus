@@ -298,8 +298,8 @@ export function EditProgramObject() {
                         </Table.Row>
                       </Table.Header>
                       <Table.Body>
-                        {subjectsInProgram.map((subject) => (
-                          <Table.Row key={subject.id}>
+                        {subjectsInProgram.map((subject, index) => (
+                          <Table.Row key={index}>
                             <Table.Cell>{subject.subject.name}</Table.Cell>
                             <Table.Cell>{subject.subjectHours} val.</Table.Cell>
                           </Table.Row>
@@ -433,7 +433,42 @@ export function EditProgramObject() {
                       <Table.Body>
                         <Table.Row>
                           <Table.Cell>
-                          <List>
+                            <Table.Body>
+                              {subjectsInProgram.map((subject, index) => (
+                                <Table.Row key={index}>
+                                  <Table.Cell>
+                                    {subject.subject.name}
+                                  </Table.Cell>
+                                  <Table.Cell>
+                                    {subject.subjectHours} val.
+                                  </Table.Cell>
+                                  <Table.Cell collapsing>
+                                    <Button
+                                      basic
+                                      compact
+                                      icon="remove"
+                                      title="Pašalinti"
+                                      onClick={() =>
+                                        removeSubject(
+                                          params.id,
+                                          subject.subject.id,
+                                          subject.subjectHours
+                                        )
+                                      }
+                                    ></Button>
+                                  </Table.Cell>
+                                </Table.Row>
+                              ))}
+                              <Table.Row>
+                                <Table.Cell>
+                                  <h5>Programos valandų skaičius:</h5>
+                                </Table.Cell>
+                                <Table.Cell>
+                                  <h5>{totalHours} val.</h5>
+                                </Table.Cell>
+                              </Table.Row>
+                            </Table.Body>
+                            <List>
                               <List.Item>
                                 <Form.Group widths="equal">
                                   <Form.Field>
@@ -532,49 +567,38 @@ export function EditProgramObject() {
                 </Grid>
                 <Divider hidden />
 
-                {/* <Grid columns={2}>
-                  <Grid.Column>
-                    <Table>
-                      <Table.Header>
-                        <Table.Row>
-                          <Table.HeaderCell width={8}>
-                            Dalyko pavadinimas
-                          </Table.HeaderCell>
-                          <Table.HeaderCell width={8}>
-                            Pridėti dalykai
-                          </Table.HeaderCell>
-                        </Table.Row>
-                      </Table.Header>
-                      <Divider hidden />
-                      <Table.Body>
-                        <Table.Row>
-                          <Table.Cell>
-                            <List textAlign="center" divided verticalAlign="middle">
-                              <List.Item>
-                                <Form.Group widths="equal">
-                                  <Form.Field>
-                                    {selectErrorSubject && (
-                                      <div style={{ color: "red" }}>
-                                        {selectErrorSubject}
-                                      </div>
-                                    )}
-                                    <Select
-                                      options={subjects}
-                                      placeholder="Dalykai"
-                                      value={subject}
-                                      onChange={(e, data) => (
-                                        setSubject(e.target.value),
-                                        setSubjectId(data.value)
-                    
-                                      )}
-                                      onClose={() => console.log(subjectId)}
-                                    />
-                                  </Form.Field>
-                                </Form.Group>
-                                <Divider hidden />
-                                <List.Content>
-                                  {hoursError && (
-                                    <div style={{ color: "red" }}>{hoursError}</div>
+                {/* <Table>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell width={8}>
+                        Dalyko pavadinimas
+                      </Table.HeaderCell>
+                      <Table.HeaderCell width={8}>
+                        Pridėti dalykai
+                      </Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
+                  <Divider hidden />
+                  <Table.Body>
+                    <Table.Row>
+                      <Table.Cell>
+                        <List textAlign="center" divided verticalAlign="middle">
+                          <List.Item>
+                            <Form.Group widths="equal">
+                              <Form.Field>
+                                {selectErrorSubject && (
+                                  <div style={{ color: "red" }}>
+                                    {selectErrorSubject}
+                                  </div>
+                                )}
+                                <Select
+                                  options={subjects}
+                                  placeholder="Dalykai"
+                                  value={subject}
+                                  onChange={(e, data) => (
+                                    setSubject(e.target.value),
+                                    setSubjectId(data.value)
+                                    
                                   )}
                                   <Input
                                     placeholder="Valandų skaičius"

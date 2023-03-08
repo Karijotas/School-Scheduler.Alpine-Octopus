@@ -5,10 +5,14 @@ import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.TeacherMapper;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Shift;
+import lt.techin.AlpineOctopusScheduler.model.Subject;
 import lt.techin.AlpineOctopusScheduler.model.Teacher;
+import lt.techin.AlpineOctopusScheduler.service.ShiftService;
+import lt.techin.AlpineOctopusScheduler.service.SubjectService;
 import lt.techin.AlpineOctopusScheduler.service.TeacherService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +25,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -35,10 +40,14 @@ public class TeacherController {
 
     public static Logger logger = LoggerFactory.getLogger(TeacherController.class);
     private final TeacherService teacherService;
+    private final ShiftService shiftService;
+    private final SubjectService subjectService;
 
-    public TeacherController(TeacherService teacherService) {
+    public TeacherController(TeacherService teacherService, ShiftService shiftService, SubjectService subjectService) {
 
         this.teacherService = teacherService;
+        this.shiftService = shiftService;
+        this.subjectService = subjectService;
     }
 
 //    @GetMapping(path = "/all")
@@ -206,7 +215,7 @@ public class TeacherController {
         return ok(toTeacherDto(updatedTeacher));
     }
 
-    @DeleteMapping("/{teacherId}/teachers/{subjectId}")
+    @DeleteMapping("/{teacherId}/subjects/{subjectId}")
     public ResponseEntity<Void> deleteSubjectFromTeacherBySubjectId(@PathVariable Long teacherId, @PathVariable Long subjectId) {
         boolean deleted = teacherService.deleteSubjectInTeacherById(teacherId, subjectId);
         if (deleted) {
@@ -214,5 +223,25 @@ public class TeacherController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping(value = "/{teacherId}/availableSubjects", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<Subject> getAvailableSubjectsInTeacher(@PathVariable Long teacherId) {
+        List<Subject> subjects = new ArrayList<>(teacherService.getAllSubjectById(teacherId).stream().map(SubjectMapper::toSubject).collect(toList()));
+        List<Subject> subjectList = teacherService.getFreeSubjects();
+        List<Subject> availableSubjects = subjectList.stream().filter(sub -> !subjects.contains(sub)).collect(toList());
+
+        return availableSubjects;
+    }
+
+    @GetMapping(value = "/{teacherId}/availableShifts", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<Shift> getAvailableShiftsInTeacher(@PathVariable Long teacherId) {
+        List<Shift> shifts = new ArrayList<>(teacherService.getAllShiftsById(teacherId));
+        List<Shift> subjectList = teacherService.getFreeShifts();
+        List<Shift> availableShifts = subjectList.stream().filter(sub -> !shifts.contains(sub)).collect(toList());
+
+        return availableShifts;
     }
 }
