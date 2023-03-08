@@ -18,6 +18,7 @@ import { SchedulesMenu } from "../../Components/SchedulesMenu";
 // import DatePicker from "react-datepicker";
 // import dayjs from "dayjs";
 // import { format } from 'date-fns'
+import { StatusButton } from "./StatusButton";
 
 
 // format(new Date(), 'yyyy/mm/dd')
@@ -83,12 +84,12 @@ export function ViewGroupsSchedules() {
   }, [activePage, nameText, startingDate, plannedTillDate]);
 
 
-  useEffect(() => {
-    if (pagecount !== null) {
-      fetchSchedules();
-    }
-  }, [schedules]);
-  
+  // useEffect(() => {
+  //   if (pagecount !== null) {
+  //     fetchSchedules();
+  //   }
+  // }, [schedules]);
+
   // const schedules = [
   //   {
   //     id: 1,
@@ -163,6 +164,45 @@ export function ViewGroupsSchedules() {
   //  fetchGroups();
   // }, [activePage]);
 
+  // const MyStatus = () => {
+  //   if (schedules.status === "valid") {
+  //     return (
+  //       <>
+  //         <Button 
+  //         id="okey" 
+  //         basic 
+  //         compact 
+  //         icon="check" 
+  //         title="Statusas" />
+  //       </>
+  //     );
+  //   } else if (schedules.status === "invalid") {
+  //     return (
+  //       <>
+  //         <Button
+  //           id="grey"
+  //           basic
+  //           compact
+  //           icon="clock outline"
+  //           title="Statusas"
+  //         />
+  //       </>
+  //     );
+  //   } else {
+  //     return (
+  //       <>
+  //         <Button
+  //           id="attention"
+  //           basic
+  //           compact
+  //           icon="attention"
+  //           title="Statusas"
+  //         />
+  //       </>
+  //     );
+  //   }
+  // };
+
   return (
     <div>
       <MainMenu />
@@ -223,7 +263,10 @@ export function ViewGroupsSchedules() {
                       <Table.Cell>{schedule.name}</Table.Cell>
                       <Table.Cell>{schedule.startingDate}</Table.Cell>
                       <Table.Cell>{schedule.plannedTillDate}</Table.Cell>
-                      <Table.Cell collapsing> {schedule.status}</Table.Cell>
+                      <Table.Cell collapsing> 
+                      <StatusButton/>
+                      {/* {schedule.status} */}
+                      </Table.Cell>
                       <Table.Cell collapsing>
                         {" "}
                         <Button
