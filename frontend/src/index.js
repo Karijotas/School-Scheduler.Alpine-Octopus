@@ -39,7 +39,7 @@ import { ViewArchivedProgram } from './Pages/Edit/Programs/ViewArchivedProgram';
 import { ViewArchivedShift } from './Pages/Edit/Shifts/ViewArchivedShift';
 import { ViewArchivedSubject } from './Pages/Edit/Subjects/ViewArchivedSubject';
 import { ViewArchivedTeacher } from './Pages/Edit/Teachers/ViewArchivedTeachers';
-           
+import {ViewGroupsSchedules} from './Pages/Schedules/ViewGroupsSchedules';           
 
 
 // basename={process.env.REACT_APP_PUBLIC_URL}
@@ -104,6 +104,10 @@ root.render(
         <Route path='/view/archives/modules' element={<ViewModulesArchive />} />
         <Route path='/view/archives/modules/:id' element={<ViewArchivedModule />} />
 
+        {/* Group schedules routes: */}
+        <Route path='/view/groupsSchedules' element={<ViewGroupsSchedules />} />
+        {/* <Route path='/view/groupsSchedules/edit/:id' element={<EditModuleObject />} /> */}
+        {/* <Route path='/create/groupsSchedules' element={<CreateModulePage />} /> */}
 
       </Routes>
     </HashRouter>

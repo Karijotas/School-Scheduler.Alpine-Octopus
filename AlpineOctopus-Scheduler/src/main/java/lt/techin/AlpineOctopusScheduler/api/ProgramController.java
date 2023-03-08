@@ -26,8 +26,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper.toProgram;
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper.toProgramDto;
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper.*;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramSubjectHoursMapper.toProgramSubjectHours;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramSubjectHoursMapper.toProgramSubjectHoursDtoForList;
 import static org.springframework.http.ResponseEntity.ok;
@@ -188,10 +187,10 @@ public class ProgramController {
     }
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<ProgramDto> createProgram(@Valid @RequestBody ProgramDto programDto) {
+    public ResponseEntity<ProgramEntityDto> createProgram(@Valid @RequestBody ProgramEntityDto programDto) {
         if (programService.programNameIsUnique(toProgram(programDto))) {
             var createdProgram = programService.create(toProgram(programDto));
-            return ok(toProgramDto(createdProgram));
+            return ok(toProgramEntityDto(createdProgram));
         } else {
             throw new SchedulerValidationException("Program already exists", "Program name", "Already exists", programDto.getName());
         }

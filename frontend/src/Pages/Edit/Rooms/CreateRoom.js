@@ -120,7 +120,7 @@ export function CreateRoom() {
           <Form >
 
             <Form.Field >
-              <label>Klasės pavadinimas</label>
+              <label>Kabineto pavadinimas</label>
               {(nameDirty && nameError) && <div style={{ color: "red" }}>{nameError}</div>}
               <input name="name" onBlur={blurHandler} placeholder='Klasės pavadinimas' value={name} onChange={e => nameHandler(e)} />
             </Form.Field>

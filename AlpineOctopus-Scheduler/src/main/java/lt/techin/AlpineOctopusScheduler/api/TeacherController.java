@@ -30,8 +30,7 @@ import java.util.List;
 import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.TeacherMapper.toTeacher;
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.TeacherMapper.toTeacherDto;
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.TeacherMapper.*;
 import static org.springframework.http.ResponseEntity.ok;
 
 @Controller
@@ -106,10 +105,10 @@ public class TeacherController {
     }
 
     @PostMapping
-    public ResponseEntity<TeacherDto> createTeacher(@Valid @RequestBody TeacherDto teacherDto) {
+    public ResponseEntity<TeacherEntityDto> createTeacher(@Valid @RequestBody TeacherEntityDto teacherDto) {
         if (teacherService.loginEmailIsUnique(toTeacher(teacherDto))) {
             var createdTeacher = teacherService.create(toTeacher(teacherDto));
-            return ok(toTeacherDto(createdTeacher));
+            return ok(toTeacherEntityDto(createdTeacher));
         } else {
             throw new SchedulerValidationException("Teacher already exists", "Teacher login email", "Already exists", teacherDto.getLoginEmail());
         }

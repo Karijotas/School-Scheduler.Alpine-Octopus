@@ -13,6 +13,7 @@ import {
 } from "semantic-ui-react";
 import { EditMenu } from "../../../Components/EditMenu";
 import MainMenu from "../../../Components/MainMenu";
+import { SchedulesMenu } from "../../../Components/SchedulesMenu";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -117,7 +118,7 @@ export function ViewRooms() {
                 className="controls1"
                 value={nameText}
                 onChange={(e) => setNameText(e.target.value)}
-                placeholder="Filtruoti pagal klasę"
+                placeholder="Filtruoti pagal kabinetą"
               />
               <Input
                 className="controls1"
@@ -136,13 +137,13 @@ export function ViewRooms() {
                 to="/create/rooms"
               >
                 <Icon name="database" />
-                Kurti naują klasę
+                Kurti naują kabinetą
               </Button>
               <Divider horizontal hidden></Divider>
               <Table selectable>
                 <Table.Header>
                   <Table.Row>
-                    <Table.HeaderCell>Klasės pavadinimas</Table.HeaderCell>
+                    <Table.HeaderCell>Kabineto pavadinimas</Table.HeaderCell>
                     <Table.HeaderCell>Pastatas</Table.HeaderCell>
                     <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                   </Table.Row>

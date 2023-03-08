@@ -142,8 +142,8 @@ export function EditGroupObject() {
 
     const editThis = () => {
         setActive(false);
-        setProgramId(groups.program.id);
-        setShiftId(groups.shift.id)
+        setProgramId(groups.programId);
+        setShiftId(groups.shiftId)
     }
 
     useEffect(() => {

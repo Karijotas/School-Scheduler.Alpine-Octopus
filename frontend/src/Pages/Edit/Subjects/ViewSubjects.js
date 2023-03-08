@@ -130,7 +130,7 @@ export function ViewSubjects() {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Dalyko pavadinimas</Table.HeaderCell>
-                      <Table.HeaderCell>Moduliai</Table.HeaderCell>
+                      {/* <Table.HeaderCell>Moduliai</Table.HeaderCell> */}
                       <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
@@ -139,16 +139,16 @@ export function ViewSubjects() {
                     {subjects.map((subject, index) => (
                       <Table.Row key={index}>
                         <Table.Cell>{subject.name}</Table.Cell>
-                        <Table.Cell>
-                          <List bulleted>
+                        {/* <Table.Cell>
+                          <List bulleted> */}
                             {/* {console.log(subject) + "ciaaa"} */}
-                            {subject.subjectModules.map((module, index) => (
+                            {/* {subject.subjectModules.map((module, index) => (
                               <List.Content key={index}>
                                 <List.Item>{module.name}</List.Item>
                               </List.Content>
-                            ))}
-                          </List>
-                        </Table.Cell>
+                            ))} */}
+                          {/* </List>
+                        </Table.Cell> */}
                         <Table.Cell collapsing>
                           <Button
                             id="icocolor"
