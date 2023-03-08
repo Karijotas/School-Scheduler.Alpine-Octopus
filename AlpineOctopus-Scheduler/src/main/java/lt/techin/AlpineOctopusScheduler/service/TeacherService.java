@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -102,7 +103,8 @@ public class TeacherService {
         existingTeacher.setContactEmail(teacher.getContactEmail());
         existingTeacher.setPhone(teacher.getPhone());
         existingTeacher.setWorkHoursPerWeek(teacher.getWorkHoursPerWeek());
-        existingTeacher.setTeacherShifts(teacher.getTeacherShifts());
+        existingTeacher.setModifiedDate(LocalDateTime.now());
+
 
         return teacherRepository.save(existingTeacher);
     }
@@ -228,5 +230,15 @@ public class TeacherService {
         } catch (EmptyResultDataAccessException exception) {
             return false;
         }
+    }
+
+    public List<Shift> getFreeShifts() {
+        return shiftRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE);
+
+    }
+
+    public List<Subject> getFreeSubjects() {
+        return subjectRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE);
+
     }
 }

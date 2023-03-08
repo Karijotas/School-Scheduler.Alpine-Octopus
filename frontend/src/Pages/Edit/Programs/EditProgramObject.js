@@ -294,8 +294,8 @@ export function EditProgramObject() {
                         </Table.Row>
                       </Table.Header>
                       <Table.Body>
-                        {subjectsInProgram.map((subject) => (
-                          <Table.Row key={subject.id}>
+                        {subjectsInProgram.map((subject, index) => (
+                          <Table.Row key={index}>
                             <Table.Cell>{subject.subject.name}</Table.Cell>
                             <Table.Cell>{subject.subjectHours} val.</Table.Cell>
                           </Table.Row>
@@ -427,8 +427,8 @@ export function EditProgramObject() {
                         <Table.Row>
                           <Table.Cell>
                             <Table.Body>
-                              {subjectsInProgram.map((subject) => (
-                                <Table.Row key={subject.id}>
+                              {subjectsInProgram.map((subject, index) => (
+                                <Table.Row key={index}>
                                   <Table.Cell>
                                     {subject.subject.name}
                                   </Table.Cell>
@@ -541,14 +541,11 @@ export function EditProgramObject() {
                           <List.Item>
                             <Form.Group widths="equal">
                               <Form.Field>
-<<<<<<< HEAD
                                 {selectErrorSubject && (
                                   <div style={{ color: "red" }}>
                                     {selectErrorSubject}
                                   </div>
                                 )}
-=======
->>>>>>> validation_front
                                 <Select
                                   options={subjects}
                                   placeholder="Dalykai"

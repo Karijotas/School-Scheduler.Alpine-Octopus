@@ -156,7 +156,8 @@ export function EditModuleObject() {
         moduleId,
         subject,
       }),
-    }).then(fetchModuleSubjects);
+    }).then(fetchModuleSubjects)
+    .then(setSubject(""));
   };
 
 
