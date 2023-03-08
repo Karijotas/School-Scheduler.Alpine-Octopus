@@ -25,8 +25,6 @@ public class Lesson {
     private Teacher teacher;
     @ManyToOne
     private Room room;
-//    @ManyToMany
-//    private Schedule schedule;
 
     @NotNull
     private Integer lessonNumber;

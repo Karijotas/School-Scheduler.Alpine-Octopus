@@ -139,7 +139,7 @@ public class ScheduleService {
         return scheduleRepository.save(schedule);
     }
 
-    public Schedule updateTeacherAndRoomInASchedule(Long id, Long lessonId, Long teacherId, Long roomId) {
+    public Schedule setTeacherAndRoomInASchedule(Long id, Long lessonId, Long teacherId, Long roomId) {
 
         //finding the schedule in repository
         var existingSchedule = scheduleRepository.findById(id)
