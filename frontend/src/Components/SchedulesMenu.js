@@ -19,6 +19,7 @@ export function SchedulesMenu() {
           <Icon name="calendar" />
           Kurti naują
         </Button>
+        <Divider hidden/>
         <Grid columns={1}>
         <Grid.Column>
           <Menu fluid vertical tabular id="main" className="ui centered grid">
