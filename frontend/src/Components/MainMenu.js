@@ -21,7 +21,7 @@ export default class MainMenu extends Component {
                 />
                 <Menu.Item
                     
-                    href='#/view/subjects'
+                    href='#/view/modules'
                     name='edit'
                     content='Tvarkyti duomenis'
                 />
@@ -32,10 +32,7 @@ export default class MainMenu extends Component {
 
                 />
                 <Menu.Item
-                    disabled
-                    // as={NavLink}
-                    // exact
-                    // to='/schedules'
+                    href='#/view/groupsSchedules'
                     name='Schedules'
                     content='Tvarkaraščiai'
 

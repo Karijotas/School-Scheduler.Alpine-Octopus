@@ -34,8 +34,9 @@ export function EditTeacherObject() {
     loginEmail: "",
     contactEmail: "",
     phone: "",
-    workHoursPerWeek: "",
-    shift: "",
+    teacherShifts: [],
+    teacherSubjects: [],
+    workHoursPerWeek: "",   
     createdDate: "",
     modifiedDate: "",
   });
@@ -225,7 +226,7 @@ export function EditTeacherObject() {
 
 
   useEffect(() => {
-    fetch("/api/v1/shifts/")
+    fetch(`/api/v1/teachers/${params.id}/availableShifts`)
       .then((response) => response.json())
       .then((data) =>
         setShifts(
@@ -234,7 +235,7 @@ export function EditTeacherObject() {
           })
         )
       );
-  }, []);
+  }, [shift, teacherShifts]);
 
   const addShift = (teacherId, shiftId) => {
     fetch(`/api/v1/teachers/${teacherId}/shifts/${shiftId}/newShifts`, {
@@ -243,8 +244,9 @@ export function EditTeacherObject() {
       body: JSON.stringify({
         teacherId,
         shift,
-      }),
-    }).then(fetchTeacherShifts);
+      }),      
+    }).then(fetchTeacherShifts)
+    .then(setShift(""));
   };
 
   const removeShift = (teacherId, shiftId) => {
@@ -263,7 +265,7 @@ export function EditTeacherObject() {
   };
 
   useEffect(() => {
-    fetch("/api/v1/subjects/")
+    fetch(`/api/v1/teachers/${params.id}/availableSubjects`)
       .then((response) => response.json())
       .then((data) =>
         setSubjects(
@@ -272,7 +274,7 @@ export function EditTeacherObject() {
           })
         )
       );
-  }, []);
+  }, [subject, teacherSubjects]);
 
   const addSubject = (teacherId, subjectId) => {
     fetch(`/api/v1/teachers/${teacherId}/subjects/${subjectId}/newSubjects`, {
@@ -282,7 +284,8 @@ export function EditTeacherObject() {
         teacherId,
         subject,
       }),
-    }).then(fetchTeacherSubjects);
+    }).then(fetchTeacherSubjects)
+    .then(setSubject(""));
   };
 
 

@@ -50,6 +50,9 @@ public class TeacherMapper {
         teacherEntityDto.setPhone(teacher.getPhone());
         teacherEntityDto.setTeacherShifts(teacher.getTeacherShifts());
         teacherEntityDto.setTeacherSubjects(teacher.getTeacherSubjects());
+        teacherEntityDto.setCreatedDate(teacher.getCreatedDate());
+        teacherEntityDto.setModifiedDate(teacher.getModifiedDate());
+
 
         return teacherEntityDto;
     }

@@ -277,7 +277,7 @@ public class SubjectService {
         }
     }
 
-    public void addTeacherToSubject(Long subjectId, Long teacherId) {
+    public Subject addTeacherToSubject(Long subjectId, Long teacherId) {
         var existingTeacher = teacherRepository.findById(teacherId)
                 .orElseThrow(() -> new SchedulerValidationException("Teacher does not exist",
                         "id", "Teacher not found", teacherId.toString()));
@@ -287,6 +287,8 @@ public class SubjectService {
                         "id", "Subject not found", subjectId.toString()));
 
         subjectRepository.insertSubjectAndTeacher(subjectId, teacherId);
+
+        return existingSubject;
     }
 
 
@@ -299,10 +301,9 @@ public class SubjectService {
                 .orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
                         "id", "Subject not found", subjectId.toString()));
 
-        subjectRepository.deleteSubjectFromTeacher(subjectId, teacherId);
 
-        if (teacherRepository.existsById(teacherId)) {
-            teacherRepository.deleteById(teacherId);
+        if (teacherRepository.existsById(teacherId) || subjectRepository.existsById(subjectId)) {
+            subjectRepository.deleteSubjectFromTeacher(subjectId, teacherId);
             return true;
         }
 
@@ -312,4 +313,21 @@ public class SubjectService {
     public List<Teacher> getAllTeachersById(Long subjectId) {
         return teacherRepository.findAllByTeacherSubjects_Id(subjectId);
     }
+
+    public List<Teacher> getFreeTeachers() {
+        return teacherRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE);
+
+    }
+
+    public List<Module> getFreeModules() {
+        return moduleRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE);
+
+    }
+
+    public List<Room> getFreeRooms() {
+        return roomRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE);
+
+    }
+
+
 }
