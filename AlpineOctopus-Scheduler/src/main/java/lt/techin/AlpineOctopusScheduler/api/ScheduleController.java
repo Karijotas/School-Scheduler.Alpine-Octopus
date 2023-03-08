@@ -58,8 +58,8 @@ public class ScheduleController {
     }
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<ScheduleEntityDto> createSchedule(@RequestBody ScheduleEntityDto scheduleEntityDto, Long groupId, Long shiftId) {
-        var createdSchedule = scheduleService.create(toSchedule(scheduleEntityDto), groupId, shiftId);
+    public ResponseEntity<ScheduleEntityDto> createSchedule(@RequestBody ScheduleEntityDto scheduleEntityDto, Long groupId) {
+        var createdSchedule = scheduleService.create(toSchedule(scheduleEntityDto), groupId);
         return ok(toScheduleEntityDto(createdSchedule));
     }
 

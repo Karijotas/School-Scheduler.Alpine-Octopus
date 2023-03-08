@@ -3,19 +3,18 @@ package lt.techin.AlpineOctopusScheduler.service;
 import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleTestDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ScheduleMapper;
-import lt.techin.AlpineOctopusScheduler.dao.GroupsRepository;
-import lt.techin.AlpineOctopusScheduler.dao.ScheduleLessonsRepository;
-import lt.techin.AlpineOctopusScheduler.dao.ScheduleRepository;
-import lt.techin.AlpineOctopusScheduler.dao.ShiftRepository;
+import lt.techin.AlpineOctopusScheduler.dao.*;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Schedule;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -31,15 +30,18 @@ public class ScheduleService {
     private final Validator validator;
     private final GroupsRepository groupsRepository;
     private final ShiftRepository shiftRepository;
+    private final ProgramRepository programRepository;
 
     public ScheduleService(ScheduleRepository scheduleRepository, ScheduleLessonsRepository scheduleLessonsRepository, Validator validator,
                            GroupsRepository groupsRepository,
-                           ShiftRepository shiftRepository) {
+                           ShiftRepository shiftRepository,
+                           ProgramRepository programRepository) {
         this.scheduleRepository = scheduleRepository;
         this.scheduleLessonsRepository = scheduleLessonsRepository;
         this.validator = validator;
         this.groupsRepository = groupsRepository;
         this.shiftRepository = shiftRepository;
+        this.programRepository = programRepository;
     }
 
     void validateInputWithInjectedValidator(Schedule schedule) {
@@ -48,6 +50,32 @@ public class ScheduleService {
             throw new SchedulerValidationException(violations.toString(), "Schedule", "Error in schedule entity", schedule.toString());
         }
     }
+
+    @Transactional
+    public List<ScheduleEntityDto> getSchedulesByNameContaining(String nameText) {
+        return scheduleRepository.findByNameContainingIgnoreCaseOrderByModifiedDateDesc(nameText)
+                .stream()
+                .map(ScheduleMapper::toScheduleEntityDto)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<ScheduleEntityDto> getSchedulesByStartingDate(String startingDate) {
+        var starting = LocalDate.parse(startingDate);
+        return scheduleRepository.findByStartingDateOrderByModifiedDateDesc(starting)
+                .stream()
+                .map(ScheduleMapper::toScheduleEntityDto)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<ScheduleEntityDto> getSchedulesByPlannedTill(String nameText) {
+        return scheduleRepository.findByNameContainingIgnoreCaseOrderByModifiedDateDesc(nameText)
+                .stream()
+                .map(ScheduleMapper::toScheduleEntityDto)
+                .collect(Collectors.toList());
+    }
+
 
     public List<ScheduleTestDto> getAllSchedules() {
         return scheduleRepository.findAll()
@@ -69,13 +97,14 @@ public class ScheduleService {
         return scheduleRepository.findById(id);
     }
 
-    public Schedule create(Schedule schedule, Long groupId, Long shiftId) {
-//        validateInputWithInjectedValidator(schedule);
-
+    public Schedule create(Schedule schedule, Long groupId) {
         var createdGroup = groupsRepository.findById(groupId)
                 .orElseThrow(() -> new SchedulerValidationException("Group doesn't exist", "id", "Group doesn't exist", groupId.toString()));
-        var createdShift = shiftRepository.findById(shiftId)
-                .orElseThrow(() -> new SchedulerValidationException("Shift doesn't exist", "Shift", "Shift not found", shiftId.toString()));
+        var createdShift = shiftRepository.findById(createdGroup.getShift().getId())
+                .orElseThrow(() -> new SchedulerValidationException("Shift doesn't exist", "Shift", "Shift not found", createdGroup.getShift().getId().toString()));
+        var createdProgram = programRepository.findById(createdGroup.getProgram().getId())
+                .orElseThrow(() -> new SchedulerValidationException("Program doesn't exist", "Program", "Program not found", createdGroup.getProgram().getId().toString()));
+
 
         schedule.setGroup(createdGroup);
         schedule.setShift(createdShift);

@@ -25,11 +25,6 @@ public class ScheduleLessons {
     @Valid
     Schedule schedule;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "lesson_id")
-    @JsonIgnore
-    @Valid
-    Lesson lesson;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime lessonDateDay;
 
