@@ -38,8 +38,6 @@ export function ViewGroupsSchedules() {
   const [status, setStatus] = useState("");
 
 
-
-
   // const Example = () => {
   //   const [startDate, setStartDate] = useState(new Date());
   //   return (
@@ -51,29 +49,29 @@ export function ViewGroupsSchedules() {
     {
       id: 1,
       name: "Pirmas tvarkaraštis",
-      dateFrom: "2016-01-04 10:34:23",
-      dateUntil: "2016-06-04 10:34:23",
+      dateFrom: "2016-01-04",
+      dateUntil: "2016-06-04",
       status: "invalid",
     },
     {
       id: 2,
       name: "Antras tvarkaraštis",
-      dateFrom: "2017-01-04 10:34:23",
-      dateUntil: "2018-06-04 10:34:23",
+      dateFrom: "2017-01-04",
+      dateUntil: "2018-06-04",
       status: "attention",
     },
     {
       id: 3,
       name: "Trečias tvarkaraštis",
-      dateFrom: "2019-01-04 10:34:23",
-      dateUntil: "2023-06-04 10:34:23",
+      dateFrom: "2019-01-04",
+      dateUntil: "2023-06-04",
       status: "valid",
     },
     {
       id: 4,
       name: "Ketvirtas tvarkaraštis",
-      dateFrom: "2022-01-04 10:34:23",
-      dateUntil: "2023-06-04 10:34:23",
+      dateFrom: "2022-01-04",
+      dateUntil: "2023-06-04",
       status: "valid",
     },
   ];

@@ -78,8 +78,9 @@ public class ProgramController {
 
     @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public List<ProgramEntityDto> getPagedAvailablePrograms(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                                            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+    public List<ProgramEntityDto> getPagedAvailablePrograms(
+            @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
 
         Pageable pageable = PageRequest.of(page, pageSize);
         return programService.getAllAvailablePagedPrograms(page, pageSize);
