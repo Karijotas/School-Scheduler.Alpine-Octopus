@@ -27,6 +27,12 @@ code {
   padding-left: 5vmin;
   width: 250px;
 }
+.controls3{
+  padding-left: 5vmin;
+  width: 250px;
+  margin-bottom: 15px;
+  
+}
 #main{
   font-size: 1.01em;
 }

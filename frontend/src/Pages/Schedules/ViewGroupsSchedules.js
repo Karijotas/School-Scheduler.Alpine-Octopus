@@ -11,13 +11,16 @@ import {
   Pagination,
   Segment,
   Table,
+  TextArea,
 } from "semantic-ui-react";
 import MainMenu from "../../Components/MainMenu";
 import { SchedulesMenu } from "../../Components/SchedulesMenu";
-import { format } from "date-fns";
-import { DayPicker } from "react-day-picker";
-import "react-day-picker/dist/style.css";
-import { StatusButton } from "./StatusButton";
+// import DatePicker from "react-datepicker";
+// import dayjs from "dayjs";
+// import { format } from 'date-fns'
+
+
+// format(new Date(), 'yyyy/mm/dd')
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -25,7 +28,7 @@ const JSON_HEADERS = {
 
 export function ViewGroupsSchedules() {
   const [nameText, setNameText] = useState("");
-  const [dateFrom, setDateFrom] = useState("");
+  const [dateFrom, setDateFrom] = useState();
   const [dateUntil, setDateUntil] = useState("");
   const [active, setActive] = useState();
   const [open, setOpen] = useState(false);
@@ -33,6 +36,16 @@ export function ViewGroupsSchedules() {
   const [pagecount, setPagecount] = useState();
   const [groups, setGroups] = useState([]);
   const [status, setStatus] = useState("");
+
+
+
+
+  // const Example = () => {
+  //   const [startDate, setStartDate] = useState(new Date());
+  //   return (
+  //     <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
+  //   );
+  // };
 
   const schedules = [
     {
@@ -125,10 +138,18 @@ export function ViewGroupsSchedules() {
                 value={nameText}
                 onChange={(e) => setNameText(e.target.value)}
               />
+              {/* <DatePicker
+                className="controls1"
+                label="Filtruoti nuo"
+                value={dateFrom}
+                onChange={(e) => {
+                setDateFrom(e);
+                }}
+              /> */}
               <Input
                 className="controls1"
                 title="Filtruoti nuo"
-                placeholder="Filtruoti nuo (MMMM-MM-DD)"
+                placeholder="Filtruoti nuo"
                 value={dateFrom}
                 onChange={(e) => setDateFrom(e.target.value)}
                 required={dateUntil}
@@ -136,7 +157,7 @@ export function ViewGroupsSchedules() {
               <Input
                 className="controls1"
                 title="Filtruoti iki"
-                placeholder="Filtruoti iki (MMMM-MM-DD)"
+                placeholder="Filtruoti iki"
                 value={dateUntil}
                 onChange={(e) => setDateUntil(e.target.value)}
               />
@@ -154,7 +175,6 @@ export function ViewGroupsSchedules() {
                     <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                   </Table.Row>
                 </Table.Header>
-
                 <Table.Body>
                   {schedules.map((schedule) => (
                     <Table.Row key={schedule.id}>
@@ -163,23 +183,24 @@ export function ViewGroupsSchedules() {
                       <Table.Cell>{schedule.dateUntil}</Table.Cell>
                       <Table.Cell collapsing> Statusas</Table.Cell>
                       <Table.Cell collapsing>
-                      <Button
-                        id="icocolor"
-                            basic
-                            compact
-                            icon="eye"
-                            title="Peržiūrėti"
-                            href={"#/view/groupsschedules/edit/" + schedule.id}
-                            onClick={() => setActive(schedule.id)}
-                          ></Button>
-                          <Button
+                        {" "}
+                        <Button
                           id="icocolor"
-                            basic
-                            compact
-                            title="Suarchyvuoti"
-                            icon="archive"
-                            onClick={() => setOpen(schedule.id)}
-                          ></Button>
+                          basic
+                          compact
+                          icon="eye"
+                          title="Peržiūrėti"
+                          href={"#/view/groupsschedules/edit/" + schedule.id}
+                          onClick={() => setActive(schedule.id)}
+                        ></Button>
+                        <Button
+                          id="icocolor"
+                          basic
+                          compact
+                          title="Suarchyvuoti"
+                          icon="archive"
+                          onClick={() => setOpen(schedule.id)}
+                        ></Button>
                         <Confirm
                           open={open}
                           header="Dėmesio!"
