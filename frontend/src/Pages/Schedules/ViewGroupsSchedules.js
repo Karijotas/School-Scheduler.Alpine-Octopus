@@ -60,14 +60,35 @@ export function ViewGroupsSchedules() {
       .then(setOpen(false));
   };
 
+  const fetchFilterSchedulesByName = async () => {
+    fetch(`/api/v1/schedule/page/name-filter/${nameText}`)
+      .then((response) => response.json())
+      .then((jsonRespone) => setSchedules(jsonRespone));
+  };
+
+  const fetchFilterSchedulesByStartingDate = async () => {
+    fetch(`/api/v1/schedule/page/starting-date-filter/${startingDate}`)
+      .then((response) => response.json())
+      .then((jsonResponse) => setSchedules(jsonResponse));
+  };
+
+  const fetchFilterSchedulesByPlannedTillDate = async () => {
+    fetch(`/api/v1/schedule/page/planned-till-filter/${plannedTillDate}`)
+      .then((response) => response.json())
+      .then((jsonResponse) => setSchedules(jsonResponse));
+  };
+
+  useEffect(() => {
+    nameText.length > 0 ? fetchFilterSchedulesByName() : (startingDate.length > 0 ? fetchFilterSchedulesByStartingDate(): (plannedTillDate.length > 0 ? fetchFilterSchedulesByPlannedTillDate():fetchSchedules()));
+  }, [activePage, nameText, startingDate, plannedTillDate]);
+
+
   useEffect(() => {
     if (pagecount !== null) {
       fetchSchedules();
     }
   }, [schedules]);
-
-
-
+  
   // const schedules = [
   //   {
   //     id: 1,
