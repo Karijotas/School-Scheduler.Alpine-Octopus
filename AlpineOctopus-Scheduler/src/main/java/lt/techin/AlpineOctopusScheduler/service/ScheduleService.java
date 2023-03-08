@@ -115,39 +115,32 @@ public class ScheduleService {
 
     public Schedule create(Schedule schedule, Long groupId) {
 
-//Getting group, from it - shift and program
-
+        //Getting group, from it - shift and program
         var createdGroup = groupsRepository.findById(groupId)
                 .orElseThrow(() -> new SchedulerValidationException("Group doesn't exist", "id", "Group doesn't exist", groupId.toString()));
-        var createdShift = createdGroup.getShift();
         var createdProgram = createdGroup.getProgram().getId();
 
-        var existingTeacher = teacherRepository.findById(1l)
-                .orElseThrow(() -> new SchedulerValidationException("Teacher does not exist", "id", "Teacher not found", "teacherId.toString()"));
-        var existingRoom = roomRepository.findById(1l)
-                .orElseThrow(() -> new SchedulerValidationException("Room does not exist", "id", "Room not found", "roomId.toString()"));
-
-
-//Getting subjects in the program and adding them to the lesson Set
-
+        //Getting subjects in the program and adding them to the lesson Set
         List<ProgramSubjectHours> subjectHoursList = programSubjectHoursRepository.findAllByProgramId(createdProgram);
         Set<Lesson> lessonList = subjectHoursList
                 .stream()
                 .map(LessonMapper::toLessonFromSubject)
                 .collect(Collectors.toSet());
 
-
-        schedule.setGroup(createdGroup);
-        schedule.setShift(createdShift);
-        schedule.setLessons(lessonList);
+        //Creating the Schedule
         schedule.setName(createdGroup.getName() + " " + createdGroup.getShift().getName() + " " + createdGroup.getSchoolYear().toString());
-        schedule.setShiftName(createdShift.getName());
         schedule.setStartingDate(LocalDate.now());
+        schedule.setGroup(createdGroup);
+        schedule.setShift(createdGroup.getShift());
+        schedule.setShiftName(createdGroup.getShift().getName());
+        schedule.setLessons(lessonList);
+
 
         return scheduleRepository.save(schedule);
     }
 
     public Schedule updateTeacherAndRoomInASchedule(Long id, Long lessonId, Long teacherId, Long roomId) {
+
         //finding the schedule in repository
         var existingSchedule = scheduleRepository.findById(id)
                 .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", id.toString()));
@@ -174,25 +167,6 @@ public class ScheduleService {
         return scheduleRepository.save(existingSchedule);
     }
 
-    public Schedule update(Long id, Schedule schedule, Long groupId, Long shiftId) {
-        var existingSchedule = scheduleRepository.findById(id)
-                .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", id.toString()));
-        var existingGroup = groupsRepository.findById(groupId)
-                .orElseThrow(() -> new SchedulerValidationException("Group doesn't exist", "id", "Group doesn't exist", groupId.toString()));
-        var existingShift = shiftRepository.findById(shiftId)
-                .orElseThrow(() -> new SchedulerValidationException("Shift doesn't exist", "Shift", "Shift not found", shiftId.toString()));
-
-        existingSchedule.setGroup(existingGroup);
-        existingSchedule.setShift(existingShift);
-        existingSchedule.setName(schedule.getName());
-        existingSchedule.setStartingDate(schedule.getStartingDate());
-        existingSchedule.setPlannedTillDate(schedule.getPlannedTillDate());
-        existingSchedule.setStatus(schedule.getStatus());
-        existingSchedule.setLessons(schedule.getLessons());
-
-        return existingSchedule;
-    }
-
 
     public boolean deleteById(Long id) {
         try {
@@ -202,9 +176,4 @@ public class ScheduleService {
             return false;
         }
     }
-
-//    public List<ScheduleLessons> getAllLessonsInScheduleByScheduleId(Long id) {
-//        List<String> lessonList = scheduleRepository.get
-//    }
-
 }
