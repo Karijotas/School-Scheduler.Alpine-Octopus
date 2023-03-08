@@ -1,5 +1,6 @@
 package lt.techin.AlpineOctopusScheduler.api;
 
+import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleEntityDto;
 import lt.techin.AlpineOctopusScheduler.model.Schedule;
@@ -27,15 +28,9 @@ public class ScheduleController {
     public static Logger logger = LoggerFactory.getLogger(ScheduleController.class);
 
     private final ScheduleService scheduleService;
-//
-//    private final ScheduleRepository scheduleRepository;
-//
-//    private final ScheduleLessonsRepository scheduleLessonsRepository;
 
     public ScheduleController(ScheduleService scheduleService) {
         this.scheduleService = scheduleService;
-//        this.scheduleRepository = scheduleRepository;
-//        this.scheduleLessonsRepository = scheduleLessonsRepository;
     }
 
 
@@ -47,6 +42,37 @@ public class ScheduleController {
         return scheduleService.getAllPagedSchedules(page, pageSize);
 
     }
+
+    @GetMapping(path = "page/name-filter/{name-text}")
+    @ApiOperation(value = "Get paged schedules starting with", notes = "Returns list of schedules starting with passed String")
+    @ResponseBody
+    public List<ScheduleEntityDto> getPagedSchedulesByNameContaining(@PathVariable String nameText,
+                                                                     @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                                     @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+
+        return scheduleService.getSchedulesByNameContaining(nameText, page, pageSize);
+    }
+
+    @GetMapping(path = "page/starting-date-filter/{starting-date}")
+    @ApiOperation(value = "Get paged schedules by starting date", notes = "Returns list of schedules by starting date with passed String")
+    @ResponseBody
+    public List<ScheduleEntityDto> getPagedSchedulesByStartingDate(@PathVariable String startingDate,
+                                                                   @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                                   @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+
+        return scheduleService.getSchedulesByStartingDate(startingDate, page, pageSize);
+    }
+
+    @GetMapping(path = "page/planned-till-filter/{planned-till}")
+    @ApiOperation(value = "Get paged schedules by plannedTill date", notes = "Returns list of schedules by plannedTill date with passed String")
+    @ResponseBody
+    public List<ScheduleEntityDto> getPagedSchedulesByPlannedTill(@PathVariable String plannedTill,
+                                                                  @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                                  @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+
+        return scheduleService.getSchedulesByPlannedTill(plannedTill, page, pageSize);
+    }
+
 
     @GetMapping(value = "/{scheduleId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Schedule> getSchedule(@PathVariable Long scheduleId) {

@@ -26,6 +26,7 @@ public class Schedule {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate startingDate;
     @JsonFormat(pattern = "yyyy-MM-dd")
+
     private LocalDate plannedTillDate;
     @NotBlank
     private String status;
