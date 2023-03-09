@@ -38,6 +38,8 @@ export function ViewGroupsSchedules() {
   const [status, setStatus] = useState("");
   const [schedules, setSchedules] = useState([]);
   const [activePage, setActivePage] = useState(0);
+  const [schedule, setSchedule] = useState("");
+
 
 
   // const Example = () => {
@@ -164,44 +166,49 @@ export function ViewGroupsSchedules() {
   //  fetchGroups();
   // }, [activePage]);
 
-  // const MyStatus = () => {
-  //   if (schedules.status === "valid") {
-  //     return (
-  //       <>
-  //         <Button 
-  //         id="okey" 
-  //         basic 
-  //         compact 
-  //         icon="check" 
-  //         title="Statusas" />
-  //       </>
-  //     );
-  //   } else if (schedules.status === "invalid") {
-  //     return (
-  //       <>
-  //         <Button
-  //           id="grey"
-  //           basic
-  //           compact
-  //           icon="clock outline"
-  //           title="Statusas"
-  //         />
-  //       </>
-  //     );
-  //   } else {
-  //     return (
-  //       <>
-  //         <Button
-  //           id="attention"
-  //           basic
-  //           compact
-  //           icon="attention"
-  //           title="Statusas"
-  //         />
-  //       </>
-  //     );
+  const MyStatus = () => {
+    if (schedule.status === "valid") {
+      return (
+        <>
+          <Button 
+          id="okey" 
+          basic 
+          compact 
+          icon="check" 
+          title="Statusas" />
+        </>
+      );
+    } else if (schedule.status === "invalid") {
+      return (
+        <>
+          <Button
+            id="grey"
+            basic
+            compact
+            icon="clock outline"
+            title="Statusas"
+          />
+        </>
+      );
+    } else {
+      return (
+        <>
+          <Button
+            id="attention"
+            basic
+            compact
+            icon="attention"
+            title="Statusas"
+          />
+        </>
+      );
+    }
+  };
+
+  // useEffect(() => {
+  //   function MyStatus(status) {
+  //     setIsOnline(status.isOnline);
   //   }
-  // };
 
   return (
     <div>
@@ -263,8 +270,8 @@ export function ViewGroupsSchedules() {
                       <Table.Cell>{schedule.name}</Table.Cell>
                       <Table.Cell>{schedule.startingDate}</Table.Cell>
                       <Table.Cell>{schedule.plannedTillDate}</Table.Cell>
-                      <Table.Cell collapsing> 
-                      <StatusButton/>
+                      <Table.Cell collapsing>{schedule.status} 
+                      {/* <StatusButton/> */}
                       {/* {schedule.status} */}
                       </Table.Cell>
                       <Table.Cell collapsing>
