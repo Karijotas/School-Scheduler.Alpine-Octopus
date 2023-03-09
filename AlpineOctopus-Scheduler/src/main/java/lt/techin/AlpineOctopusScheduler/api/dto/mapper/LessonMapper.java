@@ -9,9 +9,21 @@ public class LessonMapper {
         var lesson = new Lesson();
 
         lesson.setSubject(subject.getSubject());
-        lesson.setLessonNumber(subject.getSubjectHours());
+        lesson.setLessonHours(subject.getSubjectHours());
 
 
         return lesson;
+    }
+
+    public static Lesson toIndividualLessonSets(Lesson lesson) {
+        var newLesson = new Lesson();
+
+        newLesson.setSubject(lesson.getSubject());
+        newLesson.setLessonHours(1);
+        newLesson.setTeacher(lesson.getTeacher());
+        newLesson.setRoom(lesson.getRoom());
+        newLesson.setOnline(lesson.isOnline());
+
+        return newLesson;
     }
 }

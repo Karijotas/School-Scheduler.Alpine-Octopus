@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -116,7 +117,7 @@ public class ScheduleService {
         schedule.setGroupName(createdGroup.getId().toString());
         schedule.setShift(createdGroup.getShift());
         schedule.setShiftName(createdGroup.getShift().getName());
-        schedule.setLessons(lessonList);
+        schedule.setSubjects(lessonList);
 
 
         return scheduleRepository.save(schedule);
@@ -131,7 +132,7 @@ public class ScheduleService {
         var existingTeacher = teacherRepository.findById(teacherId)
                 .orElseThrow(() -> new SchedulerValidationException("Teacher does not exist", "id", "Teacher not found", teacherId.toString()));
         //setting the teacher
-        existingSchedule.getLessons()
+        existingSchedule.getSubjects()
                 .stream()
                 .filter(lesson -> lesson.getId().equals(lessonId))
                 .forEach(lesson -> lesson.setTeacher(existingTeacher));
@@ -139,17 +140,33 @@ public class ScheduleService {
         var existingRoom = roomRepository.findById(roomId)
                 .orElseThrow(() -> new SchedulerValidationException("Room does not exist", "id", "Room not found", roomId.toString()));
         //setting the room
-        existingSchedule.getLessons()
+        existingSchedule.getSubjects()
                 .stream()
                 .filter(lesson -> lesson.getId().equals(lessonId))
                 .forEach(lesson -> lesson.setRoom(existingRoom));
 
-        //replacing the lessons
-        existingSchedule.setLessons(existingSchedule.getLessons());
+        //replacing the subjectList
+        existingSchedule.setSubjects(existingSchedule.getSubjects());
         //save to repository
         return scheduleRepository.save(existingSchedule);
     }
 
+    public Schedule setLessonsForScheduling(Long id) {
+        //finding the schedule in repository
+        var existingSchedule = scheduleRepository.findById(id)
+                .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", id.toString()));
+
+        Set<Lesson> createdLessons = existingSchedule.getSubjects().stream().map(LessonMapper::toIndividualLessonSets).collect(Collectors.toSet());
+
+        existingSchedule.setLessons(createdLessons);
+        return scheduleRepository.save(existingSchedule);
+    }
+
+
+//TODO: SUTVARKYTI FILTRUS !!!
+
+
+    public Schedule scheduleLessons(Long id, Long subjectId, Integer amount, LocalDateTime timeToSchedule)
 
     public boolean deleteById(Long id) {
         try {
