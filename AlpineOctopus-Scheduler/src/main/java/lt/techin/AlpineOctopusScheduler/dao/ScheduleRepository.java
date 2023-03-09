@@ -11,16 +11,12 @@ import java.util.List;
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
-    /* TODO: SUTVARKYTI FILTRUS !
-     *  dabar filtruoja ne nuo arba ne iki, o pagal datas.
-     *  Padaryti kad filtruotų normaliai nuo iki
-     * */
-
     List<Schedule> findByNameContainingIgnoreCaseOrderByModifiedDateDesc(String nameText, Pageable pageable);
 
-    List<Schedule> findByStartingDateOrderByModifiedDateDesc(LocalDate startingDate, Pageable pageable);
+    List<Schedule> findAllByStartingDateAfterOrderByModifiedDateDesc(LocalDate startingDate, Pageable pageable);
 
-    List<Schedule> findByPlannedTillDateOrderByModifiedDateDesc(LocalDate plannedTillDate, Pageable pageable);
+
+    List<Schedule> findByPlannedTillDateBeforeOrderByModifiedDateDesc(LocalDate plannedTillDate, Pageable pageable);
 
 
 }

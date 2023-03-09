@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -64,8 +63,11 @@ public class ScheduleService {
     @Transactional
     public List<ScheduleEntityDto> getSchedulesByStartingDate(String startingDate, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        var starting = LocalDate.parse(startingDate);
-        return scheduleRepository.findByStartingDateOrderByModifiedDateDesc(starting, pageable)
+
+        //Provided String must be in a YYYY-MM-DD format. Subtracting one in order for the searched day itself to appear in results
+        var starting = LocalDate.parse(startingDate).minusDays(1);
+
+        return scheduleRepository.findAllByStartingDateAfterOrderByModifiedDateDesc(starting, pageable)
                 .stream()
                 .map(ScheduleMapper::toScheduleEntityDto)
                 .collect(Collectors.toList());
@@ -74,8 +76,11 @@ public class ScheduleService {
     @Transactional
     public List<ScheduleEntityDto> getSchedulesByPlannedTill(String plannedTill, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        var planned = LocalDate.parse(plannedTill);
-        return scheduleRepository.findByPlannedTillDateOrderByModifiedDateDesc(planned, pageable)
+        
+        //Provided String must be in a YYYY-MM-DD format. Adding one more in order for the searched day itself to appear in results
+        var planned = LocalDate.parse(plannedTill).plusDays(1);
+
+        return scheduleRepository.findByPlannedTillDateBeforeOrderByModifiedDateDesc(planned, pageable)
                 .stream()
                 .map(ScheduleMapper::toScheduleEntityDto)
                 .collect(Collectors.toList());
@@ -163,10 +168,9 @@ public class ScheduleService {
     }
 
 
-//TODO: SUTVARKYTI FILTRUS !!!
-
-
-    public Schedule scheduleLessons(Long id, Long subjectId, Integer amount, LocalDateTime timeToSchedule)
+//    public Schedule scheduleLessons(Long id, Long subjectId, Integer amount, LocalDateTime timeToSchedule) {
+//
+//    }
 
     public boolean deleteById(Long id) {
         try {

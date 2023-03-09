@@ -157,11 +157,11 @@ export function EditGroupScheduleObject() {
   const updateSchedules = () => {
     fetch(
       "/api/v1/schedule/" +
-        params.id +
-        "?groupId=" +
-        groupId +
-        "&shiftId=" +
-        shiftId,
+      params.id +
+      "?groupId=" +
+      groupId +
+      "&shiftId=" +
+      shiftId,
       {
         method: "PATCH",
         headers: JSON_HEADERS,
@@ -334,11 +334,11 @@ export function EditGroupScheduleObject() {
                     <Table.Row>
                       <Table.Cell width={6}>
                         <Form>
-                            <Input
-                              fluid
-                              value={schedules.name}
-                              onChange={(e) => updateProperty("name", e)}
-                            />
+                          <Input
+                            fluid
+                            value={schedules.name}
+                            onChange={(e) => updateProperty("name", e)}
+                          />
                         </Form>
                       </Table.Cell>
                       <Table.Cell>{schedules.startingDate}</Table.Cell>
