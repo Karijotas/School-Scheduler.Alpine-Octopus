@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
+import dayjs from "dayjs";
 import {
   Button,
   ButtonGroup,
@@ -13,15 +14,13 @@ import {
   Table,
   TextArea,
 } from "semantic-ui-react";
+import moment from "moment";
 import MainMenu from "../../Components/MainMenu";
 import { SchedulesMenu } from "../../Components/SchedulesMenu";
-// import DatePicker from "react-datepicker";
-// import dayjs from "dayjs";
-// import { format } from 'date-fns'
-import { StatusButton } from "./StatusButton";
-
-
-// format(new Date(), 'yyyy/mm/dd')
+import { format } from "date-fns";
+import { DatePicker } from "antd";
+import "antd/dist/reset.css";
+const { RangePicker } = DatePicker;
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -39,15 +38,6 @@ export function ViewGroupsSchedules() {
   const [schedules, setSchedules] = useState([]);
   const [activePage, setActivePage] = useState(0);
   const [schedule, setSchedule] = useState("");
-
-
-
-  // const Example = () => {
-  //   const [startDate, setStartDate] = useState(new Date());
-  //   return (
-  //     <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
-  //   );
-  // };
 
   const fetchSchedules = async () => {
     fetch("/api/v1/schedule/page?page=" + activePage)
@@ -70,7 +60,7 @@ export function ViewGroupsSchedules() {
   };
 
   const fetchFilterSchedulesByStartingDate = async () => {
-    fetch(`/api/v1/schedule/page/starting-date-filter/${startingDate}`)
+    fetch(`/api/v1/schedule/page/starting-date-filter/${formatStartingDate()}`)
       .then((response) => response.json())
       .then((jsonResponse) => setSchedules(jsonResponse));
   };
@@ -82,100 +72,30 @@ export function ViewGroupsSchedules() {
   };
 
   useEffect(() => {
-    nameText.length > 0 ? fetchFilterSchedulesByName() : (startingDate.length > 0 ? fetchFilterSchedulesByStartingDate(): (plannedTillDate.length > 0 ? fetchFilterSchedulesByPlannedTillDate():fetchSchedules()));
+    nameText.length > 0
+      ? fetchFilterSchedulesByName()
+      : startingDate.length > 0
+      ? fetchFilterSchedulesByStartingDate()
+      : plannedTillDate.length > 0
+      ? fetchFilterSchedulesByPlannedTillDate()
+      : fetchSchedules();
   }, [activePage, nameText, startingDate, plannedTillDate]);
 
+  const formatStartingDate = () => {
+    return startingDate == "" ? "" : dayjs(startingDate).format("YYYY-MM-DD");
+  };
 
-  // useEffect(() => {
-  //   if (pagecount !== null) {
-  //     fetchSchedules();
-  //   }
-  // }, [schedules]);
-
-  // const schedules = [
-  //   {
-  //     id: 1,
-  //     name: "Pirmas tvarkaraštis",
-  //     dateFrom: "2016-01-04",
-  //     dateUntil: "2016-06-04",
-  //     status: "invalid",
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Antras tvarkaraštis",
-  //     dateFrom: "2017-01-04",
-  //     dateUntil: "2018-06-04",
-  //     status: "attention",
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Trečias tvarkaraštis",
-  //     dateFrom: "2019-01-04",
-  //     dateUntil: "2023-06-04",
-  //     status: "valid",
-  //   },
-  //   {
-  //     id: 4,
-  //     name: "Ketvirtas tvarkaraštis",
-  //     dateFrom: "2022-01-04",
-  //     dateUntil: "2023-06-04",
-  //     status: "valid",
-  //   },
-  // ];
-
-  // const status = "schedules";
-  // const myStatus = () => {
-  //   if(schedules.status === "valid"){
-  //     return ( <Button
-  //     id="okey"
-  //     basic
-  //     compact
-  //     icon="check"
-  //     title="Statusas"
-  //   ></Button>)
-  //   } else if (schedules.status === "invalid"){
-  //     return (
-  //       <Button
-  //     id="grey"
-  //     basic
-  //     compact
-  //     icon="clock outline"
-  //     title="Statusas"
-  //   ></Button>
-  //     )
-  //   } else {
-  //     return (
-  //       <Button
-  //     id="attention"
-  //     basic
-  //     compact
-  //     icon="attention"
-  //     title="Statusas"
-  //   ></Button>
-  //     )
-  //   }
-  // }
-
-  // const fetchGroups = async () => {
-  //   fetch("/api/v1/groups/")
-  //     .then((response) => response.json())
-  //     .then((jsonResponse) => setGroups(jsonResponse));
-  // };
-
-  // useEffect(() => {
-  //  fetchGroups();
-  // }, [activePage]);
+  const formatPlannedTillDate = () => {
+    return plannedTillDate == ""
+      ? ""
+      : dayjs(plannedTillDate).format("YYYY-MM-DD");
+  };
 
   const MyStatus = () => {
     if (schedule.status === "valid") {
       return (
         <>
-          <Button 
-          id="okey" 
-          basic 
-          compact 
-          icon="check" 
-          title="Statusas" />
+          <Button id="okey" basic compact icon="check" title="Statusas" />
         </>
       );
     } else if (schedule.status === "invalid") {
@@ -205,11 +125,6 @@ export function ViewGroupsSchedules() {
     }
   };
 
-  // useEffect(() => {
-  //   function MyStatus(status) {
-  //     setIsOnline(status.isOnline);
-  //   }
-
   return (
     <div>
       <MainMenu />
@@ -227,29 +142,42 @@ export function ViewGroupsSchedules() {
                 value={nameText}
                 onChange={(e) => setNameText(e.target.value)}
               />
-              {/* <DatePicker
-                className="controls1"
-                label="Filtruoti nuo"
-                value={dateFrom}
-                onChange={(e) => {
-                setDateFrom(e);
-                }}
-              /> */}
-              <Input
+
+              {/* <Input
                 className="controls1"
                 title="Filtruoti nuo"
                 placeholder="Filtruoti nuo"
                 value={startingDate}
                 onChange={(e) => setStartingDate(e.target.value)}
                 required={plannedTillDate}
+              /> */}
+              <DatePicker
+                className="controls4"
+                placeholder="Filtruoti nuo"
+                onChange={(e) => {
+                  const newDate = dayjs(e).format("YYYY-MM-DD");
+                  setStartingDate(newDate);
+                }}
+                
+                // onClose={setStartingDate("")}
               />
-              <Input
+
+              <DatePicker
+                className="controls4"
+                placeholder="Filtruoti iki"
+                onChange={(e) => {
+                  const newDate = dayjs(e).format("YYYY-MM-DD");
+                  setPlannedTillDate(newDate);
+                }}
+              />
+
+              {/* <Input
                 className="controls1"
                 title="Filtruoti iki"
                 placeholder="Filtruoti iki"
                 value={plannedTillDate}
                 onChange={(e) => setPlannedTillDate(e.target.value)}
-              />
+              /> */}
               <Divider horizontal hidden></Divider>
 
               <Table selectable>
@@ -270,9 +198,32 @@ export function ViewGroupsSchedules() {
                       <Table.Cell>{schedule.name}</Table.Cell>
                       <Table.Cell>{schedule.startingDate}</Table.Cell>
                       <Table.Cell>{schedule.plannedTillDate}</Table.Cell>
-                      <Table.Cell collapsing>{schedule.status} 
-                      {/* <StatusButton/> */}
-                      {/* {schedule.status} */}
+                      <Table.Cell collapsing>
+                        {schedule.status === "invalid" ? (
+                          <Button
+                            id="grey"
+                            basic
+                            compact
+                            icon="clock outline"
+                            title="Statusas"
+                          />
+                        ) : schedule.status === "Valid" ? (
+                          <Button
+                            id="okey"
+                            basic
+                            compact
+                            icon="check"
+                            title="Statusas"
+                          />
+                        ) : (
+                          <Button
+                            id="attention"
+                            basic
+                            compact
+                            icon="attention"
+                            title="Statusas"
+                          />
+                        )}
                       </Table.Cell>
                       <Table.Cell collapsing>
                         {" "}

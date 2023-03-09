@@ -33,6 +33,22 @@ code {
   margin-bottom: 15px;
   
 }
+.controls4{
+  padding-left: 5vmin;
+  width: 210px;
+  height: 38px;
+  border-radius: 0.5vmin;
+  margin-right: 50px;
+  
+}
+.controls5{
+  padding-left: 5vmin;
+  width: 400px;
+  height: 38px;
+  border-radius: 0.5vmin;
+  margin-right: 50px;
+  
+}
 #main{
   font-size: 1.01em;
 }

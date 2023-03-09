@@ -139,10 +139,10 @@ export function EditGroupScheduleObject() {
   };
 
   useEffect(() => {
-    fetch("/api/v1/groups/" + schedules.groupId)
+    fetch("/api/v1/groups/" + schedules.groupName)
       .then((response) => response.json())
       .then(setGroups);
-  }, [active, params]);
+  }, [schedules]);
 
   useEffect(() => {
     fetch("/api/v1/schedule/" + params.id)

@@ -1,13 +1,13 @@
 package lt.techin.AlpineOctopusScheduler.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -19,17 +19,15 @@ public class Lesson {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Subject subject;
     @ManyToOne
     private Teacher teacher;
     @ManyToOne
     private Room room;
-//    @ManyToMany
-//    private Schedule schedule;
 
     @NotNull
     private Integer lessonNumber;
-    @NotBlank
     private boolean online;
 
 

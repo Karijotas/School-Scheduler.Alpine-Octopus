@@ -85,7 +85,8 @@ export function CreateRoom() {
     };
 
     if (result.ok) {
-      clear();
+      let info = result.json() 
+      .then((jsonResponse) => window.location = listUrl + jsonResponse.id);
     } else {
       window.alert("Nepavyko sukurti: pavadinimas turi būti unikalus!");
     }
@@ -102,7 +103,7 @@ export function CreateRoom() {
         description,
       })
     }).then(applyResult)
-      .then(() => window.location = listUrl);
+;
   };
 
 

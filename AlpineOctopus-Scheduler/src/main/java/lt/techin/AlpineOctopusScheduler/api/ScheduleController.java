@@ -1,7 +1,6 @@
 package lt.techin.AlpineOctopusScheduler.api;
 
 import io.swagger.annotations.ApiOperation;
-import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleEntityDto;
 import lt.techin.AlpineOctopusScheduler.model.Schedule;
 import lt.techin.AlpineOctopusScheduler.service.ScheduleService;
@@ -15,10 +14,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ScheduleMapper.*;
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ScheduleMapper.toSchedule;
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ScheduleMapper.toScheduleEntityDto;
 import static org.springframework.http.ResponseEntity.ok;
 
 @Controller
@@ -100,11 +99,9 @@ public class ScheduleController {
         }
     }
 
-    @PatchMapping("/{scheduleId}")
-    public ResponseEntity<ScheduleDto> updateSchedule(@PathVariable Long scheduleId, @Valid @RequestBody ScheduleDto scheduleDto, Long groupId, Long shiftId) {
-
-        var updatedSchedule = scheduleService.update(scheduleId, toSchedule(scheduleDto), groupId, shiftId);
-        return ok(toScheduleDto(updatedSchedule));
-
+    @PatchMapping("/{scheduleId}/{lessonId}")
+    public ResponseEntity<ScheduleEntityDto> setTeacherAndRoomInASchedule(@PathVariable Long scheduleId, Long lessonId, Long teacherId, Long roomId) {
+        var updatedSchedule = scheduleService.setTeacherAndRoomInASchedule(scheduleId, lessonId, teacherId, roomId);
+        return ok(toScheduleEntityDto(updatedSchedule));
     }
 }
