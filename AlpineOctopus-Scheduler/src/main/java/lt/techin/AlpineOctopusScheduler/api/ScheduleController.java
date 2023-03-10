@@ -112,12 +112,24 @@ public class ScheduleController {
 
     @PatchMapping("/{scheduleId}/")
     public ResponseEntity<ScheduleEntityDto> scheduleLesson(@PathVariable Long scheduleId, Long subjectId,
-                                                            @RequestParam(value = "startTime", required = false) String startTime,
-                                                            @RequestParam(value = "endTime", required = false) String endTime) {
+                                                            @RequestParam(value = "startTime", required = true) String startTime,
+                                                            @RequestParam(value = "endTime", required = true) String endTime) {
         var starting = LocalDateTime.parse(startTime.toString());
         var ending = LocalDateTime.parse(endTime.toString());
 
         var updatedSchedule = scheduleService.ScheduleLesson(scheduleId, subjectId, starting, ending);
         return ok(toScheduleEntityDto(updatedSchedule));
+    }
+
+    @DeleteMapping("/{scheduleId}/")
+    public ResponseEntity<ScheduleEntityDto> removeLesson(@PathVariable Long scheduleId, Long lessonId) {
+
+        logger.info("Attempt to delete Lesson from Schedule by id: {}", lessonId);
+        boolean deleted = scheduleService.removeLesson(scheduleId, lessonId);
+        if (deleted) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

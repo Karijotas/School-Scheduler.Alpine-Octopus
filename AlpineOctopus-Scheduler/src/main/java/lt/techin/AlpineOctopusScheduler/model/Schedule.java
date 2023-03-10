@@ -111,12 +111,12 @@ public class Schedule {
         this.shiftName = shiftName;
     }
 
-    public String getGroupName() {
+    public String getGroupIdValue() {
         return groupIdValue;
     }
 
-    public void setGroupName(String groupName) {
-        this.groupIdValue = groupName;
+    public void setGroupIdValue(String groupIdValue) {
+        this.groupIdValue = groupIdValue;
     }
 
     public String getStatus() {
