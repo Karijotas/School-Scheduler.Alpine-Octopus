@@ -39,8 +39,16 @@ import { ViewArchivedProgram } from './Pages/Edit/Programs/ViewArchivedProgram';
 import { ViewArchivedShift } from './Pages/Edit/Shifts/ViewArchivedShift';
 import { ViewArchivedSubject } from './Pages/Edit/Subjects/ViewArchivedSubject';
 import { ViewArchivedTeacher } from './Pages/Edit/Teachers/ViewArchivedTeachers';
-import {ViewGroupsSchedules} from './Pages/Schedules/ViewGroupsSchedules';    
+import {ViewGroupsSchedules} from './Pages/Schedules/ViewGroupsSchedules';
+import { ScheduleView } from './Pages/Schedules/Schedule';   
+import { ScheduleView1 } from './Pages/Schedules/Schedule1';     
+import { registerLicense } from '@syncfusion/ej2-base';  
 import { EditGroupScheduleObject} from './Pages/Schedules/EditGroupScheduleObject';      
+
+
+// Registering Syncfusion license key
+registerLicense('Mgo+DSMBaFt/QHRqVVhjVFpFdEBBXHxAd1p/VWJYdVt5flBPcDwsT3RfQF5jSn5adkFhXn9ccHFXTw==;Mgo+DSMBPh8sVXJ0S0J+XE9HflRDX3xKf0x/TGpQb19xflBPallYVBYiSV9jS31TdUVqWXtcd3RXRmZbWA==;ORg4AjUWIQA/Gnt2VVhkQlFadVdJXGFWfVJpTGpQdk5xdV9DaVZUTWY/P1ZhSXxQdkZjUH9acnNVRGBUVU0=;MTI4NzAxNUAzMjMwMmUzNDJlMzBQeVBLZVJjcHpDSjRFRXMxaWlWWUl1bnRtTzJOMFhqU3BsVno3ZWZlNDRNPQ==;MTI4NzAxNkAzMjMwMmUzNDJlMzBkbFJ3c0hROEg4V09pVHRBNEVVNUtKYTMzeWxzM0drL3MrU2xvSnBpdGVvPQ==;NRAiBiAaIQQuGjN/V0Z+WE9EaFxKVmJLYVB3WmpQdldgdVRMZVVbQX9PIiBoS35RdUVgWXZedHZSRmJdV0x/;MTI4NzAxOEAzMjMwMmUzNDJlMzBCRDNWaHVpbEV3ZUxvL2xZUWdNcTVNc0R1dTRBRDlvZmdFRUV3bG5JUnYwPQ==;MTI4NzAxOUAzMjMwMmUzNDJlMzBLbUZsVkZCdHZwSUgvNVVyd3lLbUZYR0tua3pPTDN0Mml4ak5PdXBROEpBPQ==;Mgo+DSMBMAY9C3t2VVhkQlFadVdJXGFWfVJpTGpQdk5xdV9DaVZUTWY/P1ZhSXxQdkZjUH9acnNVRGJYUk0=;MTI4NzAyMUAzMjMwMmUzNDJlMzBXUDhkYm5QM3RTMXhTSHg0R3pRNHM5bXNjbXN4WjJxa3JGQ2xjRlJHVnRvPQ==;MTI4NzAyMkAzMjMwMmUzNDJlMzBhUW9IZGZSdEFLL0VGd1gwY3A2TnY4dEVqUVNGc1Y1dTM2WWNESUJSdUtBPQ==;MTI4NzAyM0AzMjMwMmUzNDJlMzBCRDNWaHVpbEV3ZUxvL2xZUWdNcTVNc0R1dTRBRDlvZmdFRUV3bG5JUnYwPQ==');
+    
 
 
 // basename={process.env.REACT_APP_PUBLIC_URL}
@@ -107,6 +115,9 @@ root.render(
 
         {/* Group schedules routes: */}
         <Route path='/view/groupsSchedules' element={<ViewGroupsSchedules />} />
+        <Route path='/view/scheduleView' element={<ScheduleView />} />
+        <Route path='/view/scheduleView1' element={<ScheduleView1 />} />
+        {/* <Route path='/view/groupsSchedules/edit/:id' element={<EditModuleObject />} /> */}
         <Route path='/view/groupsSchedules/edit/:id' element={<EditGroupScheduleObject />} />
         {/* <Route path='/create/groupsSchedules' element={<CreateModulePage />} /> */}
 

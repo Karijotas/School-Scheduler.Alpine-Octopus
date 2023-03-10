@@ -8,6 +8,11 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/ScheduleController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/ScheduleController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/service/ScheduleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/service/ScheduleService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,7 +68,6 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/User/OneDrive/Desktop/BLOG_02.26/demo/demo&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/mantas/Documents/Akademija.it/Projektas/AlpineOctopus-Scheduler/src/main/resources/db/migration&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
@@ -158,12 +162,20 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="AlpineOctopusSchedulerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="AlpineOctopus-Scheduler" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="lt.techin.AlpineOctopusScheduler.AlpineOctopusSchedulerApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="Application.AlpineOctopusSchedulerApplication" />
       <item itemvalue="JUnit.All in AlpineOctopus-Scheduler (2)" />
       <item itemvalue="JUnit.All in AlpineOctopus-Scheduler (3)" />
       <item itemvalue="JUnit.All in AlpineOctopus-Scheduler (4)" />
       <item itemvalue="JUnit.All in AlpineOctopus-Scheduler (5)" />
+      <item itemvalue="Spring Boot.AlpineOctopusSchedulerApplication" />
     </list>
     <recent_temporary>
       <list>
@@ -231,6 +243,9 @@
       <workItem from="1677832572088" duration="5194000" />
       <workItem from="1678181695207" duration="13627000" />
       <workItem from="1678267648791" duration="1986000" />
+      <workItem from="1678272378367" duration="1408000" />
+      <workItem from="1678288808653" duration="867000" />
+      <workItem from="1678351849074" duration="2397000" />
     </task>
     <servers />
   </component>
