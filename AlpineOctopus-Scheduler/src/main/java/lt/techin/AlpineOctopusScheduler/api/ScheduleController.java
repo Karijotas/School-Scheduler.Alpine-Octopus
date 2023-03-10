@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ScheduleMapper.toSchedule;
@@ -105,9 +106,14 @@ public class ScheduleController {
         return ok(toScheduleEntityDto(updatedSchedule));
     }
 
-    @PatchMapping("/{scheduleId}")
-    public ResponseEntity<ScheduleEntityDto> setLessonsForScheduling(@PathVariable Long scheduleId) {
-        var updatedSchedule = scheduleService.setLessonsForScheduling(scheduleId);
+    @PatchMapping("/{scheduleId}/")
+    public ResponseEntity<ScheduleEntityDto> scheduleLesson(@PathVariable Long scheduleId, Long subjectId,
+                                                            @RequestParam(value = "startTime", required = false) String startTime,
+                                                            @RequestParam(value = "endTime", required = false) String endTime) {
+        var starting = LocalDateTime.parse(startTime.toString());
+        var ending = LocalDateTime.parse(endTime.toString());
+
+        var updatedSchedule = scheduleService.ScheduleLesson(scheduleId, subjectId, starting, ending);
         return ok(toScheduleEntityDto(updatedSchedule));
     }
 }

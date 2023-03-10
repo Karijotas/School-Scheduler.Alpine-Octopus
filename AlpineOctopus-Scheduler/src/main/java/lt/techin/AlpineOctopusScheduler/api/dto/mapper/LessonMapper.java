@@ -15,14 +15,14 @@ public class LessonMapper {
         return lesson;
     }
 
-    public static Lesson toIndividualLessonSets(Lesson lesson) {
+
+    public static Lesson toIndividualLesson(Lesson lesson) {
         var newLesson = new Lesson();
 
         newLesson.setSubject(lesson.getSubject());
-        newLesson.setLessonHours(1);
         newLesson.setTeacher(lesson.getTeacher());
         newLesson.setRoom(lesson.getRoom());
-        newLesson.setOnline(lesson.isOnline());
+
 
         return newLesson;
     }

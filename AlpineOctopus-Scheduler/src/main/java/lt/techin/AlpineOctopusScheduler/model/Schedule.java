@@ -215,6 +215,10 @@ public class Schedule {
         this.lessons = lessons;
     }
 
+    public void scheduleLesson(Lesson lesson) {
+        this.lessons.add(lesson);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

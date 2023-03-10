@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -76,7 +77,7 @@ public class ScheduleService {
     @Transactional
     public List<ScheduleEntityDto> getSchedulesByPlannedTill(String plannedTill, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        
+
         //Provided String must be in a YYYY-MM-DD format. Adding one more in order for the searched day itself to appear in results
         var planned = LocalDate.parse(plannedTill).plusDays(1);
 
@@ -156,21 +157,20 @@ public class ScheduleService {
         return scheduleRepository.save(existingSchedule);
     }
 
-    public Schedule setLessonsForScheduling(Long id) {
+    public Schedule ScheduleLesson(Long scheduleId, Long subjectId, LocalDateTime startTime, LocalDateTime endTime) {
         //finding the schedule in repository
-        var existingSchedule = scheduleRepository.findById(id)
-                .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", id.toString()));
+        var existingSchedule = scheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", scheduleId.toString()));
 
-        Set<Lesson> createdLessons = existingSchedule.getSubjects().stream().map(LessonMapper::toIndividualLessonSets).collect(Collectors.toSet());
+        Lesson createdLesson = existingSchedule.getSubjects().stream().filter(lesson -> lesson.getId().equals(subjectId)).map(LessonMapper::toIndividualLesson).findAny().get();
+        createdLesson.setStartTime(startTime);
+        createdLesson.setEndTime(endTime);
+        createdLesson.setLessonHours(endTime.getHour() - startTime.getHour());
 
-        existingSchedule.setLessons(createdLessons);
+        existingSchedule.scheduleLesson(createdLesson);
         return scheduleRepository.save(existingSchedule);
     }
 
-
-//    public Schedule scheduleLessons(Long id, Long subjectId, Integer amount, LocalDateTime timeToSchedule) {
-//
-//    }
 
     public boolean deleteById(Long id) {
         try {
