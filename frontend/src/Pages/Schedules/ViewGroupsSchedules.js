@@ -27,6 +27,7 @@ const JSON_HEADERS = {
 };
 
 export function ViewGroupsSchedules() {
+  const today = dayjs();
   const [nameText, setNameText] = useState("");
   const [startingDate, setStartingDate] = useState("");
   const [plannedTillDate, setPlannedTillDate] = useState("");
@@ -38,6 +39,7 @@ export function ViewGroupsSchedules() {
   const [schedules, setSchedules] = useState([]);
   const [activePage, setActivePage] = useState(0);
   const [schedule, setSchedule] = useState("");
+  const [defaultDate, setDefaultDate] = useState(today);
 
   const fetchSchedules = async () => {
     fetch("/api/v1/schedule/page?page=" + activePage)
@@ -72,8 +74,12 @@ export function ViewGroupsSchedules() {
   };
 
   useEffect(() => {
-    nameText.length > 0
+    nameText.length > 0 
       ? fetchFilterSchedulesByName()
+      : startingDate == "" ||
+        startingDate == "Invalid Date" ||
+        startingDate == "Undefined"
+      ? fetchSchedules()
       : startingDate.length > 0
       ? fetchFilterSchedulesByStartingDate()
       : plannedTillDate.length > 0
@@ -89,40 +95,6 @@ export function ViewGroupsSchedules() {
     return plannedTillDate == ""
       ? ""
       : dayjs(plannedTillDate).format("YYYY-MM-DD");
-  };
-
-  const MyStatus = () => {
-    if (schedule.status === "valid") {
-      return (
-        <>
-          <Button id="okey" basic compact icon="check" title="Statusas" />
-        </>
-      );
-    } else if (schedule.status === "invalid") {
-      return (
-        <>
-          <Button
-            id="grey"
-            basic
-            compact
-            icon="clock outline"
-            title="Statusas"
-          />
-        </>
-      );
-    } else {
-      return (
-        <>
-          <Button
-            id="attention"
-            basic
-            compact
-            icon="attention"
-            title="Statusas"
-          />
-        </>
-      );
-    }
   };
 
   return (
@@ -154,21 +126,25 @@ export function ViewGroupsSchedules() {
               <DatePicker
                 className="controls4"
                 placeholder="Filtruoti nuo"
+                defaultPickerValue={today}
+                // defaultvalue={defaultDate}
                 onChange={(e) => {
                   const newDate = dayjs(e).format("YYYY-MM-DD");
                   setStartingDate(newDate);
                 }}
-                
-                // onClose={setStartingDate("")}
+                onClose={defaultDate}
+                allowClear
               />
 
               <DatePicker
                 className="controls4"
                 placeholder="Filtruoti iki"
+                // value={defaultDate}
                 onChange={(e) => {
                   const newDate = dayjs(e).format("YYYY-MM-DD");
                   setPlannedTillDate(newDate);
                 }}
+                allowClear
               />
 
               {/* <Input
