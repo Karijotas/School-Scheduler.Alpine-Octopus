@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -84,8 +85,11 @@ public class ScheduleController {
     }
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<ScheduleEntityDto> createSchedule(@RequestBody ScheduleEntityDto scheduleEntityDto, Long groupId) {
-        var createdSchedule = scheduleService.create(toSchedule(scheduleEntityDto), groupId);
+    public ResponseEntity<ScheduleEntityDto> createSchedule(@RequestBody ScheduleEntityDto scheduleEntityDto, Long groupId,
+                                                            @RequestParam(value = "startingDate", required = false) String startingDate) {
+
+        var starting = LocalDate.parse(startingDate.toString());
+        var createdSchedule = scheduleService.create(toSchedule(scheduleEntityDto), groupId, starting);
         return ok(toScheduleEntityDto(createdSchedule));
     }
 

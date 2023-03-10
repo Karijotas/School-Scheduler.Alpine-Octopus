@@ -101,7 +101,7 @@ public class ScheduleService {
         return scheduleRepository.findById(id);
     }
 
-    public Schedule create(Schedule schedule, Long groupId) {
+    public Schedule create(Schedule schedule, Long groupId, LocalDate startingDate) {
 
         //Getting group, from it - shift and program
         var createdGroup = groupsRepository.findById(groupId)
@@ -117,8 +117,7 @@ public class ScheduleService {
 
         //Creating the Schedule
         schedule.setName(createdGroup.getName() + " " + createdGroup.getShift().getName() + " " + createdGroup.getSchoolYear().toString());
-        schedule.setStartingDate(LocalDate.now());
-
+        schedule.setStartingDate(startingDate);
         schedule.setGroup(createdGroup);
         schedule.setGroupName(createdGroup.getId().toString());
         schedule.setShift(createdGroup.getShift());
@@ -162,12 +161,23 @@ public class ScheduleService {
         var existingSchedule = scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", scheduleId.toString()));
 
-        Lesson createdLesson = existingSchedule.getSubjects().stream().filter(lesson -> lesson.getId().equals(subjectId)).map(LessonMapper::toIndividualLesson).findAny().get();
+        //finding and getting the subject to schedule, then turning it to a new lesson object
+        Lesson createdLesson = existingSchedule.getSubjects()
+                .stream()
+                .filter(lesson -> lesson.getId().equals(subjectId))
+                .map(LessonMapper::toIndividualLesson)
+                .findAny()
+                .get();
+
+        //setting the time in the schedule
         createdLesson.setStartTime(startTime);
         createdLesson.setEndTime(endTime);
+
+        //setting lesson duration
         createdLesson.setLessonHours(endTime.getHour() - startTime.getHour());
 
         existingSchedule.scheduleLesson(createdLesson);
+
         return scheduleRepository.save(existingSchedule);
     }
 
