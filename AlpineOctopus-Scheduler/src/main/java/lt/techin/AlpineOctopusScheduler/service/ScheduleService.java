@@ -63,8 +63,11 @@ public class ScheduleService {
     @Transactional
     public List<ScheduleEntityDto> getSchedulesByStartingDate(String startingDate, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        var starting = LocalDate.parse(startingDate);
-        return scheduleRepository.findByStartingDateOrderByModifiedDateDesc(starting, pageable)
+
+        //Provided String must be in a YYYY-MM-DD format. Subtracting one in order for the searched day itself to appear in results
+        var starting = LocalDate.parse(startingDate).minusDays(1);
+
+        return scheduleRepository.findAllByStartingDateAfterOrderByModifiedDateDesc(starting, pageable)
                 .stream()
                 .map(ScheduleMapper::toScheduleEntityDto)
                 .collect(Collectors.toList());
@@ -73,8 +76,11 @@ public class ScheduleService {
     @Transactional
     public List<ScheduleEntityDto> getSchedulesByPlannedTill(String plannedTill, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        var planned = LocalDate.parse(plannedTill);
-        return scheduleRepository.findByPlannedTillDateOrderByModifiedDateDesc(planned, pageable)
+
+        //Provided String must be in a YYYY-MM-DD format. Adding one more in order for the searched day itself to appear in results
+        var planned = LocalDate.parse(plannedTill).plusDays(1);
+
+        return scheduleRepository.findByPlannedTillDateBeforeOrderByModifiedDateDesc(planned, pageable)
                 .stream()
                 .map(ScheduleMapper::toScheduleEntityDto)
                 .collect(Collectors.toList());
