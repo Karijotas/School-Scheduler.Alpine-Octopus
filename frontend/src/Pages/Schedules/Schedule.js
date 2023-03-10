@@ -18,15 +18,46 @@ export function ScheduleView() {
     const data = [{
             Id: 2,
             Subject: 'Matematika',
-            StartTime: new Date(2018, 1, 15, 10, 0),
-            EndTime: new Date(2018, 1, 15, 14, 0),
+            StartTime: new Date(2021, 8, 15, 10, 0),
+            EndTime: new Date(2021, 8, 15, 14, 0),
+            CategoryColor: "#1aaa55",
+            GroupId: 1
+        },
+        {
+            Id: 1,
+            Subject: "Velykų atostogos",
+            StartTime: new Date(2021, 8, 16, 24, 0),
+            EndTime: new Date(2021, 8, 24, 24, 0),
+            IsAllDay: true,
+            IsBlock: true,
+            CategoryColor: "#357cd2",
+            GroupId: 2
+                   
+            
+        },
+        {
+            Id: 2,
+            Subject: "Not Available",
+            StartTime: new Date(2021, 8, 14, 10, 0),
+            EndTime: new Date(2021, 8, 14, 12, 0),
+            IsAllDay: false,
+            IsBlock: true,
+            
         }];
 
+        const resourceData = [
+            { GroupText: 'Group A', GroupId: 1, GroupColor: '#1aaa55' },
+            { GroupText: 'Group B', GroupId: 2, GroupColor: '#357cd2' }
+        ];
         
     return (
     <Container>
         <h1 className="title-text">Tvarkaraštis</h1>
-    <ScheduleComponent timeFormat='HH' firstDayOfWeek='1' height='550px'  selectedDate={new Date(2018, 1, 15)} eventSettings={{ dataSource: data }}>
+    <ScheduleComponent timeFormat='HH' firstDayOfWeek='1' height='550px'  selectedDate={new Date(2021, 8, 15)} eventSettings={{ dataSource: data }} colorField='Color'>
+    <ResourcesDirective>
+              <ResourceDirective field='GroupId' title='Owner' name='Owners' dataSource={resourceData} textField='GroupText' idField='GroupId' colorField='GroupColor'>
+              </ResourceDirective>
+            </ResourcesDirective>
     <ViewsDirective>
       <ViewDirective option='Day' startHour='01:00' endHour='15:00' timeScale={{interval: 1, slotCount: 1 }}/>
       <ViewDirective option='Week' startHour='01:00' endHour='15:00'timeScale={{ slotCount: 1 }}/>
