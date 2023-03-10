@@ -311,6 +311,29 @@ export function EditGroupScheduleObject() {
                     </Table.Row>
                   </Table.Body>
                 </Table>
+                <Divider hidden/>
+                {/* <Grid columns={3}>
+                  <Grid.Column>
+                    <Table width={6}>
+                      <Table.Header>
+                        <Table.Row>
+                          <Table.HeaderCell>Programos dalykai</Table.HeaderCell>
+                          <Table.HeaderCell>Pamokų kiekis</Table.HeaderCell>
+                        </Table.Row>
+                      </Table.Header>
+                      <Table.Body>
+                      {schedules.lessons.map((lesson) => (
+                        <Table.Row key={lesson.id}>
+                          <Table.Cell>{lesson.subject.name}</Table.Cell>
+                          <Table.Cell>{lesson.lessonNumber}</Table.Cell>
+                        </Table.Row>
+                      ))}
+                      </Table.Body>
+                    </Table>
+                  </Grid.Column>
+                </Grid> */}
+                <Divider hidden/>
+
                 <Button icon labelPosition="left" href="#/view/groups">
                   <Icon name="arrow left" />
                   Atgal
@@ -346,7 +369,12 @@ export function EditGroupScheduleObject() {
                         {" "}
                         {schedules.plannedTillDate}{" "}
                       </Table.Cell>
-                      {/* <Table.Cell width={6}>
+                    </Table.Row>
+                  </Table.Body>
+                </Table>
+                <Divider hidden />
+              
+                {/* <Table.Cell width={6}>
                         {nameError && (
                           <div style={{ color: "red" }}>{nameError}</div>
                         )}
@@ -369,7 +397,7 @@ export function EditGroupScheduleObject() {
                           onChange={(e) => handlePlannedTillDateInputChange(e)}
                         />
                       </Table.Cell> */}
-                      {/* </Table.Row>
+                {/* </Table.Row>
                   </Table.Body>
                 </Table>
                 <Divider horizontal hidden></Divider>
@@ -406,9 +434,9 @@ export function EditGroupScheduleObject() {
                     <Table.Row>
                       <Table.Cell>{groups.programName} </Table.Cell>
                       <Table.Cell>{groups.shiftName} </Table.Cell> */}
-                    </Table.Row>
+                {/* </Table.Row>
                   </Table.Body>
-                </Table>
+                </Table> */}
 
                 <Button onClick={() => setActive(true)}>Atšaukti</Button>
                 <Button
