@@ -178,6 +178,15 @@ public class ScheduleService {
 
         existingSchedule.scheduleLesson(createdLesson);
 
+        //subtracting the subjectHours from subjectTotalHours
+        existingSchedule.getSubjects()
+                .stream()
+                .filter(lesson -> lesson.getId()
+                        .equals(subjectId))
+                .forEach(
+                        lesson -> lesson.setLessonHours(lesson.getLessonHours() - createdLesson.getLessonHours())
+                );
+
         return scheduleRepository.save(existingSchedule);
     }
 
