@@ -407,7 +407,7 @@ export function EditProgramObject() {
                           )}
                           <TextArea
                             fluid
-                            style={{ minHeight: 60 }}
+                            style={{ minHeight: 120 }}
                             value={programs.description}
                             onChange={(e) => handleDescriptionInputChange(e)}
                           />
