@@ -14,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ScheduleMapper.toSchedule;
@@ -83,8 +85,11 @@ public class ScheduleController {
     }
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<ScheduleEntityDto> createSchedule(@RequestBody ScheduleEntityDto scheduleEntityDto, Long groupId) {
-        var createdSchedule = scheduleService.create(toSchedule(scheduleEntityDto), groupId);
+    public ResponseEntity<ScheduleEntityDto> createSchedule(@RequestBody ScheduleEntityDto scheduleEntityDto, Long groupId,
+                                                            @RequestParam(value = "startingDate", required = false) String startingDate) {
+
+        var starting = LocalDate.parse(startingDate.toString());
+        var createdSchedule = scheduleService.create(toSchedule(scheduleEntityDto), groupId, starting);
         return ok(toScheduleEntityDto(createdSchedule));
     }
 
@@ -102,6 +107,17 @@ public class ScheduleController {
     @PatchMapping("/{scheduleId}/{lessonId}")
     public ResponseEntity<ScheduleEntityDto> setTeacherAndRoomInASchedule(@PathVariable Long scheduleId, Long lessonId, Long teacherId, Long roomId) {
         var updatedSchedule = scheduleService.setTeacherAndRoomInASchedule(scheduleId, lessonId, teacherId, roomId);
+        return ok(toScheduleEntityDto(updatedSchedule));
+    }
+
+    @PatchMapping("/{scheduleId}/")
+    public ResponseEntity<ScheduleEntityDto> scheduleLesson(@PathVariable Long scheduleId, Long subjectId,
+                                                            @RequestParam(value = "startTime", required = false) String startTime,
+                                                            @RequestParam(value = "endTime", required = false) String endTime) {
+        var starting = LocalDateTime.parse(startTime.toString());
+        var ending = LocalDateTime.parse(endTime.toString());
+
+        var updatedSchedule = scheduleService.ScheduleLesson(scheduleId, subjectId, starting, ending);
         return ok(toScheduleEntityDto(updatedSchedule));
     }
 }

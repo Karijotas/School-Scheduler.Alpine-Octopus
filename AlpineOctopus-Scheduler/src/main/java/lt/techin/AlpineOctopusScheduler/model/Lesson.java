@@ -27,9 +27,14 @@ public class Lesson {
     private Room room;
 
     @NotNull
-    private Integer lessonNumber;
+    private Integer lessonHours;
     private boolean online;
 
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime startTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime endTime;
 
     @CreatedDate
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -63,12 +68,13 @@ public class Lesson {
     public Lesson() {
     }
 
-    public Integer getLessonNumber() {
-        return lessonNumber;
+
+    public Integer getLessonHours() {
+        return lessonHours;
     }
 
-    public void setLessonNumber(Integer lessonNumber) {
-        this.lessonNumber = lessonNumber;
+    public void setLessonHours(Integer lessonHours) {
+        this.lessonHours = lessonHours;
     }
 
     public boolean isOnline() {
@@ -111,14 +117,6 @@ public class Lesson {
         this.room = room;
     }
 
-//    public Schedule getSchedule() {
-//        return schedule;
-//    }
-//
-//    public void setSchedule(Schedule schedule) {
-//        this.schedule = schedule;
-//    }
-
     public LocalDateTime getCreatedDate() {
         return createdDate;
     }
@@ -151,17 +149,33 @@ public class Lesson {
         this.modifiedBy = modifiedBy;
     }
 
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Lesson lesson = (Lesson) o;
-        return isOnline() == lesson.isOnline() && Objects.equals(getId(), lesson.getId()) && Objects.equals(getSubject(), lesson.getSubject()) && Objects.equals(getTeacher(), lesson.getTeacher()) && Objects.equals(getRoom(), lesson.getRoom()) && Objects.equals(getLessonNumber(), lesson.getLessonNumber()) && Objects.equals(getCreatedDate(), lesson.getCreatedDate()) && Objects.equals(getModifiedDate(), lesson.getModifiedDate()) && Objects.equals(getCreatedBy(), lesson.getCreatedBy()) && Objects.equals(getModifiedBy(), lesson.getModifiedBy());
+        return isOnline() == lesson.isOnline() && Objects.equals(getId(), lesson.getId()) && Objects.equals(getSubject(), lesson.getSubject()) && Objects.equals(getTeacher(), lesson.getTeacher()) && Objects.equals(getRoom(), lesson.getRoom()) && Objects.equals(getLessonHours(), lesson.getLessonHours()) && Objects.equals(getStartTime(), lesson.getStartTime()) && Objects.equals(getEndTime(), lesson.getEndTime()) && Objects.equals(getCreatedDate(), lesson.getCreatedDate()) && Objects.equals(getModifiedDate(), lesson.getModifiedDate()) && Objects.equals(getCreatedBy(), lesson.getCreatedBy()) && Objects.equals(getModifiedBy(), lesson.getModifiedBy());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getSubject(), getTeacher(), getRoom(), getLessonNumber(), isOnline(), getCreatedDate(), getModifiedDate(), getCreatedBy(), getModifiedBy());
+        return Objects.hash(getId(), getSubject(), getTeacher(), getRoom(), getLessonHours(), isOnline(), getStartTime(), getEndTime(), getCreatedDate(), getModifiedDate(), getCreatedBy(), getModifiedBy());
     }
 
     @Override
@@ -171,8 +185,10 @@ public class Lesson {
                 ", subject=" + subject +
                 ", teacher=" + teacher +
                 ", room=" + room +
-                ", lessonNumber=" + lessonNumber +
+                ", lessonHours=" + lessonHours +
                 ", online=" + online +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
                 ", createdDate=" + createdDate +
                 ", modifiedDate=" + modifiedDate +
                 ", createdBy='" + createdBy + '\'' +

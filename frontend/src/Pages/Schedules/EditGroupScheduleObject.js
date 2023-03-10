@@ -157,11 +157,11 @@ export function EditGroupScheduleObject() {
   const updateSchedules = () => {
     fetch(
       "/api/v1/schedule/" +
-        params.id +
-        "?groupId=" +
-        groupId +
-        "&shiftId=" +
-        shiftId,
+      params.id +
+      "?groupId=" +
+      groupId +
+      "&shiftId=" +
+      shiftId,
       {
         method: "PATCH",
         headers: JSON_HEADERS,

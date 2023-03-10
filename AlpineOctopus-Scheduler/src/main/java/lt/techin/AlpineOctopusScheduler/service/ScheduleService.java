@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -100,7 +101,7 @@ public class ScheduleService {
         return scheduleRepository.findById(id);
     }
 
-    public Schedule create(Schedule schedule, Long groupId) {
+    public Schedule create(Schedule schedule, Long groupId, LocalDate startingDate) {
 
         //Getting group, from it - shift and program
         var createdGroup = groupsRepository.findById(groupId)
@@ -116,13 +117,12 @@ public class ScheduleService {
 
         //Creating the Schedule
         schedule.setName(createdGroup.getName() + " " + createdGroup.getShift().getName() + " " + createdGroup.getSchoolYear().toString());
-        schedule.setStartingDate(LocalDate.now());
-
+        schedule.setStartingDate(startingDate);
         schedule.setGroup(createdGroup);
         schedule.setGroupName(createdGroup.getId().toString());
         schedule.setShift(createdGroup.getShift());
         schedule.setShiftName(createdGroup.getShift().getName());
-        schedule.setLessons(lessonList);
+        schedule.setSubjects(lessonList);
 
 
         return scheduleRepository.save(schedule);
@@ -137,7 +137,7 @@ public class ScheduleService {
         var existingTeacher = teacherRepository.findById(teacherId)
                 .orElseThrow(() -> new SchedulerValidationException("Teacher does not exist", "id", "Teacher not found", teacherId.toString()));
         //setting the teacher
-        existingSchedule.getLessons()
+        existingSchedule.getSubjects()
                 .stream()
                 .filter(lesson -> lesson.getId().equals(lessonId))
                 .forEach(lesson -> lesson.setTeacher(existingTeacher));
@@ -145,14 +145,39 @@ public class ScheduleService {
         var existingRoom = roomRepository.findById(roomId)
                 .orElseThrow(() -> new SchedulerValidationException("Room does not exist", "id", "Room not found", roomId.toString()));
         //setting the room
-        existingSchedule.getLessons()
+        existingSchedule.getSubjects()
                 .stream()
                 .filter(lesson -> lesson.getId().equals(lessonId))
                 .forEach(lesson -> lesson.setRoom(existingRoom));
 
-        //replacing the lessons
-        existingSchedule.setLessons(existingSchedule.getLessons());
+        //replacing the subjectList
+        existingSchedule.setSubjects(existingSchedule.getSubjects());
         //save to repository
+        return scheduleRepository.save(existingSchedule);
+    }
+
+    public Schedule ScheduleLesson(Long scheduleId, Long subjectId, LocalDateTime startTime, LocalDateTime endTime) {
+        //finding the schedule in repository
+        var existingSchedule = scheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", scheduleId.toString()));
+
+        //finding and getting the subject to schedule, then turning it to a new lesson object
+        Lesson createdLesson = existingSchedule.getSubjects()
+                .stream()
+                .filter(lesson -> lesson.getId().equals(subjectId))
+                .map(LessonMapper::toIndividualLesson)
+                .findAny()
+                .get();
+
+        //setting the time in the schedule
+        createdLesson.setStartTime(startTime);
+        createdLesson.setEndTime(endTime);
+
+        //setting lesson duration
+        createdLesson.setLessonHours(endTime.getHour() - startTime.getHour());
+
+        existingSchedule.scheduleLesson(createdLesson);
+
         return scheduleRepository.save(existingSchedule);
     }
 
