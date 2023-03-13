@@ -13,9 +13,10 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
     List<Schedule> findByNameContainingIgnoreCaseOrderByModifiedDateDesc(String nameText, Pageable pageable);
 
-    List<Schedule> findByStartingDateOrderByModifiedDateDesc(LocalDate startingDate, Pageable pageable);
+    List<Schedule> findAllByStartingDateAfterOrderByModifiedDateDesc(LocalDate startingDate, Pageable pageable);
 
-    List<Schedule> findByPlannedTillDateOrderByModifiedDateDesc(LocalDate plannedTillDate, Pageable pageable);
+
+    List<Schedule> findByPlannedTillDateBeforeOrderByModifiedDateDesc(LocalDate plannedTillDate, Pageable pageable);
 
 
 }

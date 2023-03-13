@@ -9,7 +9,7 @@ const JSON_HEADERS = {
     'Content-Type': 'application/json'
 };
 
-export function EditGroupObject() {
+export function EditGroupObject() { 
 
 
     const params = useParams();

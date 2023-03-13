@@ -34,6 +34,16 @@ public class Schedule {
     @ManyToMany(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinTable(
+            name = "schedule_subjects",
+            joinColumns = @JoinColumn(name = "schedule_id"),
+            inverseJoinColumns = @JoinColumn(name = "lesson_id"))
+    @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
+    private Set<Lesson> subjects = new HashSet<>();
+
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JoinTable(
             name = "schedule_lessons",
             joinColumns = @JoinColumn(name = "schedule_id"),
             inverseJoinColumns = @JoinColumn(name = "lesson_id"))
@@ -49,7 +59,7 @@ public class Schedule {
     @JoinColumn(name = "shift_id")
     private Shift shift;
 
-    private String groupName;
+    private String groupIdValue;
     private String shiftName;
 
 
@@ -102,11 +112,11 @@ public class Schedule {
     }
 
     public String getGroupName() {
-        return groupName;
+        return groupIdValue;
     }
 
     public void setGroupName(String groupName) {
-        this.groupName = groupName;
+        this.groupIdValue = groupName;
     }
 
     public String getStatus() {
@@ -117,12 +127,12 @@ public class Schedule {
         this.status = status;
     }
 
-    public Set<Lesson> getLessons() {
-        return lessons;
+    public Set<Lesson> getSubjects() {
+        return subjects;
     }
 
-    public void setLessons(Set<Lesson> lessons) {
-        this.lessons = lessons;
+    public void setSubjects(Set<Lesson> subjects) {
+        this.subjects = subjects;
     }
 
     public LocalDate getStartingDate() {
@@ -197,17 +207,43 @@ public class Schedule {
         this.group = group;
     }
 
+    public Set<Lesson> getLessons() {
+        return lessons;
+    }
+
+    public void setLessons(Set<Lesson> lessons) {
+        this.lessons = lessons;
+    }
+
+    public void scheduleLesson(Lesson lesson) {
+        this.lessons.add(lesson);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Schedule schedule = (Schedule) o;
-        return Objects.equals(getId(), schedule.getId()) && Objects.equals(getName(), schedule.getName()) && Objects.equals(getStartingDate(), schedule.getStartingDate()) && Objects.equals(getPlannedTillDate(), schedule.getPlannedTillDate()) && Objects.equals(getStatus(), schedule.getStatus()) && Objects.equals(getLessons(), schedule.getLessons()) && Objects.equals(getGroup(), schedule.getGroup()) && Objects.equals(getShift(), schedule.getShift()) && Objects.equals(getGroupName(), schedule.getGroupName()) && Objects.equals(getShiftName(), schedule.getShiftName()) && Objects.equals(getCreatedDate(), schedule.getCreatedDate()) && Objects.equals(getModifiedDate(), schedule.getModifiedDate()) && Objects.equals(getCreatedBy(), schedule.getCreatedBy()) && Objects.equals(getModifiedBy(), schedule.getModifiedBy());
+        return Objects.equals(getId(), schedule.getId()) &&
+                Objects.equals(getName(), schedule.getName()) &&
+                Objects.equals(getStartingDate(), schedule.getStartingDate()) &&
+                Objects.equals(getPlannedTillDate(), schedule.getPlannedTillDate()) &&
+                Objects.equals(getStatus(), schedule.getStatus()) &&
+                Objects.equals(getSubjects(), schedule.getSubjects()) &&
+                Objects.equals(getLessons(), schedule.getLessons()) &&
+                Objects.equals(getGroup(), schedule.getGroup()) &&
+                Objects.equals(getShift(), schedule.getShift()) &&
+                Objects.equals(groupIdValue, schedule.groupIdValue) &&
+                Objects.equals(getShiftName(), schedule.getShiftName()) &&
+                Objects.equals(getCreatedDate(), schedule.getCreatedDate()) &&
+                Objects.equals(getModifiedDate(), schedule.getModifiedDate()) &&
+                Objects.equals(getCreatedBy(), schedule.getCreatedBy()) &&
+                Objects.equals(getModifiedBy(), schedule.getModifiedBy());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getStartingDate(), getPlannedTillDate(), getStatus(), getLessons(), getGroup(), getShift(), getGroupName(), getShiftName(), getCreatedDate(), getModifiedDate(), getCreatedBy(), getModifiedBy());
+        return Objects.hash(getId(), getName(), getStartingDate(), getPlannedTillDate(), getStatus(), getSubjects(), getLessons(), getGroup(), getShift(), groupIdValue, getShiftName(), getCreatedDate(), getModifiedDate(), getCreatedBy(), getModifiedBy());
     }
 
     @Override
@@ -218,10 +254,11 @@ public class Schedule {
                 ", startingDate=" + startingDate +
                 ", plannedTillDate=" + plannedTillDate +
                 ", status='" + status + '\'' +
+                ", subjects=" + subjects +
                 ", lessons=" + lessons +
                 ", group=" + group +
                 ", shift=" + shift +
-                ", groupName='" + groupName + '\'' +
+                ", groupIdValue='" + groupIdValue + '\'' +
                 ", shiftName='" + shiftName + '\'' +
                 ", createdDate=" + createdDate +
                 ", modifiedDate=" + modifiedDate +

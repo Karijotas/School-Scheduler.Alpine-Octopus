@@ -7,7 +7,7 @@ import javax.validation.Valid;
 import java.util.Objects;
 
 @Entity
-public class ScheduleLessons {
+public class ScheduleSubjects {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,7 +52,7 @@ public class ScheduleLessons {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ScheduleLessons that = (ScheduleLessons) o;
+        ScheduleSubjects that = (ScheduleSubjects) o;
         return Objects.equals(getId(), that.getId()) && Objects.equals(getSchedule(), that.getSchedule()) && Objects.equals(getLesson(), that.getLesson());
     }
 
@@ -63,7 +63,7 @@ public class ScheduleLessons {
 
     @Override
     public String toString() {
-        return "ScheduleLessons{" +
+        return "ScheduleSubjects{" +
                 "id=" + id +
                 ", schedule=" + schedule +
                 ", lesson=" + lesson +
