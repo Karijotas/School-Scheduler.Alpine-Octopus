@@ -121,8 +121,16 @@ public class ScheduleController {
         return ok(toScheduleEntityDto(updatedSchedule));
     }
 
+    @PatchMapping("/{scheduleId}")
+    public ResponseEntity<ScheduleEntityDto> setLessonOnline(@PathVariable Long scheduleId,
+                                                             Long lessonId) {
+        var updatedSchedule = scheduleService.setLessonOnline(scheduleId, lessonId);
+        return ok(toScheduleEntityDto(updatedSchedule));
+    }
+
     @DeleteMapping("/{scheduleId}/{lessonId}")
-    public ResponseEntity<ScheduleEntityDto> removeLesson(@PathVariable Long scheduleId, Long lessonId) {
+    public ResponseEntity<ScheduleEntityDto> removeLesson(@PathVariable Long scheduleId,
+                                                          Long lessonId) {
 
         logger.info("Attempt to delete Lesson from Schedule by id: {}", lessonId);
         boolean deleted = scheduleService.removeLesson(scheduleId, lessonId);
