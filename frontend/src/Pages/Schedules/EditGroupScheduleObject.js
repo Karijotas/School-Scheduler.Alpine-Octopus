@@ -311,7 +311,7 @@ export function EditGroupScheduleObject() {
                     </Table.Row>
                   </Table.Body>
                 </Table>
-                <Divider hidden/>
+                <Divider hidden />
                 {/* <Grid columns={3}>
                   <Grid.Column>
                     <Table width={6}>
@@ -332,7 +332,7 @@ export function EditGroupScheduleObject() {
                     </Table>
                   </Grid.Column>
                 </Grid> */}
-                <Divider hidden/>
+                <Divider hidden />
 
                 <Button icon labelPosition="left" href="#/view/groups">
                   <Icon name="arrow left" />
@@ -373,7 +373,7 @@ export function EditGroupScheduleObject() {
                   </Table.Body>
                 </Table>
                 <Divider hidden />
-              
+
                 {/* <Table.Cell width={6}>
                         {nameError && (
                           <div style={{ color: "red" }}>{nameError}</div>

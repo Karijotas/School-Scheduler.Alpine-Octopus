@@ -35,6 +35,7 @@ public class ScheduleService {
     private final RoomRepository roomRepository;
     private final TeacherRepository teacherRepository;
     private final ScheduleLessonsRepository scheduleLessonsRepository;
+    private final LessonRepository lessonRepository;
 
     public ScheduleService(ScheduleRepository scheduleRepository, ScheduleSubjectsRepository scheduleSubjectsRepository,
                            GroupsRepository groupsRepository,
@@ -43,7 +44,8 @@ public class ScheduleService {
                            ProgramSubjectHoursRepository programSubjectHoursRepository,
                            RoomRepository roomRepository,
                            TeacherRepository teacherRepository,
-                           ScheduleLessonsRepository scheduleLessonsRepository) {
+                           ScheduleLessonsRepository scheduleLessonsRepository,
+                           LessonRepository lessonRepository) {
         this.scheduleRepository = scheduleRepository;
         this.scheduleSubjectsRepository = scheduleSubjectsRepository;
         this.groupsRepository = groupsRepository;
@@ -53,6 +55,7 @@ public class ScheduleService {
         this.roomRepository = roomRepository;
         this.teacherRepository = teacherRepository;
         this.scheduleLessonsRepository = scheduleLessonsRepository;
+        this.lessonRepository = lessonRepository;
     }
 
     @Transactional
@@ -203,10 +206,10 @@ public class ScheduleService {
         }
     }
 
+    @Transactional
     public boolean removeLesson(Long scheduleId, Long lessonId) {
         try {
-            scheduleLessonsRepository.deleteById(lessonId);
-
+            scheduleLessonsRepository.deleteByScheduleAndLesson(scheduleRepository.findById(scheduleId).get(), lessonRepository.findById(lessonId).get());
             return true;
         } catch (EmptyResultDataAccessException exception) {
             return false;
