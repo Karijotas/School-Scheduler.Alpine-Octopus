@@ -100,7 +100,7 @@
                     <configuration>
                         <home>${project.build.directory}/catalina-base</home>
                         <properties>
-                            <cargo.servlet.port>8081</cargo.servlet.port>
+                            <cargo.servlet.port>8077</cargo.servlet.port>
                             <!--                            <cargo.rmi.port>${cargo.samples.rmi.port}</cargo.rmi.port>-->
                             <!--                            <cargo.tomcat.ajp.port>${cargo.samples.tomcat.ajp.port}</cargo.tomcat.ajp.port>-->
                         </properties>
