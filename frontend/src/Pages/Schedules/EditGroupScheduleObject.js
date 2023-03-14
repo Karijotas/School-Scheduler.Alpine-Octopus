@@ -15,6 +15,7 @@ import {
 } from "semantic-ui-react";
 import MainMenu from "../../Components/MainMenu";
 import { SchedulesMenu } from "../../Components/SchedulesMenu";
+import { ScheduleView } from "./Schedule";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -26,13 +27,7 @@ export function EditGroupScheduleObject() {
   const [active, setActive] = useState(true);
   const [startingDate, setStartingDate] = useState("");
   const [plannedTillDate, setPlannedTillDate] = useState("");
-
-  const [programs, setPrograms] = useState([]);
-
-  const [shifts, setShifts] = useState([]);
-
   const [error, setError] = useState();
-
   const [groupId, setGroupId] = useState("");
   const [groups, setGroups] = useState({
     name: "",
@@ -54,12 +49,9 @@ export function EditGroupScheduleObject() {
     shiftName: "",
   });
 
-  const [programId, setProgramId] = useState();
-
   const [shiftId, setShiftId] = useState();
 
   const [name, setName] = useState("");
-  const [studentAmount, setstudentAmount] = useState("");
 
   const [nameError, setNameError] = useState("");
   const [studentAmountError, setstudentAmountError] = useState("");
@@ -75,13 +67,6 @@ export function EditGroupScheduleObject() {
       setFormValid(true);
     }
   }, [nameError, studentAmountError]);
-
-  //   const selectProgramHandler = () => {
-  //     setSelectErrorProgram("")
-  //   }
-  //   const selectShiftHandler = () => {
-  //     setSelectErrorShift("")
-  //   }
 
   const handleNameInputChange = (e) => {
     groups.name = e.target.value;
@@ -157,11 +142,11 @@ export function EditGroupScheduleObject() {
   const updateSchedules = () => {
     fetch(
       "/api/v1/schedule/" +
-      params.id +
-      "?groupId=" +
-      groupId +
-      "&shiftId=" +
-      shiftId,
+        params.id +
+        "?groupId=" +
+        groupId +
+        "&shiftId=" +
+        shiftId,
       {
         method: "PATCH",
         headers: JSON_HEADERS,
@@ -187,32 +172,7 @@ export function EditGroupScheduleObject() {
 
   const editThis = () => {
     setActive(false);
-    // setProgramId(groups.programId);
-    // setShiftId(groups.shiftId)
   };
-
-  // useEffect(() => {
-  //     fetch('/api/v1/programs/')
-  //         .then((response) => response.json())
-  //         .then((data) =>
-  //             setPrograms(
-  //                 data.map((x) => {
-  //                     return { key: x.id, text: x.name, value: x.id };
-  //                 })
-  //             )
-  //         )
-  // }, []);
-
-  // useEffect(() => {
-  //     fetch('/api/v1/shifts')
-  //         .then((response) => response.json())
-  //         .then((data) => setShifts(
-  //             data.map((x) => {
-  //                 return { key: x.id, text: x.name, value: x.id };
-  //             })
-  //         )
-  //         )
-  // }, []);
 
   const [updated, setUpdated] = useState();
 
@@ -311,7 +271,7 @@ export function EditGroupScheduleObject() {
                     </Table.Row>
                   </Table.Body>
                 </Table>
-                <Divider hidden/>
+                <Divider hidden />
                 {/* <Grid columns={3}>
                   <Grid.Column>
                     <Table width={6}>
@@ -332,8 +292,8 @@ export function EditGroupScheduleObject() {
                     </Table>
                   </Grid.Column>
                 </Grid> */}
-                <Divider hidden/>
-
+                <Divider hidden />
+                <ScheduleView />
                 <Button icon labelPosition="left" href="#/view/groups">
                   <Icon name="arrow left" />
                   Atgal
@@ -355,15 +315,7 @@ export function EditGroupScheduleObject() {
                   </Table.Header>
                   <Table.Body>
                     <Table.Row>
-                      <Table.Cell width={6}>
-                        <Form>
-                          <Input
-                            fluid
-                            value={schedules.name}
-                            onChange={(e) => updateProperty("name", e)}
-                          />
-                        </Form>
-                      </Table.Cell>
+                      <Table.Cell width={6}>{schedules.name}</Table.Cell>
                       <Table.Cell>{schedules.startingDate}</Table.Cell>
                       <Table.Cell width={3}>
                         {" "}
@@ -373,8 +325,9 @@ export function EditGroupScheduleObject() {
                   </Table.Body>
                 </Table>
                 <Divider hidden />
-              
-                {/* <Table.Cell width={6}>
+                <ScheduleView />
+
+                {/* <Table.Cell width={6}>y
                         {nameError && (
                           <div style={{ color: "red" }}>{nameError}</div>
                         )}
