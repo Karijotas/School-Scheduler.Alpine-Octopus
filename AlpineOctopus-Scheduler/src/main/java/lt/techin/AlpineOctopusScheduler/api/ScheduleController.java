@@ -2,6 +2,7 @@ package lt.techin.AlpineOctopusScheduler.api;
 
 import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleTestDto;
 import lt.techin.AlpineOctopusScheduler.model.Schedule;
 import lt.techin.AlpineOctopusScheduler.service.ScheduleService;
 import org.slf4j.Logger;
@@ -140,4 +141,11 @@ public class ScheduleController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping(path = "/all")
+    @ResponseBody
+    public List<ScheduleTestDto> getAllSchedules() {
+        return scheduleService.getAllSchedules();
+    }
+
 }

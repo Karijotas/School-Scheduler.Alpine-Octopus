@@ -3,12 +3,10 @@ package lt.techin.AlpineOctopusScheduler.api;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lt.techin.AlpineOctopusScheduler.AlpineOctopusSchedulerApplication;
-import lt.techin.AlpineOctopusScheduler.api.dto.RoomDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.RoomTestDto;
-import lt.techin.AlpineOctopusScheduler.model.Room;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleTestDto;
+import lt.techin.AlpineOctopusScheduler.model.Schedule;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @AutoConfigureMockMvc
 @ContextConfiguration(classes = AlpineOctopusSchedulerApplication.class)
 public class ScheduleControllerTest {
@@ -43,42 +42,30 @@ public class ScheduleControllerTest {
 
 
     @Test
-    void getRooms_returnsCorrectDtos() throws Exception {
+    @Order(1)
+    void getSchedules_returnsCorrectDtos() throws Exception {
 
-        var roomDto1 = new RoomTestDto(1l);
-        var roomDto2 = new RoomTestDto(2l);
-        var roomDto3 = new RoomTestDto(3l);
-        var roomDto4 = new RoomTestDto(4l);
-        var roomDto5 = new RoomTestDto(5l);
-        var roomDto6 = new RoomTestDto(6l);
-        var roomDto7 = new RoomTestDto(7l);
-        var roomDto8 = new RoomTestDto(8l);
-        var roomDto9 = new RoomTestDto(9l);
-        var roomDto10 = new RoomTestDto(10l);
-        var roomDto11 = new RoomTestDto(11l);
-        var roomDto12 = new RoomTestDto(12l);
-        var roomDto13 = new RoomTestDto(13l);
-        var roomDto14 = new RoomTestDto(14l);
+        var scheduleDto1 = new ScheduleTestDto(1l);
+        var scheduleDto2 = new ScheduleTestDto(2l);
+        var scheduleDto3 = new ScheduleTestDto(3l);
+        var scheduleDto4 = new ScheduleTestDto(4l);
+        var scheduleDto5 = new ScheduleTestDto(5l);
+
 
         var mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders
-                                .get("/api/v1/rooms/all")
+                                .get("/api/v1/schedule/all")
                                 .accept(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
                 .andReturn();
 
         var mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
-                new TypeReference<List<RoomTestDto>>() {
+                new TypeReference<List<ScheduleTestDto>>() {
                 });
 
         assertThat(mappedResponse)
-                .containsExactlyInAnyOrder(roomDto1, roomDto2, roomDto3, roomDto4, roomDto5, roomDto6, roomDto7, roomDto8, roomDto9, roomDto10, roomDto11, roomDto12, roomDto13, roomDto14);
-    }
-
-
-    @Test
-    void getRoom() {
+                .containsExactlyInAnyOrder(scheduleDto1, scheduleDto2, scheduleDto3, scheduleDto4, scheduleDto5);
     }
 
     public static String asJsonString(final Object obj) {
@@ -90,16 +77,15 @@ public class ScheduleControllerTest {
     }
 
     @Test
-    void createRoom_shouldCreateRoom() throws Exception {
-        Room newRoom = new Room();
-        newRoom.setName("Kabinetas 14");
-        newRoom.setBuilding("Ozo g. 174");
-        newRoom.setDescription("Naujai paruoštas kabinetas pirmos klasės mokiniams.");
+    @Order(4)
+    void createSchedule_shouldCreateSchedule() throws Exception {
+        Schedule newSchedule = new Schedule();
+        newSchedule.setName("Penktasis");
 
         var mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders
-                                .post("/api/v1/rooms")
-                                .content(asJsonString(newRoom))
+                                .post("/api/v1/schedule")
+                                .content(asJsonString(newSchedule))
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .accept(MediaType.APPLICATION_JSON)
                 )
@@ -111,42 +97,41 @@ public class ScheduleControllerTest {
     }
 
     @Test
-    void updateRoom_shouldUpdateRoom() throws Exception {
-        Room newRoom2 = new Room();
-        newRoom2.setName("Kabinetukas");
-        newRoom2.setBuilding("Pylimo g. 16");
-        newRoom2.setDescription("Labai puikus");
+    @Order(2)
+    void updateSchedule_shouldUpdateSchedule() throws Exception {
+        Schedule newSchedules = new Schedule();
+        newSchedules.setName("Penktasis");
 
 
         var mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders
-                                .put("/api/v1/rooms/2")
+                                .put("/api/v1/schedule/2")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(newRoom2)))
+                                .content(objectMapper.writeValueAsString(newSchedules)))
                 .andReturn();
 
 
-        assertEquals("Kabinetukas", newRoom2.getName());
-        assertEquals("Labai puikus", newRoom2.getDescription());
+        assertEquals("Penktasis", newSchedules.getName());
     }
 
     @Test
-    void getRoom_shouldReturnCorrectRoom() throws Exception {
+    @Order(3)
+    void getSchedule_shouldReturnCorrectSchedule() throws Exception {
         var mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders
-                                .get("/api/v1/rooms/1")
+                                .get("/api/v1/schedule/5")
                                 .accept(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
                 .andReturn();
 
         var mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
-                new TypeReference<RoomDto>() {
+                new TypeReference<ScheduleDto>() {
                 });
 
         int status = mvcResult.getResponse().getStatus();
         assertEquals(200, status);
-        assertEquals(mappedResponse.getName(), "LAK-101");
+        assertEquals(mappedResponse.getName(), "Penktasis");
     }
 }
 
