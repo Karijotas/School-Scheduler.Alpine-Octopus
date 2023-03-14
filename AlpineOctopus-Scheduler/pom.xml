@@ -84,7 +84,7 @@
         </repository>
     </repositories>
     <build>
-        <finalName>scheduler-AO</finalName>
+        <finalName>scheduler</finalName>
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
