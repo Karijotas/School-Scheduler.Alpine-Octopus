@@ -3,7 +3,10 @@ package lt.techin.AlpineOctopusScheduler.api;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lt.techin.AlpineOctopusScheduler.AlpineOctopusSchedulerApplication;
+import lt.techin.AlpineOctopusScheduler.api.dto.ShiftDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ShiftTestDto;
+import lt.techin.AlpineOctopusScheduler.dao.ShiftRepository;
+import lt.techin.AlpineOctopusScheduler.model.Shift;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,6 +21,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -30,6 +34,8 @@ public class ShiftControllerTest {
     ObjectMapper objectMapper;
     @Autowired
     MockMvc mockMvc;
+    @Autowired
+    private ShiftRepository shiftRepository;
 
     @BeforeEach
     public void setup() {
@@ -62,5 +68,73 @@ public class ShiftControllerTest {
 
         assertThat(mappedResponse)
                 .containsExactlyInAnyOrder(shiftDto1, shiftDto2, shiftDto3, shiftDto4);
+    }
+
+    public static String asJsonString(final Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    void createShift_shouldCreateNewShiftSuccesfully() throws Exception {
+        Shift newShift = new Shift();
+        newShift.setName("Kabinetas 14");
+        newShift.setStarts(2);
+        newShift.setEnds(4);
+
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .post("/api/v1/shifts")
+                                .content(asJsonString(newShift))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(200, status);
+    }
+
+
+    @Test
+    void updateShift_shouldUpdateShift() throws Exception {
+        Shift newShift2 = new Shift();
+        newShift2.setName("Kabinetas 15");
+        newShift2.setStarts(3);
+        newShift2.setEnds(6);
+
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .put("/api/v1/shifts/2")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(newShift2)))
+                .andReturn();
+
+
+        assertEquals(3, newShift2.getStarts());
+        assertEquals("Kabinetas 15", newShift2.getName());
+    }
+
+    @Test
+    void getShift_shouldReturnCorrectShift() throws Exception {
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .get("/api/v1/shifts/1")
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        var mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+                new TypeReference<ShiftDto>() {
+                });
+
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(200, status);
+        assertEquals(mappedResponse.getName(), "Rytas");
     }
 }

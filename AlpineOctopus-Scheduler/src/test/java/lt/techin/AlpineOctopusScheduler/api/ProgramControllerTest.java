@@ -3,7 +3,9 @@ package lt.techin.AlpineOctopusScheduler.api;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lt.techin.AlpineOctopusScheduler.AlpineOctopusSchedulerApplication;
+import lt.techin.AlpineOctopusScheduler.api.dto.ProgramDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ProgramTestDto;
+import lt.techin.AlpineOctopusScheduler.model.Program;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,6 +20,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -77,8 +80,72 @@ class ProgramControllerTest {
                 .containsExactlyInAnyOrder(programDto1, programDto2, programDto3, programDto4, programDto5, programDto6,
                         programDto7, programDto8, programDto9, programDto10, programDto11, programDto12, programDto13, programDto14);
 
-//    } );
-//}
+    }
+
+    public static String asJsonString(final Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    void createProgram_shouldCreateProgram() throws Exception {
+        Program newProgram = new Program();
+        newProgram.setName("Reikalingieji amatai");
+        newProgram.setDescription("Labai reikalingų specialybių programa");
+
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .post("/api/v1/programs")
+                                .content(asJsonString(newProgram))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(200, status);
+    }
+
+    @Test
+    void updateProgram_shouldUpdateProgram() throws Exception {
+        Program newProgram2 = new Program();
+        newProgram2.setName("Programele");
+        newProgram2.setDescription("Super sudetinga");
+
+
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .put("/api/v1/programs/2")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(newProgram2)))
+                .andReturn();
+
+
+        assertEquals("Programele", newProgram2.getName());
+        assertEquals("Super sudetinga", newProgram2.getDescription());
+    }
+
+    @Test
+    void getProgram_shouldReturnCorrectProgram() throws Exception {
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .get("/api/v1/programs/11")
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        var mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+                new TypeReference<ProgramDto>() {
+                });
+
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(200, status);
+        assertEquals(mappedResponse.getName(), "Normali");
     }
 }
 

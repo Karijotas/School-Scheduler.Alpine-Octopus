@@ -3,7 +3,9 @@ package lt.techin.AlpineOctopusScheduler.api;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lt.techin.AlpineOctopusScheduler.AlpineOctopusSchedulerApplication;
+import lt.techin.AlpineOctopusScheduler.api.dto.ModuleDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ModuleTestDto;
+import lt.techin.AlpineOctopusScheduler.model.Module;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,6 +20,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -111,6 +114,72 @@ public class ModuleControllerTest {
 
         assertThat(mappedResponse)
                 .containsExactlyInAnyOrder(moduleDto1, moduleDto2, moduleDto3, moduleDto4, moduleDto5, moduleDto6, moduleDto7, moduleDto8, moduleDto9, moduleDto10, moduleDto11, moduleDto12, moduleDto13, moduleDto14, moduleDto15);
+    }
+
+    public static String asJsonString(final Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    void createModule_shouldCreateNewModuleSuccesfully() throws Exception {
+        Module newModule = new Module();
+        newModule.setName("Moduliukas");
+        newModule.setDescription("Moduliauskas");
+
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .post("/api/v1/modules")
+                                .content(asJsonString(newModule))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(200, status);
+    }
+
+    @Test
+    void updateModule_shouldUpdateModule() throws Exception {
+        Module newModule2 = new Module();
+        newModule2.setName("Modulis");
+        newModule2.setDescription("Moduliukas");
+
+
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .put("/api/v1/modules/2")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(newModule2)))
+                .andReturn();
+
+
+        assertEquals("Modulis", newModule2.getName());
+        assertEquals("Moduliukas", newModule2.getDescription());
+    }
+
+    @Test
+    void getModule_shouldReturnCorrectModule() throws Exception {
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .get("/api/v1/modules/1")
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        var mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+                new TypeReference<ModuleDto>() {
+                });
+
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(200, status);
+        assertEquals(mappedResponse.getName(), "Tinklapiai");
     }
 
 

@@ -3,10 +3,12 @@ package lt.techin.AlpineOctopusScheduler.api;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lt.techin.AlpineOctopusScheduler.AlpineOctopusSchedulerApplication;
-import lt.techin.AlpineOctopusScheduler.api.dto.GroupsDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.GroupsTestDto;
-import lt.techin.AlpineOctopusScheduler.model.Groups;
-import org.junit.jupiter.api.*;
+import lt.techin.AlpineOctopusScheduler.api.dto.RoomDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.RoomTestDto;
+import lt.techin.AlpineOctopusScheduler.model.Room;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,12 +23,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 @ContextConfiguration(classes = AlpineOctopusSchedulerApplication.class)
-public class GroupControllerTest {
-
+public class ScheduleControllerTest {
 
     @Autowired
     ObjectMapper objectMapper;
@@ -43,37 +43,42 @@ public class GroupControllerTest {
 
 
     @Test
-    @Order(1)
-    void getGroups_returnsCorrectDtos() throws Exception {
+    void getRooms_returnsCorrectDtos() throws Exception {
 
-        var groupDto1 = new GroupsTestDto(1l);
-        var groupDto2 = new GroupsTestDto(2l);
-        var groupDto3 = new GroupsTestDto(3l);
-        var groupDto4 = new GroupsTestDto(4l);
-        var groupDto5 = new GroupsTestDto(5l);
-        var groupDto6 = new GroupsTestDto(6l);
-        var groupDto7 = new GroupsTestDto(7l);
-        var groupDto8 = new GroupsTestDto(8l);
-        var groupDto9 = new GroupsTestDto(9l);
-        var groupDto10 = new GroupsTestDto(10l);
-        var groupDto11 = new GroupsTestDto(11l);
-        var groupDto12 = new GroupsTestDto(12l);
-        var groupDto13 = new GroupsTestDto(13l);
+        var roomDto1 = new RoomTestDto(1l);
+        var roomDto2 = new RoomTestDto(2l);
+        var roomDto3 = new RoomTestDto(3l);
+        var roomDto4 = new RoomTestDto(4l);
+        var roomDto5 = new RoomTestDto(5l);
+        var roomDto6 = new RoomTestDto(6l);
+        var roomDto7 = new RoomTestDto(7l);
+        var roomDto8 = new RoomTestDto(8l);
+        var roomDto9 = new RoomTestDto(9l);
+        var roomDto10 = new RoomTestDto(10l);
+        var roomDto11 = new RoomTestDto(11l);
+        var roomDto12 = new RoomTestDto(12l);
+        var roomDto13 = new RoomTestDto(13l);
+        var roomDto14 = new RoomTestDto(14l);
 
         var mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders
-                                .get("/api/v1/groups/all")
+                                .get("/api/v1/rooms/all")
                                 .accept(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
                 .andReturn();
 
         var mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
-                new TypeReference<List<GroupsTestDto>>() {
+                new TypeReference<List<RoomTestDto>>() {
                 });
 
         assertThat(mappedResponse)
-                .containsExactlyInAnyOrder(groupDto1, groupDto2, groupDto3, groupDto4, groupDto5, groupDto6, groupDto7, groupDto8, groupDto9, groupDto10, groupDto11, groupDto12, groupDto13);
+                .containsExactlyInAnyOrder(roomDto1, roomDto2, roomDto3, roomDto4, roomDto5, roomDto6, roomDto7, roomDto8, roomDto9, roomDto10, roomDto11, roomDto12, roomDto13, roomDto14);
+    }
+
+
+    @Test
+    void getRoom() {
     }
 
     public static String asJsonString(final Object obj) {
@@ -85,17 +90,16 @@ public class GroupControllerTest {
     }
 
     @Test
-    @Order(2)
-    void createGroup_shouldCreateGroup() throws Exception {
-        Groups newGroup = new Groups();
-        newGroup.setName("Pirma grupee");
-        newGroup.setSchoolYear(2024);
-        newGroup.setStudentAmount(36);
+    void createRoom_shouldCreateRoom() throws Exception {
+        Room newRoom = new Room();
+        newRoom.setName("Kabinetas 14");
+        newRoom.setBuilding("Ozo g. 174");
+        newRoom.setDescription("Naujai paruoštas kabinetas pirmos klasės mokiniams.");
 
         var mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders
-                                .post("/api/v1/groups?programId=3&shiftId=2")
-                                .content(asJsonString(newGroup))
+                                .post("/api/v1/rooms")
+                                .content(asJsonString(newRoom))
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .accept(MediaType.APPLICATION_JSON)
                 )
@@ -107,41 +111,44 @@ public class GroupControllerTest {
     }
 
     @Test
-    void updateGroup_shouldUpdateGroup() throws Exception {
-        Groups newGroup2 = new Groups();
-        newGroup2.setName("Grupele");
-        newGroup2.setSchoolYear(2022);
-        newGroup2.setStudentAmount(55);
+    void updateRoom_shouldUpdateRoom() throws Exception {
+        Room newRoom2 = new Room();
+        newRoom2.setName("Kabinetukas");
+        newRoom2.setBuilding("Pylimo g. 16");
+        newRoom2.setDescription("Labai puikus");
 
 
         var mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders
-                                .put("/api/v1/groups/2")
+                                .put("/api/v1/rooms/2")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(newGroup2)))
+                                .content(objectMapper.writeValueAsString(newRoom2)))
                 .andReturn();
 
 
-        assertEquals("Grupele", newGroup2.getName());
-        assertEquals(2022, newGroup2.getSchoolYear());
+        assertEquals("Kabinetukas", newRoom2.getName());
+        assertEquals("Labai puikus", newRoom2.getDescription());
     }
 
     @Test
-    void getGroup_shouldReturnCorrectGroup() throws Exception {
+    void getRoom_shouldReturnCorrectRoom() throws Exception {
         var mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders
-                                .get("/api/v1/groups/1")
+                                .get("/api/v1/rooms/1")
                                 .accept(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
                 .andReturn();
 
         var mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
-                new TypeReference<GroupsDto>() {
+                new TypeReference<RoomDto>() {
                 });
 
         int status = mvcResult.getResponse().getStatus();
         assertEquals(200, status);
-        assertEquals(mappedResponse.getName(), "Akademija.it JP 22/1");
+        assertEquals(mappedResponse.getName(), "LAK-101");
     }
 }
+
+
+
