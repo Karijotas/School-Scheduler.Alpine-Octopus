@@ -29,26 +29,26 @@ export function ViewPrograms() {
   const [pagecount, setPageCount] = useState();
 
   const fetchFilterPrograms = async () => {
-    fetch(`/api/v1/programs/page/name-filter/${nameText}`)
+    fetch(`/scheduler/api/v1/programs/page/name-filter/${nameText}`)
       .then((response) => response.json())
       .then((jsonRespone) => setPrograms(jsonRespone));
   };
 
   const fetchSinglePrograms = () => {
-    fetch("/api/v1/programs")
+    fetch("/scheduler/api/v1/programs")
       .then((response) => response.json())
       .then((jsonResponse) => setGroupsForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(groupsforPaging.length / 10)));
   };
 
   const fetchPrograms = async () => {
-    fetch(`/api/v1/programs/page?page=` + activePage)
+    fetch(`/scheduler/api/v1/programs/page?page=` + activePage)
       .then((response) => response.json())
       .then((jsonRespones) => setPrograms(jsonRespones));
   };
 
   const removeProgram = (id) => {
-    fetch("/api/v1/programs/delete/" + id, {
+    fetch("/scheduler/api/v1/programs/delete/" + id, {
       method: "PATCH", 
       })    
     .then(fetchPrograms)

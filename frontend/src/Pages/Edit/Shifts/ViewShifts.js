@@ -28,26 +28,26 @@ export function ViewShifts() {
   const [pagecount, setPageCount] = useState();
 
   const fetchFilterShifts = async () => {
-    fetch(`/api/v1/shifts/page/name-filter/${nameText}`)
+    fetch(`/scheduler/api/v1/shifts/page/name-filter/${nameText}`)
       .then((response) => response.json())
       .then((jsonRespone) => setShifts(jsonRespone));
   };
 
   const fetchSingleShifts = () => {
-    fetch("/api/v1/shifts")
+    fetch("/scheduler/api/v1/shifts")
       .then((response) => response.json())
       .then((jsonResponse) => setShiftsForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(shiftsforPaging.length / 10)));
   };
 
   const fetchShifts = async () => {
-    fetch(`/api/v1/shifts/page?page=` + activePage)
+    fetch(`/scheduler/api/v1/shifts/page?page=` + activePage)
       .then((response) => response.json())
       .then((jsonRespones) => setShifts(jsonRespones));
   };
 
   const removeShift = (id) => {
-    fetch("/api/v1/shifts/delete/" + id, {
+    fetch("/scheduler/api/v1/shifts/delete/" + id, {
       method: "PATCH",
     }).then(fetchShifts)
     .then(setOpen(false));

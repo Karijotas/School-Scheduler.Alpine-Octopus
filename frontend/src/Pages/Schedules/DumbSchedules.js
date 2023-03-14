@@ -29,7 +29,7 @@ export default class ContainerComponent extends Component {
   
   
     fetchSchedules = async () => {
-        fetch("/api/v1/schedule/")
+        fetch("/scheduler/api/v1/schedule/")
         .then(res => this.setState({ data: res.data }));
     }
 

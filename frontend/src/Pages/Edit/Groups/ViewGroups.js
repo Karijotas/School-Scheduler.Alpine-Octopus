@@ -47,30 +47,30 @@ export function ViewGroups() {
   const [pagecount, setPageCount] = useState();
 
   const fetchProgramGroups = async () => {
-    fetch("/api/v1/groups/program-filter/" + programText)
+    fetch("/scheduler/api/v1/groups/program-filter/" + programText)
       .then((response) => response.json())
       .then((jsonResponse) => setGroups(jsonResponse));
   };
   const fetchYearGroups = async () => {
-    fetch("/api/v1/groups/year-filter/" + yearText)
+    fetch("/scheduler/api/v1/groups/year-filter/" + yearText)
       .then((response) => response.json())
       .then((jsonResponse) => setGroups(jsonResponse));
   };
 
   const fetchFilterGroups = async () => {
-    fetch("/api/v1/groups/name-filter/" + nameText)
+    fetch("/scheduler/api/v1/groups/name-filter/" + nameText)
       .then((response) => response.json())
       .then((jsonResponse) => setGroups(jsonResponse));
   };
 
   const fetchGroups = async () => {
-    fetch("/api/v1/groups/page?page=" + activePage)
+    fetch("/scheduler/api/v1/groups/page?page=" + activePage)
       .then((response) => response.json())
       .then((jsonResponse) => setGroups(jsonResponse));
   };
 
   const fetchSingleGroups = async () => {
-    fetch("/api/v1/groups/")
+    fetch("/scheduler/api/v1/groups/")
       .then((response) => response.json())
       .then((jsonResponse) => setGroupsForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(groupsforPaging.length / 10)));
@@ -78,7 +78,7 @@ export function ViewGroups() {
   };
 
   const removeGroup = (id) => {
-    fetch("/api/v1/groups/delete/" + id, {
+    fetch("/scheduler/api/v1/groups/delete/" + id, {
       method: "PATCH",
     })
       .then(fetchGroups)

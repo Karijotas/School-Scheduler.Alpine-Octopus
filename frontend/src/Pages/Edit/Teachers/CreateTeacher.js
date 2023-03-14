@@ -126,7 +126,7 @@ export function CreateTeacher() {
   };
 
   const createTeacher = () => {
-    fetch("/api/v1/teachers?subjectId=" + subjectId, {
+    fetch("/scheduler/api/v1/teachers?subjectId=" + subjectId, {
       method: "POST",
       headers: JSON_HEADERS,
       body: JSON.stringify({
@@ -141,7 +141,7 @@ export function CreateTeacher() {
   };
 
   useEffect(() => {
-    fetch("/api/v1/subjects/")
+    fetch("/scheduler/api/v1/subjects/")
       .then((response) => response.json())
       .then((data) =>
         setSubjects(

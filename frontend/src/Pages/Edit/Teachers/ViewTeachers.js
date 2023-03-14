@@ -31,38 +31,38 @@ export function ViewTeachers() {
   const [subjectText, setSubjectText] = useState("");
 
   const fetchFilterTeachers = async () => {
-    fetch(`/api/v1/teachers/page/name-filter/${nameText}`)
+    fetch(`/scheduler/api/v1/teachers/page/name-filter/${nameText}`)
       .then((response) => response.json())
       .then((jsonRespone) => setTeachers(jsonRespone));
   };
 
   const fetchTeachersByShifts = async () => {
-    fetch(`/api/v1/teachers/page/shift-filter/${shiftText}`)
+    fetch(`/scheduler/api/v1/teachers/page/shift-filter/${shiftText}`)
       .then((response) => response.json())
       .then((jsonResponse) => setTeachers(jsonResponse));
   };
 
   const fetchFilterTeachersBySubjects = async () => {
-    fetch(`/api/v1/teachers/page/subject-filter/${subjectText}?page=` + activePage)
+    fetch(`/scheduler/api/v1/teachers/page/subject-filter/${subjectText}?page=` + activePage)
       .then((response) => response.json())
       .then((jsonRespone) => setTeachers(jsonRespone));
   };
 
   const fetchSingleTeachers = () => {
-    fetch("/api/v1/teachers")
+    fetch("/scheduler/api/v1/teachers")
       .then((response) => response.json())
       .then((jsonResponse) => setTeachersForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(teachersforPaging.length / 10)));
   };
 
   const fetchTeachers = async () => {
-    fetch(`/api/v1/teachers/page?page=` + activePage)
+    fetch(`/scheduler/api/v1/teachers/page?page=` + activePage)
       .then((response) => response.json())
       .then((jsonRespones) => setTeachers(jsonRespones));
   };
 
   const removeTeacher = (id) => {
-    fetch("/api/v1/teachers/delete/" + id, {
+    fetch("/scheduler/api/v1/teachers/delete/" + id, {
       method: "PATCH",
     }).then(fetchTeachers)
     .then(setOpen(false));
@@ -87,7 +87,7 @@ export function ViewTeachers() {
 
 
   const fetchTeacherSubjects = async ()  => {
-    fetch(`/api/v1/teachers/${teacherId}/subjects`)
+    fetch(`/scheduler/api/v1/teachers/${teacherId}/subjects`)
       .then((response) => response.json())
       .then(setTeacherSubjects)
       .then(console.log(teacherSubjects));

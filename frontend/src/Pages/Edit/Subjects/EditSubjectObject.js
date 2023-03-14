@@ -96,7 +96,7 @@ export function EditSubjectObject() {
       };
 
   useEffect(() => {
-    fetch("/api/v1/subjects/" + params.id)
+    fetch("/scheduler/api/v1/subjects/" + params.id)
       .then((response) => response.json())
       .then(setSubjects);
   }, [active, params]);
@@ -112,49 +112,49 @@ export function EditSubjectObject() {
   // };
 
   const getModulesInSubjects = ()  => {
-    fetch(`/api/v1/subjects/${params.id}/modules`)
+    fetch(`/scheduler/api/v1/subjects/${params.id}/modules`)
       .then((response) => response.json())
       .then(setModulesInSubjects)
       .then(console.log(modulesInSubjects));
   };
 
   useEffect(() => {
-    fetch(`/api/v1/subjects/${params.id}/modules`)
+    fetch(`/scheduler/api/v1/subjects/${params.id}/modules`)
       .then((response) => response.json())
       .then(setModulesInSubjects)
       .then(console.log(modulesInSubjects));
   }, [params]);
 
   const getRoomsInSubjects = ()  => {
-    fetch(`/api/v1/subjects/${params.id}/rooms`)
+    fetch(`/scheduler/api/v1/subjects/${params.id}/rooms`)
       .then((response) => response.json())
       .then(setRoomsInSubjects)
       .then(console.log(roomsInSubjects));
   };
 
   useEffect(() => {
-    fetch(`/api/v1/subjects/${params.id}/rooms`)
+    fetch(`/scheduler/api/v1/subjects/${params.id}/rooms`)
       .then((response) => response.json())
       .then(setRoomsInSubjects)
       .then(console.log(roomsInSubjects));
   }, [params]);
 
   const getTeachersInSubjects = ()  => {
-    fetch(`/api/v1/subjects/${params.id}/teachers`)
+    fetch(`/scheduler/api/v1/subjects/${params.id}/teachers`)
       .then((response) => response.json())
       .then(setTeachersInSubjects)
       .then(console.log(teachersInSubjects));
   };
 
   useEffect(() => {
-    fetch(`/api/v1/subjects/${params.id}/teachers`)
+    fetch(`/scheduler/api/v1/subjects/${params.id}/teachers`)
       .then((response) => response.json())
       .then(setTeachersInSubjects)
       .then(console.log(teachersInSubjects));
   }, [params]); 
 
   const updateSubjects = () => {
-    fetch("/api/v1/subjects/" + params.id, {
+    fetch("/scheduler/api/v1/subjects/" + params.id, {
       method: "PUT",
       headers: JSON_HEADERS,
       body: JSON.stringify(subjects),
@@ -188,7 +188,7 @@ export function EditSubjectObject() {
   // }
 
   useEffect(() => {
-    fetch(`/api/v1/subjects/${params.id}/availableModules`)
+    fetch(`/scheduler/api/v1/subjects/${params.id}/availableModules`)
       .then((response) => response.json())
       .then((data) =>
         setModules(
@@ -200,7 +200,7 @@ export function EditSubjectObject() {
   }, [modulesInSubjects, module]);
 
   useEffect(() => {
-    fetch(`/api/v1/subjects/${params.id}/availableTeachers`)
+    fetch(`/scheduler/api/v1/subjects/${params.id}/availableTeachers`)
       .then((response) => response.json())
       .then((data) =>
         setTeachers(
@@ -212,7 +212,7 @@ export function EditSubjectObject() {
   }, [teachersInSubjects, teacher]);
 
   useEffect(() => {
-    fetch(`/api/v1/subjects/${params.id}/availableRooms`)
+    fetch(`/scheduler/api/v1/subjects/${params.id}/availableRooms`)
       .then((response) => response.json())
       .then((data) =>
         setRooms(
@@ -224,7 +224,7 @@ export function EditSubjectObject() {
   }, [roomsInSubjects, room]);
 
   const addModule = (subjectId, moduleId) => {
-    fetch(`/api/v1/subjects/${subjectId}/modules/${moduleId}/newModules`, {
+    fetch(`/scheduler/api/v1/subjects/${subjectId}/modules/${moduleId}/newModules`, {
       method: "POST",
       header: JSON_HEADERS,
       body: JSON.stringify({
@@ -236,14 +236,14 @@ export function EditSubjectObject() {
   };
 
   const removeModule = (subjectId, moduleId) => {
-    fetch(`/api/v1/subjects/${subjectId}/modules/${moduleId}`, {
+    fetch(`/scheduler/api/v1/subjects/${subjectId}/modules/${moduleId}`, {
       method: "DELETE",
       headers: JSON_HEADERS,
     }).then(getModulesInSubjects);
   };
 
   const addTeacher = (subjectId, teacherId) => {
-    fetch(`/api/v1/subjects/${subjectId}/teachers/${teacherId}/newTeachers`, {
+    fetch(`/scheduler/api/v1/subjects/${subjectId}/teachers/${teacherId}/newTeachers`, {
       method: "POST",
       header: JSON_HEADERS,
       body: JSON.stringify({
@@ -256,7 +256,7 @@ export function EditSubjectObject() {
   };
 
   const removeTeacher = (subjectId, teacherId) => {
-    fetch(`/api/v1/subjects/${subjectId}/teachers/${teacherId}`, {
+    fetch(`/scheduler/api/v1/subjects/${subjectId}/teachers/${teacherId}`, {
       method: "DELETE",
       headers: JSON_HEADERS,
     }).then(getTeachersInSubjects)
@@ -264,7 +264,7 @@ export function EditSubjectObject() {
   };
 
   const addRoom = (subjectId, roomId) => {
-    fetch(`/api/v1/subjects/${subjectId}/rooms/${roomId}/newRooms`, {
+    fetch(`/scheduler/api/v1/subjects/${subjectId}/rooms/${roomId}/newRooms`, {
       method: "POST",
       header: JSON_HEADERS,
       body: JSON.stringify({
@@ -276,28 +276,28 @@ export function EditSubjectObject() {
   };
 
   const removeRoom = (subjectId, roomId) => {
-    fetch(`/api/v1/subjects/${subjectId}/rooms/${roomId}`, {
+    fetch(`/scheduler/api/v1/subjects/${subjectId}/rooms/${roomId}`, {
       method: "DELETE",
       headers: JSON_HEADERS,
     }).then(getRoomsInSubjects);
   };
 
   useEffect(() => {
-    fetch(`/api/v1/subjects/${params.id}/modules`)
+    fetch(`/scheduler/api/v1/subjects/${params.id}/modules`)
       .then((response) => response.json())
       .then(setModulesInSubjects)
       .then(console.log(modulesInSubjects));
   }, [params]);
 
   useEffect(() => {
-    fetch(`/api/v1/subjects/${params.id}/teachers`)
+    fetch(`/scheduler/api/v1/subjects/${params.id}/teachers`)
       .then((response) => response.json())
       .then(setTeachersInSubjects)
       .then(console.log(teachersInSubjects));
   }, [params]);
 
   useEffect(() => {
-    fetch(`/api/v1/subjects/${params.id}/rooms`)
+    fetch(`/scheduler/api/v1/subjects/${params.id}/rooms`)
       .then((response) => response.json())
       .then(setRoomsInSubjects)
       .then(console.log(roomsInSubjects));

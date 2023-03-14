@@ -122,7 +122,7 @@ export function CreateGroupPage() {
 
   const createGroup = () => {
     fetch(
-      '/api/v1/groups?programId=' + programId + '&shiftId=' + shiftId, {
+      '/scheduler/api/v1/groups?programId=' + programId + '&shiftId=' + shiftId, {
       method: 'POST',
       headers: JSON_HEADERS,
       body: JSON.stringify({
@@ -134,7 +134,7 @@ export function CreateGroupPage() {
 
   };
   useEffect(() => {
-    fetch("/api/v1/programs/")
+    fetch("/scheduler/api/v1/programs/")
       .then((response) => response.json())
       .then((data) =>
         setPrograms(
@@ -146,7 +146,7 @@ export function CreateGroupPage() {
   }, [shifts]);
 
   useEffect(() => {
-    fetch('/api/v1/shifts')
+    fetch('/scheduler/api/v1/shifts')
       .then((response) => response.json())
       .then((data) => setShifts(
         data.map((x) => {

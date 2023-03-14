@@ -75,20 +75,20 @@ export function EditModuleObject() {
 
 
   const fetchModuleSubjects = async () => {
-    fetch(`/api/v1/modules/${params.id}/subjects`)
+    fetch(`/scheduler/api/v1/modules/${params.id}/subjects`)
       .then((response) => response.json())
       .then((jsonResponse) => setModuleSubjects(jsonResponse));
   };
 
   useEffect(() => {
-    fetch(`/api/v1/modules/${params.id}/subjects`)
+    fetch(`/scheduler/api/v1/modules/${params.id}/subjects`)
       .then((response) => response.json())
       .then(setModuleSubjects)
       .then(console.log(moduleSubjects));
   }, [active, params]);
 
   useEffect(() => {
-    fetch("/api/v1/modules/" + params.id)
+    fetch("/scheduler/api/v1/modules/" + params.id)
       .then((response) => response.json())
       .then(setModules);
   }, [active, params]);
@@ -98,7 +98,7 @@ export function EditModuleObject() {
   };
 
   const updateModules = () => {
-    fetch("/api/v1/modules/update/" + params.id, {
+    fetch("/scheduler/api/v1/modules/update/" + params.id, {
       method: "PUT",
       headers: JSON_HEADERS,
       body: JSON.stringify(modules),
@@ -131,13 +131,13 @@ export function EditModuleObject() {
   };
 
   const fetchSingleSubjects = () => {
-    fetch("/api/v1/subjects")
+    fetch("/scheduler/api/v1/subjects")
       .then((response) => response.json())
       .then((jsonResponse) => setSubjects(jsonResponse));
   };
 
   useEffect(() => {
-    fetch("/api/v1/subjects/")
+    fetch("/scheduler/api/v1/subjects/")
       .then((response) => response.json())
       .then((data) =>
         setSubjects(
@@ -149,7 +149,7 @@ export function EditModuleObject() {
   }, []);
 
   const addSubject = (moduleId, subjectId) => {
-    fetch(`/api/v1/modules/${moduleId}/subjects/${subjectId}/newSubjects`, {
+    fetch(`/scheduler/api/v1/modules/${moduleId}/subjects/${subjectId}/newSubjects`, {
       method: "POST",
       header: JSON_HEADERS,
       body: JSON.stringify({
@@ -162,7 +162,7 @@ export function EditModuleObject() {
 
 
   const removeSubject = (moduleId, subjectId) => {
-    fetch(`/api/v1/modules/${moduleId}/subjects/${subjectId}`, {
+    fetch(`/scheduler/api/v1/modules/${moduleId}/subjects/${subjectId}`, {
       method: "DELETE",
       headers: JSON_HEADERS,
     }).then(fetchModuleSubjects);

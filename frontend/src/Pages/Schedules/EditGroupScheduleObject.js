@@ -139,13 +139,13 @@ export function EditGroupScheduleObject() {
   };
 
   useEffect(() => {
-    fetch("/api/v1/groups/" + schedules.groupName)
+    fetch("/scheduler/api/v1/groups/" + schedules.groupName)
       .then((response) => response.json())
       .then(setGroups);
   }, [schedules]);
 
   useEffect(() => {
-    fetch("/api/v1/schedule/" + params.id)
+    fetch("/scheduler/api/v1/schedule/" + params.id)
       .then((response) => response.json())
       .then(setSchedules);
   }, [active, params]);
@@ -156,7 +156,7 @@ export function EditGroupScheduleObject() {
 
   const updateSchedules = () => {
     fetch(
-      "/api/v1/schedule/" +
+      "/scheduler/api/v1/schedule/" +
       params.id +
       "?groupId=" +
       groupId +
