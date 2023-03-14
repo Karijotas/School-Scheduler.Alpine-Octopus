@@ -16,24 +16,19 @@ const JSON_HEADERS = {
  
 export function CreateSchedule() {
 
-    const today = dayjs();
-    
-
-  const listUrl = useHref('/view/groups');
-
-  const [hide, setHide] = useState(false)
-  
+  const today = dayjs();
+  const listUrl = useHref('/create/groupsSchedules/modify/');
   const [groups, setGroups] = useState([])
   const [groupId, setGroupId] = useState()
   const [status, setStatus] = useState("Valid");
   const [startingDate, setStartingDate] = useState("");
   const [defaultDate, setDefaultDate] = useState(today);
- 
+
 
   const applyResult = (result) => {
     if (result.ok) {
       let info = result.json() 
-      .then((jsonResponse) => window.location = listUrl);
+      .then((jsonResponse) => window.location = listUrl + jsonResponse.id);
     } else {
       window.alert("Nepavyko sukurti: pavadinimas turi būti unikalus!");    
     }
@@ -49,7 +44,7 @@ export function CreateSchedule() {
         status,
       }),
     })
-// .then(applyResult);
+ .then(applyResult);
   };
 
   useEffect(() => {
@@ -105,18 +100,20 @@ export function CreateSchedule() {
               <DatePicker
                 className="controls4"
                 placeholder="Data nuo"
-                onChange={(e) => {
+                onChange={(e) => { 
                   const newDate = dayjs(e).format("YYYY-MM-DD");
                   setStartingDate(newDate);
                 }}
               /> 
             </Form.Field>
+            
+            <div>
+            <Button icon labelPosition="left" className="" as={NavLink} exact to='/view/groupsSchedules'><Icon name="arrow left" />Atgal</Button>
+            <Button type="submit" onClick={createSchedule} className="" id='details'>Sukurti</Button>
+            </div>
               
-            <div ><Button icon labelPosition="left" className="" as={NavLink} exact to='/view/groupsSchedules'><Icon name="arrow left" />Atgal</Button>
-              <Button type="submit" onClick={createSchedule} className="" as={NavLink} exact to='/create/groupsSchedules/modify/' id='details'>Sukurti</Button></div>
           </Form>
-      
-
+    
         </Segment>
       </Grid.Column>
     </Grid>

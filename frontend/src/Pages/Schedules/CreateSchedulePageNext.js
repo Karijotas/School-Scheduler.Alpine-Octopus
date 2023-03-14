@@ -14,60 +14,58 @@ const JSON_HEADERS = {
 };
  
 export function CreateSchedulePageNext() {
-
   const params = useParams();
 
+
   const [roomId, setRoomId]= useState()
-  const [rooms, setRooms]= useState([])
+  const [rooms, setRooms]= useState([]) 
+
   const [teacherId, setTeacherId]= useState()
   const[teachers, setTeachers] = useState([])
-  
-  const [schedules, setSchedules] = useState([])
+
+  const [subjectsInProgram, setSubjectsInProgram] = useState([]);
+  const [lessonId, setLessonId] = useState("");
+  const [groupId, setGroupId] = useState("");
   const [active,setActive] = useState(false)
+
+  const [schedule, setSchedule] = useState({
+    name: "",
+    startingDate: "",
+    plannedTillDate: "",
+    status: "",
+    lessons: [],
+    group: "",
+    shift: "",
+    groupName: "",
+    shiftName: "",
+  });
+
+  const [subjects, setSubjects] = useState({
+
+  })
 
 
 useEffect(() => {
   fetch('/api/v1/schedule/' + params.id)
     .then(response => response.json())
-    .then(setSchedules);
+    .then(setSchedule);
+}, [params]);
 
-}, [params, active]);
-
-
-
-
-const applyResult = () => {
-
-  setActive(true);
+useEffect(()=>{
+console.log(schedule)
+}, [])
 
 
-}
-
-const updateRooms = () => {
-  fetch('/api/v1/schedule/' + params.id, {
-    method: 'PUT',
-    headers: JSON_HEADERS,
-    body: JSON.stringify(schedules)
-  })
-};
-
-
-// useEffect(() => {
-//   fetch('/api/v1/schedule/' + params.id)
-//       .then(response => response.json())
-//       .then(setSchedules);
-// }, [active, params]);
-// + '?lessonId=' + lessonId + '&teacherId='+ teacherId + '&shiftId=' + roomId,
 
 
 const updateSchedule = () => {
-  fetch('/api/v1/schedule/' + params.id,  {
+  fetch('/api/v1/schedule/' + params.id + '?lessonId=' + lessonId + '&teacherId='+ teacherId + '&roomId=' + roomId,  {
       method: 'PATCH',
       headers: JSON_HEADERS,
-      body: JSON.stringify(schedules,)
+      body: JSON.stringify(schedule,)
   })
 };
-
+//Teacher dropdown
 useEffect(() => {
   fetch("/api/v1/teachers/")
     .then((response) => response.json())
@@ -79,10 +77,10 @@ useEffect(() => {
       )
     );
 }, [teachers]);
-
+//Room dropdown
 useEffect(() => {
   fetch("/api/v1/rooms/")
-    .then((response) => response.json())
+    .then((response) => response.json()) 
     .then((data) =>
       setRooms(
         data.map((x) => {
@@ -161,13 +159,16 @@ useEffect(() => {
     <Table.Header >
             <Table.HeaderCell colspan="3" >Dalykai</Table.HeaderCell>
     </Table.Header>
+    
 
-    <Table.Row>
-      <Table.Cell>Pavadinimas</Table.Cell>
+{schedule.lessons.map((lesson)=>
+<Table.Row key={lesson.id}>
+      <Table.Cell>{lesson.subject.name}</Table.Cell>
       <Table.Cell><Select options={teachers} placeholder='Mokytojai' onChange={(e, data) => setTeacherId(data.value)} /></Table.Cell>
       <Table.Cell><Select options={rooms} placeholder='Kabinetai' onChange={(e, data) => setRoomId(data.value)} /></Table.Cell>
     </Table.Row>
-    
+)}
+  
     
    </Table>
 

@@ -20,7 +20,7 @@ const JSON_HEADERS = {
   "Content-Type": "application/json",
 };
 
-export function EditGroupScheduleObject() {
+export function EditGroupScheduleObject() { 
   const params = useParams();
 
   const [active, setActive] = useState(true);
