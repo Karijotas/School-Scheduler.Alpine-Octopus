@@ -26,7 +26,7 @@ public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
 
-    private final ScheduleLessonsRepository scheduleLessonsRepository;
+    private final ScheduleSubjectsRepository scheduleSubjectsRepository;
 
     private final GroupsRepository groupsRepository;
     private final ShiftRepository shiftRepository;
@@ -34,22 +34,28 @@ public class ScheduleService {
     private final ProgramSubjectHoursRepository programSubjectHoursRepository;
     private final RoomRepository roomRepository;
     private final TeacherRepository teacherRepository;
+    private final ScheduleLessonsRepository scheduleLessonsRepository;
+    private final LessonRepository lessonRepository;
 
-    public ScheduleService(ScheduleRepository scheduleRepository, ScheduleLessonsRepository scheduleLessonsRepository,
+    public ScheduleService(ScheduleRepository scheduleRepository, ScheduleSubjectsRepository scheduleSubjectsRepository,
                            GroupsRepository groupsRepository,
                            ShiftRepository shiftRepository,
                            ProgramRepository programRepository,
                            ProgramSubjectHoursRepository programSubjectHoursRepository,
                            RoomRepository roomRepository,
-                           TeacherRepository teacherRepository) {
+                           TeacherRepository teacherRepository,
+                           ScheduleLessonsRepository scheduleLessonsRepository,
+                           LessonRepository lessonRepository) {
         this.scheduleRepository = scheduleRepository;
-        this.scheduleLessonsRepository = scheduleLessonsRepository;
+        this.scheduleSubjectsRepository = scheduleSubjectsRepository;
         this.groupsRepository = groupsRepository;
         this.shiftRepository = shiftRepository;
         this.programRepository = programRepository;
         this.programSubjectHoursRepository = programSubjectHoursRepository;
         this.roomRepository = roomRepository;
         this.teacherRepository = teacherRepository;
+        this.scheduleLessonsRepository = scheduleLessonsRepository;
+        this.lessonRepository = lessonRepository;
     }
 
     @Transactional
@@ -119,7 +125,7 @@ public class ScheduleService {
         schedule.setName(createdGroup.getName() + " " + createdGroup.getShift().getName() + " " + createdGroup.getSchoolYear().toString());
         schedule.setStartingDate(startingDate);
         schedule.setGroup(createdGroup);
-        schedule.setGroupName(createdGroup.getId().toString());
+        schedule.setGroupIdValue(createdGroup.getId().toString());
         schedule.setShift(createdGroup.getShift());
         schedule.setShiftName(createdGroup.getShift().getName());
         schedule.setSubjects(lessonList);
@@ -178,9 +184,35 @@ public class ScheduleService {
 
         existingSchedule.scheduleLesson(createdLesson);
 
+        //subtracting the subjectHours from subjectTotalHours
+        existingSchedule.getSubjects()
+                .stream()
+                .filter(lesson -> lesson.getId()
+                        .equals(subjectId))
+                .forEach(
+                        lesson -> lesson.setLessonHours(lesson.getLessonHours() - createdLesson.getLessonHours())
+                );
+
         return scheduleRepository.save(existingSchedule);
     }
 
+    public Schedule setLessonOnline(Long scheduleId, Long lessonId) {
+        //finding the schedule in repository
+        var existingSchedule = scheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", scheduleId.toString()));
+
+        var existingLessons = existingSchedule.getLessons();
+
+        existingLessons.stream()
+                .filter(lesson -> lesson.getId().equals(lessonId))
+                .forEach(lesson -> lesson.setOnline(true));
+
+        existingSchedule.setLessons(existingLessons);
+
+        return scheduleRepository.save(existingSchedule);
+    }
+
+    ;
 
     public boolean deleteById(Long id) {
         try {
@@ -190,4 +222,16 @@ public class ScheduleService {
             return false;
         }
     }
+
+    @Transactional
+    public boolean removeLesson(Long scheduleId, Long lessonId) {
+        try {
+            scheduleLessonsRepository.deleteByScheduleAndLesson(scheduleRepository.findById(scheduleId).get(), lessonRepository.findById(lessonId).get());
+            return true;
+        } catch (EmptyResultDataAccessException exception) {
+            return false;
+        }
+    }
+
+
 }

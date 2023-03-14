@@ -294,6 +294,7 @@ export function EditGroupScheduleObject() {
                 </Grid> */}
                 <Divider hidden />
                 <ScheduleView />
+                <Divider hidden />
                 <Button icon labelPosition="left" href="#/view/groups">
                   <Icon name="arrow left" />
                   Atgal
@@ -326,6 +327,7 @@ export function EditGroupScheduleObject() {
                 </Table>
                 <Divider hidden />
                 <ScheduleView />
+                <Divider hidden />
 
                 {/* <Table.Cell width={6}>y
                         {nameError && (
