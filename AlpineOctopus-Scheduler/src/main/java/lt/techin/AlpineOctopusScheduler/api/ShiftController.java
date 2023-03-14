@@ -4,9 +4,7 @@ import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.ShiftDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ShiftEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ShiftTestDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ShiftMapper;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
-
 import lt.techin.AlpineOctopusScheduler.model.Shift;
 import lt.techin.AlpineOctopusScheduler.service.ShiftService;
 import org.slf4j.Logger;
@@ -48,6 +46,13 @@ public class ShiftController {
     @ResponseBody
     public List<ShiftEntityDto> getAvailableShifts() {
         return shiftService.getAllAvailableShifts();
+    }
+
+
+    @GetMapping(path = "/all")
+    @ResponseBody
+    public List<ShiftTestDto> getAllShifts() {
+        return shiftService.getAllShifts();
     }
 
     @GetMapping(path = "/archive/", produces = {MediaType.APPLICATION_JSON_VALUE})

@@ -6,3 +6,4 @@ VALUES
   ('Trečias tvarkaraštis', '2022-01-08','2024-05-18', 'Valid', 4,3,'4','Vakaras', '2023-02-08', '2023-02-08', null, null),
   ('Ketvirtas tvarkaraštis', '2022-07-028','2023-03-01', 'Invalid', 5,4,'5','Visa diena', '2023-02-08', '2023-02-08', null, null);
 
+

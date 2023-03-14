@@ -3,6 +3,7 @@ package lt.techin.AlpineOctopusScheduler.api;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lt.techin.AlpineOctopusScheduler.AlpineOctopusSchedulerApplication;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectTestDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -19,14 +21,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-//@MockBeans({@MockBean(RoomController.class), @MockBean(RoomService.class), @MockBean(RoomRepository.class)})
 @AutoConfigureMockMvc
+@ContextConfiguration(classes = AlpineOctopusSchedulerApplication.class)
 class SubjectControllerTest {
-
-    //@MockBean - tuos kuriuos norime izoliuoti nuo sio testo
-
-//    @MockBean
-//    SubjectRepository subjectRepository;
 
     public void setup() {
     }
@@ -34,7 +31,7 @@ class SubjectControllerTest {
     @Autowired
     ObjectMapper objectMapper;
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @AfterEach
     void tearDown() {
@@ -83,24 +80,8 @@ class SubjectControllerTest {
     }
 
 //    @Test
-//    void findMarkedSubjects() {
-//    }
+//    void createSubject_shouldCreateSubject() {
 //
-//    @Test
-//    void getSubject() {
 //    }
-//
-//    @Test
-//    void deleteSubject() {
-//    }
-//
-//    @Test
-//    void createSubject() {
-//    }
-//
-//    @Test
-//    void updateSubject() {
-//    }
-
 
 }
