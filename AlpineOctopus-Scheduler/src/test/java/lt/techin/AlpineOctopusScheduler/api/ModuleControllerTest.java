@@ -184,5 +184,42 @@ public class ModuleControllerTest {
         assertEquals(mappedResponse.getName(), "Tinklapiai");
     }
 
+    @Test
+    @Order(5)
+    void removeModule_shouldSetBooleanToTrue() throws Exception {
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .patch("/api/v1/modules/delete/2")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Module mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+                new TypeReference<Module>() {
+                });
+
+        Assertions.assertTrue(mappedResponse.getDeleted());
+    }
+
+    @Test
+    void restoreModule_shouldSetBooleanToFalse() throws Exception {
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .patch("/api/v1/modules/restore/4")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Module mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+                new TypeReference<Module>() {
+                });
+
+        Assertions.assertFalse(mappedResponse.getDeleted());
+    }
+
 
 }

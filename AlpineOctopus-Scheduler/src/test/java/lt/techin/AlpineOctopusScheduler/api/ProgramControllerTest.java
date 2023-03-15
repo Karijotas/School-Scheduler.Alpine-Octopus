@@ -149,6 +149,43 @@ class ProgramControllerTest {
         assertEquals(200, status);
         assertEquals(mappedResponse.getName(), "Normali");
     }
+
+    @Test
+    @Order(5)
+    void removeProgram_shouldSetBooleanToTrue() throws Exception {
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .patch("/api/v1/programs/delete/2")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Program mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+                new TypeReference<Program>() {
+                });
+
+        Assertions.assertTrue(mappedResponse.getDeleted());
+    }
+
+    @Test
+    void restoreProgram_shouldSetBooleanToFalse() throws Exception {
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .patch("/api/v1/programs/restore/4")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Program mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+                new TypeReference<Program>() {
+                });
+
+        Assertions.assertFalse(mappedResponse.getDeleted());
+    }
 }
 
 

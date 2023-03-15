@@ -133,6 +133,19 @@ public class ScheduleControllerTest {
         assertEquals(200, status);
         assertEquals(mappedResponse.getName(), "Penktasis");
     }
+
+//    @Test
+//    void setTeacherAndRoomInASchedule() throws Exception {
+//
+//        var mvcResult = mockMvc.perform(
+//                        MockMvcRequestBuilders
+//                                .patch("/api/v1/schedule/1/{lessonId}?lessonId=1&roomId=1&teacherId=1")
+//                                .contentType(MediaType.APPLICATION_JSON)
+//                                .content(objectMapper.writeValueAsString(newSchedule2)))
+//                .andReturn();
+//        assertEquals("Penktasis", newSchedule2.getName());
+//    }
+//    }
 }
 
 

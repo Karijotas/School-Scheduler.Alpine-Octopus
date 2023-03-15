@@ -32,8 +32,6 @@ export function ScheduleView() {
             IsBlock: true,
             CategoryColor: "#357cd2",
             GroupId: 2
-                   
-            
         },
         {
             Id: 2,

@@ -146,4 +146,41 @@ public class GroupControllerTest {
         assertEquals(200, status);
         assertEquals(mappedResponse.getName(), "Akademija.it JP 22/1");
     }
+
+    @Test
+    @Order(5)
+    void removeGroup_shouldSetBooleanToTrue() throws Exception {
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .patch("/api/v1/groups/delete/2")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Groups mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+                new TypeReference<Groups>() {
+                });
+
+        Assertions.assertTrue(mappedResponse.getDeleted());
+    }
+
+    @Test
+    void restoreGroup_shouldSetBooleanToFalse() throws Exception {
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .patch("/api/v1/groups/restore/4")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Groups mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+                new TypeReference<Groups>() {
+                });
+
+        Assertions.assertFalse(mappedResponse.getDeleted());
+    }
 }
