@@ -18,9 +18,9 @@ public class Module {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank(message = "Negali buti tuscias")
-    @Size(min = 1, max = 40)
-    private String name;
     @Size(min = 1, max = 100)
+    private String name;
+    @Size(max = 500)
     private String description;
 
     private Boolean deleted = Boolean.FALSE;

@@ -1,7 +1,7 @@
 package lt.techin.AlpineOctopusScheduler.model;
 
+
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -9,9 +9,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
+
 
 @Entity
 public class Room {
@@ -24,7 +23,7 @@ public class Room {
     @NotBlank
     @Size(max = 40)
     private String building;
-    @Size(max = 100)
+    @Size(max = 500)
     private String description;
 
     private Boolean deleted = Boolean.FALSE;

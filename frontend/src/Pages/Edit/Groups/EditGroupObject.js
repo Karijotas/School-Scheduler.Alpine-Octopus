@@ -75,12 +75,13 @@ export function EditGroupObject() {
         groups.studentAmount = e.target.value
         setstudentAmount(e.target.value);
         validateStudentAmountInput(e.target.value);
+
     };
 
 
     const validateNameInput = (value) => {
-        if (value.length < 2 || value.length > 40) {
-            setNameError("Įveskite nuo 2 iki 40 simbolių!")
+        if (value.length < 2 || value.length > 100) {
+            setNameError("Įveskite nuo 2 iki 100 simbolių!")
             if (!value) {
                 setNameError("Pavadinimas negali būti tuščias!")
             }
@@ -93,10 +94,17 @@ export function EditGroupObject() {
         if (!/^\d+$/.test(value)) {
             setstudentAmountError("Įveskite tik skaičius")
             if (!value) {
-                setstudentAmountError("")
+                setstudentAmountError("Negali būti tuščias")
             }
+
+        } else if (value > 300 || value < 1) {
+            setstudentAmountError("Skaičius turi būti tarp 1 ir 300")
+        } else {
+            setstudentAmountError("");
         }
     };
+
+
 
 
 
@@ -134,8 +142,8 @@ export function EditGroupObject() {
 
     const editThis = () => {
         setActive(false);
-        setProgramId(groups.program.id);
-        setShiftId(groups.shift.id)
+        setProgramId(groups.programId);
+        setShiftId(groups.shiftId)
     }
 
     useEffect(() => {
@@ -212,8 +220,8 @@ export function EditGroupObject() {
                                 <Table.Body>
                                     <Table.Row  >
                                         <Table.Cell width={6} >{groups.studentAmount}</Table.Cell>
-                                        <Table.Cell >{groups.program.name} </Table.Cell>
-                                        <Table.Cell width={4}>{groups.shift.name} </Table.Cell>
+                                        <Table.Cell >{groups.programName} </Table.Cell>
+                                        <Table.Cell width={4}>{groups.shiftName} </Table.Cell>
                                     </Table.Row>
                                 </ Table.Body >
                             </Table>
@@ -269,17 +277,17 @@ export function EditGroupObject() {
                                         </Table.Cell>
                                         <Table.Cell collapsing >
                                             {/* {(selectErrorProgram) && <div style={{color: "red"}}>{selectErrorProgram}</div>} */}
-                                            <Select options={programs} placeholder={groups.program.name} onChange={(e, data) => setProgramId(data.value)} />
+                                            <Select options={programs} placeholder={groups.programName} onChange={(e, data) => setProgramId(data.value)} />
                                         </Table.Cell >
                                         <Table.Cell width={4}>
-                                            <Select options={shifts} placeholder={groups.shift.name} onChange={(e, data) => setShiftId(data.value)} />
+                                            <Select options={shifts} placeholder={groups.shiftName} onChange={(e, data) => setShiftId(data.value)} />
                                         </Table.Cell>
                                     </Table.Row>
                                 </ Table.Body >
                             </Table>
 
                             <Button onClick={() => setActive(true)}>Atšaukti</Button>
-                            <Button className='controls' id='details' onClick={updateGroups}>Atnaujinti</Button>
+                            <Button disabled={!formValid} className='controls' id='details' onClick={updateGroups}>Atnaujinti</Button>
 
 
                         </div>)}

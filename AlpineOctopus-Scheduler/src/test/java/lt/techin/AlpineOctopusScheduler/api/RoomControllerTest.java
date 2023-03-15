@@ -2,6 +2,7 @@ package lt.techin.AlpineOctopusScheduler.api;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lt.techin.AlpineOctopusScheduler.AlpineOctopusSchedulerApplication;
 import lt.techin.AlpineOctopusScheduler.api.dto.RoomTestDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -21,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 //@MockBeans({@MockBean(RoomController.class), @MockBean(RoomService.class), @MockBean(RoomRepository.class)})
 @AutoConfigureMockMvc
+@ContextConfiguration(classes = AlpineOctopusSchedulerApplication.class)
 public class RoomControllerTest {
 
     @Autowired
@@ -72,4 +75,30 @@ public class RoomControllerTest {
     }
 
 
+    @Test
+    void getRoom() {
+    }
+
+//    @Test
+//    void createRoom_shouldCreateRoom() {
+//        Room newRoom = new Room();
+//        newRoom.setName("Kabinetas 11");
+//        newRoom.setBuilding("Ozo g. 171");
+//        newRoom.setDescription("Naujai paruoštas kabinetas pirmos klasės mokiniams.");
+//
+//        var mvcResult = mockMvc.perform(
+//                        MockMvcRequestBuilders
+//                                .get("/api/v1/rooms")
+//                                .accept(MediaType.APPLICATION_JSON)
+//                )
+//                .andExpect(status().isOk())
+//                .andReturn();
+//
+//        var mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString());
+//
+//        assertThat(mappedResponse);
+//    }
+//
+//
+//    }
 }

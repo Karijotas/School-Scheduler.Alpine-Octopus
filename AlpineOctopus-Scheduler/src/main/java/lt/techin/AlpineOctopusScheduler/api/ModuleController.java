@@ -21,8 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ModuleMapper.toModule;
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ModuleMapper.toModuleDto;
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ModuleMapper.*;
 import static org.springframework.http.ResponseEntity.ok;
 
 @Controller
@@ -110,10 +109,10 @@ public class ModuleController {
     }
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<ModuleDto> createModule(@Valid @RequestBody ModuleDto moduleDto) {
+    public ResponseEntity<ModuleEntityDto> createModule(@Valid @RequestBody ModuleEntityDto moduleDto) {
         if (moduleService.moduleNameIsUnique(toModule(moduleDto))) {
             var createdModule = moduleService.create(toModule(moduleDto));
-            return ok(toModuleDto(createdModule));
+            return ok(toModuleEntityDto(createdModule));
         } else {
             throw new SchedulerValidationException("Module already exists", "Module name", "Already exists", moduleDto.getName());
         }
@@ -174,8 +173,10 @@ public class ModuleController {
     }
 
     @PostMapping("/{moduleId}/subjects/{subjectId}/newSubjects")
-    public void addSubjectToModule(@PathVariable Long moduleId, @PathVariable Long subjectId) {
-        moduleService.addSubjectToModule(moduleId, subjectId);
+    public ResponseEntity<ModuleDto> addSubjectToModule(@PathVariable Long moduleId, @PathVariable Long subjectId) {
+        var updatedModule = moduleService.addSubjectToModule(moduleId, subjectId);
+
+        return ok(toModuleDto(updatedModule));
     }
 
     @DeleteMapping("/{moduleId}/subjects/{subjectId}")

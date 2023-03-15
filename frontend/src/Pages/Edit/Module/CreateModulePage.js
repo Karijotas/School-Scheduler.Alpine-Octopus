@@ -5,61 +5,61 @@ import { EditMenu } from '../../../Components/EditMenu';
 import MainMenu from '../../../Components/MainMenu';
 
 const JSON_HEADERS = {
-  "Content-Type": "application/json", 
+  "Content-Type": "application/json",
 };
 
 export function CreateModulePage() {
   // const [create, setCreate] = useState()
-  const listUrl = useHref('/view/modules');
+  const listUrl = useHref('/view/modules/edit/');
   const [hide, setHide] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [modules, setModules] = useState("");
 
-   //Validation
-   const [nameDirty, setNameDirty] = useState(false);
-   
-   const [nameError, setNameError] = useState("Negali būti tuščias!")
-   const [descriptionError, setDescriptionError] = useState("")
-   const [formValid, setFormValid] = useState(false)
- 
-   useEffect(() => {
-     if(nameError || descriptionError) {
-       setFormValid(false)
-     } else {
-       setFormValid(true)
-     }
-   }, [nameError, descriptionError])
-   
- 
-   const blurHandler = (e) => {
-     switch (e.target.name){
-       case 'name':
-         setNameDirty(true);
-         break
-     }
-   }
- 
-   const nameHandler = (e) => {
-     setName(e.target.value)
-     if(e.target.value.length <2 || e.target.value.length > 40){
-       setNameError("Įveskite nuo 2 iki 40 simbolių!")
-       if(!e.target.value){
-         setNameError("Negali būti tuščias!")
-       }
-     } else {
-       setNameError("")
-     }
-   }
- 
-   const descriptionHandler = (e) => {
-     setDescription(e.target.value)
-     if(e.target.value.length > 100){
-       setDescriptionError("Aprašymas negali viršyti 100 symbolių!")
-     } else {
-       setDescriptionError("")
-     }
-   }
+  //Validation
+  const [nameDirty, setNameDirty] = useState(false);
+
+  const [nameError, setNameError] = useState("Negali būti tuščias!")
+  const [descriptionError, setDescriptionError] = useState("")
+  const [formValid, setFormValid] = useState(false)
+
+  useEffect(() => {
+    if (nameError || descriptionError) {
+      setFormValid(false)
+    } else {
+      setFormValid(true)
+    }
+  }, [nameError, descriptionError])
+
+
+  const blurHandler = (e) => {
+    switch (e.target.name) {
+      case 'name':
+        setNameDirty(true);
+        break
+    }
+  }
+
+  const nameHandler = (e) => {
+    setName(e.target.value)
+    if (e.target.value.length < 2 || e.target.value.length > 100) {
+      setNameError("Įveskite nuo 2 iki 100 simbolių!")
+      if (!e.target.value) {
+        setNameError("Negali būti tuščias!")
+      }
+    } else {
+      setNameError("")
+    }
+  }
+
+  const descriptionHandler = (e) => {
+    setDescription(e.target.value)
+    if (e.target.value.length > 500) {
+      setDescriptionError("Aprašymas negali viršyti 500 simbolių!")
+    } else {
+      setDescriptionError("")
+    }
+  }
 
   const applyResult = (result) => {
     const clear = () => {
@@ -67,9 +67,10 @@ export function CreateModulePage() {
     };
 
     if (result.ok) {
-      clear();
+      let info = result.json()
+        .then((jsonResponse) => window.location = listUrl + jsonResponse.id);
     } else {
-      window.alert("Nepavyko sukurt: " + result.status);
+      window.alert("Nepavyko sukurti: pavadinimas turi būti unikalus!");
     }
   };
 
@@ -81,7 +82,7 @@ export function CreateModulePage() {
         name,
         description,
       }),
-    }).then(applyResult).then(() => window.location = listUrl);
+    }).then(applyResult);
   };
 
   const fetchModules = async () => {
@@ -103,7 +104,7 @@ export function CreateModulePage() {
               <Form>
                 <Form.Field>
                   <label>Modulio pavadinimas</label>
-                  {(nameDirty && nameError) && <div style={{color: "red"}}>{nameError}</div>}
+                  {(nameDirty && nameError) && <div style={{ color: "red" }}>{nameError}</div>}
                   <input
                     placeholder="Modulio pavadinimas"
                     name="name"
@@ -115,10 +116,10 @@ export function CreateModulePage() {
 
                 <Form.Field>
                   <label>Aprašymas</label>
-                  {(descriptionError) && <div style={{color: "red"}}>{descriptionError}</div>}
+                  {(descriptionError) && <div style={{ color: "red" }}>{descriptionError}</div>}
                   <Input
                     placeholder="Aprašymas"
-                    
+
                     value={description}
                     onChange={(e) => descriptionHandler(e)}
                   />

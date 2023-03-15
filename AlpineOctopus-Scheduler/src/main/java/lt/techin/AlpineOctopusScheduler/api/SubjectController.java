@@ -9,7 +9,10 @@ import lt.techin.AlpineOctopusScheduler.model.Module;
 import lt.techin.AlpineOctopusScheduler.model.Room;
 import lt.techin.AlpineOctopusScheduler.model.Subject;
 import lt.techin.AlpineOctopusScheduler.model.Teacher;
+import lt.techin.AlpineOctopusScheduler.service.ModuleService;
+import lt.techin.AlpineOctopusScheduler.service.RoomService;
 import lt.techin.AlpineOctopusScheduler.service.SubjectService;
+import lt.techin.AlpineOctopusScheduler.service.TeacherService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -19,11 +22,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper.toSubject;
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper.toSubjectDto;
+
+import static java.util.stream.Collectors.toList;
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper.*;
 import static org.springframework.http.ResponseEntity.ok;
 
 @Controller
@@ -33,8 +38,17 @@ public class SubjectController {
     public static Logger logger = LoggerFactory.getLogger(SubjectController.class);
     private final SubjectService subjectService;
 
-    public SubjectController(SubjectService subjectService) {
+    private final TeacherService teacherService;
+
+    private final RoomService roomService;
+
+    private final ModuleService moduleService;
+
+    public SubjectController(SubjectService subjectService, TeacherService teacherService, RoomService roomService, ModuleService moduleService) {
         this.subjectService = subjectService;
+        this.teacherService = teacherService;
+        this.roomService = roomService;
+        this.moduleService = moduleService;
     }
 
     @GetMapping
@@ -85,12 +99,6 @@ public class SubjectController {
         return ok(updatedSubject);
     }
 
-//    @GetMapping
-//    public List<SubjectEntityDto> getSubjects() {
-//        return subjectService.getAll().stream()
-//                .map(SubjectMapper::toSubjectEntityDto)
-//                .collect(toList());
-//    }
 
     @GetMapping(value = "/{subjectId}/modules")
     @ResponseBody
@@ -104,19 +112,6 @@ public class SubjectController {
         return subjectService.getAllRoomsById(subjectId);
     }
 
-    @GetMapping(value = "/{subjectId}/teachers")
-    @ResponseBody
-    public Set<Teacher> getAllTeachersById(@PathVariable Long subjectId) {
-        return subjectService.getAllTeachersById(subjectId);
-    }
-
-//    @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
-//    @ResponseBody
-//    public List<SubjectEntityDto> getPagedAllSubjects(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
-//                                                      @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-//
-//        return subjectService.getPagedAllSubjects(page, pageSize);
-//    }
 
     @GetMapping(path = "page/name-filter/{nameText}")
     @ApiOperation(value = "Get Paged Subjects starting with", notes = "Returns list of Subjects starting with passed String")
@@ -137,10 +132,10 @@ public class SubjectController {
 
 
     @PostMapping
-    public ResponseEntity<SubjectDto> createSubject(@Valid @RequestBody SubjectDto subjectDto) {
+    public ResponseEntity<SubjectEntityDto> createSubject(@Valid @RequestBody SubjectEntityDto subjectDto) {
         if (subjectService.subjectNameIsUnique(toSubject(subjectDto))) {
             var createdSubject = subjectService.create(toSubject(subjectDto));
-            return ok(toSubjectDto(createdSubject));
+            return ok(toSubjectEntityDto(createdSubject));
         } else {
             throw new SchedulerValidationException("Subject already exists", "Subject name", "Already exists", subjectDto.getName());
         }
@@ -186,14 +181,6 @@ public class SubjectController {
     }
 
 
-    @PostMapping("/{subjectId}/teachers/{teacherId}/newTeachers")
-    public ResponseEntity<SubjectDto> addTeacherToSubject(@PathVariable Long subjectId, @Valid @PathVariable Long teacherId) {
-
-        var updatedSubject = subjectService.addTeacherToSubject(subjectId, teacherId);
-
-        return ok(toSubjectDto(updatedSubject));
-    }
-
     @PostMapping("/{subjectId}/rooms/{roomId}/newRooms")
     public ResponseEntity<SubjectDto> addRoomToSubject(@PathVariable Long subjectId, @Valid @PathVariable Long roomId) {
 
@@ -211,17 +198,6 @@ public class SubjectController {
         }
     }
 
-
-    @DeleteMapping("/{subjectId}/teachers/{teacherId}")
-    public ResponseEntity<Void> deleteTeacherFromSubjectByTeacherId(@PathVariable Long subjectId, @PathVariable Long teacherId) {
-        boolean deleted = subjectService.deleteTeacherInSubjectById(subjectId, teacherId);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
     @DeleteMapping("/{subjectId}/rooms/{roomId}")
     public ResponseEntity<Void> deleteRoomFromSubjectByRoomId(@PathVariable Long subjectId, @PathVariable Long roomId) {
         boolean deleted = subjectService.deleteRoomInSubjectById(subjectId, roomId);
@@ -232,4 +208,56 @@ public class SubjectController {
         }
     }
 
+    @GetMapping(value = "/{subjectId}/teachers")
+    @ResponseBody
+    public List<Teacher> getAllTeachersById(@PathVariable Long subjectId) {
+        return subjectService.getAllTeachersById(subjectId);
+    }
+
+    @PostMapping("/{subjectId}/teachers/{teacherId}/newTeachers")
+    public ResponseEntity<SubjectDto> addTeacherToSubject(@PathVariable Long subjectId, @PathVariable Long teacherId) {
+
+        var updatedSubject = subjectService.addTeacherToSubject(subjectId, teacherId);
+
+        return ok(toSubjectDto(updatedSubject));
+    }
+
+    @DeleteMapping("/{subjectId}/teachers/{teacherId}")
+    public ResponseEntity<Void> deleteSubjectFromTeacherBySubjectId(@PathVariable Long subjectId, @PathVariable Long teacherId) {
+        boolean deleted = subjectService.deleteTeacherFromSubjectById(subjectId, teacherId);
+        if (deleted) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping(value = "/{subjectId}/availableTeachers", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<Teacher> getAvailableTeacherInSubject(@PathVariable Long subjectId) {
+        List<Teacher> teachers = subjectService.getAllTeachersById(subjectId);
+        List<Teacher> teacherList = subjectService.getFreeTeachers();
+        List<Teacher> availableTeachers = teacherList.stream().filter(sub -> !teachers.contains(sub)).collect(toList());
+        return availableTeachers;
+    }
+
+    @GetMapping(value = "/{subjectId}/availableModules", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<Module> getAvailableModulesInSubject(@PathVariable Long subjectId) {
+        List<Module> modules = new ArrayList<>(subjectService.getAllModulesById(subjectId));
+        List<Module> moduleList = subjectService.getFreeModules();
+        List<Module> availableModules = moduleList.stream().filter(sub -> !modules.contains(sub)).collect(toList());
+
+        return availableModules;
+    }
+
+    @GetMapping(value = "/{subjectId}/availableRooms", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<Room> getAvailableRoomsInSubject(@PathVariable Long subjectId) {
+        List<Room> rooms = new ArrayList<>(subjectService.getAllRoomsById(subjectId));
+        List<Room> subjectList = subjectService.getFreeRooms();
+        List<Room> availableRooms = subjectList.stream().filter(sub -> !rooms.contains(sub)).collect(toList());
+
+        return availableRooms;
+    }
 }

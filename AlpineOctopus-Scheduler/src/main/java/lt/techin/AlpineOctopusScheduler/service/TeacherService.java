@@ -1,7 +1,9 @@
 package lt.techin.AlpineOctopusScheduler.service;
 
+import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherTestDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.TeacherMapper;
 import lt.techin.AlpineOctopusScheduler.dao.ShiftRepository;
 import lt.techin.AlpineOctopusScheduler.dao.SubjectRepository;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -90,7 +93,7 @@ public class TeacherService {
 
     public Teacher update(Long id, Teacher teacher) {
 
-        validateInputWithInjectedValidator(teacher);
+//        validateInputWithInjectedValidator(teacher);
         var existingTeacher = teacherRepository.findById(id)
                 .orElseThrow(() -> new SchedulerValidationException("Teacher does not exist",
                         "id", "Teacher not found", id.toString()));
@@ -100,7 +103,8 @@ public class TeacherService {
         existingTeacher.setContactEmail(teacher.getContactEmail());
         existingTeacher.setPhone(teacher.getPhone());
         existingTeacher.setWorkHoursPerWeek(teacher.getWorkHoursPerWeek());
-        existingTeacher.setTeacherShifts(teacher.getTeacherShifts());
+        existingTeacher.setModifiedDate(LocalDateTime.now());
+
 
         return teacherRepository.save(existingTeacher);
     }
@@ -117,9 +121,6 @@ public class TeacherService {
         return teacherRepository.findById(teacherId).get().getTeacherShifts();
     }
 
-    public List<Subject> getAllSubjectsById(Long teacherId) {
-        return subjectRepository.findAllBySubjectTeachers_Id(teacherId);
-    }
 
     public Teacher addShiftToTeacher(Long teacherId, Long shiftId) {
         var existingTeacher = teacherRepository.findById(teacherId)
@@ -148,42 +149,14 @@ public class TeacherService {
         }
     }
 
-
-    public void addSubjectToTeacher(Long teacherId, Long subjectId) {
-        var existingTeacher = teacherRepository.findById(teacherId)
-                .orElseThrow(() -> new SchedulerValidationException("Teacher does not exist",
-                        "id", "Teacher not found", teacherId.toString()));
-
-        var existingSubject = subjectRepository.findById(subjectId)
-                .orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
-                        "id", "Subject not found", subjectId.toString()));
-
-        teacherRepository.insertTeacherAndSubject(teacherId, subjectId);
-    }
-
-
-    public boolean deleteSubjectFromTeacherById(Long teacherId, Long subjectId) {
-        var existingTeacher = teacherRepository.findById(teacherId)
-                .orElseThrow(() -> new SchedulerValidationException("Teacher does not exist",
-                        "id", "Teacher not found", teacherId.toString()));
-
-        var existingSubject = subjectRepository.findById(subjectId)
-                .orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
-                        "id", "Subject not found", subjectId.toString()));
-
-        teacherRepository.deleteTeacherFromSubject(teacherId, subjectId);
-
-        if (subjectRepository.existsById(subjectId)) {
-            subjectRepository.deleteById(subjectId);
-            return true;
-        }
-
-        return false;
-    }
-
     @Transactional(readOnly = true)
     public List<TeacherEntityDto> getPagedTeachersByShiftNameContaining(String shiftText) {
         return teacherRepository.findDistinctByDeletedAndTeacherShifts_NameContainingIgnoreCaseOrderByModifiedDateDesc(Boolean.FALSE, shiftText).stream().map(TeacherMapper::toTeacherEntityDto).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<TeacherEntityDto> getPagedTeachersBySubjectNameContaining(String subjectText) {
+        return teacherRepository.findDistinctByDeletedAndTeacherSubjects_NameContainingIgnoreCaseOrderByModifiedDateDesc(Boolean.FALSE, subjectText).stream().map(TeacherMapper::toTeacherEntityDto).collect(Collectors.toList());
     }
 
     public List<TeacherEntityDto> getAllAvailablePagedTeachers(int page, int pageSize) {
@@ -226,5 +199,46 @@ public class TeacherService {
         existingTeacher.setDeleted(Boolean.TRUE);
         teacherRepository.save(existingTeacher);
         return toTeacherEntityDto(existingTeacher);
+    }
+
+    public Teacher addSubjectToTeacher(Long teacherId, Long subjectId) {
+        var existingSubject = subjectRepository.findById(subjectId)
+                .orElseThrow(() -> new SchedulerValidationException("Subject does not exist",
+                        "id", "Subject not found", subjectId.toString()));
+
+        var existingTeacher = teacherRepository.findById(teacherId)
+                .orElseThrow(() -> new SchedulerValidationException("Teacher does not exist",
+                        "id", "Teacher not found", teacherId.toString()));
+
+        Set<Subject> existingSubjectList = existingTeacher.getTeacherSubjects();
+        existingSubjectList.add(existingSubject);
+        existingTeacher.setTeacherSubjects(existingSubjectList);
+
+        return teacherRepository.save(existingTeacher);
+    }
+
+    public Set<SubjectEntityDto> getAllSubjectById(Long teacherId) {
+        return teacherRepository.findById(teacherId).get().getTeacherSubjects().stream().map(SubjectMapper::toSubjectEntityDto).collect(Collectors.toSet());
+    }
+
+    public boolean deleteSubjectInTeacherById(Long teacherId, Long subjectId) {
+        try {
+            var existingTeacher = teacherRepository.findById(teacherId).get();
+            existingTeacher.getTeacherSubjects().remove(subjectRepository.findById(subjectId).get());
+            teacherRepository.save(existingTeacher);
+            return true;
+        } catch (EmptyResultDataAccessException exception) {
+            return false;
+        }
+    }
+
+    public List<Shift> getFreeShifts() {
+        return shiftRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE);
+
+    }
+
+    public List<Subject> getFreeSubjects() {
+        return subjectRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE);
+
     }
 }

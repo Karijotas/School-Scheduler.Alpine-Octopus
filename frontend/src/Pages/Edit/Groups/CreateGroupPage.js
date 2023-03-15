@@ -30,10 +30,9 @@ const shiftOptions = [
 export function CreateGroupPage() {
   const listUrl = useHref('/view/groups');
 
-  // const [create, setCreate] = useState()
   const [hide, setHide] = useState(false)
   const [name, setName] = useState('');
-  const [schoolYear, setSchoolYear] = useState('')
+  const [schoolYear, setSchoolYear] = useState(2023)
   const [studentAmount, setStudentAmount] = useState('')
   const [programs, setPrograms] = useState([])
   const [programId, setProgramId] = useState()
@@ -45,20 +44,19 @@ export function CreateGroupPage() {
   const [studentDirty, setStudentDirty] = useState(false);
 
   const [nameError, setNameError] = useState("Negali būti tuščias!")
-  const [studentError, setStudentError] = useState("")
+  const [studentError, setStudentError] = useState(" ")
   // const [yearError, setYearError] = useState("*Privaloma")
-  // const [programError, setProgramError] = useState("*Privaloma")
-  // const [shiftError, setShiftError] = useState("*Privaloma")
-
+  const [programError, setProgramError] = useState("")
+  const [shiftError, setShiftError] = useState("")
   const [formValid, setFormValid] = useState(false)
 
   useEffect(() => {
-    if (studentError || nameError ) {
+    if (studentError || nameError || programId === undefined || shiftId === undefined) {
       setFormValid(false)
     } else {
       setFormValid(true)
     }
-  }, [studentError, nameError,])
+  }, [studentError, nameError, programId, shiftId])
 
   const blurHandler = (e) => {
     switch (e.target.name) {
@@ -73,8 +71,8 @@ export function CreateGroupPage() {
 
   const nameHandler = (e) => {
     setName(e.target.value)
-    if (e.target.value.length < 2 || e.target.value.length > 40) {
-      setNameError("Įveskite nuo 2 iki 40 simbolių!")
+    if (e.target.value.length < 2 || e.target.value.length > 100) {
+      setNameError("Įveskite nuo 2 iki 100 simbolių!")
       if (!e.target.value) {
         setNameError("Negali būti tuščias!")
       }
@@ -82,25 +80,26 @@ export function CreateGroupPage() {
       setNameError("")
     }
   }
+
+
   const studentHandler = (e) => {
     setStudentAmount(e.target.value)
-    if (!e.target.value) {
-      setStudentError("Negali būti tuščias!")
-      if (!/^\d+$/.test(e.target.value)) {
-        setStudentError("Įveskite tik skaičius")
+
+    if (!/^\d+$/.test(e.target.value)) {
+      setStudentError("Įveskite tik skaičius")
+      if (!e.target.value) {
+        setStudentError("Negali būti tuščias")
       }
+
+    } else if (e.target.value > 300 || e.target.value < 1) {
+      setStudentError("Skaičius turi būti tarp 1 ir 300")
+    } else {
+      setStudentError("");
     }
+  };
 
-  }
 
 
-  // const selectShiftHandler = () => {
-  //   setShiftError("")
-  // }
-
-  // const selectProgramHandler = () => {
-  //   setProgramError("")
-  // }
 
   // const selectYearHandler = () => {
   //   setYearError("")
@@ -114,10 +113,10 @@ export function CreateGroupPage() {
     };
 
     if (result.ok) {
-      clear()
-
+      let info = result.json() 
+      .then((jsonResponse) => window.location = listUrl);
     } else {
-      window.alert("Nepavyko sukurt: " + result.status);
+      window.alert("Nepavyko sukurti: pavadinimas turi būti unikalus!");    
     }
   };
 
@@ -131,7 +130,7 @@ export function CreateGroupPage() {
         schoolYear,
         studentAmount,
       }),
-    }).then(applyResult).then(() => window.location = listUrl);
+    }).then(applyResult);
 
   };
   useEffect(() => {
@@ -188,13 +187,13 @@ export function CreateGroupPage() {
             <Form.Group widths='equal'>
               <Form.Field>
                 <label>Programa</label>
-                {/* {(programError) && <div style={{ color: "red" }}>{programError}</div>} */}
+                {(programError) && <div style={{ color: "red" }}>{programError}</div>}
                 <Select options={programs} placeholder='Programa' onClose={() => console.log(programId)} onChange={(e, data) => setProgramId(data.value)} />
 
               </Form.Field>
               <Form.Field >
                 <label>Pamaina</label>
-                {/* {(shiftError) && <div style={{ color: "red" }}>{shiftError}</div>} */}
+                {(shiftError) && <div style={{ color: "red" }}>{shiftError}</div>}
                 <Select options={shifts} placeholder='Pamaina' onClose={() => console.log(shiftId)} onChange={(e, data) => setShiftId(data.value)} />
               </Form.Field>
             </Form.Group>

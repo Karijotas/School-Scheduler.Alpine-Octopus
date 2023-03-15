@@ -16,7 +16,7 @@ const yearOptions = [
   { key: 23, value: 2023, text: "2023" },
   { key: 24, value: 2024, text: "2024" },
   { key: 25, value: 2025, text: "2025" },
-  { key: 26, value: 2026, text: "2026" }, 
+  { key: 26, value: 2026, text: "2026" },
   { key: 27, value: 2027, text: "2027" },
   { key: 28, value: 2028, text: "2028" },
 ];
@@ -24,71 +24,78 @@ const yearOptions = [
 export function CreateProgramPage() {
   // const [create, setCreate] = useState()
 
-  const listUrl = useHref('/view/programs');
   const [hide, setHide] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [subjects, setSubjects] = useState([]);
+  const [programs, setPrograms] = useState([]);
   const [subject, setSubject] = useState("");
   const [subjectHours, setSubjectHours] = [];
   const [error, setError] = useState();
   const [hours, setHours] = useState("");
+  const [createdProgram, setCreatedProgram] = useState();
+  const listUrl = useHref('/view/programs/edit/');
 
-   //Validation
-   const [nameDirty, setNameDirty] = useState(false);
-   const [nameError, setNameError] = useState("Negali būti tuščias!")
-   const [descriptionError, setDescriptionError] = useState("")
-   const [formValid, setFormValid] = useState(false)
- 
-   useEffect(() => {
-     if(nameError || descriptionError) {
-       setFormValid(false)
-     } else {
-       setFormValid(true)
-     }
-   }, [nameError, descriptionError])
-   
- 
-   const blurHandler = (e) => {
-     switch (e.target.name){
-       case 'name':
-         setNameDirty(true);
-         break
-     }
-   }
- 
-   const nameHandler = (e) => {
-     setName(e.target.value)
-     if(e.target.value.length <2 || e.target.value.length > 40){
-       setNameError("Įveskite nuo 2 iki 40 simbolių!")
-       if(!e.target.value){
-         setNameError("Negali būti tuščias!")
-       }
-     } else {
-       setNameError("")
-     }
-   }
- 
-   const descriptionHandler = (e) => {
-     setDescription(e.target.value)
-     if(e.target.value.length > 100){
-       setDescriptionError("Aprašymas negali viršyti 100 symbolių!")
-     } else {
-       setDescriptionError("")
-     }
-   }
+  //Validation
+  const [nameDirty, setNameDirty] = useState(false);
+  const [nameError, setNameError] = useState("Negali būti tuščias!")
+  const [descriptionError, setDescriptionError] = useState("")
+  const [formValid, setFormValid] = useState(false)
+
+  useEffect(() => {
+    if (nameError || descriptionError) {
+      setFormValid(false)
+    } else {
+      setFormValid(true)
+    }
+  }, [nameError, descriptionError])
+
+
+  const blurHandler = (e) => {
+    switch (e.target.name) {
+      case 'name':
+        setNameDirty(true);
+        break
+    }
+  }
+
+  const nameHandler = (e) => {
+    setName(e.target.value)
+    if (e.target.value.length < 2 || e.target.value.length > 100) {
+      setNameError("Įveskite nuo 2 iki 100 simbolių!")
+      if (!e.target.value) {
+        setNameError("Negali būti tuščias!")
+      }
+    } else {
+      setNameError("")
+    }
+  }
+
+  const descriptionHandler = (e) => {
+    setDescription(e.target.value)
+    if (e.target.value.length > 500) {
+      setDescriptionError("Aprašymas negali viršyti 500 simbolių!")
+    } else {
+      setDescriptionError("")
+    }
+  }
 
   const applyResult = (result) => {
     const clear = () => {
       setHide(true);
     };
-
     if (result.ok) {
-      clear();
+     let info = result.json() 
+      .then((jsonResponse) => window.location = listUrl + jsonResponse.id);
     } else {
-      window.alert("Nepavyko sukurt: " + result.status);
+      window.alert("Nepavyko sukurti: pavadinimas turi būti unikalus!");
     }
   };
+
+  // const fetchPrograms = () => {
+  //   fetch("/api/v1/programs")
+  //     .then((response) => response.json())
+  //     .then((jsonResponse) => setPrograms(jsonResponse))
+  // };
 
   const createProgram = () => {
     fetch("/api/v1/programs", {
@@ -99,7 +106,6 @@ export function CreateProgramPage() {
         description,
       }),
     }).then(applyResult)
-    .then(() => window.location = listUrl);
   };
 
 
@@ -119,9 +125,9 @@ export function CreateProgramPage() {
               <Form>
                 <Form.Field>
                   <label>Programos pavadinimas</label>
-                  {(nameDirty && nameError) && <div style={{color: "red"}}>{nameError}</div>}
+                  {(nameDirty && nameError) && <div style={{ color: "red" }}>{nameError}</div>}
                   <input
-                  name="name"
+                    name="name"
                     placeholder="Programos pavadinimas"
                     onBlur={blurHandler}
                     value={name}
@@ -131,7 +137,7 @@ export function CreateProgramPage() {
                 <Form.Group widths="equal">
                   <Form.Field>
                     <label>Aprašymas</label>
-                    {(descriptionError) && <div style={{color: "red"}}>{descriptionError}</div>}
+                    {(descriptionError) && <div style={{ color: "red" }}>{descriptionError}</div>}
                     <TextArea
                       placeholder="Aprašymas"
                       style={{ minHeight: 100 }}
@@ -152,7 +158,7 @@ export function CreateProgramPage() {
                     Atgal
                   </Button>
                   <Button
-                   id='details'
+                    id='details'
                     type="submit"
                     className="controls"
                     primary

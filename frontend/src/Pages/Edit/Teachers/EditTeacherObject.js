@@ -34,8 +34,9 @@ export function EditTeacherObject() {
     loginEmail: "",
     contactEmail: "",
     phone: "",
-    workHoursPerWeek: "",
-    shift: "",
+    teacherShifts: [],
+    teacherSubjects: [],
+    workHoursPerWeek: "",   
     createdDate: "",
     modifiedDate: "",
   });
@@ -75,8 +76,8 @@ export function EditTeacherObject() {
       if (!value) {
         setNameError("Negali būti tuščias!")
       }
-    } else if (value.length < 2 || value.length > 40) {
-      setNameError("Įveskite nuo 2 iki 40 simbolių!")
+    } else if (value.length < 2 || value.length > 100) {
+      setNameError("Įveskite nuo 2 iki 100 simbolių!")
 
     } else {
       setNameError("")
@@ -225,7 +226,7 @@ export function EditTeacherObject() {
 
 
   useEffect(() => {
-    fetch("/api/v1/shifts/")
+    fetch(`/api/v1/teachers/${params.id}/availableShifts`)
       .then((response) => response.json())
       .then((data) =>
         setShifts(
@@ -234,7 +235,7 @@ export function EditTeacherObject() {
           })
         )
       );
-  }, []);
+  }, [shift, teacherShifts]);
 
   const addShift = (teacherId, shiftId) => {
     fetch(`/api/v1/teachers/${teacherId}/shifts/${shiftId}/newShifts`, {
@@ -243,8 +244,9 @@ export function EditTeacherObject() {
       body: JSON.stringify({
         teacherId,
         shift,
-      }),
-    }).then(fetchTeacherShifts);
+      }),      
+    }).then(fetchTeacherShifts)
+    .then(setShift(""));
   };
 
   const removeShift = (teacherId, shiftId) => {
@@ -263,7 +265,7 @@ export function EditTeacherObject() {
   };
 
   useEffect(() => {
-    fetch("/api/v1/subjects/")
+    fetch(`/api/v1/teachers/${params.id}/availableSubjects`)
       .then((response) => response.json())
       .then((data) =>
         setSubjects(
@@ -272,7 +274,7 @@ export function EditTeacherObject() {
           })
         )
       );
-  }, []);
+  }, [subject, teacherSubjects]);
 
   const addSubject = (teacherId, subjectId) => {
     fetch(`/api/v1/teachers/${teacherId}/subjects/${subjectId}/newSubjects`, {
@@ -282,7 +284,8 @@ export function EditTeacherObject() {
         teacherId,
         subject,
       }),
-    }).then(fetchTeacherSubjects);
+    }).then(fetchTeacherSubjects)
+    .then(setSubject(""));
   };
 
 
@@ -522,8 +525,8 @@ export function EditTeacherObject() {
                                 </Form.Group>
                                 <Divider hidden />
                                 <List.Content floated="left">
-                                  <Button id='details' 
-                                    onClick={() => 
+                                  <Button id='details'
+                                    onClick={() =>
                                       addShift(params.id, shiftId)}
                                   >
                                     Pridėti
@@ -584,7 +587,7 @@ export function EditTeacherObject() {
                                 <Divider hidden />
                                 <List.Content floated="left">
                                   <Button
-                                  id='details' 
+                                    id='details'
                                     onClick={() =>
                                       addSubject(params.id, subjectId)
                                     }

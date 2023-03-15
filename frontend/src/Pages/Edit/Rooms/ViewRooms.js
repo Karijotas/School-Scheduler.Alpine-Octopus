@@ -13,6 +13,7 @@ import {
 } from "semantic-ui-react";
 import { EditMenu } from "../../../Components/EditMenu";
 import MainMenu from "../../../Components/MainMenu";
+import { SchedulesMenu } from "../../../Components/SchedulesMenu";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -37,15 +38,14 @@ export function ViewRooms() {
   };
 
   const fetchFilterRooms = async () => {
-    fetch(`/api/v1/rooms/page/name-filter/${nameText}?page=` + activePage)
+    fetch(`/api/v1/rooms/page/name-filter/${nameText}`)
       .then((response) => response.json())
       .then((jsonRespone) => setRooms(jsonRespone));
   };
 
   const removeRoom = (id) => {
-    fetch("/api/v1/rooms/" + id, {
-      method: "DELETE",
-      headers: JSON_HEADERS,
+    fetch("/api/v1/rooms/delete/" + id, {
+        method: "PATCH",
     })
       .then(fetchRooms)
       .then(setOpen(false));
@@ -53,7 +53,7 @@ export function ViewRooms() {
 
   const fetchBuildingRooms = async () => {
     fetch(
-      `/api/v1/rooms/page/building-filter/${buildingText}?page=` + activePage
+      `/api/v1/rooms/page/building-filter/${buildingText}`
     )
       .then((response) => response.json())
       .then((jsonRespone) => setRooms(jsonRespone));
@@ -118,7 +118,7 @@ export function ViewRooms() {
                 className="controls1"
                 value={nameText}
                 onChange={(e) => setNameText(e.target.value)}
-                placeholder="Filtruoti pagal klasę"
+                placeholder="Filtruoti pagal kabinetą"
               />
               <Input
                 className="controls1"
@@ -137,13 +137,13 @@ export function ViewRooms() {
                 to="/create/rooms"
               >
                 <Icon name="database" />
-                Kurti naują klasę
+                Kurti naują kabinetą
               </Button>
               <Divider horizontal hidden></Divider>
               <Table selectable>
                 <Table.Header>
                   <Table.Row>
-                    <Table.HeaderCell>Klasės pavadinimas</Table.HeaderCell>
+                    <Table.HeaderCell>Kabineto pavadinimas</Table.HeaderCell>
                     <Table.HeaderCell>Pastatas</Table.HeaderCell>
                     <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                   </Table.Row>
@@ -201,7 +201,7 @@ export function ViewRooms() {
                 >
                   <Icon name="arrow left" />{" "}
                 </Button>
-                {[...Array(pagecount)].map((e, i) => {
+                {/* {[...Array(pagecount)].map((e, i) => {
                   return (
                     <Button
                       title={i + 1}
@@ -212,7 +212,7 @@ export function ViewRooms() {
                       {i + 1}
                     </Button>
                   );
-                })}
+                })} */}
                 <Button
                   title="Pirmyn"
                   onClick={() =>

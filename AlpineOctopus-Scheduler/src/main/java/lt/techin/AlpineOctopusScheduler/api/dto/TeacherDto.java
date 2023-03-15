@@ -1,6 +1,7 @@
 package lt.techin.AlpineOctopusScheduler.api.dto;
 
 import lt.techin.AlpineOctopusScheduler.model.Shift;
+import lt.techin.AlpineOctopusScheduler.model.Subject;
 
 import java.util.Objects;
 import java.util.Set;
@@ -14,6 +15,8 @@ public class TeacherDto {
     private String phone;
     private Set<Shift> teacherShifts;
 
+    private Set<Subject> teacherSubjects;
+
     private Boolean deleted;
 
 
@@ -21,13 +24,14 @@ public class TeacherDto {
 
     }
 
-    public TeacherDto(String name, String loginEmail, String contactEmail, double workHoursPerWeek, String phone, Set<Shift> teacherShifts, Boolean deleted) {
+    public TeacherDto(String name, String loginEmail, String contactEmail, double workHoursPerWeek, String phone, Set<Shift> teacherShifts, Set<Subject> teacherSubjects, Boolean deleted) {
         this.name = name;
         this.loginEmail = loginEmail;
         this.contactEmail = contactEmail;
         this.workHoursPerWeek = workHoursPerWeek;
         this.phone = phone;
         this.teacherShifts = teacherShifts;
+        this.teacherSubjects = teacherSubjects;
         this.deleted = deleted;
     }
 
@@ -87,17 +91,25 @@ public class TeacherDto {
         this.deleted = deleted;
     }
 
+    public Set<Subject> getTeacherSubjects() {
+        return teacherSubjects;
+    }
+
+    public void setTeacherSubjects(Set<Subject> teacherSubjects) {
+        this.teacherSubjects = teacherSubjects;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TeacherDto that = (TeacherDto) o;
-        return Double.compare(that.workHoursPerWeek, workHoursPerWeek) == 0 && Objects.equals(name, that.name) && Objects.equals(loginEmail, that.loginEmail) && Objects.equals(contactEmail, that.contactEmail) && Objects.equals(phone, that.phone) && Objects.equals(teacherShifts, that.teacherShifts) && Objects.equals(deleted, that.deleted);
+        return Double.compare(that.workHoursPerWeek, workHoursPerWeek) == 0 && Objects.equals(name, that.name) && Objects.equals(loginEmail, that.loginEmail) && Objects.equals(contactEmail, that.contactEmail) && Objects.equals(phone, that.phone) && Objects.equals(teacherShifts, that.teacherShifts) && Objects.equals(teacherSubjects, that.teacherSubjects) && Objects.equals(deleted, that.deleted);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, loginEmail, contactEmail, workHoursPerWeek, phone, teacherShifts, deleted);
+        return Objects.hash(name, loginEmail, contactEmail, workHoursPerWeek, phone, teacherShifts, teacherSubjects, deleted);
     }
 
     @Override
@@ -109,6 +121,7 @@ public class TeacherDto {
                 ", workHoursPerWeek=" + workHoursPerWeek +
                 ", phone='" + phone + '\'' +
                 ", teacherShifts=" + teacherShifts +
+                ", teacherSubjects=" + teacherSubjects +
                 ", deleted=" + deleted +
                 '}';
     }

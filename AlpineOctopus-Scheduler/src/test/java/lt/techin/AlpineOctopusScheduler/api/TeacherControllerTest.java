@@ -2,6 +2,7 @@ package lt.techin.AlpineOctopusScheduler.api;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lt.techin.AlpineOctopusScheduler.AlpineOctopusSchedulerApplication;
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherTestDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -21,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 //@MockBeans({@MockBean(RoomController.class), @MockBean(RoomService.class), @MockBean(RoomRepository.class)})
 @AutoConfigureMockMvc
+@ContextConfiguration(classes = AlpineOctopusSchedulerApplication.class)
 public class TeacherControllerTest {
 
     @Autowired
@@ -69,6 +72,5 @@ public class TeacherControllerTest {
         assertThat(mappedResponse)
                 .containsExactlyInAnyOrder(teacherDto1, teacherDto2, teacherDto3, teacherDto4, teacherDto5, teacherDto6, teacherDto7, teacherDto8, teacherDto9, teacherDto10, teacherDto11, teacherDto12, teacherDto13);
     }
-
 
 }

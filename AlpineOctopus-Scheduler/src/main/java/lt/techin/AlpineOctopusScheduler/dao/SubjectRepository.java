@@ -3,9 +3,11 @@ package lt.techin.AlpineOctopusScheduler.dao;
 import lt.techin.AlpineOctopusScheduler.model.Subject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,7 +19,7 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
 
     List<Subject> findAllBySubjectModules_NameContainingIgnoreCase(String moduleText, Pageable pageable);
 
-    List<Subject> findAllBySubjectTeachers_Id(Long teachersId);
+//    List<Subject> findAllBySubjectTeachers_Id(Long teachersId);
 
     List<Subject> findAllBySubjectModules_Id(Long modulesId);
 
@@ -45,4 +47,18 @@ public interface SubjectRepository extends JpaRepository<Subject, Long> {
 //    @Query(value = "INSERT INTO modules_subjects (module_id, subject_id) VALUES (:module_id, :subject_id)",
 //            nativeQuery = true)
 //    void addModuleToSubject(@Param("module_id") Long moduleId, @Param("subject_id") Long subjectId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "INSERT INTO TEACHER_SUBJECTS (SUBJECT_ID,TEACHER_ID) VALUES (:SUBJECT_ID, :TEACHER_ID)",
+            nativeQuery = true)
+    void insertSubjectAndTeacher(@Param("SUBJECT_ID") Long subjectId, @Param("TEACHER_ID") Long teacherId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "DELETE FROM TEACHER_SUBJECTS WHERE SUBJECT_ID = :SUBJECT_ID AND TEACHER_ID= :TEACHER_ID",
+            nativeQuery = true)
+    void deleteSubjectFromTeacher(@Param("SUBJECT_ID") Long subjectId, @Param("TEACHER_ID") Long teacherId);
+
+
 }

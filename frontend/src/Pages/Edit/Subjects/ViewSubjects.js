@@ -37,7 +37,7 @@ export function ViewSubjects() {
   };
 
   const fetchFilterSubjects = async () => {
-    fetch(`/api/v1/subjects/page/name-filter/${nameText}?page=` + activePage)
+    fetch(`/api/v1/subjects/page/name-filter/${nameText}`)
       .then((response) => response.json())
       .then((jsonRespone) => setSubjects(jsonRespone));
   };
@@ -66,15 +66,6 @@ export function ViewSubjects() {
     }).then(fetchSubjects)
       .then(setOpen(false));
   };
-
-  // useEffect(() => {
-  //   nameText.length > 0 ? fetchFilterSubjects() : fetchSubjects();
-  // }, [activePage, nameText]);
-
-  // useEffect(() => {
-  //   moduleText.length > 0 ? fetchSubjectsByModules() : fetchSubjects();
-  // }, [activePage, moduleText]);
-
 
   useEffect(() => {
     nameText.length > 0 ? fetchFilterSubjects() : (moduleText.length > 0 ? fetchSubjectsByModules() : fetchSubjects())
@@ -139,7 +130,7 @@ export function ViewSubjects() {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Dalyko pavadinimas</Table.HeaderCell>
-                      <Table.HeaderCell>Moduliai</Table.HeaderCell>
+                      {/* <Table.HeaderCell>Moduliai</Table.HeaderCell> */}
                       <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
@@ -148,16 +139,16 @@ export function ViewSubjects() {
                     {subjects.map((subject, index) => (
                       <Table.Row key={index}>
                         <Table.Cell>{subject.name}</Table.Cell>
-                        <Table.Cell>
-                          <List bulleted>
-                            {console.log(subject.subjectModules)}
-                            {subject.subjectModules.map((module, index) => (
+                        {/* <Table.Cell>
+                          <List bulleted> */}
+                            {/* {console.log(subject) + "ciaaa"} */}
+                            {/* {subject.subjectModules.map((module, index) => (
                               <List.Content key={index}>
                                 <List.Item>{module.name}</List.Item>
                               </List.Content>
-                            ))}
-                          </List>
-                        </Table.Cell>
+                            ))} */}
+                          {/* </List>
+                        </Table.Cell> */}
                         <Table.Cell collapsing>
                           <Button
                             id="icocolor"
@@ -206,7 +197,7 @@ export function ViewSubjects() {
                   >
                     <Icon name="arrow left" />{" "}
                   </Button>
-                  {[...Array(pagecount)].map((e, i) => {
+                  {/* {[...Array(pagecount)].map((e, i) => {
                     return (
                       <Button
                         title={i + 1}
@@ -217,7 +208,7 @@ export function ViewSubjects() {
                         {i + 1}
                       </Button>
                     );
-                  })}
+                  })} */}
                   <Button
                     title="Pirmyn"
                     onClick={() =>

@@ -89,16 +89,15 @@ export function ViewGroups() {
     if (
       (nameText.length === 0 &&
         yearText.length === 0 &&
-        programText.length === 0) ||
-      yearText === "Filtruoti pagal metus"
+        programText.length === 0)
     ) {
       fetchGroups();
       // setYearText('2023')
-    } else if (nameText.length > 0) {
+    } else if (nameText.length > 0 ) {
       setProgramText("");
       setYearText("");
       fetchFilterGroups();
-    } else if (yearText.length > 0) {
+    } else if (yearText > 0 ) {
       setNameText("");
       setProgramText("");
       fetchYearGroups();
@@ -139,8 +138,8 @@ export function ViewGroups() {
                 id="selectYear"
                 value={yearText}
                 onChange={(e) => setYearText(e.target.value)}
-              >
-                <option>Filtruoti pagal metus</option>
+                >  
+                <option value="">Filtruoti pagal metus</option>              
                 {Object.entries(YEAR_OPTIONS).map(([key, value]) => (
                   <option value={key}>{value}</option>
                 ))}
@@ -236,7 +235,7 @@ export function ViewGroups() {
                 >
                   <Icon name="arrow left" />{" "}
                 </Button>
-                {[...Array(pagecount)].map((e, i) => {
+                {/* {[...Array(pagecount)].map((e, i) => {
                   return (
                     <Button
                       title={i + 1}
@@ -247,7 +246,7 @@ export function ViewGroups() {
                       {i + 1}
                     </Button>
                   );
-                })}
+                })} */}
                 <Button
                   title="Pirmyn"
                   onClick={() =>

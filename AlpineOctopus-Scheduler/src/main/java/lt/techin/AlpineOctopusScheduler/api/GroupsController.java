@@ -4,10 +4,8 @@ import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.GroupsDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.GroupsEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.GroupsTestDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupsMapper;
 import lt.techin.AlpineOctopusScheduler.dao.GroupsRepository;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
-import lt.techin.AlpineOctopusScheduler.model.Groups;
 import lt.techin.AlpineOctopusScheduler.service.GroupService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,8 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupsMapper.toGroup;
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupsMapper.toGroupDto;
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.GroupsMapper.*;
 import static org.springframework.http.ResponseEntity.ok;
 
 @Controller
@@ -51,7 +48,6 @@ public class GroupsController {
     public List<GroupsEntityDto> getDeletedGroups() {
         return groupService.getAllDeletedGroups();
     }
-
 
 
     @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -122,11 +118,11 @@ public class GroupsController {
     }
 
     @GetMapping(value = "/{groupId}", produces = {MediaType.APPLICATION_JSON_VALUE,})
-    public ResponseEntity<Groups> getGroup(@PathVariable Long groupId) {
+    public ResponseEntity<GroupsEntityDto> getGroup(@PathVariable Long groupId) {
         var groupsOptional = groupService.getById(groupId);
 
         var responseEntity = groupsOptional
-                .map(groups -> ok(groups))
+                .map(groups -> ok(toGroupEntityDto(groups)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
 
         return responseEntity;
@@ -135,19 +131,19 @@ public class GroupsController {
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE,})
     public ResponseEntity<GroupsDto> createGroup(@Valid @RequestBody GroupsDto groupsDto, Long programId, Long shiftId) {
         if (groupService.groupNameIsUnique(toGroup(groupsDto))) {
-            if (groupService.studentAmountIsValid(toGroup(groupsDto))) {
-                if (groupService.schoolYearIsValid(toGroup(groupsDto))) {
-                    var createdGroup = groupService.create(toGroup(groupsDto), programId, shiftId);
-                    return ok(toGroupDto(createdGroup));
-                } else {
-                    throw new SchedulerValidationException("Invalid year value", "School year", "School year must be between 2023-3023", groupsDto.getSchoolYear().toString());
-                }
+//            if (groupService.studentAmountIsValid(toGroup(groupsDto))) {
+            if (groupService.schoolYearIsValid(toGroup(groupsDto))) {
+                var createdGroup = groupService.create(toGroup(groupsDto), programId, shiftId);
+                return ok(toGroupDto(createdGroup));
             } else {
-                throw new SchedulerValidationException("Group already exists", "Group name", "Already exists", groupsDto.getName());
+                throw new SchedulerValidationException("Invalid year value", "School year", "School year must be between 2023-3023", groupsDto.getSchoolYear().toString());
             }
         } else {
-            throw new SchedulerValidationException("Invalid student amount", "Student amount", "Student amount must be between 1-300", groupsDto.getStudentAmount().toString());
+            throw new SchedulerValidationException("Group already exists", "Group name", "Already exists", groupsDto.getName());
         }
+//        } else {
+//            throw new SchedulerValidationException("Invalid student amount", "Student amount", "Student amount must be between 1-300", groupsDto.getStudentAmount().toString());
+//        }
     }
 
     @DeleteMapping("/{groupId}")
@@ -177,16 +173,16 @@ public class GroupsController {
 
     @PatchMapping("/{groupId}")
     public ResponseEntity<GroupsDto> updateGroup(@PathVariable Long groupId, @Valid @RequestBody GroupsDto groupsDto, Long programId, Long shiftId) {
-        if (groupService.studentAmountIsValid(toGroup(groupsDto))) {
-            if (groupService.schoolYearIsValid(toGroup(groupsDto))) {
-                var updatedGroup = groupService.update(groupId, toGroup(groupsDto), programId, shiftId);
-                return ok(toGroupDto(updatedGroup));
-            } else {
-                throw new SchedulerValidationException("Invalid year value", "School year", "School year must be between 2023-3023", groupsDto.getSchoolYear().toString());
-            }
+//        if (groupService.studentAmountIsValid(toGroup(groupsDto))) {
+        if (groupService.schoolYearIsValid(toGroup(groupsDto))) {
+            var updatedGroup = groupService.update(groupId, toGroup(groupsDto), programId, shiftId);
+            return ok(toGroupDto(updatedGroup));
         } else {
-            throw new SchedulerValidationException("Invalid student amount", "Student amount", "Student amount must be between 1-300", groupsDto.getStudentAmount().toString());
+            throw new SchedulerValidationException("Invalid year value", "School year", "School year must be between 2023-3023", groupsDto.getSchoolYear().toString());
         }
+//        } else {
+//            throw new SchedulerValidationException("Invalid student amount", "Student amount", "Student amount must be between 1-300", groupsDto.getStudentAmount().toString());
+//        }
     }
 
     @PatchMapping("/delete/{groupId}")
@@ -199,5 +195,11 @@ public class GroupsController {
     public ResponseEntity<GroupsEntityDto> restoreGroup(@PathVariable Long groupId) {
         var updatedGroup = groupService.restoreGroup(groupId);
         return ok(updatedGroup);
+    }
+
+    @GetMapping(path = "/all")
+    @ResponseBody
+    public List<GroupsTestDto> getAllGroups() {
+        return groupService.getAllGroups();
     }
 }

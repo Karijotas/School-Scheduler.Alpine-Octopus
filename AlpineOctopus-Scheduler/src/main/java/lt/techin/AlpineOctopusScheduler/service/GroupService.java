@@ -150,7 +150,12 @@ public class GroupService {
     }
 
     public Groups replace(Long id, Groups groups) {
-        validateInputWithInjectedValidator(groups);
+//        validateInputWithInjectedValidator(groups);
+    	
+    	Groups existingGroups = groupsRepository.findById(id)
+                .orElseThrow(() -> new SchedulerValidationException("Group does not exist", "id", "Group doesn't exist", id.toString()));
+    	
+    	
         groups.setId(id);
         return groupsRepository.save(groups);
     }

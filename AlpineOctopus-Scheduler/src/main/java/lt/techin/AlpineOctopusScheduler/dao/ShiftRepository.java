@@ -12,6 +12,7 @@ public interface ShiftRepository extends JpaRepository<Shift, Long> {
 
     List<Shift> findByNameContainingIgnoreCase(String nameText, Pageable pageable);
 
+
     List<Shift> findAllByDeletedOrderByModifiedDateDesc(Boolean deleted, Pageable pageable);
 
     List<Shift> findAllByDeletedOrderByModifiedDateDesc(Boolean deleted);

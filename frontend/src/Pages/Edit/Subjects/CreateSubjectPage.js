@@ -10,7 +10,7 @@ const JSON_HEADERS = {
 
 export function CreateSubjecPage() {
   // const [create, setCreate] = useState()
-  const listUrl = useHref('/view/subjects');
+  const listUrl = useHref('/view/subjects/edit/');
   const [hide, setHide] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -28,7 +28,7 @@ export function CreateSubjecPage() {
   const [formValid, setFormValid] = useState(false)
 
   useEffect(() => {
-    if(nameError || descriptionError) {
+    if (nameError || descriptionError) {
       setFormValid(false)
     } else {
       setFormValid(true)
@@ -36,7 +36,7 @@ export function CreateSubjecPage() {
   }, [nameError, descriptionError])
 
   const blurHandler = (e) => {
-    switch (e.target.name){
+    switch (e.target.name) {
       case 'name':
         setNameDirty(true);
         break
@@ -45,9 +45,9 @@ export function CreateSubjecPage() {
 
   const nameHandler = (e) => {
     setName(e.target.value)
-    if(e.target.value.length <2 || e.target.value.length > 40){
-      setNameError("Įveskite nuo 2 iki 40 simbolių!")
-      if(!e.target.value){
+    if (e.target.value.length < 2 || e.target.value.length > 100) {
+      setNameError("Įveskite nuo 2 iki 100 simbolių!")
+      if (!e.target.value) {
         setNameError("Negali būti tuščias!")
       }
     } else {
@@ -57,8 +57,8 @@ export function CreateSubjecPage() {
 
   const descriptionHandler = (e) => {
     setDescription(e.target.value)
-    if(e.target.value.length > 100){
-      setDescriptionError("Aprašymas negali viršyti 100 symbolių!")
+    if (e.target.value.length > 500) {
+      setDescriptionError("Aprašymas negali viršyti 500 simbolių!")
     } else {
       setDescriptionError("")
     }
@@ -70,9 +70,10 @@ export function CreateSubjecPage() {
     };
 
     if (result.ok) {
-      clear();
+      let info = result.json()
+        .then((jsonResponse) => window.location = listUrl + jsonResponse.id);
     } else {
-      window.alert("Nepavyko sukurt: " + result.status);
+      window.alert("Nepavyko sukurti: pavadinimas turi būti unikalus!");
     }
   };
 
@@ -87,7 +88,7 @@ export function CreateSubjecPage() {
         // teachers,
         // rooms,
       }),
-    }).then(applyResult).then(() => window.location = listUrl);
+    }).then(applyResult);
   };
 
   useEffect(() => {
@@ -128,38 +129,38 @@ export function CreateSubjecPage() {
 
   return (
     <div>
-     <MainMenu />
+      <MainMenu />
 
-<Grid columns={2} >
-  <Grid.Column width={2} id='main'>
-    <EditMenu />
-  </Grid.Column>
+      <Grid columns={2} >
+        <Grid.Column width={2} id='main'>
+          <EditMenu />
+        </Grid.Column>
 
-  <Grid.Column floated='left' textAlign='left' verticalAlign='top' width={13}>
-    <Segment id='segment' color='teal'>
-        <div className="create-new-page">
-          <Form>
-            <Form.Field>
-              <label>Dalyko pavadinimas</label>
-              {(nameDirty && nameError) && <div style={{color: "red"}}>{nameError}</div>}
-              <input
-                placeholder="Dalyko pavadinimas"
-                onBlur={blurHandler}
-                name="name"
-                value={name}
-                onChange={(e) => nameHandler(e)}
-              />
-            </Form.Field>
-            <Form.Field>
-              <label>Aprašymas</label>
-              {(descriptionError) && <div style={{color: "red"}}>{descriptionError}</div>}
-              <input
-                placeholder="Aprašymas"
-                value={description}
-                onChange={(e) => descriptionHandler(e)}
-              />
-            </Form.Field>
-            {/* <Form.Group widths="equal">
+        <Grid.Column floated='left' textAlign='left' verticalAlign='top' width={13}>
+          <Segment id='segment' color='teal'>
+            <div className="create-new-page">
+              <Form>
+                <Form.Field>
+                  <label>Dalyko pavadinimas</label>
+                  {(nameDirty && nameError) && <div style={{ color: "red" }}>{nameError}</div>}
+                  <input
+                    placeholder="Dalyko pavadinimas"
+                    onBlur={blurHandler}
+                    name="name"
+                    value={name}
+                    onChange={(e) => nameHandler(e)}
+                  />
+                </Form.Field>
+                <Form.Field>
+                  <label>Aprašymas</label>
+                  {(descriptionError) && <div style={{ color: "red" }}>{descriptionError}</div>}
+                  <input
+                    placeholder="Aprašymas"
+                    value={description}
+                    onChange={(e) => descriptionHandler(e)}
+                  />
+                </Form.Field>
+                {/* <Form.Group widths="equal">
               <Form.Field>
                 <label>Moduliai</label>
                 <Select
@@ -188,32 +189,32 @@ export function CreateSubjecPage() {
                 />
               </Form.Field>
             </Form.Group> */}
-            <div>
-              <Button
-                icon
-                labelPosition="left"
-                className=""
-                as={NavLink} exact to='/view/subjects'
-              >
-                <Icon name="arrow left" />
-                Atgal
-              </Button>
-              <Button
-                type="submit"
-                disabled={!formValid}
-                className="controls"
-                primary
-                id="details"
-                onClick={createSubject}
-              >
-                Sukurti
-              </Button>
+                <div>
+                  <Button
+                    icon
+                    labelPosition="left"
+                    className=""
+                    as={NavLink} exact to='/view/subjects'
+                  >
+                    <Icon name="arrow left" />
+                    Atgal
+                  </Button>
+                  <Button
+                    type="submit"
+                    disabled={!formValid}
+                    className="controls"
+                    primary
+                    id="details"
+                    onClick={createSubject}
+                  >
+                    Sukurti
+                  </Button>
+                </div>
+              </Form>
             </div>
-          </Form>
-        </div>
-        </Segment>
-      </Grid.Column>
-    </Grid>
+          </Segment>
+        </Grid.Column>
+      </Grid>
     </div>
   );
 }

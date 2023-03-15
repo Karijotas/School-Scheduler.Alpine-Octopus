@@ -23,6 +23,9 @@ export function EditSubjectObject() {
   const [rooms, setRooms] = useState([]);
   const [room, setRoom] = useState("");
   const [roomId, setRoomId] = useState("");
+  const [roomsChange, setRoomsChange] = useState(true);
+  const [teachersChange, setTeachersChange] = useState(true);
+  const [modulesChange, setModulesChange] = useState(true);
 
   const [modulesInSubjects, setModulesInSubjects] = useState([]);
   const [roomsInSubjects, setRoomsInSubjects] = useState([]);
@@ -43,7 +46,7 @@ export function EditSubjectObject() {
   const [state, setState] = useState("")
   const [nameError, setNameError] = useState("")
     
-    const [descriptionError, setDescriptionError] = useState("")
+  const [descriptionError, setDescriptionError] = useState("")
     
 
    
@@ -74,8 +77,8 @@ export function EditSubjectObject() {
       };
       
     const validateNameInput = (value) => {
-        if (value.length <2 || value.length > 40) {
-            setNameError("Įveskite nuo 2 iki 40 simbolių!")
+        if (value.length <2 || value.length > 100) {
+            setNameError("Įveskite nuo 2 iki 100 simbolių!")
             if(!value){
                 setNameError("Pavadinimas negali būti tuščias!")
               } 
@@ -85,8 +88,8 @@ export function EditSubjectObject() {
       };
 
       const validateDescriptionInput = (value) => {
-        if (value.length > 100) {
-            setDescriptionError("Aprašymas negali viršyti 100 symbolių!")
+        if (value.length > 500) {
+            setDescriptionError("Aprašymas negali viršyti 500 simbolių!")
         } else {
             setDescriptionError("") 
         }
@@ -185,7 +188,7 @@ export function EditSubjectObject() {
   // }
 
   useEffect(() => {
-    fetch("/api/v1/modules/")
+    fetch(`/api/v1/subjects/${params.id}/availableModules`)
       .then((response) => response.json())
       .then((data) =>
         setModules(
@@ -194,10 +197,10 @@ export function EditSubjectObject() {
           })
         )
       );
-  }, []);
+  }, [modulesInSubjects, module]);
 
   useEffect(() => {
-    fetch("/api/v1/teachers/")
+    fetch(`/api/v1/subjects/${params.id}/availableTeachers`)
       .then((response) => response.json())
       .then((data) =>
         setTeachers(
@@ -206,10 +209,10 @@ export function EditSubjectObject() {
           })
         )
       );
-  }, []);
+  }, [teachersInSubjects, teacher]);
 
   useEffect(() => {
-    fetch("/api/v1/rooms/")
+    fetch(`/api/v1/subjects/${params.id}/availableRooms`)
       .then((response) => response.json())
       .then((data) =>
         setRooms(
@@ -218,7 +221,7 @@ export function EditSubjectObject() {
           })
         )
       );
-  }, []);
+  }, [roomsInSubjects, room]);
 
   const addModule = (subjectId, moduleId) => {
     fetch(`/api/v1/subjects/${subjectId}/modules/${moduleId}/newModules`, {
@@ -228,7 +231,8 @@ export function EditSubjectObject() {
         subjectId,
         module,
       }),
-    }).then(getModulesInSubjects);
+    }).then(getModulesInSubjects)
+    .then(setModule(""));
   };
 
   const removeModule = (subjectId, moduleId) => {
@@ -246,14 +250,17 @@ export function EditSubjectObject() {
         subjectId,
         teacher,
       }),
-    }).then(getTeachersInSubjects);
+    }).then(getTeachersInSubjects)
+    .then(setTeacher(""))
+    .then(setTeachersChange(false));
   };
 
   const removeTeacher = (subjectId, teacherId) => {
     fetch(`/api/v1/subjects/${subjectId}/teachers/${teacherId}`, {
       method: "DELETE",
       headers: JSON_HEADERS,
-    }).then(getTeachersInSubjects);
+    }).then(getTeachersInSubjects)
+    .then(setTeachersChange(false));
   };
 
   const addRoom = (subjectId, roomId) => {
@@ -264,7 +271,8 @@ export function EditSubjectObject() {
         subjectId,
         room,
       }),
-    }).then(getRoomsInSubjects);
+    }).then(getRoomsInSubjects)
+    .then(setRoom(""));
   };
 
   const removeRoom = (subjectId, roomId) => {
@@ -500,7 +508,7 @@ export function EditSubjectObject() {
                                       icon="remove"
                                       title="Pašalinti"
                                       onClick={() =>
-                                        removeModule(params.id, module.id)
+                                        removeModule(params.id, module.id)                                                                                
                                       }
                                     ></Button>
                                   </Table.Cell>

@@ -2,22 +2,25 @@ package lt.techin.AlpineOctopusScheduler.api.dto;
 
 import lt.techin.AlpineOctopusScheduler.model.Module;
 import lt.techin.AlpineOctopusScheduler.model.Room;
-import lt.techin.AlpineOctopusScheduler.model.Teacher;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
 
-public class SubjectEntityDto extends SubjectDto{
+public class SubjectEntityDto extends SubjectDto {
 
     private Long id;
 
-    public SubjectEntityDto(){
+    public SubjectEntityDto() {
 
     }
 
-    public SubjectEntityDto(String name, String description, LocalDateTime createdDate, LocalDateTime modifiedDate, Set<Module> subjectModules, Set<Room> subjectRooms, Set<Teacher> subjectTeachers, Long id, Boolean deleted) {
-        super(name, description, createdDate, modifiedDate, subjectModules, subjectRooms, subjectTeachers, deleted);
+    public SubjectEntityDto(Long id) {
+        this.id = id;
+    }
+
+    public SubjectEntityDto(String name, String description, LocalDateTime createdDate, LocalDateTime modifiedDate, Set<Module> subjectModules, Set<Room> subjectRooms, Boolean deleted, Long id) {
+        super(name, description, createdDate, modifiedDate, subjectModules, subjectRooms, deleted);
         this.id = id;
     }
 
