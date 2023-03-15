@@ -89,6 +89,14 @@ public class ScheduleController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping(value = "{scheduleId}/{searchedLesson}/", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public Lesson getLessonFromSchedule(@PathVariable Long scheduleId, @PathVariable Long searchedLesson) {
+        var lessonOptional = scheduleService.getSingleLesson(scheduleId, searchedLesson);
+
+        return lessonOptional;
+    }
+
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<ScheduleEntityDto> createSchedule(@RequestBody ScheduleEntityDto scheduleEntityDto, Long groupId,
                                                             @RequestParam(value = "startingDate", required = false) String startingDate) {
@@ -124,14 +132,6 @@ public class ScheduleController {
 
         var updatedSchedule = scheduleService.ScheduleLesson(scheduleId, subjectId, starting, ending);
         return ok(toScheduleEntityDto(updatedSchedule));
-    }
-
-    @GetMapping(value = "/{scheduleId}/{lessonId}/", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Lesson> getLessonFromSchedule(@PathVariable Long scheduleId, @PathVariable Long lessonId) {
-        Lesson lessonOptional = scheduleService.getSingleLesson(scheduleId, lessonId);
-
-        return lessonOptional.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 }

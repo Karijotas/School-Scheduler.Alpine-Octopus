@@ -181,7 +181,7 @@ public class ScheduleService {
         return scheduleRepository.save(existingSchedule);
     }
 
-    public Optional<Lesson> getSingleLesson(Long scheduleId, Long lessonId) {
+    public Lesson getSingleLesson(Long scheduleId, Long lessonId) {
         //finding the schedule in repository
         var existingSchedule = scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", scheduleId.toString()));

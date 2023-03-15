@@ -10,7 +10,7 @@ import { useState } from 'react';
 
 Schedule.Inject(Day, Week, WorkWeek, Month, Agenda, Resize, DragAndDrop);
 
-export function ScheduleView() {
+export function Sched1() {
 
   const [schedules, setSchedules] = useState({
     name: "",
@@ -64,14 +64,12 @@ export function ScheduleView() {
   //     .then((jsonRespones) => setSchedules(jsonRespones));
   // }, [])
 
-  29
+  useEffect(() => {
+    fetch("/api/v1/scheduler/1/6")
+    .then((response) => response.json)
+    .then(setLesson)
+  }, [])
 
-  method = POST will work if you 'post' a form to the url /test.
-  
-  if you type a url in address bar of a browser and hit enter, it's always a GET request, so you had to specify POST request.
-  
-  Google for HTTP GET and HTTP POST (there are several others like PUT DELETE). They all have their own meaning.
-  
 
   return (
     <Container>
@@ -110,7 +108,7 @@ export function ScheduleView() {
       <h1 className="title-text">{schedules.name}</h1>
       <ScheduleComponent timeFormat='HH' firstDayOfWeek='1' height='550px' selectedDate={new Date(2021, 8, 14, 10, 0)} eventSettings={{ dataSource: data }} colorField='Color'>
         <ResourcesDirective>
-          <ResourceDirective field='GroupId' title='Owner' name='Owners' dataSource={resourceData} textField='GroupText' idField='GroupId' colorField='GroupColor'>
+          <ResourceDirective field='GroupId' title='Owner' name='Owners'  textField='GroupText' idField='GroupId' colorField='GroupColor'>
           </ResourceDirective>
         </ResourcesDirective>
         <ViewsDirective>
