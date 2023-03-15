@@ -15,6 +15,7 @@ import {
 } from "semantic-ui-react";
 import MainMenu from "../../Components/MainMenu";
 import { SchedulesMenu } from "../../Components/SchedulesMenu";
+import { ScheduleView } from "./Schedule";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -409,7 +410,6 @@ export function EditGroupScheduleObject() {
                     </Table.Row>
                   </Table.Body>
                 </Table>
-
                 <Button onClick={() => setActive(true)}>Atšaukti</Button>
                 <Button
                   disabled={!formValid}

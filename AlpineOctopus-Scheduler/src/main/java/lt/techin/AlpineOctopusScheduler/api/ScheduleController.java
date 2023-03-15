@@ -2,6 +2,7 @@ package lt.techin.AlpineOctopusScheduler.api;
 
 import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleEntityDto;
+import lt.techin.AlpineOctopusScheduler.model.Lesson;
 import lt.techin.AlpineOctopusScheduler.model.Schedule;
 import lt.techin.AlpineOctopusScheduler.service.ScheduleService;
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ScheduleMapper.toSchedule;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ScheduleMapper.toScheduleEntityDto;
@@ -82,6 +84,12 @@ public class ScheduleController {
         return scheduleOptional
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping(value = "/{scheduleId}/lessons", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public Set<Lesson> getLessonsByScheduleId(@PathVariable Long scheduleId) {
+        
+        return scheduleService.getAllLessonsByScheduleId(scheduleId);
     }
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})

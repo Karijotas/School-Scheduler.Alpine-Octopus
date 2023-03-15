@@ -1,12 +1,13 @@
 import './Schedule.css' 
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import * as ReactDOM from 'react-dom';
 import {Container} from "semantic-ui-react";
 import { Schedule, ScheduleComponent, ResourcesDirective, ResourceDirective, ViewsDirective, ViewDirective, Inject, Day, Week, WorkWeek, Month, Agenda, TimelineViews, Resize, DragAndDrop, TimelineMonth } from '@syncfusion/ej2-react-schedule';
 
 import { extend, closest, remove, addClass } from '@syncfusion/ej2-base';
 import { TreeViewComponent } from '@syncfusion/ej2-react-navigations';
-import * as dataSource from './dataSource.json';
+import * as datasource from './datasource.json';
+import { DataManager, WebApiAdaptor } from '@syncfusion/ej2-data';
 
 
 
@@ -14,36 +15,51 @@ import * as dataSource from './dataSource.json';
 Schedule.Inject(Day, Week, WorkWeek, Month, Agenda, Resize, DragAndDrop);
 
 export function ScheduleView() {
+    const [lessons, setLessons] = useState([]);
+    const [schedule, setSchedule] = useState([]);
 
-    const data = [{
-            Id: 2,
-            Subject: 'Matematika',
-            StartTime: new Date(2021, 8, 15, 10, 0),
-            EndTime: new Date(2021, 8, 15, 14, 0),
-            CategoryColor: "#1aaa55",
-            GroupId: 1
-        },
-        {
-            Id: 1,
-            Subject: "Velykų atostogos",
-            StartTime: new Date(2021, 8, 16, 24, 0),
-            EndTime: new Date(2021, 8, 24, 24, 0),
-            IsAllDay: true,
-            IsBlock: true,
-            CategoryColor: "#357cd2",
-            GroupId: 2
+    useEffect(() => {
+        fetch("/api/v1/schedule/1")
+          .then((response) => response.json())
+          .then((jsonRespones) => setSchedule(jsonRespones))
+          .then(setLessons(schedule.lessons));
+      }, []);
+    
+      const dataManager = new DataManager({
+        url: "https://ej2services.syncfusion.com/production/web-services/api/Schedule",
+        adaptor: new WebApiAdaptor,
+        crossDomain: true
+    });
+
+    // const data = [{
+    //         Id: 2,
+    //         Subject: 'Matematika',
+    //         StartTime: new Date(2021, 8, 15, 10, 0),
+    //         EndTime: new Date(2021, 8, 15, 14, 0),
+    //         CategoryColor: "#1aaa55",
+    //         GroupId: 1
+    //     },
+    //     {
+    //         Id: 1,
+    //         Subject: "Velykų atostogos",
+    //         StartTime: new Date(2021, 8, 16, 24, 0),
+    //         EndTime: new Date(2021, 8, 24, 24, 0),
+    //         IsAllDay: true,
+    //         IsBlock: true,
+    //         CategoryColor: "#357cd2",
+    //         GroupId: 2
                    
             
-        },
-        {
-            Id: 2,
-            Subject: "Not Available",
-            StartTime: new Date(2021, 8, 14, 10, 0),
-            EndTime: new Date(2021, 8, 14, 12, 0),
-            IsAllDay: false,
-            IsBlock: true,
+    //     },
+    //     {
+    //         Id: 2,
+    //         Subject: "Not Available",
+    //         StartTime: new Date(2021, 8, 14, 10, 0),
+    //         EndTime: new Date(2021, 8, 14, 12, 0),
+    //         IsAllDay: false,
+    //         IsBlock: true,
             
-        }];
+    //     }];
 
         const resourceData = [
             { GroupText: 'Group A', GroupId: 1, GroupColor: '#1aaa55' },
@@ -53,7 +69,9 @@ export function ScheduleView() {
     return (
     <Container>
         <h1 className="title-text">Tvarkaraštis</h1>
-    <ScheduleComponent timeFormat='HH' firstDayOfWeek='1' height='550px'  selectedDate={new Date(2021, 8, 15)} eventSettings={{ dataSource: data }} colorField='Color'>
+        {console.log(dataManager)}
+    <ScheduleComponent timeFormat='HH' firstDayOfWeek='1' height='550px'  selectedDate={new Date(2021, 8, 15)} eventSettings={{ dataSource: dataManager}} 
+ colorField='Color'>
     <ResourcesDirective>
               <ResourceDirective field='GroupId' title='Owner' name='Owners' dataSource={resourceData} textField='GroupText' idField='GroupId' colorField='GroupColor'>
               </ResourceDirective>
@@ -64,7 +82,7 @@ export function ScheduleView() {
       <ViewDirective option='WorkWeek'/>
       <ViewDirective option='Month'/>
     </ViewsDirective>
-    <Inject services={[Day, Week, WorkWeek, Month, Agenda]}/>
+    <Inject services={[Day, Week, WorkWeek, Month, Agenda, DragAndDrop]}/>
   </ScheduleComponent>
   
 
