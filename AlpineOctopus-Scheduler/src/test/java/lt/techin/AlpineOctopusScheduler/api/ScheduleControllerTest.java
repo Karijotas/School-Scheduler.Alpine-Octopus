@@ -3,9 +3,9 @@ package lt.techin.AlpineOctopusScheduler.api;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lt.techin.AlpineOctopusScheduler.AlpineOctopusSchedulerApplication;
-import lt.techin.AlpineOctopusScheduler.api.dto.ProgramDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.ProgramTestDto;
-import lt.techin.AlpineOctopusScheduler.model.Program;
+import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleTestDto;
+import lt.techin.AlpineOctopusScheduler.model.Schedule;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -25,10 +25,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @AutoConfigureMockMvc
 @ContextConfiguration(classes = AlpineOctopusSchedulerApplication.class)
-class ProgramControllerTest {
+public class ScheduleControllerTest {
 
-    //    @MockBean
-//    ProgramRepository programRepository;
     @Autowired
     ObjectMapper objectMapper;
     @Autowired
@@ -42,43 +40,32 @@ class ProgramControllerTest {
     void tearDown() {
     }
 
+
     @Test
     @Order(1)
-    void getPrograms_returnsCorrectDtos() throws Exception {
-        //operacija_kokiusduomenis_expectedresult
+    void getSchedules_returnsCorrectDtos() throws Exception {
 
-
-        var programDto1 = new ProgramTestDto(1L);
-        var programDto2 = new ProgramTestDto(2L);
-        var programDto3 = new ProgramTestDto(3L);
-        var programDto4 = new ProgramTestDto(4l);
-        var programDto5 = new ProgramTestDto(5l);
-        var programDto6 = new ProgramTestDto(6l);
-        var programDto7 = new ProgramTestDto(7l);
-        var programDto8 = new ProgramTestDto(8l);
-        var programDto9 = new ProgramTestDto(9l);
-        var programDto10 = new ProgramTestDto(10l);
-        var programDto11 = new ProgramTestDto(11l);
-        var programDto12 = new ProgramTestDto(12l);
-        var programDto13 = new ProgramTestDto(13l);
-        var programDto14 = new ProgramTestDto(14l);
+        var scheduleDto1 = new ScheduleTestDto(1l);
+        var scheduleDto2 = new ScheduleTestDto(2l);
+        var scheduleDto3 = new ScheduleTestDto(3l);
+        var scheduleDto4 = new ScheduleTestDto(4l);
+        var scheduleDto5 = new ScheduleTestDto(5l);
 
 
         var mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders
-                                .get("/api/v1/programs/all")
+                                .get("/api/v1/schedule/all")
                                 .accept(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
                 .andReturn();
 
-        var mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<ProgramTestDto>>() {
-        });
+        var mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+                new TypeReference<List<ScheduleTestDto>>() {
+                });
 
         assertThat(mappedResponse)
-                .containsExactlyInAnyOrder(programDto1, programDto2, programDto3, programDto4, programDto5, programDto6,
-                        programDto7, programDto8, programDto9, programDto10, programDto11, programDto12, programDto13, programDto14);
-
+                .containsExactlyInAnyOrder(scheduleDto1, scheduleDto2, scheduleDto3, scheduleDto4, scheduleDto5);
     }
 
     public static String asJsonString(final Object obj) {
@@ -91,15 +78,15 @@ class ProgramControllerTest {
 
     @Test
     @Order(4)
-    void createProgram_shouldCreateProgram() throws Exception {
-        Program newProgram = new Program();
-        newProgram.setName("Reikalingieji amatai");
-        newProgram.setDescription("Labai reikalingų specialybių programa");
+    void createSchedule_shouldCreateSchedule() throws Exception {
+        Schedule newSchedule = new Schedule();
+        newSchedule.setName("Penktasis");
+        newSchedule.setStatus("Valid");
 
         var mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders
-                                .post("/api/v1/programs")
-                                .content(asJsonString(newProgram))
+                                .post("/api/v1/schedule?groupId=5&startingDate=2023-05-06")
+                                .content(asJsonString(newSchedule))
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .accept(MediaType.APPLICATION_JSON)
                 )
@@ -112,43 +99,41 @@ class ProgramControllerTest {
 
     @Test
     @Order(2)
-    void updateProgram_shouldUpdateProgram() throws Exception {
-        Program newProgram2 = new Program();
-        newProgram2.setName("Programele");
-        newProgram2.setDescription("Super sudetinga");
-
+    void updateSchedule_shouldUpdateSchedule() throws Exception {
+        Schedule newSchedules = new Schedule();
+        newSchedules.setName("Penktasis");
 
         var mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders
-                                .put("/api/v1/programs/2")
+                                .put("/api/v1/schedule/2")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(newProgram2)))
+                                .content(objectMapper.writeValueAsString(newSchedules)))
                 .andReturn();
 
 
-        assertEquals("Programele", newProgram2.getName());
-        assertEquals("Super sudetinga", newProgram2.getDescription());
+        assertEquals("Penktasis", newSchedules.getName());
     }
 
     @Test
     @Order(3)
-    void getProgram_shouldReturnCorrectProgram() throws Exception {
+    void getSchedule_shouldReturnCorrectSchedule() throws Exception {
         var mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders
-                                .get("/api/v1/programs/11")
+                                .get("/api/v1/schedule/5")
                                 .accept(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
                 .andReturn();
 
         var mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
-                new TypeReference<ProgramDto>() {
+                new TypeReference<ScheduleDto>() {
                 });
 
         int status = mvcResult.getResponse().getStatus();
         assertEquals(200, status);
-        assertEquals(mappedResponse.getName(), "Normali");
+        assertEquals(mappedResponse.getName(), "Penktasis");
     }
 }
+
 
 
