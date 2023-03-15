@@ -20,7 +20,6 @@ export default class MainMenu extends Component {
                     content={<img alt="logo" src={logo} />}
                 />
                 <Menu.Item
-                    
                     href='#/view/modules'
                     name='edit'
                     content='Tvarkyti duomenis'

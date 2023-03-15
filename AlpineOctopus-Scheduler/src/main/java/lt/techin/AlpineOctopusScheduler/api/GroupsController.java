@@ -129,12 +129,12 @@ public class GroupsController {
     }
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE,})
-    public ResponseEntity<GroupsDto> createGroup(@Valid @RequestBody GroupsDto groupsDto, Long programId, Long shiftId) {
+    public ResponseEntity<GroupsEntityDto> createGroup(@Valid @RequestBody GroupsEntityDto groupsDto, Long programId, Long shiftId) {
         if (groupService.groupNameIsUnique(toGroup(groupsDto))) {
 //            if (groupService.studentAmountIsValid(toGroup(groupsDto))) {
             if (groupService.schoolYearIsValid(toGroup(groupsDto))) {
                 var createdGroup = groupService.create(toGroup(groupsDto), programId, shiftId);
-                return ok(toGroupDto(createdGroup));
+                return ok(toGroupEntityDto(createdGroup));
             } else {
                 throw new SchedulerValidationException("Invalid year value", "School year", "School year must be between 2023-3023", groupsDto.getSchoolYear().toString());
             }

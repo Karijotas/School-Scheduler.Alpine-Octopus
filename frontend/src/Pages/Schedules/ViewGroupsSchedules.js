@@ -113,14 +113,6 @@ export function ViewGroupsSchedules() {
                 onChange={(e) => setNameText(e.target.value)}
               />
 
-              {/* <Input
-                className="controls1"
-                title="Filtruoti nuo"
-                placeholder="Filtruoti nuo"
-                value={startingDate}
-                onChange={(e) => setStartingDate(e.target.value)}
-                required={plannedTillDate}
-              /> */}
               <DatePicker
                 className="controls4"
                 placeholder="Filtruoti nuo"
@@ -139,13 +131,6 @@ export function ViewGroupsSchedules() {
                 }}
               />
 
-              {/* <Input
-                className="controls1"
-                title="Filtruoti iki"
-                placeholder="Filtruoti iki"
-                value={plannedTillDate}
-                onChange={(e) => setPlannedTillDate(e.target.value)}
-              /> */}
               <Divider horizontal hidden></Divider>
 
               <Table selectable>
