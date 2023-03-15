@@ -4,6 +4,7 @@ package lt.techin.AlpineOctopusScheduler.api;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lt.techin.AlpineOctopusScheduler.AlpineOctopusSchedulerApplication;
+import lt.techin.AlpineOctopusScheduler.api.dto.RoomDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectTestDto;
 import lt.techin.AlpineOctopusScheduler.model.Subject;
@@ -189,23 +190,23 @@ class SubjectControllerTest {
         Assertions.assertFalse(mappedResponse.getDeleted());
     }
 
-//    @Test
-//    void getAllModulesById_shouldReturnCorrectModules() throws Exception {
-//        var mvcResult = mockMvc.perform(
-//                        MockMvcRequestBuilders
-//                                .get("/api/v1/subjects/1/modules")
-//                                .accept(MediaType.APPLICATION_JSON)
-//                )
-//                .andExpect(status().isOk())
-//                .andReturn();
-//
-//        var mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
-//                new TypeReference<List<ModuleDto>>() {
-//                });
-//
-//        int status = mvcResult.getResponse().getStatus();
-//        assertEquals(200, status);
-//        assertThat(mappedResponse).containsExactlyInAnyOrder();
-//
-//    }
+    @Test
+    void getAllRoomsById_shouldReturnCorrectRoomCount() throws Exception {
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .get("/api/v1/subjects/1/rooms")
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        var mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+                new TypeReference<List<RoomDto>>() {
+                });
+
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(200, status);
+        assertThat(mappedResponse.size() == 1);
+
+    }
 }

@@ -120,7 +120,7 @@ class ProgramControllerTest {
 
         var mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders
-                                .put("/api/v1/programs/2")
+                                .patch("/api/v1/programs/2")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(newProgram2)))
                 .andReturn();
@@ -185,6 +185,26 @@ class ProgramControllerTest {
                 });
 
         Assertions.assertFalse(mappedResponse.getDeleted());
+    }
+
+    @Test
+    void getAllSubjectsById_shouldReturnCorrectSubjectCount() throws Exception {
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .get("/api/v1/programs/1/subjects")
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        var mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+                new TypeReference<List<ProgramDto>>() {
+                });
+
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(200, status);
+        assertEquals(3, mappedResponse.size());
+
     }
 }
 

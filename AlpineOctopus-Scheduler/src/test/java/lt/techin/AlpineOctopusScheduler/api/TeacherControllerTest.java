@@ -182,4 +182,45 @@ public class TeacherControllerTest {
 
         Assertions.assertFalse(mappedResponse.getDeleted());
     }
+
+    @Test
+    void getAllSubjectsById_shouldReturnCorrectSubjectCount() throws Exception {
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .get("/api/v1/teachers/1/subjects")
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        var mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+                new TypeReference<List<TeacherDto>>() {
+                });
+
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(200, status);
+        assertEquals(2, mappedResponse.size());
+
+    }
+
+
+    @Test
+    void getAllShiftsById_shouldReturnCorrectShiftCount() throws Exception {
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .get("/api/v1/teachers/1/shifts")
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        var mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+                new TypeReference<List<TeacherDto>>() {
+                });
+
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(200, status);
+        assertEquals(2, mappedResponse.size());
+
+    }
 }
