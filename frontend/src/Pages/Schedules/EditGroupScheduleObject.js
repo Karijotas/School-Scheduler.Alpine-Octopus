@@ -33,7 +33,7 @@ export function EditGroupScheduleObject() {
     name: "",
     studentAmount: "",
     schoolYear: "",
-    program: "",
+    programName: "",
     shift: "",
     modifiedDate: "",
   });
@@ -45,7 +45,7 @@ export function EditGroupScheduleObject() {
     lessons: "",
     group: "",
     shift: "",
-    groupName: "",
+    groupIdValue: "",
     shiftName: "",
   });
 
@@ -124,7 +124,7 @@ export function EditGroupScheduleObject() {
   };
 
   useEffect(() => {
-    fetch("/api/v1/groups/" + schedules.groupName)
+    fetch("/api/v1/groups/" + schedules.groupIdValue)
       .then((response) => response.json())
       .then(setGroups);
   }, [schedules]);
