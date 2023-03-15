@@ -1,6 +1,7 @@
 package lt.techin.AlpineOctopusScheduler.service;
 
 import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleTestDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.LessonMapper;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ScheduleMapper;
 import lt.techin.AlpineOctopusScheduler.dao.*;
@@ -231,6 +232,11 @@ public class ScheduleService {
         } catch (EmptyResultDataAccessException exception) {
             return false;
         }
+    }
+
+    public List<ScheduleTestDto> getAllSchedules() {
+        return scheduleRepository.findAll().stream()
+                .map(ScheduleMapper::toScheduleTestDto).collect(Collectors.toList());
     }
 
 

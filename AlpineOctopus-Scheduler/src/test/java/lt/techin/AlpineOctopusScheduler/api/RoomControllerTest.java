@@ -3,10 +3,10 @@ package lt.techin.AlpineOctopusScheduler.api;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lt.techin.AlpineOctopusScheduler.AlpineOctopusSchedulerApplication;
+import lt.techin.AlpineOctopusScheduler.api.dto.RoomDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.RoomTestDto;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import lt.techin.AlpineOctopusScheduler.model.Room;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,10 +18,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-//@MockBeans({@MockBean(RoomController.class), @MockBean(RoomService.class), @MockBean(RoomRepository.class)})
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @AutoConfigureMockMvc
 @ContextConfiguration(classes = AlpineOctopusSchedulerApplication.class)
 public class RoomControllerTest {
@@ -41,6 +42,7 @@ public class RoomControllerTest {
 
 
     @Test
+    @Order(1)
     void getRooms_returnsCorrectDtos() throws Exception {
 
         var roomDto1 = new RoomTestDto(1l);
@@ -75,30 +77,75 @@ public class RoomControllerTest {
     }
 
 
-    @Test
-    void getRoom() {
+    public static String asJsonString(final Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
-//    @Test
-//    void createRoom_shouldCreateRoom() {
-//        Room newRoom = new Room();
-//        newRoom.setName("Kabinetas 11");
-//        newRoom.setBuilding("Ozo g. 171");
-//        newRoom.setDescription("Naujai paruoštas kabinetas pirmos klasės mokiniams.");
-//
-//        var mvcResult = mockMvc.perform(
-//                        MockMvcRequestBuilders
-//                                .get("/api/v1/rooms")
-//                                .accept(MediaType.APPLICATION_JSON)
-//                )
-//                .andExpect(status().isOk())
-//                .andReturn();
-//
-//        var mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString());
-//
-//        assertThat(mappedResponse);
-//    }
-//
-//
-//    }
+    @Test
+    @Order(4)
+    void createRoom_shouldCreateRoom() throws Exception {
+        Room newRoom = new Room();
+        newRoom.setName("Kabinetas 14");
+        newRoom.setBuilding("Ozo g. 174");
+        newRoom.setDescription("Naujai paruoštas kabinetas pirmos klasės mokiniams.");
+
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .post("/api/v1/rooms")
+                                .content(asJsonString(newRoom))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(200, status);
+    }
+
+    @Test
+    @Order(3)
+    void updateRoom_shouldUpdateRoom() throws Exception {
+        Room newRoom2 = new Room();
+        newRoom2.setName("Kabinetukas");
+        newRoom2.setBuilding("Pylimo g. 16");
+        newRoom2.setDescription("Labai puikus");
+
+
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .put("/api/v1/rooms/2")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(newRoom2)))
+                .andReturn();
+
+
+        assertEquals("Kabinetukas", newRoom2.getName());
+        assertEquals("Labai puikus", newRoom2.getDescription());
+    }
+
+    @Test
+    @Order(2)
+    void getRoom_shouldReturnCorrectRoom() throws Exception {
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .get("/api/v1/rooms/1")
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        var mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+                new TypeReference<RoomDto>() {
+                });
+
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(200, status);
+        assertEquals(mappedResponse.getName(), "LAK-101");
+    }
 }
+

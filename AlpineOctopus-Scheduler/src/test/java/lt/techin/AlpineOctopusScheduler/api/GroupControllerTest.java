@@ -3,10 +3,10 @@ package lt.techin.AlpineOctopusScheduler.api;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lt.techin.AlpineOctopusScheduler.AlpineOctopusSchedulerApplication;
+import lt.techin.AlpineOctopusScheduler.api.dto.GroupsDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.GroupsTestDto;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import lt.techin.AlpineOctopusScheduler.model.Groups;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,10 +18,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
-//@MockBeans({@MockBean(RoomController.class), @MockBean(RoomService.class), @MockBean(RoomRepository.class)})
 @AutoConfigureMockMvc
 @ContextConfiguration(classes = AlpineOctopusSchedulerApplication.class)
 public class GroupControllerTest {
@@ -42,6 +43,7 @@ public class GroupControllerTest {
 
 
     @Test
+    @Order(1)
     void getGroups_returnsCorrectDtos() throws Exception {
 
         var groupDto1 = new GroupsTestDto(1l);
@@ -72,5 +74,76 @@ public class GroupControllerTest {
 
         assertThat(mappedResponse)
                 .containsExactlyInAnyOrder(groupDto1, groupDto2, groupDto3, groupDto4, groupDto5, groupDto6, groupDto7, groupDto8, groupDto9, groupDto10, groupDto11, groupDto12, groupDto13);
+    }
+
+    public static String asJsonString(final Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    @Order(4)
+    void createGroup_shouldCreateGroup() throws Exception {
+        Groups newGroup = new Groups();
+        newGroup.setName("Pirma grupee");
+        newGroup.setSchoolYear(2024);
+        newGroup.setStudentAmount(36);
+
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .post("/api/v1/groups?programId=3&shiftId=2")
+                                .content(asJsonString(newGroup))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(200, status);
+    }
+
+    @Test
+    @Order(3)
+    void updateGroup_shouldUpdateGroup() throws Exception {
+        Groups newGroup2 = new Groups();
+        newGroup2.setName("Grupele");
+        newGroup2.setSchoolYear(2022);
+        newGroup2.setStudentAmount(55);
+
+
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .put("/api/v1/groups/2")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(newGroup2)))
+                .andReturn();
+
+
+        assertEquals("Grupele", newGroup2.getName());
+        assertEquals(2022, newGroup2.getSchoolYear());
+    }
+
+    @Test
+    @Order(2)
+    void getGroup_shouldReturnCorrectGroup() throws Exception {
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .get("/api/v1/groups/1")
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        var mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+                new TypeReference<GroupsDto>() {
+                });
+
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(200, status);
+        assertEquals(mappedResponse.getName(), "Akademija.it JP 22/1");
     }
 }
