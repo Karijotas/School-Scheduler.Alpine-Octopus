@@ -2,6 +2,8 @@ package lt.techin.AlpineOctopusScheduler.api;
 
 import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleEntityDto;
+import lt.techin.AlpineOctopusScheduler.dao.ScheduleLessonsRepository;
+import lt.techin.AlpineOctopusScheduler.model.Lesson;
 import lt.techin.AlpineOctopusScheduler.model.Schedule;
 import lt.techin.AlpineOctopusScheduler.service.ScheduleService;
 import org.slf4j.Logger;
@@ -29,9 +31,12 @@ public class ScheduleController {
     public static Logger logger = LoggerFactory.getLogger(ScheduleController.class);
 
     private final ScheduleService scheduleService;
+    private final ScheduleLessonsRepository scheduleLessonsRepository;
 
-    public ScheduleController(ScheduleService scheduleService) {
+    public ScheduleController(ScheduleService scheduleService,
+                              ScheduleLessonsRepository scheduleLessonsRepository) {
         this.scheduleService = scheduleService;
+        this.scheduleLessonsRepository = scheduleLessonsRepository;
     }
 
 
@@ -120,4 +125,13 @@ public class ScheduleController {
         var updatedSchedule = scheduleService.ScheduleLesson(scheduleId, subjectId, starting, ending);
         return ok(toScheduleEntityDto(updatedSchedule));
     }
+
+    @GetMapping(value = "/{scheduleId}/{lessonId}/", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Lesson> getLessonFromSchedule(@PathVariable Long scheduleId, @PathVariable Long lessonId) {
+        Lesson lessonOptional = scheduleService.getSingleLesson(scheduleId, lessonId);
+
+        return lessonOptional.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
 }
