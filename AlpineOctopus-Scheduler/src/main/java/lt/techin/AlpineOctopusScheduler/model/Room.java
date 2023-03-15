@@ -51,6 +51,7 @@ public class Room {
     public Room() {
     }
 
+
     public Room(Long id, String name, String building, String description, Boolean deleted, LocalDateTime modifiedDate, LocalDateTime createdDate) {
         this.id = id;
         this.name = name;
@@ -63,6 +64,7 @@ public class Room {
 
 
     public Long getId() {
+
         return id;
     }
 

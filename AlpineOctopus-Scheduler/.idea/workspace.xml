@@ -6,11 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="be4542e8-401c-4b51-a94d-0543b0658664" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/lt/techin/AlpineOctopusScheduler/api/GroupControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/lt/techin/AlpineOctopusScheduler/api/GroupControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/lt/techin/AlpineOctopusScheduler/api/ModuleControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/lt/techin/AlpineOctopusScheduler/api/ModuleControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/lt/techin/AlpineOctopusScheduler/api/ProgramControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/lt/techin/AlpineOctopusScheduler/api/ProgramControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/lt/techin/AlpineOctopusScheduler/api/SubjectControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/lt/techin/AlpineOctopusScheduler/api/SubjectControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/lt/techin/AlpineOctopusScheduler/api/TeacherControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/lt/techin/AlpineOctopusScheduler/api/TeacherControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/model/Room.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/model/Room.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/service/RoomService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/service/RoomService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/service/TeacherService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/service/TeacherService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/lt/techin/AlpineOctopusScheduler/service/RoomServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/lt/techin/AlpineOctopusScheduler/service/RoomServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/lt/techin/AlpineOctopusScheduler/service/ShiftServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/lt/techin/AlpineOctopusScheduler/service/ShiftServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/lt/techin/AlpineOctopusScheduler/service/SubjectServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/lt/techin/AlpineOctopusScheduler/service/SubjectServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/lt/techin/AlpineOctopusScheduler/service/TeacherServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/lt/techin/AlpineOctopusScheduler/service/TeacherServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,7 +124,20 @@
       <command value="mvn spring-boot:run" />
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.All in AlpineOctopus-Scheduler (2)">
+  <component name="RunManager" selected="JUnit.All in AlpineOctopus-Scheduler (3)">
+    <configuration name="AlpineOctopusSchedulerApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="lt.techin.AlpineOctopusScheduler.AlpineOctopusSchedulerApplication" />
+      <module name="AlpineOctopus-Scheduler" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="lt.techin.AlpineOctopusScheduler.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="All in AlpineOctopus-Scheduler (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="AlpineOctopus-Scheduler" />
       <option name="PACKAGE_NAME" value="" />
@@ -138,7 +154,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="All in AlpineOctopus-Scheduler" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="All in AlpineOctopus-Scheduler (3)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="AlpineOctopus-Scheduler" />
       <option name="PACKAGE_NAME" value="" />
       <option name="TEST_OBJECT" value="package" />
@@ -146,32 +162,10 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ModuleControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="All in AlpineOctopus-Scheduler" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="AlpineOctopus-Scheduler" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="lt.techin.AlpineOctopusScheduler.api.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="lt.techin.AlpineOctopusScheduler.api" />
-      <option name="MAIN_CLASS_NAME" value="lt.techin.AlpineOctopusScheduler.api.ModuleControllerTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ProgramControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="AlpineOctopus-Scheduler" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="lt.techin.AlpineOctopusScheduler.api.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="lt.techin.AlpineOctopusScheduler.api" />
-      <option name="MAIN_CLASS_NAME" value="lt.techin.AlpineOctopusScheduler.api.ProgramControllerTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -184,19 +178,19 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Application.AlpineOctopusSchedulerApplication" />
       <item itemvalue="JUnit.All in AlpineOctopus-Scheduler (2)" />
-      <item itemvalue="JUnit.ModuleControllerTest" />
-      <item itemvalue="JUnit.ProgramControllerTest" />
       <item itemvalue="JUnit.All in AlpineOctopus-Scheduler" />
+      <item itemvalue="JUnit.All in AlpineOctopus-Scheduler (3)" />
       <item itemvalue="JUnit.All in AlpineOctopus-Scheduler (1)" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.All in AlpineOctopus-Scheduler (3)" />
+        <item itemvalue="Application.AlpineOctopusSchedulerApplication" />
         <item itemvalue="JUnit.All in AlpineOctopus-Scheduler (2)" />
         <item itemvalue="JUnit.All in AlpineOctopus-Scheduler (1)" />
         <item itemvalue="JUnit.All in AlpineOctopus-Scheduler" />
-        <item itemvalue="JUnit.ModuleControllerTest" />
-        <item itemvalue="JUnit.ProgramControllerTest" />
       </list>
     </recent_temporary>
   </component>
@@ -305,7 +299,7 @@
     <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$ProgramServiceTest.ic" NAME="ProgramServiceTest Coverage Results" MODIFIED="1675965734640" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>lt.techin.AlpineOctopusScheduler.service.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$All_in_AlpineOctopus_Scheduler__3_.ic" NAME="All in AlpineOctopus-Scheduler (3) Coverage Results" MODIFIED="1678870436060" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$All_in_AlpineOctopus_Scheduler__3_.ic" NAME="All in AlpineOctopus-Scheduler (3) Coverage Results" MODIFIED="1678894421868" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$All_in_AlpineOctopus_Scheduler__1_.ic" NAME="All in AlpineOctopus-Scheduler (1) Coverage Results" MODIFIED="1678893845121" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>
