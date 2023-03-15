@@ -29,7 +29,6 @@ class SubjectServiceTest {
         var subject = createSubject(1l);
 
         when(subjectRepository.findById(1l)).thenReturn(Optional.empty());
-
         assertThatThrownBy(() -> subjectService.update(1l, subject))
                 .isInstanceOf(SchedulerValidationException.class)
                 .hasMessageContaining("Subject does not exist")
