@@ -430,10 +430,11 @@ export function EditProgramObject() {
                           </Table.HeaderCell>
                         </Table.Row>
                       </Table.Header>
+                      
                       <Table.Body>
                         <Table.Row>
                           <Table.Cell>
-                            <Table.Body>
+                          {/* <Table.Body>
                               {subjectsInProgram.map((subject, index) => (
                                 <Table.Row key={index}>
                                   <Table.Cell>
@@ -465,9 +466,9 @@ export function EditProgramObject() {
                                 </Table.Cell>
                                 <Table.Cell>
                                   <h5>{totalHours} val.</h5>
-                                </Table.Cell>
-                              </Table.Row>
-                            </Table.Body>
+                                </Table.Cell> */}
+                              {/* </Table.Row>
+                            </Table.Body> */}
                             <List>
                               <List.Item>
                                 <Form.Group widths="equal">

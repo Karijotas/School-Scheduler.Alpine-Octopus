@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.TeacherTestDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.TeacherMapper;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
@@ -50,11 +51,11 @@ public class TeacherController {
         this.subjectService = subjectService;
     }
 
-//    @GetMapping(path = "/all")
-//    @ResponseBody
-//    public List<TeacherTestDto> getAllTeachers() {
-//        return teachersService.getAllTeachers();
-//    }
+    @GetMapping(path = "/all")
+    @ResponseBody
+    public List<TeacherTestDto> getAllTeachers() {
+        return teacherService.getAllTeachers();
+    }
 
     @GetMapping
     @ResponseBody

@@ -3,12 +3,13 @@ import React, { useEffect, useState } from 'react';
 import { ScheduleComponent, RecurrenceEditorComponent, ViewsDirective, ViewDirective, Day, Week, WorkWeek, Month, Inject, Schedule } from '@syncfusion/ej2-react-schedule';
 import { DatePickerComponent } from '@syncfusion/ej2-react-calendars';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
-import { extend, L10n, loadCldr } from '@syncfusion/ej2-base';
+import { extend, L10n, loadCldr, setCulture } from '@syncfusion/ej2-base';
 import * as gregorian from 'cldr-data/main/lt/ca-gregorian.json';
 import * as numbers from 'cldr-data/main/lt/numbers.json';
 import * as timeZoneNames from 'cldr-data/main/lt/timeZoneNames.json';
 import * as numberingSystems from 'cldr-data/supplemental/numberingSystems.json';
 import * as weekData from 'cldr-data/supplemental/weekData.json';
+
 loadCldr(numberingSystems, gregorian, numbers, timeZoneNames);
 
 L10n.load({      
@@ -22,6 +23,7 @@ L10n.load({
       },
   }
 });
+setCulture('lt');
 
 export function ScheduleView1() {
 
@@ -83,7 +85,7 @@ export function ScheduleView1() {
         </td></tr></tbody>
     </table> : '');
     }
-    return (<ScheduleComponent timeFormat='HH' firstDayOfWeek='1' width='100%' height='550px' selectedDate={new Date(2018, 1, 15)} ref={schedule => scheduleObj = schedule} eventSettings={eventSettings} editorTemplate={editorTemplate} showQuickInfo={false} popupOpen={onPopupOpen}>
+    return (<ScheduleComponent locale='lt' timeFormat='HH' firstDayOfWeek='1' width='100%' height='550px' selectedDate={new Date(2018, 1, 15)} ref={schedule => scheduleObj = schedule} eventSettings={eventSettings} editorTemplate={editorTemplate} showQuickInfo={false} popupOpen={onPopupOpen}>
     <ViewsDirective>
       <ViewDirective option='Day' startHour='01:00' endHour='15:00' timeScale={{ slotCount: 1 }}/>
       <ViewDirective option='Week' startHour='01:00' endHour='15:00' timeScale={{ slotCount: 1 }}/>

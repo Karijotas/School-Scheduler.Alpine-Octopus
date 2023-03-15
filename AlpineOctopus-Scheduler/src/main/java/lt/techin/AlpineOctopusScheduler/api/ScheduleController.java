@@ -3,6 +3,7 @@ package lt.techin.AlpineOctopusScheduler.api;
 import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleEntityDto;
 import lt.techin.AlpineOctopusScheduler.model.Lesson;
+import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleTestDto;
 import lt.techin.AlpineOctopusScheduler.model.Schedule;
 import lt.techin.AlpineOctopusScheduler.service.ScheduleService;
 import org.slf4j.Logger;
@@ -120,12 +121,39 @@ public class ScheduleController {
 
     @PatchMapping("/{scheduleId}/")
     public ResponseEntity<ScheduleEntityDto> scheduleLesson(@PathVariable Long scheduleId, Long subjectId,
-                                                            @RequestParam(value = "startTime", required = false) String startTime,
-                                                            @RequestParam(value = "endTime", required = false) String endTime) {
+                                                            @RequestParam(value = "startTime", required = true) String startTime,
+                                                            @RequestParam(value = "endTime", required = true) String endTime) {
         var starting = LocalDateTime.parse(startTime.toString());
         var ending = LocalDateTime.parse(endTime.toString());
 
         var updatedSchedule = scheduleService.ScheduleLesson(scheduleId, subjectId, starting, ending);
         return ok(toScheduleEntityDto(updatedSchedule));
     }
+
+    @PatchMapping("/{scheduleId}")
+    public ResponseEntity<ScheduleEntityDto> setLessonOnline(@PathVariable Long scheduleId,
+                                                             Long lessonId) {
+        var updatedSchedule = scheduleService.setLessonOnline(scheduleId, lessonId);
+        return ok(toScheduleEntityDto(updatedSchedule));
+    }
+
+    @DeleteMapping("/{scheduleId}/{lessonId}")
+    public ResponseEntity<ScheduleEntityDto> removeLesson(@PathVariable Long scheduleId,
+                                                          Long lessonId) {
+
+        logger.info("Attempt to delete Lesson from Schedule by id: {}", lessonId);
+        boolean deleted = scheduleService.removeLesson(scheduleId, lessonId);
+        if (deleted) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping(path = "/all")
+    @ResponseBody
+    public List<ScheduleTestDto> getAllSchedules() {
+        return scheduleService.getAllSchedules();
+    }
+
 }

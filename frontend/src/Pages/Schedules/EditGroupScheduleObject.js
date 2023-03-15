@@ -27,13 +27,7 @@ export function EditGroupScheduleObject() {
   const [active, setActive] = useState(true);
   const [startingDate, setStartingDate] = useState("");
   const [plannedTillDate, setPlannedTillDate] = useState("");
-
-  const [programs, setPrograms] = useState([]);
-
-  const [shifts, setShifts] = useState([]);
-
   const [error, setError] = useState();
-
   const [groupId, setGroupId] = useState("");
   const [groups, setGroups] = useState({
     name: "",
@@ -55,12 +49,9 @@ export function EditGroupScheduleObject() {
     shiftName: "",
   });
 
-  const [programId, setProgramId] = useState();
-
   const [shiftId, setShiftId] = useState();
 
   const [name, setName] = useState("");
-  const [studentAmount, setstudentAmount] = useState("");
 
   const [nameError, setNameError] = useState("");
   const [studentAmountError, setstudentAmountError] = useState("");
@@ -76,13 +67,6 @@ export function EditGroupScheduleObject() {
       setFormValid(true);
     }
   }, [nameError, studentAmountError]);
-
-  //   const selectProgramHandler = () => {
-  //     setSelectErrorProgram("")
-  //   }
-  //   const selectShiftHandler = () => {
-  //     setSelectErrorShift("")
-  //   }
 
   const handleNameInputChange = (e) => {
     groups.name = e.target.value;
@@ -158,11 +142,11 @@ export function EditGroupScheduleObject() {
   const updateSchedules = () => {
     fetch(
       "/api/v1/schedule/" +
-      params.id +
-      "?groupId=" +
-      groupId +
-      "&shiftId=" +
-      shiftId,
+        params.id +
+        "?groupId=" +
+        groupId +
+        "&shiftId=" +
+        shiftId,
       {
         method: "PATCH",
         headers: JSON_HEADERS,
@@ -188,32 +172,7 @@ export function EditGroupScheduleObject() {
 
   const editThis = () => {
     setActive(false);
-    // setProgramId(groups.programId);
-    // setShiftId(groups.shiftId)
   };
-
-  // useEffect(() => {
-  //     fetch('/api/v1/programs/')
-  //         .then((response) => response.json())
-  //         .then((data) =>
-  //             setPrograms(
-  //                 data.map((x) => {
-  //                     return { key: x.id, text: x.name, value: x.id };
-  //                 })
-  //             )
-  //         )
-  // }, []);
-
-  // useEffect(() => {
-  //     fetch('/api/v1/shifts')
-  //         .then((response) => response.json())
-  //         .then((data) => setShifts(
-  //             data.map((x) => {
-  //                 return { key: x.id, text: x.name, value: x.id };
-  //             })
-  //         )
-  //         )
-  // }, []);
 
   const [updated, setUpdated] = useState();
 
@@ -312,6 +271,30 @@ export function EditGroupScheduleObject() {
                     </Table.Row>
                   </Table.Body>
                 </Table>
+                <Divider hidden />
+                {/* <Grid columns={3}>
+                  <Grid.Column>
+                    <Table width={6}>
+                      <Table.Header>
+                        <Table.Row>
+                          <Table.HeaderCell>Programos dalykai</Table.HeaderCell>
+                          <Table.HeaderCell>Pamokų kiekis</Table.HeaderCell>
+                        </Table.Row>
+                      </Table.Header>
+                      <Table.Body>
+                      {schedules.lessons.map((lesson) => (
+                        <Table.Row key={lesson.id}>
+                          <Table.Cell>{lesson.subject.name}</Table.Cell>
+                          <Table.Cell>{lesson.lessonNumber}</Table.Cell>
+                        </Table.Row>
+                      ))}
+                      </Table.Body>
+                    </Table>
+                  </Grid.Column>
+                </Grid> */}
+                <Divider hidden />
+                <ScheduleView />
+                <Divider hidden />
                 <Button icon labelPosition="left" href="#/view/groups">
                   <Icon name="arrow left" />
                   Atgal
@@ -333,21 +316,20 @@ export function EditGroupScheduleObject() {
                   </Table.Header>
                   <Table.Body>
                     <Table.Row>
-                      <Table.Cell width={6}>
-                        <Form>
-                          <Input
-                            fluid
-                            value={schedules.name}
-                            onChange={(e) => updateProperty("name", e)}
-                          />
-                        </Form>
-                      </Table.Cell>
+                      <Table.Cell width={6}>{schedules.name}</Table.Cell>
                       <Table.Cell>{schedules.startingDate}</Table.Cell>
                       <Table.Cell width={3}>
                         {" "}
                         {schedules.plannedTillDate}{" "}
                       </Table.Cell>
-                      {/* <Table.Cell width={6}>
+                    </Table.Row>
+                  </Table.Body>
+                </Table>
+                <Divider hidden />
+                <ScheduleView />
+                <Divider hidden />
+
+                {/* <Table.Cell width={6}>y
                         {nameError && (
                           <div style={{ color: "red" }}>{nameError}</div>
                         )}
@@ -370,7 +352,7 @@ export function EditGroupScheduleObject() {
                           onChange={(e) => handlePlannedTillDateInputChange(e)}
                         />
                       </Table.Cell> */}
-                      {/* </Table.Row>
+                {/* </Table.Row>
                   </Table.Body>
                 </Table>
                 <Divider horizontal hidden></Divider>
@@ -407,9 +389,14 @@ export function EditGroupScheduleObject() {
                     <Table.Row>
                       <Table.Cell>{groups.programName} </Table.Cell>
                       <Table.Cell>{groups.shiftName} </Table.Cell> */}
-                    </Table.Row>
+                {/* </Table.Row>
                   </Table.Body>
+<<<<<<< HEAD
                 </Table>
+=======
+                </Table> */}
+
+>>>>>>> d6bf034f83a5bb7438a260abf77855ef160cfbd7
                 <Button onClick={() => setActive(true)}>Atšaukti</Button>
                 <Button
                   disabled={!formValid}

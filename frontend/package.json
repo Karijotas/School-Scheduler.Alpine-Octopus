@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@syncfusion/ej2-icons": "^20.4.48",
+    "@syncfusion/ej2-react-buttons": "^20.4.53",
     "@syncfusion/ej2-react-calendars": "^20.4.52",
     "@syncfusion/ej2-react-dropdowns": "^20.4.53",
     "@syncfusion/ej2-react-navigations": "^20.4.53",
@@ -10,10 +12,12 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "antd": "^5.3.0",
     "dayjs": "^1.11.7",
     "moment": "^2.29.4",
     "react": "^18.0.0",
     "react-datepicker": "^4.10.0",
+    "react-day-picker": "^8.6.0",
     "react-dom": "^18.0.0",
     "react-paginate": "^8.1.4",
     "react-router-dom": "^6.8.0",
@@ -47,5 +51,8 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:8077/"
+  "proxy": "http://localhost:8078/",
+  "devDependencies": {
+    "systemjs-plugin-json": "^0.3.0"
+  }
 }
