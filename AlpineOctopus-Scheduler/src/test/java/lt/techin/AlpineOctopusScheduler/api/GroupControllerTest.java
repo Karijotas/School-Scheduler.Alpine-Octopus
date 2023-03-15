@@ -85,7 +85,7 @@ public class GroupControllerTest {
     }
 
     @Test
-    @Order(2)
+    @Order(4)
     void createGroup_shouldCreateGroup() throws Exception {
         Groups newGroup = new Groups();
         newGroup.setName("Pirma grupee");
@@ -107,6 +107,7 @@ public class GroupControllerTest {
     }
 
     @Test
+    @Order(3)
     void updateGroup_shouldUpdateGroup() throws Exception {
         Groups newGroup2 = new Groups();
         newGroup2.setName("Grupele");
@@ -127,6 +128,7 @@ public class GroupControllerTest {
     }
 
     @Test
+    @Order(2)
     void getGroup_shouldReturnCorrectGroup() throws Exception {
         var mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders

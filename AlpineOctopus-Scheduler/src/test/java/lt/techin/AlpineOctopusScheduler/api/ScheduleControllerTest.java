@@ -81,10 +81,11 @@ public class ScheduleControllerTest {
     void createSchedule_shouldCreateSchedule() throws Exception {
         Schedule newSchedule = new Schedule();
         newSchedule.setName("Penktasis");
+        newSchedule.setStatus("Valid");
 
         var mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders
-                                .post("/api/v1/schedule")
+                                .post("/api/v1/schedule?groupId=5&startingDate=2023-05-06")
                                 .content(asJsonString(newSchedule))
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .accept(MediaType.APPLICATION_JSON)
@@ -101,7 +102,6 @@ public class ScheduleControllerTest {
     void updateSchedule_shouldUpdateSchedule() throws Exception {
         Schedule newSchedules = new Schedule();
         newSchedules.setName("Penktasis");
-
 
         var mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders

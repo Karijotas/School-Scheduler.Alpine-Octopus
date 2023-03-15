@@ -6,9 +6,7 @@ import lt.techin.AlpineOctopusScheduler.AlpineOctopusSchedulerApplication;
 import lt.techin.AlpineOctopusScheduler.api.dto.ModuleDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ModuleTestDto;
 import lt.techin.AlpineOctopusScheduler.model.Module;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-//@MockBeans({@MockBean(RoomController.class), @MockBean(RoomService.class), @MockBean(RoomRepository.class)})
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @AutoConfigureMockMvc
 @ContextConfiguration(classes = AlpineOctopusSchedulerApplication.class)
 public class ModuleControllerTest {
@@ -49,6 +47,7 @@ public class ModuleControllerTest {
 
 
     @Test
+    @Order(1)
     void getModules_returnsCorrectDtos() throws Exception {
 
 //        var moduleDto1 = new ModuleEntityDto("Tinklapiai", "Informacijos išteklis saityne, kuris gali būti pasiektas naudojantis naršykle. Puslapius sujungiant, sudaroma interneto svetainė. Informacija dažniausiai pateikiama HTML[1] arba XHTML, nors šiuo metu tiesiogiai šiomis kalbomis jie rašomi labai retai. Paprastai naudojamos į teksto redaktorius panašios vartotojui draugiškos programos.", null, null, 1l);
@@ -125,6 +124,7 @@ public class ModuleControllerTest {
     }
 
     @Test
+    @Order(4)
     void createModule_shouldCreateNewModuleSuccesfully() throws Exception {
         Module newModule = new Module();
         newModule.setName("Moduliukas");
@@ -145,6 +145,7 @@ public class ModuleControllerTest {
     }
 
     @Test
+    @Order(3)
     void updateModule_shouldUpdateModule() throws Exception {
         Module newModule2 = new Module();
         newModule2.setName("Modulis");
@@ -164,6 +165,7 @@ public class ModuleControllerTest {
     }
 
     @Test
+    @Order(2)
     void getModule_shouldReturnCorrectModule() throws Exception {
         var mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders

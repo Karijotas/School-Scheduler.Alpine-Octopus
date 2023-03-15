@@ -6,9 +6,7 @@ import lt.techin.AlpineOctopusScheduler.AlpineOctopusSchedulerApplication;
 import lt.techin.AlpineOctopusScheduler.api.dto.ProgramDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ProgramTestDto;
 import lt.techin.AlpineOctopusScheduler.model.Program;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-//@MockBeans({@MockBean(SubjectController.class), @MockBean(SubjectService.class), @MockBean(SubjectRepository.class)})
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @AutoConfigureMockMvc
 @ContextConfiguration(classes = AlpineOctopusSchedulerApplication.class)
 class ProgramControllerTest {
@@ -45,6 +43,7 @@ class ProgramControllerTest {
     }
 
     @Test
+    @Order(1)
     void getPrograms_returnsCorrectDtos() throws Exception {
         //operacija_kokiusduomenis_expectedresult
 
@@ -91,6 +90,7 @@ class ProgramControllerTest {
     }
 
     @Test
+    @Order(4)
     void createProgram_shouldCreateProgram() throws Exception {
         Program newProgram = new Program();
         newProgram.setName("Reikalingieji amatai");
@@ -111,6 +111,7 @@ class ProgramControllerTest {
     }
 
     @Test
+    @Order(2)
     void updateProgram_shouldUpdateProgram() throws Exception {
         Program newProgram2 = new Program();
         newProgram2.setName("Programele");
@@ -130,6 +131,7 @@ class ProgramControllerTest {
     }
 
     @Test
+    @Order(3)
     void getProgram_shouldReturnCorrectProgram() throws Exception {
         var mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders

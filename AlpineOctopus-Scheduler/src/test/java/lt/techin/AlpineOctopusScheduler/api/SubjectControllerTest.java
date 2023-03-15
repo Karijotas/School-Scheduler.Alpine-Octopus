@@ -114,6 +114,7 @@ class SubjectControllerTest {
     }
 
     @Test
+    @Order(3)
     void updateSubject_shouldUpdateSubject() throws Exception {
         Subject newSubject2 = new Subject();
         newSubject2.setName("Dalykelis");
@@ -127,12 +128,12 @@ class SubjectControllerTest {
                                 .content(objectMapper.writeValueAsString(newSubject2)))
                 .andReturn();
 
-
         assertEquals("Dalykelis", newSubject2.getName());
         assertEquals("Labai įdomus", newSubject2.getDescription());
     }
 
     @Test
+    @Order(4)
     void getSubject_shouldReturnCorrectSubject() throws Exception {
         var mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders
@@ -150,4 +151,24 @@ class SubjectControllerTest {
         assertEquals(200, status);
         assertEquals(mappedResponse.getName(), "Reactas");
     }
+
+//    @Test
+//    void getAllTeachersById() throws Exception {
+//        var mvcResult = mockMvc.perform(
+//                        MockMvcRequestBuilders
+//                                .get("/api/v1/subjects/1/modules")
+//                                .accept(MediaType.APPLICATION_JSON)
+//                )
+//                .andExpect(status().isOk())
+//                .andReturn();
+//
+//        var mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+//                new TypeReference<List<ModuleDto>>() {
+//                });
+//
+//        int status = mvcResult.getResponse().getStatus();
+//        assertEquals(200, status);
+//        assertThat(mappedResponse)
+//                .containsExactlyInAnyOrder(subjectDto1, subjectDto2, subjectDto3, subjectDto4, subjectDto5, subjectDto6, subjectDto7, subjectDto8, subjectDto9, subjectDto10, subjectDto11, subjectDto12, subjectDto13, subjectDto14, subjectDto15, subjectDto16, subjectDto17, subjectDto18, subjectDto19, subjectDto20, subjectDto21);
+//    }
 }

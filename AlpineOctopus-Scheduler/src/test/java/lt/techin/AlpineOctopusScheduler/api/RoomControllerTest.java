@@ -6,9 +6,7 @@ import lt.techin.AlpineOctopusScheduler.AlpineOctopusSchedulerApplication;
 import lt.techin.AlpineOctopusScheduler.api.dto.RoomDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.RoomTestDto;
 import lt.techin.AlpineOctopusScheduler.model.Room;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-//@MockBeans({@MockBean(RoomController.class), @MockBean(RoomService.class), @MockBean(RoomRepository.class)})
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @AutoConfigureMockMvc
 @ContextConfiguration(classes = AlpineOctopusSchedulerApplication.class)
 public class RoomControllerTest {
@@ -44,6 +42,7 @@ public class RoomControllerTest {
 
 
     @Test
+    @Order(1)
     void getRooms_returnsCorrectDtos() throws Exception {
 
         var roomDto1 = new RoomTestDto(1l);
@@ -78,10 +77,6 @@ public class RoomControllerTest {
     }
 
 
-    @Test
-    void getRoom() {
-    }
-
     public static String asJsonString(final Object obj) {
         try {
             return new ObjectMapper().writeValueAsString(obj);
@@ -91,6 +86,7 @@ public class RoomControllerTest {
     }
 
     @Test
+    @Order(4)
     void createRoom_shouldCreateRoom() throws Exception {
         Room newRoom = new Room();
         newRoom.setName("Kabinetas 14");
@@ -112,6 +108,7 @@ public class RoomControllerTest {
     }
 
     @Test
+    @Order(3)
     void updateRoom_shouldUpdateRoom() throws Exception {
         Room newRoom2 = new Room();
         newRoom2.setName("Kabinetukas");
@@ -132,6 +129,7 @@ public class RoomControllerTest {
     }
 
     @Test
+    @Order(2)
     void getRoom_shouldReturnCorrectRoom() throws Exception {
         var mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders

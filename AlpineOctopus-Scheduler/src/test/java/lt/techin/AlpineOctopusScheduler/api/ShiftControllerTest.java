@@ -7,9 +7,7 @@ import lt.techin.AlpineOctopusScheduler.api.dto.ShiftDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ShiftTestDto;
 import lt.techin.AlpineOctopusScheduler.dao.ShiftRepository;
 import lt.techin.AlpineOctopusScheduler.model.Shift;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-//@MockBeans({@MockBean(RoomController.class), @MockBean(RoomService.class), @MockBean(RoomRepository.class)})
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @AutoConfigureMockMvc
 @ContextConfiguration(classes = AlpineOctopusSchedulerApplication.class)
 public class ShiftControllerTest {
@@ -47,6 +45,7 @@ public class ShiftControllerTest {
 
 
     @Test
+    @Order(1)
     void getShifts_returnsCorrectDtos() throws Exception {
 
         var shiftDto1 = new ShiftTestDto(1l);
@@ -79,6 +78,7 @@ public class ShiftControllerTest {
     }
 
     @Test
+    @Order(4)
     void createShift_shouldCreateNewShiftSuccesfully() throws Exception {
         Shift newShift = new Shift();
         newShift.setName("Kabinetas 14");
@@ -101,6 +101,7 @@ public class ShiftControllerTest {
 
 
     @Test
+    @Order(2)
     void updateShift_shouldUpdateShift() throws Exception {
         Shift newShift2 = new Shift();
         newShift2.setName("Kabinetas 15");
@@ -120,6 +121,7 @@ public class ShiftControllerTest {
     }
 
     @Test
+    @Order(3)
     void getShift_shouldReturnCorrectShift() throws Exception {
         var mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders

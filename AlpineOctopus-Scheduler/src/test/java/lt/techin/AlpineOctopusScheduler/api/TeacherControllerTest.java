@@ -6,9 +6,7 @@ import lt.techin.AlpineOctopusScheduler.AlpineOctopusSchedulerApplication;
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherTestDto;
 import lt.techin.AlpineOctopusScheduler.model.Teacher;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-//@MockBeans({@MockBean(RoomController.class), @MockBean(RoomService.class), @MockBean(RoomRepository.class)})
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @AutoConfigureMockMvc
 @ContextConfiguration(classes = AlpineOctopusSchedulerApplication.class)
 public class TeacherControllerTest {
@@ -44,6 +42,7 @@ public class TeacherControllerTest {
 
 
     @Test
+    @Order(1)
     void getTeachers_returnsCorrectDtos() throws Exception {
 
         var teacherDto1 = new TeacherTestDto(1l);
@@ -86,6 +85,7 @@ public class TeacherControllerTest {
     }
 
     @Test
+    @Order(4)
     void createTeacher_shouldCreateTeacher() throws Exception {
         Teacher newTeacher = new Teacher();
         newTeacher.setName("teacheris 2");
@@ -107,6 +107,7 @@ public class TeacherControllerTest {
 
 
     @Test
+    @Order(2)
     void updateTeacher_shouldUpdateTeacher() throws Exception {
         Teacher newTeacher2 = new Teacher();
         newTeacher2.setName("Mokytojelis");
@@ -126,6 +127,7 @@ public class TeacherControllerTest {
     }
 
     @Test
+    @Order(3)
     void getTeacher_shouldReturnCorrectTeacher() throws Exception {
         var mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders
@@ -143,5 +145,4 @@ public class TeacherControllerTest {
         assertEquals(200, status);
         assertEquals(mappedResponse.getName(), "Mantvydas Mantukas");
     }
-
 }
