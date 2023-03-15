@@ -51,7 +51,20 @@ public class Room {
     public Room() {
     }
 
-    public Long getId() {
+    public Room(Long id, @NotBlank @Size(max = 40) String name, @NotBlank @Size(max = 40) String building,
+			@Size(max = 500) String description, Boolean deleted, LocalDateTime modifiedDate,
+			LocalDateTime createdDate) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.building = building;
+		this.description = description;
+		this.deleted = deleted;
+		this.modifiedDate = modifiedDate;
+		this.createdDate = createdDate;
+	}
+
+	public Long getId() {
         return id;
     }
 

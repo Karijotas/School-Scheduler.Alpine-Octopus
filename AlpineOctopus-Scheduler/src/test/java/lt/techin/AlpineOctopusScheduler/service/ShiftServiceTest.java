@@ -42,7 +42,7 @@ public class ShiftServiceTest {
 	}
 
 	@Test
-	public void getAll_ReturnsShiftTestDto() {
+	public void getAll_ReturnsShiftTest() {
 
 		List<Shift> expectedShifts = new ArrayList<>();
         expectedShifts.add(new Shift(1l, "Shift 1", 1, 2, LocalDateTime.now(), LocalDateTime.now(), false));
@@ -94,6 +94,16 @@ public class ShiftServiceTest {
 	}
 	
 	@Test
+	public void testDeleteById() {
+		
+		// Perform delete
+		shiftService.deleteById(1l);
+		
+		// Verify that the delete method was called with the correct shift ID
+		Mockito.verify(shiftRepository, Mockito.times(1)).deleteById(1l);
+	}
+	
+	@Test
 	public void testRestoreShift() {
 		
 		Shift restoredItem = lt.techin.AlpineOctopusScheduler.stubs.ShiftCreator.createShift(12l);
@@ -104,12 +114,6 @@ public class ShiftServiceTest {
         Mockito.verify(shiftRepository, Mockito.times(1)).save(restoredItem);
         Assertions.assertThat(restoredItem.getDeleted()).isEqualTo(false);
 		
-	}
-
-	@Test
-	public void getAllAvailablePagedShifts_ReturnsListEntityDto() {
-
-	// soon will be implemented 😎
 	}
 
 }
