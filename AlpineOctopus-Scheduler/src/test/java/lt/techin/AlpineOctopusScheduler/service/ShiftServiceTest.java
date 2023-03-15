@@ -1,13 +1,8 @@
 package lt.techin.AlpineOctopusScheduler.service;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.when;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
+import lt.techin.AlpineOctopusScheduler.dao.ShiftRepository;
+import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
+import lt.techin.AlpineOctopusScheduler.model.Shift;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,10 +11,13 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import lt.techin.AlpineOctopusScheduler.api.dto.ShiftTestDto;
-import lt.techin.AlpineOctopusScheduler.dao.ShiftRepository;
-import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
-import lt.techin.AlpineOctopusScheduler.model.Shift;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class ShiftServiceTest {
@@ -45,71 +43,68 @@ public class ShiftServiceTest {
 	public void getAll_ReturnsShiftTestDto() {
 
 		List<Shift> expectedShifts = new ArrayList<>();
-        expectedShifts.add(new Shift(1l, "Shift 1", 1, 2, LocalDateTime.now(), LocalDateTime.now(), false));
-        expectedShifts.add(new Shift(2l, "Shift 2", 3, 4, LocalDateTime.now(), LocalDateTime.now(), false));
+		expectedShifts.add(new Shift(1l, "Shift 1", 1, 2, LocalDateTime.now(), LocalDateTime.now(), false));
+		expectedShifts.add(new Shift(2l, "Shift 2", 3, 4, LocalDateTime.now(), LocalDateTime.now(), false));
 
-        Mockito.when(shiftRepository.findAll()).thenReturn(expectedShifts);
+		Mockito.when(shiftRepository.findAll()).thenReturn(expectedShifts);
 
-        List<Shift> actualShifts = shiftService.getAll();
+		List<Shift> actualShifts = shiftService.getAll();
 
-        Assertions.assertThat(expectedShifts.size()).isEqualTo(actualShifts.size());
-        
-        
-        Assertions.assertThat(expectedShifts.get(0)).isEqualTo(actualShifts.get(0));
-        Assertions.assertThat(expectedShifts.get(1)).isEqualTo(actualShifts.get(1));
-		
-		
+		Assertions.assertThat(expectedShifts.size()).isEqualTo(actualShifts.size());
+
+		Assertions.assertThat(expectedShifts.get(0)).isEqualTo(actualShifts.get(0));
+		Assertions.assertThat(expectedShifts.get(1)).isEqualTo(actualShifts.get(1));
 	}
-	
-	
+
+
 	@Test
-    public void testCreateShift() {
-		
-        Shift shift = lt.techin.AlpineOctopusScheduler.stubs.ShiftCreator.createShift(12l); 
-        
-        
-        Mockito.when(shiftRepository.save(Mockito.any(Shift.class))).thenReturn(shift);
+	public void testCreateShift() {
 
-        Shift savedShift = shiftService.create(shift);
-        
-        Mockito.verify(shiftRepository, Mockito.times(1)).save(Mockito.any(Shift.class));
+		Shift shift = lt.techin.AlpineOctopusScheduler.stubs.ShiftCreator.createShift(12l);
 
 
-        // i am not sure about asserting in the best way.
-        Assertions.assertThat(shift.getId()).isEqualTo(savedShift.getId());
-	
+		Mockito.when(shiftRepository.save(Mockito.any(Shift.class))).thenReturn(shift);
+
+		Shift savedShift = shiftService.create(shift);
+
+		Mockito.verify(shiftRepository, Mockito.times(1)).save(Mockito.any(Shift.class));
+
+
+		// i am not sure about asserting in the best way.
+		Assertions.assertThat(shift.getId()).isEqualTo(savedShift.getId());
+
 	}
-	
+
 	@Test
 	public void testDeleteShift() {
-		
+
 		Shift deletedItem = lt.techin.AlpineOctopusScheduler.stubs.ShiftCreator.createShift(12l);
-        Mockito.when(shiftRepository.findById(12l)).thenReturn(Optional.of(deletedItem));
+		Mockito.when(shiftRepository.findById(12l)).thenReturn(Optional.of(deletedItem));
 
-        shiftService.deleteShift(12l);
+		shiftService.deleteShift(12l);
 
-        Mockito.verify(shiftRepository, Mockito.times(1)).save(deletedItem);
-        Assertions.assertThat(deletedItem.getDeleted()).isEqualTo(true); 
-		
+		Mockito.verify(shiftRepository, Mockito.times(1)).save(deletedItem);
+		Assertions.assertThat(deletedItem.getDeleted()).isEqualTo(true);
+
 	}
-	
+
 	@Test
 	public void testRestoreShift() {
-		
+
 		Shift restoredItem = lt.techin.AlpineOctopusScheduler.stubs.ShiftCreator.createShift(12l);
-        Mockito.when(shiftRepository.findById(12l)).thenReturn(Optional.of(restoredItem));
+		Mockito.when(shiftRepository.findById(12l)).thenReturn(Optional.of(restoredItem));
 
-        shiftService.restoreShift(12l);
+		shiftService.restoreShift(12l);
 
-        Mockito.verify(shiftRepository, Mockito.times(1)).save(restoredItem);
-        Assertions.assertThat(restoredItem.getDeleted()).isEqualTo(false);
-		
+		Mockito.verify(shiftRepository, Mockito.times(1)).save(restoredItem);
+		Assertions.assertThat(restoredItem.getDeleted()).isEqualTo(false);
+
 	}
 
 	@Test
 	public void getAllAvailablePagedShifts_ReturnsListEntityDto() {
 
-	// soon will be implemented 😎
+		// soon will be implemented 😎
 	}
 
 }

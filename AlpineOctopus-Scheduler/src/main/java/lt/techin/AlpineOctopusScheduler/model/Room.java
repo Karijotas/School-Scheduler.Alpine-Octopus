@@ -51,6 +51,17 @@ public class Room {
     public Room() {
     }
 
+    public Room(Long id, String name, String building, String description, Boolean deleted, LocalDateTime modifiedDate, LocalDateTime createdDate) {
+        this.id = id;
+        this.name = name;
+        this.building = building;
+        this.description = description;
+        this.deleted = deleted;
+        this.modifiedDate = modifiedDate;
+        this.createdDate = createdDate;
+    }
+
+
     public Long getId() {
         return id;
     }

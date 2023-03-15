@@ -190,7 +190,7 @@ class SubjectControllerTest {
     }
 
 //    @Test
-//    void getAllTeachersById() throws Exception {
+//    void getAllModulesById_shouldReturnCorrectModules() throws Exception {
 //        var mvcResult = mockMvc.perform(
 //                        MockMvcRequestBuilders
 //                                .get("/api/v1/subjects/1/modules")
@@ -205,7 +205,7 @@ class SubjectControllerTest {
 //
 //        int status = mvcResult.getResponse().getStatus();
 //        assertEquals(200, status);
-//        assertThat(mappedResponse)
-//                .containsExactlyInAnyOrder(subjectDto1, subjectDto2, subjectDto3, subjectDto4, subjectDto5, subjectDto6, subjectDto7, subjectDto8, subjectDto9, subjectDto10, subjectDto11, subjectDto12, subjectDto13, subjectDto14, subjectDto15, subjectDto16, subjectDto17, subjectDto18, subjectDto19, subjectDto20, subjectDto21);
+//        assertThat(mappedResponse).containsExactlyInAnyOrder();
+//
 //    }
 }
