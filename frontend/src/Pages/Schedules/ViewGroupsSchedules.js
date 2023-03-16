@@ -20,6 +20,7 @@ import { SchedulesMenu } from "../../Components/SchedulesMenu";
 import { format } from "date-fns";
 import { DatePicker } from "antd";
 import "antd/dist/reset.css";
+import { ButtonSizes } from "./colors";
 const { RangePicker } = DatePicker;
 
 const JSON_HEADERS = {
@@ -136,6 +137,7 @@ export function ViewGroupsSchedules() {
 
   return (
     <div>
+      {/* <ButtonSizes/> */}
       <MainMenu />
       <Grid columns={2}>
         <Grid.Column width={2} id="main">
