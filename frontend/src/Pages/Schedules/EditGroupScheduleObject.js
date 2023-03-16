@@ -295,7 +295,7 @@ export function EditGroupScheduleObject() {
                 <Divider hidden />
                 <ScheduleView />
                 <Divider hidden />
-                <Button icon labelPosition="left" href="#/view/groups">
+                <Button icon labelPosition="left" href="#/view/groupsSchedules">
                   <Icon name="arrow left" />
                   Atgal
                 </Button>
