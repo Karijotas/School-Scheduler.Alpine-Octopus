@@ -1,59 +1,139 @@
 import './Schedule.css' 
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams, NavLink } from "react-router-dom";
 import * as ReactDOM from 'react-dom';
 import {Container} from "semantic-ui-react";
-import { Schedule, ScheduleComponent, ResourcesDirective, ResourceDirective, ViewsDirective, ViewDirective, Inject, Day, Week, WorkWeek, Month, Agenda, TimelineViews, Resize, DragAndDrop, TimelineMonth } from '@syncfusion/ej2-react-schedule';
-
-import { extend, closest, remove, addClass } from '@syncfusion/ej2-base';
+import { Schedule, Print, ExcelExport, ScheduleComponent, ResourcesDirective, ResourceDirective, ViewsDirective, ViewDirective, Inject, Day, Week, WorkWeek, Month, Agenda, TimelineViews, Resize, DragAndDrop, TimelineMonth } from '@syncfusion/ej2-react-schedule';
+import { ButtonComponent, SwitchComponent } from '@syncfusion/ej2-react-buttons';
+import { extend, closest, remove, addClass, Ajax  } from '@syncfusion/ej2-base';
 import { TreeViewComponent } from '@syncfusion/ej2-react-navigations';
-import * as dataSource from './dataSource.json';
+import * as datasource from './datasource.json';
+import { DataManager, WebApiAdaptor, ODataV4Adaptor } from '@syncfusion/ej2-data';
+import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap5.css";
 
 
-
-
-Schedule.Inject(Day, Week, WorkWeek, Month, Agenda, Resize, DragAndDrop);
+Schedule.Inject(Day, Week, WorkWeek, Month, Agenda, Resize, DragAndDrop, Print, ExcelExport);
 
 export function ScheduleView() {
+  let scheduleObj;
+  const params = useParams();
+  const [lesson, setLesson] = useState({});
+  const [oneLesson, setOneLesson] = useState({
+    Id: "",
+    Subject: "",
+    StartTime: "",
+    EndTime: "",            
+    ColorId: 1
+    
+
+  });
+  const [lessons, setLessons] = useState([]);
+   
+  
+  function onActionBegin(args) {
+      if (args.requestType === 'toolbarItemRendering') {
+          let exportItem = {            
+              align: 'Right', showTextOn: 'Both', prefixIcon: "e-icons e-print",
+              text: 'Spausdinti', cssClass: 'e-schedule-print', click: onPrintIconClick,
+              // align: 'Center', showTextOn: 'Both', prefixIcon: 'e-icon-schedule-excel-export',
+              // text: 'Excel Export', cssClass: 'e-excel-export', click: onExportClick
+          };
+          args.items.push(exportItem);
+      }
+  }
+  function onPrintIconClick() {
+      scheduleObj.print();
+  }
+
+  function onExportClick() {
+    scheduleObj.exportToExcel();
+}
+
+  useEffect(() => {
+    fetch(`/api/v1/schedule/${params.id}/lessons`)
+      .then((response) => response.json())
+      // .then((jsonRespones) => setLessons(jsonRespones))
+      .then(setLessons)
+  }, []);
+  
+
+    const lessonsOnSchedule = lessons.map(l => {
+      return {
+        Id: l.id,
+          Subject: l.subject.name,
+              StartTime: l.startTime,
+              EndTime: l.endTime,            
+              ColorId: 1
+      }
+    })
+  
+  
+  // function change(args) {
+  //     scheduleObj.selectedDate = args.value;
+  //     scheduleObj.dataBind();
+  // }
+  // function onDragStart(args) {
+  //     args.navigation.enable = true;
+  // }
+
+    // const [lessons, setLessons] = useState([]);
+    // const [schedule, setSchedule] = useState([]);
+
+    // useEffect(() => {
+    //     fetch("/api/v1/schedule/1")
+    //       .then((response) => response.json())
+    //       .then((jsonRespones) => setSchedule(jsonRespones))
+    //       .then(setLessons(schedule.lessons));
+    //   }, []);
+    
+    //   const dataManager = new DataManager({
+    //     url: "https://ej2services.syncfusion.com/production/web-services/api/Schedule",
+    //     adaptor: new WebApiAdaptor,
+    //     crossDomain: true
+    // });
 
     const data = [{
-            Id: 2,
-            Subject: 'Matematika',
-            StartTime: new Date(2021, 8, 15, 10, 0),
-            EndTime: new Date(2021, 8, 15, 14, 0),
-            CategoryColor: "#1aaa55",
-            GroupId: 1
-        },
+      oneLesson
+            // Id: lesson.id,
+            // Subject: lesson.subject.name,
+            // StartTime: lesson.startTime,
+            // EndTime: lesson.endTime,            
+            // ColorId: 1
+    },
+        
         {
             Id: 1,
             Subject: "Velykų atostogos",
-            StartTime: new Date(2021, 8, 16, 24, 0),
-            EndTime: new Date(2021, 8, 24, 24, 0),
+            StartTime: new Date(2023, 1, 10, 24, 0),
+            EndTime: new Date(2023, 1, 24, 24, 0),
             IsAllDay: true,
             IsBlock: true,
             CategoryColor: "#357cd2",
-            GroupId: 2
+            ColorId: 2
                    
             
         },
         {
             Id: 2,
             Subject: "Not Available",
-            StartTime: new Date(2021, 8, 14, 10, 0),
-            EndTime: new Date(2021, 8, 14, 12, 0),
+            StartTime: new Date(2023, 1, 6, 10, 0),
+            EndTime: new Date(2023, 1, 6, 12, 0),
             IsAllDay: false,
             IsBlock: true,
             
         }];
 
         const resourceData = [
-            { GroupText: 'Group A', GroupId: 1, GroupColor: '#1aaa55' },
-            { GroupText: 'Group B', GroupId: 2, GroupColor: '#357cd2' }
+            { GroupText: 'Group A', ColorId: 1, GroupColor: '#1aaa55' },
+            { GroupText: 'Group B', ColorId: 2, GroupColor: '#357cd2' }
         ];
         
     return (
     <Container>
-        <h1 className="title-text">Tvarkaraštis</h1>
-    <ScheduleComponent timeFormat='HH' firstDayOfWeek='1' height='550px'  selectedDate={new Date(2021, 8, 15)} eventSettings={{ dataSource: data }} colorField='Color'>
+        <h1 className="title-text">Tvarkaraštis</h1>                 
+    <ScheduleComponent id='schedule' ref={shedule => scheduleObj = shedule} timeFormat='HH' firstDayOfWeek='1' height='550px'  selectedDate={new Date(2023, 1, 8)} eventSettings={{dataSource: lessonsOnSchedule}} 
+ colorField='Color' actionBegin={onActionBegin} >
+  {console.log(lessonsOnSchedule)}
     <ResourcesDirective>
               <ResourceDirective field='GroupId' title='Owner' name='Owners' dataSource={resourceData} textField='GroupText' idField='GroupId' colorField='GroupColor'>
               </ResourceDirective>
@@ -64,7 +144,7 @@ export function ScheduleView() {
       <ViewDirective option='WorkWeek'/>
       <ViewDirective option='Month'/>
     </ViewsDirective>
-    <Inject services={[Day, Week, WorkWeek, Month, Agenda]}/>
+    <Inject services={[Day, Week, WorkWeek, Month, Agenda, DragAndDrop, ExcelExport, Print]}/>
   </ScheduleComponent>
   
 

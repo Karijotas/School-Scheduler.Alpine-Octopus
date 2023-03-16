@@ -29,7 +29,7 @@ export function EditGroupScheduleObject() {
   const [plannedTillDate, setPlannedTillDate] = useState("");
   const [error, setError] = useState();
   const [groupId, setGroupId] = useState("");
-  const [groups, setGroups] = useState({
+  const [groups, setGroups] = useState({    
     name: "",
     studentAmount: "",
     schoolYear: "",
@@ -47,6 +47,7 @@ export function EditGroupScheduleObject() {
     shift: "",
     groupIdValue: "",
     shiftName: "",
+    groupIdValue: "",
   });
 
   const [shiftId, setShiftId] = useState();
@@ -122,6 +123,11 @@ export function EditGroupScheduleObject() {
       setStartingDateError("");
     }
   };
+  useEffect(() => {
+    fetch("/api/v1/schedule/" + params.id)
+      .then((response) => response.json())
+      .then(setSchedules);
+  }, [active, params]);
 
   useEffect(() => {
     fetch("/api/v1/groups/" + schedules.groupIdValue)
@@ -129,11 +135,7 @@ export function EditGroupScheduleObject() {
       .then(setGroups);
   }, [schedules]);
 
-  useEffect(() => {
-    fetch("/api/v1/schedule/" + params.id)
-      .then((response) => response.json())
-      .then(setSchedules);
-  }, [active, params]);
+  
 
   const applyResult = () => {
     setActive(true);
@@ -295,7 +297,7 @@ export function EditGroupScheduleObject() {
                 <Divider hidden />
                 <ScheduleView />
                 <Divider hidden />
-                <Button icon labelPosition="left" href="#/view/groups">
+                <Button icon labelPosition="left" href="#/view/groupsSchedules">
                   <Icon name="arrow left" />
                   Atgal
                 </Button>
@@ -326,7 +328,7 @@ export function EditGroupScheduleObject() {
                   </Table.Body>
                 </Table>
                 <Divider hidden />
-                <ScheduleView />
+                <ScheduleView id={params.id} />
                 <Divider hidden />
 
                 {/* <Table.Cell width={6}>y
