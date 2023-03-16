@@ -221,6 +221,24 @@ public class TeacherControllerTest {
         int status = mvcResult.getResponse().getStatus();
         assertEquals(200, status);
         assertEquals(2, mappedResponse.size());
-
     }
+
+//    @Test
+//    void addSubjectToTeacher() throws Exception {
+//        var mvcResult = mockMvc.perform(
+//                        MockMvcRequestBuilders
+//                                .get("/api/v1/teachers/6/subjects/6/newSubjects")
+//                                .accept(MediaType.APPLICATION_JSON)
+//                )
+//                .andExpect(status().isOk())
+//                .andReturn();
+//
+//        var mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+//                new TypeReference<TeacherDto>() {
+//                });
+//
+//        int status = mvcResult.getResponse().getStatus();
+//        assertEquals(200, status);
+//        assertEquals(mappedResponse.getName(), "Mantvydas Mantukas");
+//    }
 }
