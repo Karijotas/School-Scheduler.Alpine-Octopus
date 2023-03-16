@@ -135,7 +135,6 @@ public class ScheduleController {
         return ok(toScheduleEntityDto(updatedSchedule));
     }
 
-
     @PatchMapping("/{scheduleId}")
     public ResponseEntity<ScheduleEntityDto> setLessonOnline(@PathVariable Long scheduleId,
                                                              Long lessonId) {

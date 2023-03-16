@@ -18,6 +18,7 @@
       <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Schedules/EditGroupScheduleObject.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Schedules/EditGroupScheduleObject.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Schedules/Schedule.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Schedules/Schedule.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Schedules/Schedule1.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Schedules/Schedule1.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../package-lock.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../package.json" beforeDir="false" />
     </list>
@@ -293,7 +294,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/ScheduleController.java</url>
-          <line>163</line>
+          <line>152</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
