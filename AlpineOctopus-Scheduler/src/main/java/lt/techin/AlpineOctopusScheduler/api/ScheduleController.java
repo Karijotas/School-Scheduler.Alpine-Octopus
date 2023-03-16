@@ -3,6 +3,8 @@ package lt.techin.AlpineOctopusScheduler.api;
 import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleTestDto;
+import lt.techin.AlpineOctopusScheduler.dao.ScheduleLessonsRepository;
+import lt.techin.AlpineOctopusScheduler.model.Lesson;
 import lt.techin.AlpineOctopusScheduler.model.Schedule;
 import lt.techin.AlpineOctopusScheduler.service.ScheduleService;
 import org.slf4j.Logger;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ScheduleMapper.toSchedule;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ScheduleMapper.toScheduleEntityDto;
@@ -30,9 +33,12 @@ public class ScheduleController {
     public static Logger logger = LoggerFactory.getLogger(ScheduleController.class);
 
     private final ScheduleService scheduleService;
+    private final ScheduleLessonsRepository scheduleLessonsRepository;
 
-    public ScheduleController(ScheduleService scheduleService) {
+    public ScheduleController(ScheduleService scheduleService,
+                              ScheduleLessonsRepository scheduleLessonsRepository) {
         this.scheduleService = scheduleService;
+        this.scheduleLessonsRepository = scheduleLessonsRepository;
     }
 
 
@@ -85,6 +91,13 @@ public class ScheduleController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping(value = "/{scheduleId}/lessons", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public Set<Lesson> getLessonsByScheduleId(@PathVariable Long scheduleId) {
+
+        return scheduleService.getAllLessonsByScheduleId(scheduleId);
+    }
+
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<ScheduleEntityDto> createSchedule(@RequestBody ScheduleEntityDto scheduleEntityDto, Long groupId,
                                                             @RequestParam(value = "startingDate", required = false) String startingDate) {
@@ -106,7 +119,7 @@ public class ScheduleController {
     }
 
     @PatchMapping("/{scheduleId}/{lessonId}")
-    public ResponseEntity<ScheduleEntityDto> setTeacherAndRoomInASchedule(@PathVariable Long scheduleId, Long lessonId, Long teacherId, Long roomId) {
+    public ResponseEntity<ScheduleEntityDto> setTeacherAndRoomInASchedule(@PathVariable Long scheduleId, @PathVariable Long lessonId, Long teacherId, Long roomId) {
         var updatedSchedule = scheduleService.setTeacherAndRoomInASchedule(scheduleId, lessonId, teacherId, roomId);
         return ok(toScheduleEntityDto(updatedSchedule));
     }
@@ -146,6 +159,15 @@ public class ScheduleController {
     @ResponseBody
     public List<ScheduleTestDto> getAllSchedules() {
         return scheduleService.getAllSchedules();
+    }
+
+    @GetMapping(value = "/{scheduleId}/lessons/{lessonId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public Lesson getLessonFromSchedule(@PathVariable Long scheduleId, @PathVariable Long lessonId) {
+
+
+        return scheduleService.getSingleLesson(scheduleId, lessonId);
+
     }
 
 }

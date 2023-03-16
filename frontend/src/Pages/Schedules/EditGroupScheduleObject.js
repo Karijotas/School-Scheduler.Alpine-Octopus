@@ -29,7 +29,7 @@ export function EditGroupScheduleObject() {
   const [plannedTillDate, setPlannedTillDate] = useState("");
   const [error, setError] = useState();
   const [groupId, setGroupId] = useState("");
-  const [groups, setGroups] = useState({
+  const [groups, setGroups] = useState({    
     name: "",
     studentAmount: "",
     schoolYear: "",
@@ -47,6 +47,7 @@ export function EditGroupScheduleObject() {
     shift: "",
     groupIdValue: "",
     shiftName: "",
+    groupIdValue: "",
   });
 
   const [shiftId, setShiftId] = useState();
@@ -122,6 +123,11 @@ export function EditGroupScheduleObject() {
       setStartingDateError("");
     }
   };
+  useEffect(() => {
+    fetch("/api/v1/schedule/" + params.id)
+      .then((response) => response.json())
+      .then(setSchedules);
+  }, [active, params]);
 
   useEffect(() => {
     fetch("/api/v1/groups/" + schedules.groupIdValue)
@@ -129,11 +135,7 @@ export function EditGroupScheduleObject() {
       .then(setGroups);
   }, [schedules]);
 
-  useEffect(() => {
-    fetch("/api/v1/schedule/" + params.id)
-      .then((response) => response.json())
-      .then(setSchedules);
-  }, [active, params]);
+  
 
   const applyResult = () => {
     setActive(true);
@@ -210,6 +212,7 @@ export function EditGroupScheduleObject() {
                       </Table.HeaderCell>
                       <Table.HeaderCell>Data nuo</Table.HeaderCell>
                       <Table.HeaderCell>Data iki</Table.HeaderCell>
+                      <Table.HeaderCell>Statusas</Table.HeaderCell>
                       <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
@@ -220,6 +223,33 @@ export function EditGroupScheduleObject() {
                       <Table.Cell width={3}>
                         {" "}
                         {schedules.plannedTillDate}{" "}
+                      </Table.Cell>
+                      <Table.Cell collapsing>
+                        {schedules.status === "invalid" ? (
+                          <Button
+                            id="grey"
+                            basic
+                            compact
+                            icon="clock outline"
+                            title="Negaliojantis"
+                          />
+                        ) : schedules.status === "Valid" ? (
+                          <Button
+                            id="okey"
+                            basic
+                            compact
+                            icon="check"
+                            title="Galiojantis"
+                          />
+                        ) : (
+                          <Button
+                            id="attention"
+                            basic
+                            compact
+                            icon="attention"
+                            title="Nevaliduotas"
+                          />
+                        )}
                       </Table.Cell>
                       <Table.Cell width={1}>
                         {" "}
@@ -326,7 +356,7 @@ export function EditGroupScheduleObject() {
                   </Table.Body>
                 </Table>
                 <Divider hidden />
-                <ScheduleView />
+                <ScheduleView id={params.id} />
                 <Divider hidden />
 
                 {/* <Table.Cell width={6}>y

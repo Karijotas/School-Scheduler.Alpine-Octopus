@@ -79,13 +79,52 @@ export function ViewGroupsSchedules() {
     nameText.length > 0
       ? fetchFilterSchedulesByName()
       : startingDate === "Invalid Date" || plannedTillDate === "Invalid Date"
-      ? fetchSchedules().then(setStartingDate("")).then(setPlannedTillDate(""))
+      ? fetchSchedules().then(setStartingDate(startingDate)).then(setPlannedTillDate(plannedTillDate))
       : startingDate.length > 0  
       ? fetchFilterSchedulesByStartingDate()
       : plannedTillDate.length > 0
       ? fetchFilterSchedulesByPlannedTillDate()
       : fetchSchedules();
   }, [activePage, nameText, startingDate, plannedTillDate]);
+
+
+  // useEffect(() => {
+  //   nameText.length > 0
+  //     ? setStartingDate("").then(setPlannedTillDate("")).then(fetchFilterSchedulesByName())
+  //     : startingDate === "Invalid Date" || plannedTillDate === "Invalid Date"
+  //     ? setStartingDate("").then(setPlannedTillDate("")).then(fetchSchedules())
+  //     : startingDate.length > 0  
+  //     ? setNameText("").then(setPlannedTillDate("")).then(fetchFilterSchedulesByStartingDate())
+  //     : plannedTillDate.length > 0
+  //     ? setNameText("").then(setStartingDate("")).then(fetchFilterSchedulesByPlannedTillDate())
+  //     : fetchSchedules();
+  // }, [activePage, nameText, startingDate, plannedTillDate]);
+
+
+  // useEffect(() => {
+  //   if (
+  //     (nameText.length === 0 &&
+  //       startingDate.length === 0 &&
+  //       plannedTillDate.length === 0)
+  //   ) {
+  //     fetchSchedules();
+  //   } else if (nameText.length > 0 ) {
+  //     setNameText("");
+  //     setStartingDate("");
+  //     fetchFilterSchedulesByName();
+  //   } else if (startingDate > 0 ) {
+  //     setNameText("");
+  //     setPlannedTillDate("");
+  //     fetchFilterSchedulesByStartingDate();
+  //   } else if (plannedTillDate.length > 0) {
+  //     setNameText("");
+  //     setStartingDate("");
+  //     fetchFilterSchedulesByPlannedTillDate();
+  //   }
+  // }, [activePage, nameText, startingDate, plannedTillDate]);
+
+
+
 
   const formatStartingDate = () => {
     return startingDate === "" ? "" : dayjs(startingDate).format("YYYY-MM-DD");
@@ -158,7 +197,7 @@ export function ViewGroupsSchedules() {
                             basic
                             compact
                             icon="clock outline"
-                            title="Statusas"
+                            title="Negaliojantis"
                           />
                         ) : schedule.status === "Valid" ? (
                           <Button
@@ -166,7 +205,7 @@ export function ViewGroupsSchedules() {
                             basic
                             compact
                             icon="check"
-                            title="Statusas"
+                            title="Galiojantis"
                           />
                         ) : (
                           <Button
@@ -174,7 +213,7 @@ export function ViewGroupsSchedules() {
                             basic
                             compact
                             icon="attention"
-                            title="Statusas"
+                            title="Nevaliduotas"
                           />
                         )}
                       </Table.Cell>

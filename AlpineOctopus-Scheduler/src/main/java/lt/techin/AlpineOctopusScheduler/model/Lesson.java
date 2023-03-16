@@ -18,6 +18,7 @@ public class Lesson {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
     @ManyToOne
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Subject subject;

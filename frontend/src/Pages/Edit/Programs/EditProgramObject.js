@@ -306,10 +306,10 @@ export function EditProgramObject() {
                         ))}
                         <Table.Row>
                           <Table.Cell>
-                            <h5>Programos valandų skaičius:</h5>
+                            <h5><b>Programos valandų skaičius:</b></h5>
                           </Table.Cell>
                           <Table.Cell>
-                            <h5>{totalHours} val.</h5>
+                            <h5><b>{totalHours} val.</b></h5>
                           </Table.Cell>
                         </Table.Row>
                       </Table.Body>
@@ -552,10 +552,10 @@ export function EditProgramObject() {
                               ))}
                               <Table.Row>
                                       <Table.Cell>
-                                        <h5>Programos valandų skaičius:</h5>
+                                        <h5><b>Programos valandų skaičius:</b></h5>
                                       </Table.Cell>
                                       <Table.Cell>
-                                        <h5>{totalHours} val.</h5>
+                                        <h5><b>{totalHours} val.</b></h5>
                                       </Table.Cell>
                                     </Table.Row>
                             </Table.Body>
