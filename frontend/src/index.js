@@ -43,7 +43,9 @@ import {ViewGroupsSchedules} from './Pages/Schedules/ViewGroupsSchedules';
 import { ScheduleView } from './Pages/Schedules/Schedule';   
 import { ScheduleView1 } from './Pages/Schedules/Schedule1';     
 import { registerLicense } from '@syncfusion/ej2-base';  
-import { EditGroupScheduleObject} from './Pages/Schedules/EditGroupScheduleObject';      
+import { EditGroupScheduleObject} from './Pages/Schedules/EditGroupScheduleObject'; 
+import { CreateSchedule } from './Pages/Schedules/CreateSchedulePage';
+import { CreateSchedulePageNext } from './Pages/Schedules/CreateSchedulePageNext';       
 
 
 // Registering Syncfusion license key
@@ -120,6 +122,10 @@ root.render(
         {/* <Route path='/view/groupsSchedules/edit/:id' element={<EditModuleObject />} /> */}
         <Route path='/view/groupsSchedules/edit/:id' element={<EditGroupScheduleObject />} />
         {/* <Route path='/create/groupsSchedules' element={<CreateModulePage />} /> */}
+
+
+        <Route path='/create/groupsSchedules' element={<CreateSchedule/>} />
+        <Route path='/create/groupsSchedules/modify/:id' element={<CreateSchedulePageNext/>} />
 
       </Routes>
     </HashRouter>
