@@ -104,10 +104,6 @@ export function EditGroupObject() {
         }
     };
 
-
-
-
-
     useEffect(() => {
         fetch('/api/v1/groups/' + params.id)
             .then(response => response.json())

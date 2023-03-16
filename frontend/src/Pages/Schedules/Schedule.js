@@ -2,7 +2,7 @@ import './Schedule.css'
 import React, { useEffect, useState } from 'react';
 import { useParams, NavLink } from "react-router-dom";
 import * as ReactDOM from 'react-dom';
-import {Container} from "semantic-ui-react";
+import {Button, Container} from "semantic-ui-react";
 import { DatePickerComponent } from '@syncfusion/ej2-react-calendars';
 import { DateTimePickerComponent } from '@syncfusion/ej2-react-calendars';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
@@ -11,9 +11,12 @@ import { ButtonComponent, SwitchComponent } from '@syncfusion/ej2-react-buttons'
 import { extend, closest, remove, addClass, Ajax  } from '@syncfusion/ej2-base';
 import { TreeViewComponent } from '@syncfusion/ej2-react-navigations';
 import * as datasource from './datasource.json';
-import { DataManager, WebApiAdaptor, ODataV4Adaptor } from '@syncfusion/ej2-data';
+import { DataManager, WebApiAdaptor, ODataV4Adaptor,  Query} from '@syncfusion/ej2-data';
 import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap5.css";
 
+const JSON_HEADERS = {
+  "Content-Type": "application/json",
+};
 
 Schedule.Inject(Day, Week, WorkWeek, Month, Agenda, Resize, DragAndDrop, Print, ExcelExport);
 
@@ -32,6 +35,10 @@ export function ScheduleView() {
 
   const [schedules, setSchedules] = useState([]);
   const [lessons, setLessons] = useState([]);
+  const [subjects, setSubjects] = useState([]);
+  const [subjectId, setSubjectId] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
    
   
   function onActionBegin(args) {
@@ -61,6 +68,30 @@ export function ScheduleView() {
   }, [params]);
 
   useEffect(() => {
+    fetch(`/api/v1/schedule/${params.id}/subjects`)
+        .then((response) => response.json())
+        .then(setSubjects)
+}, []);
+
+function newStartTime() {
+ const data1 = new Date(startTime).toISOString();
+  setStartTime(data1);
+  const data2 = new Date(endTime).toISOString();
+ setEndTime(data2);
+}
+
+
+
+
+const createLessonOnSchedule = () => {    
+  fetch(
+    `/api/v1/schedule/${params.id}/create/3/${startTime}/${endTime}`, {
+    method: 'PATCH'    
+  })
+  
+}
+
+  useEffect(() => {
     fetch("/api/v1/schedule/" + params.id)
       .then((response) => response.json())
       .then(setSchedules);
@@ -78,11 +109,21 @@ export function ScheduleView() {
       }
     });
 
+    const subjectsOnSchedule = subjects.map(s => {
+      return {
+        Id: s.id,
+          Subject: s.subject.name,
+              StartTime: s.startTime,
+              EndTime: s.endTime,            
+              ColorId: s.subject.id              
+      }
+    });
+
+  const subjectFields = {text: 'Subject', value: 'Id' };
+
     function eventTemplate(props) {
       return (<div className="template-wrap" style={{ background: props.SecondaryColor }}>
-    <div className="subject" style={{ background: props.ColorId }}>{props.Subject}</div>
-    {/* <div className="time" style={{ background: props.ColorId }}>
-      Time: {getTimeString(props.StartTime)} - {getTimeString(props.EndTime)}</div> */}   
+    <div className="subject" style={{ background: props.ColorId }}>{props.Subject}</div>  
     <div className="event-description">{props.Description}</div>
     <div className="footer" style={{ background: props.PrimaryColor }}></div></div>);
   }
@@ -91,7 +132,10 @@ export function ScheduleView() {
       return (props !== undefined ? <table className="custom-event-editor" style={{ width: '100%' }}>
     <tbody>
       <tr><td className="e-textlabel">Pamoka</td><td colSpan={4}>
-        <input id="Summary" className="e-field e-input" type="text" name="Subject" style={{ width: '100%' }}/>
+      <DropDownListComponent id="Subject" placeholder='Pasirinkti' data-name="Subject" className="e-field" style={{ width: '100%' }} dataSource={subjectsOnSchedule} fields={subjectFields}
+      onChange={(e) => setSubjectId(e.value)}>      
+        </DropDownListComponent>
+       
       </td></tr>
       <tr><td className="e-textlabel">Nuotolinė pamoka</td><td colSpan={4}>
         <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['Taip', 'Ne']}>
@@ -106,10 +150,10 @@ export function ScheduleView() {
         </DropDownListComponent>
       </td></tr>
       <tr><td className="e-textlabel">Data nuo</td><td colSpan={4}>
-        <DateTimePickerComponent format='yyyy/MM/dd' timeFormat={"HH"} step={60} locale='lt' id="StartTime" data-name="StartTime" value={new Date(props.startTime || props.StartTime)} className="e-field"></DateTimePickerComponent>
+        <DateTimePickerComponent firstDayOfWeek={1} format='yyyy/MM/dd HH' timeFormat={"HH"} step={60} locale='lt' id="StartTime" data-name="StartTime" value={new Date(props.startTime || props.StartTime)} onChange={(e) => setStartTime(e.value)} className="e-field"></DateTimePickerComponent>
       </td></tr>
       <tr><td className="e-textlabel">Data iki</td><td colSpan={4}>
-        <DateTimePickerComponent locale='lt' format='yyyy/MM/dd' timeFormat={"HH"} step={60} id="EndTime" data-name="EndTime" value={new Date(props.endTime || props.EndTime)} className="e-field"></DateTimePickerComponent>
+        <DateTimePickerComponent firstDayOfWeek={1} locale='lt' format='yyyy/MM/dd HH' timeFormat={"HH"} step={60} id="EndTime" data-name="EndTime" value={new Date(props.endTime || props.EndTime)} onChange={(e) => setEndTime(e.value)} className="e-field"></DateTimePickerComponent>
       </td></tr>        
       <tr><td className="e-textlabel">Pamoka nuo</td><td colSpan={4}>
         <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14']}>
@@ -204,10 +248,12 @@ export function ScheduleView() {
         
     return (
     <Container>
+      <Button onClick={() => createLessonOnSchedule()}>add</Button>
+      <Button onClick={() => newStartTime()}>change</Button>
         <h1 className="title-text">{schedules.name}</h1>                 
     <ScheduleComponent id='schedule' ref={shedule => scheduleObj = shedule} timeFormat='HH' firstDayOfWeek='1' height='550px' editorTemplate={editorTemplate} selectedDate={new Date(2023, 1, 10, 24, 0)} eventSettings={{dataSource: lessonsOnSchedule}} 
  colorField='Color' actionBegin={onActionBegin} >
-  {console.log(resourceData)}
+  {console.log(startTime)}
     <ResourcesDirective>
               <ResourceDirective field='GroupId' title='Owner' name='Owners' dataSource={resourceData} textField='GroupText' idField='GroupId' colorField='GroupColor'>
               </ResourceDirective>
