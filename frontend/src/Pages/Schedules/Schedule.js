@@ -3,6 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { useParams, NavLink } from "react-router-dom";
 import * as ReactDOM from 'react-dom';
 import {Container} from "semantic-ui-react";
+import { DatePickerComponent } from '@syncfusion/ej2-react-calendars';
+import { DateTimePickerComponent } from '@syncfusion/ej2-react-calendars';
+import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { Schedule, Print, ExcelExport, ScheduleComponent, ResourcesDirective, ResourceDirective, ViewsDirective, ViewDirective, Inject, Day, Week, WorkWeek, Month, Agenda, TimelineViews, Resize, DragAndDrop, TimelineMonth } from '@syncfusion/ej2-react-schedule';
 import { ButtonComponent, SwitchComponent } from '@syncfusion/ej2-react-buttons';
 import { extend, closest, remove, addClass, Ajax  } from '@syncfusion/ej2-base';
@@ -24,6 +27,8 @@ export function ScheduleView() {
     EndTime: "",            
     ColorId: 1
   });
+
+  const [schedules, setSchedules] = useState([]);
   const [lessons, setLessons] = useState([]);
    
   
@@ -51,7 +56,13 @@ export function ScheduleView() {
       .then((response) => response.json())
       // .then((jsonRespones) => setLessons(jsonRespones))
       .then(setLessons)
-  }, []);
+  }, [params]);
+
+  useEffect(() => {
+    fetch("/api/v1/schedule/" + params.id)
+      .then((response) => response.json())
+      .then(setSchedules);
+  }, [params]);
   
 
     const lessonsOnSchedule = lessons.map(l => {
@@ -60,10 +71,48 @@ export function ScheduleView() {
           Subject: l.subject.name,
               StartTime: l.startTime,
               EndTime: l.endTime,            
-              ColorId: 1
+              ColorId: l.subject.id
       }
-    })
-  
+    });
+
+    function editorTemplate(props) {
+      return (props !== undefined ? <table className="custom-event-editor" style={{ width: '100%' }}>
+    <tbody>
+      <tr><td className="e-textlabel">Pamoka</td><td colSpan={4}>
+        <input id="Summary" className="e-field e-input" type="text" name="Subject" style={{ width: '100%' }}/>
+      </td></tr>
+      <tr><td className="e-textlabel">Nuotolinė pamoka</td><td colSpan={4}>
+        <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['Taip', 'Ne']}>
+        </DropDownListComponent>
+        </td></tr>
+      <tr><td className="e-textlabel">Mokytojas</td><td colSpan={4}>
+        <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['Mokytojas1', 'Mokytojas2', 'Mokytojas']}>
+        </DropDownListComponent>
+        </td></tr>
+      <tr><td className="e-textlabel">Kabinetas</td><td colSpan={4}>
+        <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['Kabinetas1', 'Kabinetas2']}>
+        </DropDownListComponent>
+      </td></tr>
+      <tr><td className="e-textlabel">Data nuo</td><td colSpan={4}>
+        <DateTimePickerComponent format='yyyy/MM/dd' timeFormat={"HH"} step={60} locale='lt' id="StartTime" data-name="StartTime" value={new Date(props.startTime || props.StartTime)} className="e-field"></DateTimePickerComponent>
+      </td></tr>
+      <tr><td className="e-textlabel">Data iki</td><td colSpan={4}>
+        <DateTimePickerComponent locale='lt' format='yyyy/MM/dd' timeFormat={"HH"} step={60} id="EndTime" data-name="EndTime" value={new Date(props.endTime || props.EndTime)} className="e-field"></DateTimePickerComponent>
+      </td></tr>        
+      <tr><td className="e-textlabel">Pamoka nuo</td><td colSpan={4}>
+        <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14']}>
+        </DropDownListComponent>
+        </td></tr>
+      <tr><td className="e-textlabel">Pamoka iki</td><td colSpan={4}>
+        <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14']}>
+        </DropDownListComponent>
+      </td></tr>
+     
+      <tr><td className="e-textlabel">Pastabos</td><td colSpan={4}>
+        <textarea id="Description" className="e-field e-input" name="Description" rows={3} cols={50} style={{ width: '100%', height: '60px !important', resize: 'vertical' }}></textarea>
+      </td></tr></tbody>
+  </table> : '');
+    }
   
   // function change(args) {
   //     scheduleObj.selectedDate = args.value;
@@ -121,16 +170,32 @@ export function ScheduleView() {
         }];
 
         const resourceData = [
-            { GroupText: 'Group A', ColorId: 1, GroupColor: '#1aaa55' },
-            { GroupText: 'Group B', ColorId: 2, GroupColor: '#357cd2' }
+            { GroupText: schedules.name, ColorId: 1, GroupColor: '#1aaa55' },
+            { GroupText: schedules.name, ColorId: 2, GroupColor: '#357cd2' },
+            { GroupText: schedules.name, ColorId: 3, GroupColor: '#1aaa55' },
+            { GroupText: schedules.name, ColorId: 4, GroupColor: '#357cd2' },
+            { GroupText: schedules.name, ColorId: 5, GroupColor: '#1aaa55' },
+            { GroupText: schedules.name, ColorId: 6, GroupColor: '#357cd2' },
+            { GroupText: schedules.name, ColorId: 7, GroupColor: '#1aaa55' },
+            { GroupText: schedules.name, ColorId: 8, GroupColor: '#357cd2' },
+            { GroupText: schedules.name, ColorId: 9, GroupColor: '#1aaa55' },
+            { GroupText: schedules.name, ColorId: 10, GroupColor: '#357cd2' },
+            { GroupText: schedules.name, ColorId: 11, GroupColor: '#1aaa55' },
+            { GroupText: schedules.name, ColorId: 12, GroupColor: '#357cd2' },
+            { GroupText: schedules.name, ColorId: 13, GroupColor: '#1aaa55' },
+            { GroupText: schedules.name, ColorId: 14, GroupColor: '#357cd2' },
+            { GroupText: schedules.name, ColorId: 15, GroupColor: '#1aaa55' },
+            { GroupText: schedules.name, ColorId: 16, GroupColor: '#357cd2' },
+            { GroupText: schedules.name, ColorId: 17, GroupColor: '#1aaa55' },
+            { GroupText: schedules.name, ColorId: 18, GroupColor: '#357cd2' },
         ];
         
     return (
     <Container>
-        <h1 className="title-text">Tvarkaraštis</h1>                 
-    <ScheduleComponent id='schedule' ref={shedule => scheduleObj = shedule} timeFormat='HH' firstDayOfWeek='1' height='550px'  selectedDate={new Date(2023, 1, 8)} eventSettings={{dataSource: lessonsOnSchedule}} 
+        <h1 className="title-text">{schedules.name}</h1>                 
+    <ScheduleComponent id='schedule' ref={shedule => scheduleObj = shedule} timeFormat='HH' firstDayOfWeek='1' height='550px' editorTemplate={editorTemplate} selectedDate={schedules.startingDate} eventSettings={{dataSource: lessonsOnSchedule}} 
  colorField='Color' actionBegin={onActionBegin} >
-  {console.log(lessonsOnSchedule)}
+  {console.log(resourceData)}
     <ResourcesDirective>
               <ResourceDirective field='GroupId' title='Owner' name='Owners' dataSource={resourceData} textField='GroupText' idField='GroupId' colorField='GroupColor'>
               </ResourceDirective>
