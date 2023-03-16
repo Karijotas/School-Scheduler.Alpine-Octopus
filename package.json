@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "@syncfusion/ej2-data": "^20.4.48",
-    "cldr-data": "^36.0.1"
-  }
-}

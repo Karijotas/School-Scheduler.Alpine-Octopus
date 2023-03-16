@@ -1,6 +1,6 @@
 import * as ReactDOM from 'react-dom';
 import React, { useEffect, useState } from 'react';
-import { ScheduleComponent, RecurrenceEditorComponent, ViewsDirective, ViewDirective, Day, Week, WorkWeek, Month, Inject, Schedule } from '@syncfusion/ej2-react-schedule';
+import { ScheduleComponent, Print, RecurrenceEditorComponent, ViewsDirective, ViewDirective, Day, Week, WorkWeek, Month, Inject} from '@syncfusion/ej2-react-schedule';
 import { DatePickerComponent } from '@syncfusion/ej2-react-calendars';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { extend, L10n, loadCldr, setCulture } from '@syncfusion/ej2-base';
@@ -11,6 +11,8 @@ import * as numberingSystems from 'cldr-data/supplemental/numberingSystems.json'
 import * as weekData from 'cldr-data/supplemental/weekData.json';
 
 loadCldr(numberingSystems, gregorian, numbers, timeZoneNames);
+
+
 
 L10n.load({      
       "lt": {
@@ -27,16 +29,23 @@ setCulture('lt');
 
 export function ScheduleView1() {
 
-  const [lessons, setLessons] = useState([]);
+  const [lesson, setLesson] = useState([]);
   const [schedule, setSchedule] = useState([]);
+  
 
 
   useEffect(() => {
-    fetch("/api/v1/schedule/1")
+    fetch("/api/v1/schedule/1/lessons")
       .then((response) => response.json())
-      .then((jsonRespones) => setSchedule(jsonRespones))
-      .then(setLessons(schedule.lessons));
+      .then((jsonRespones) => setLesson(jsonRespones));
   }, []);
+
+  // useEffect(() => {
+  //   fetch("/api/v1/schedule/1")
+  //     .then((response) => response.json())
+  //     .then((jsonRespones) => setSchedule(jsonRespones))
+  //     ;
+  // }, []);
 
 
      let scheduleObj;
@@ -47,6 +56,21 @@ export function ScheduleView1() {
             scheduleObj.eventWindow.recurrenceEditor = recurrObject;
         }
     }
+
+    function onActionBegin(args) {
+      if (args.requestType === 'toolbarItemRendering') {
+          let exportItem = {            
+              align: 'Right', showTextOn: 'Both', prefixIcon: "e-icons e-print",
+              text: 'Spausdinti', cssClass: 'e-schedule-print', click: onPrintIconClick,
+              // align: 'Center', showTextOn: 'Both', prefixIcon: 'e-icon-schedule-excel-export',
+              // text: 'Excel Export', cssClass: 'e-excel-export', click: onExportClick
+          };
+          args.items.push(exportItem);
+      }
+  }
+  function onPrintIconClick() {
+      scheduleObj.print();
+  }
     function editorTemplate(props) {
         return (props !== undefined ? <table className="custom-event-editor" style={{ width: '100%' }}>
       <tbody>
@@ -85,14 +109,15 @@ export function ScheduleView1() {
         </td></tr></tbody>
     </table> : '');
     }
-    return (<ScheduleComponent locale='lt' timeFormat='HH' firstDayOfWeek='1' width='100%' height='550px' selectedDate={new Date(2018, 1, 15)} ref={schedule => scheduleObj = schedule} eventSettings={eventSettings} editorTemplate={editorTemplate} showQuickInfo={false} popupOpen={onPopupOpen}>
+    return (<ScheduleComponent locale='lt' timeFormat='HH' firstDayOfWeek='1' width='100%' height='550px' actionBegin={onActionBegin} selectedDate={new Date(2018, 1, 15)} ref={schedule => scheduleObj = schedule} eventSettings={eventSettings} editorTemplate={editorTemplate} showQuickInfo={false} popupOpen={onPopupOpen}>
+    {console.log(scheduleObj)}
     <ViewsDirective>
       <ViewDirective option='Day' startHour='01:00' endHour='15:00' timeScale={{ slotCount: 1 }}/>
       <ViewDirective option='Week' startHour='01:00' endHour='15:00' timeScale={{ slotCount: 1 }}/>
       <ViewDirective option='WorkWeek'/>
       <ViewDirective option='Month'/>
     </ViewsDirective>
-    <Inject services={[Day, Week, WorkWeek, Month]}/>
+    <Inject services={[Day, Week, WorkWeek, Month, Print]}/>
   </ScheduleComponent>);
 }
 

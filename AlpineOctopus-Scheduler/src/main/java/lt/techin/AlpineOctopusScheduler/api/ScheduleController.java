@@ -2,8 +2,9 @@ package lt.techin.AlpineOctopusScheduler.api;
 
 import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleEntityDto;
-import lt.techin.AlpineOctopusScheduler.model.Lesson;
 import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleTestDto;
+import lt.techin.AlpineOctopusScheduler.dao.ScheduleLessonsRepository;
+import lt.techin.AlpineOctopusScheduler.model.Lesson;
 import lt.techin.AlpineOctopusScheduler.model.Schedule;
 import lt.techin.AlpineOctopusScheduler.service.ScheduleService;
 import org.slf4j.Logger;
@@ -32,9 +33,12 @@ public class ScheduleController {
     public static Logger logger = LoggerFactory.getLogger(ScheduleController.class);
 
     private final ScheduleService scheduleService;
+    private final ScheduleLessonsRepository scheduleLessonsRepository;
 
-    public ScheduleController(ScheduleService scheduleService) {
+    public ScheduleController(ScheduleService scheduleService,
+                              ScheduleLessonsRepository scheduleLessonsRepository) {
         this.scheduleService = scheduleService;
+        this.scheduleLessonsRepository = scheduleLessonsRepository;
     }
 
 
@@ -88,8 +92,9 @@ public class ScheduleController {
     }
 
     @GetMapping(value = "/{scheduleId}/lessons", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
     public Set<Lesson> getLessonsByScheduleId(@PathVariable Long scheduleId) {
-        
+
         return scheduleService.getAllLessonsByScheduleId(scheduleId);
     }
 
@@ -130,6 +135,7 @@ public class ScheduleController {
         return ok(toScheduleEntityDto(updatedSchedule));
     }
 
+
     @PatchMapping("/{scheduleId}")
     public ResponseEntity<ScheduleEntityDto> setLessonOnline(@PathVariable Long scheduleId,
                                                              Long lessonId) {
@@ -154,6 +160,15 @@ public class ScheduleController {
     @ResponseBody
     public List<ScheduleTestDto> getAllSchedules() {
         return scheduleService.getAllSchedules();
+    }
+
+    @GetMapping(value = "/{scheduleId}/lessons/{lessonId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public Lesson getLessonFromSchedule(@PathVariable Long scheduleId, @PathVariable Long lessonId) {
+
+
+        return scheduleService.getSingleLesson(scheduleId, lessonId);
+
     }
 
 }

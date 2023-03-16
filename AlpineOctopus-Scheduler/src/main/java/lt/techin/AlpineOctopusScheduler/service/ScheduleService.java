@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -126,7 +127,7 @@ public class ScheduleService {
         schedule.setName(createdGroup.getName() + " " + createdGroup.getShift().getName() + " " + createdGroup.getSchoolYear().toString());
         schedule.setStartingDate(startingDate);
         schedule.setGroup(createdGroup);
-        schedule.setGroupIdValue(createdGroup.getId().toString());
+        schedule.setGroupIdValue(createdGroup.getId());
         schedule.setShift(createdGroup.getShift());
         schedule.setShiftName(createdGroup.getShift().getName());
         schedule.setSubjects(lessonList);
@@ -201,8 +202,9 @@ public class ScheduleService {
     public Set<Lesson> getAllLessonsByScheduleId(Long scheduleId) {
         var existingSchedule = scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", scheduleId.toString()));
-
-        return existingSchedule.getLessons();
+        Set<Lesson> lessons = new HashSet<>();
+        lessons.addAll(existingSchedule.getLessons());
+        return lessons;
     }
 
     public Schedule setLessonOnline(Long scheduleId, Long lessonId) {
@@ -221,6 +223,18 @@ public class ScheduleService {
         return scheduleRepository.save(existingSchedule);
     }
 
+    public Lesson getSingleLesson(Long scheduleId, Long lessonId) {
+        //finding the schedule in repository
+        var existingSchedule = scheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", scheduleId.toString()));
+        //finding and getting the lesson
+        var createdLesson = existingSchedule.getLessons()
+                .stream()
+                .filter(lesson -> lesson.getId().equals(lessonId))
+                .findAny().get();
+
+        return createdLesson;
+    }
 
     public boolean deleteById(Long id) {
         try {

@@ -29,7 +29,7 @@ export function EditGroupScheduleObject() {
   const [plannedTillDate, setPlannedTillDate] = useState("");
   const [error, setError] = useState();
   const [groupId, setGroupId] = useState("");
-  const [groups, setGroups] = useState({
+  const [groups, setGroups] = useState({    
     name: "",
     studentAmount: "",
     schoolYear: "",
@@ -47,6 +47,7 @@ export function EditGroupScheduleObject() {
     shift: "",
     groupName: "",
     shiftName: "",
+    groupIdValue: "",
   });
 
   const [shiftId, setShiftId] = useState();
@@ -122,18 +123,19 @@ export function EditGroupScheduleObject() {
       setStartingDateError("");
     }
   };
-
-  useEffect(() => {
-    fetch("/api/v1/groups/" + schedules.groupName)
-      .then((response) => response.json())
-      .then(setGroups);
-  }, [schedules]);
-
   useEffect(() => {
     fetch("/api/v1/schedule/" + params.id)
       .then((response) => response.json())
       .then(setSchedules);
   }, [active, params]);
+
+  useEffect(() => {
+    fetch("/api/v1/groups/" + schedules.groupIdValue)
+      .then((response) => response.json())
+      .then(setGroups);
+  }, [schedules]);
+
+  
 
   const applyResult = () => {
     setActive(true);
@@ -295,7 +297,7 @@ export function EditGroupScheduleObject() {
                 <Divider hidden />
                 <ScheduleView />
                 <Divider hidden />
-                <Button icon labelPosition="left" href="#/view/groups">
+                <Button icon labelPosition="left" href="#/view/groupsSchedules">
                   <Icon name="arrow left" />
                   Atgal
                 </Button>
@@ -326,7 +328,7 @@ export function EditGroupScheduleObject() {
                   </Table.Body>
                 </Table>
                 <Divider hidden />
-                <ScheduleView />
+                <ScheduleView id={params.id} />
                 <Divider hidden />
 
                 {/* <Table.Cell width={6}>y
@@ -391,12 +393,8 @@ export function EditGroupScheduleObject() {
                       <Table.Cell>{groups.shiftName} </Table.Cell> */}
                 {/* </Table.Row>
                   </Table.Body>
-<<<<<<< HEAD
-                </Table>
-=======
                 </Table> */}
 
->>>>>>> d6bf034f83a5bb7438a260abf77855ef160cfbd7
                 <Button onClick={() => setActive(true)}>Atšaukti</Button>
                 <Button
                   disabled={!formValid}
