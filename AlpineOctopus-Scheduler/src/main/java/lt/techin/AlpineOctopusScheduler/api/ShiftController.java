@@ -20,8 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ShiftMapper.toShift;
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ShiftMapper.toShiftDto;
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ShiftMapper.*;
 import static org.springframework.http.ResponseEntity.ok;
 
 @Controller
@@ -104,11 +103,11 @@ public class ShiftController {
 
 
     @PostMapping
-    public ResponseEntity<ShiftDto> createShift(@Valid @RequestBody ShiftDto shiftDto) {
+    public ResponseEntity<ShiftEntityDto> createShift(@Valid @RequestBody ShiftEntityDto shiftDto) {
 
         if (shiftService.shiftNameIsUnique(toShift(shiftDto))) {
             var createdShift = shiftService.create(toShift(shiftDto));
-            return ok(toShiftDto(createdShift));
+            return ok(toShiftEntityDto(createdShift));
         } else {
             throw new SchedulerValidationException("Shift already exists", "Shift name", "Already exists", shiftDto.getName());
         }

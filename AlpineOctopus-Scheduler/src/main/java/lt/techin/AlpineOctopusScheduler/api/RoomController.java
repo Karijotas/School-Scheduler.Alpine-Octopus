@@ -3,9 +3,7 @@ package lt.techin.AlpineOctopusScheduler.api;
 import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.RoomDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.RoomEntityDto;
-
 import lt.techin.AlpineOctopusScheduler.api.dto.RoomTestDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.mapper.RoomMapper;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Room;
 import lt.techin.AlpineOctopusScheduler.service.RoomService;
@@ -22,8 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.RoomMapper.toRoom;
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.RoomMapper.toRoomDto;
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.RoomMapper.*;
 import static org.springframework.http.ResponseEntity.ok;
 
 @Controller
@@ -83,7 +80,6 @@ public class RoomController {
 
                                                  @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
         return roomService.getAllAvailableRooms();
-
     }
 
     @GetMapping(path = "/all")
@@ -104,10 +100,10 @@ public class RoomController {
     }
 
     @PostMapping
-    public ResponseEntity<RoomDto> createRoom(@Valid @RequestBody RoomDto roomDto) {
+    public ResponseEntity<RoomEntityDto> createRoom(@Valid @RequestBody RoomEntityDto roomDto) {
         if (roomService.classIsUnique(toRoom(roomDto))) {
             var createdRoom = roomService.create(toRoom(roomDto));
-            return ok(toRoomDto(createdRoom));
+            return ok(toRoomEntityDto(createdRoom));
         } else {
             throw new SchedulerValidationException("Class already exists", "Class name & building adress", "Already exists", roomDto.getName());
         }

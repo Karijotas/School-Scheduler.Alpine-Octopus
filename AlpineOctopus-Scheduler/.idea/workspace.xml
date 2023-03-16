@@ -12,6 +12,7 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/model/Lesson.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/model/Lesson.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/model/Schedule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/model/Schedule.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/service/ScheduleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/service/ScheduleService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/lt/techin/AlpineOctopusScheduler/service/SubjectServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/lt/techin/AlpineOctopusScheduler/service/SubjectServiceTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Schedules/EditGroupScheduleObject.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Schedules/EditGroupScheduleObject.js" afterDir="false" />
@@ -41,6 +42,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="JpbToolWindowState">
+    <option name="isToolWindowVisible" value="false" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -127,8 +131,8 @@
     </option>
   </component>
   <component name="RunManager" selected="Spring Boot.AlpineOctopusSchedulerApplication">
-    <configuration name="AlpineOctopusSchedulerApplicationTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="lt.techin.AlpineOctopusScheduler.AlpineOctopusSchedulerApplicationTest" />
+    <configuration name="AlpineOctopusSchedulerApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="lt.techin.AlpineOctopusScheduler.AlpineOctopusSchedulerApplication" />
       <module name="AlpineOctopus-Scheduler" />
       <extension name="coverage">
         <pattern>
@@ -136,6 +140,14 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="All in AlpineOctopus-Scheduler (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="AlpineOctopus-Scheduler" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -149,14 +161,6 @@
       </method>
     </configuration>
     <configuration name="All in AlpineOctopus-Scheduler (3)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="AlpineOctopus-Scheduler" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="TEST_OBJECT" value="package" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="All in AlpineOctopus-Scheduler (4)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="AlpineOctopus-Scheduler" />
       <option name="PACKAGE_NAME" value="" />
       <option name="TEST_OBJECT" value="package" />
@@ -180,20 +184,20 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Application.AlpineOctopusSchedulerApplicationTest" />
+      <item itemvalue="Application.AlpineOctopusSchedulerApplication" />
       <item itemvalue="JUnit.All in AlpineOctopus-Scheduler (2)" />
       <item itemvalue="JUnit.All in AlpineOctopus-Scheduler" />
       <item itemvalue="JUnit.All in AlpineOctopus-Scheduler (3)" />
-      <item itemvalue="JUnit.All in AlpineOctopus-Scheduler (4)" />
+      <item itemvalue="JUnit.All in AlpineOctopus-Scheduler (1)" />
       <item itemvalue="Spring Boot.AlpineOctopusSchedulerApplication" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.All in AlpineOctopus-Scheduler (4)" />
+        <item itemvalue="Application.AlpineOctopusSchedulerApplication" />
         <item itemvalue="JUnit.All in AlpineOctopus-Scheduler" />
-        <item itemvalue="Application.AlpineOctopusSchedulerApplicationTest" />
         <item itemvalue="JUnit.All in AlpineOctopus-Scheduler (3)" />
         <item itemvalue="JUnit.All in AlpineOctopus-Scheduler (2)" />
+        <item itemvalue="JUnit.All in AlpineOctopus-Scheduler (1)" />
       </list>
     </recent_temporary>
   </component>

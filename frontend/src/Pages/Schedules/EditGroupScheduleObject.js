@@ -33,7 +33,7 @@ export function EditGroupScheduleObject() {
     name: "",
     studentAmount: "",
     schoolYear: "",
-    program: "",
+    programName: "",
     shift: "",
     modifiedDate: "",
   });
@@ -45,7 +45,7 @@ export function EditGroupScheduleObject() {
     lessons: "",
     group: "",
     shift: "",
-    groupName: "",
+    groupIdValue: "",
     shiftName: "",
     groupIdValue: "",
   });
