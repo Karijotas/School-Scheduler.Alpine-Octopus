@@ -26,7 +26,8 @@ export function ScheduleView() {
     Subject: "",
     StartTime: "",
     EndTime: "",            
-    ColorId: 1
+    ColorId: 1,
+    Description: "ONLINE"
   });
 
   const [schedules, setSchedules] = useState([]);
@@ -72,9 +73,19 @@ export function ScheduleView() {
           Subject: l.subject.name,
               StartTime: l.startTime,
               EndTime: l.endTime,            
-              ColorId: l.subject.id
+              ColorId: l.subject.id,
+              Description: "ONLINE"
       }
     });
+
+    function eventTemplate(props) {
+      return (<div className="template-wrap" style={{ background: props.SecondaryColor }}>
+    <div className="subject" style={{ background: props.ColorId }}>{props.Subject}</div>
+    {/* <div className="time" style={{ background: props.ColorId }}>
+      Time: {getTimeString(props.StartTime)} - {getTimeString(props.EndTime)}</div> */}   
+    <div className="event-description">{props.Description}</div>
+    <div className="footer" style={{ background: props.PrimaryColor }}></div></div>);
+  }
 
     function editorTemplate(props) {
       return (props !== undefined ? <table className="custom-event-editor" style={{ width: '100%' }}>
@@ -194,7 +205,7 @@ export function ScheduleView() {
     return (
     <Container>
         <h1 className="title-text">{schedules.name}</h1>                 
-    <ScheduleComponent id='schedule' ref={shedule => scheduleObj = shedule} timeFormat='HH' firstDayOfWeek='1' height='550px' editorTemplate={editorTemplate} selectedDate={schedules.startingDate} eventSettings={{dataSource: lessonsOnSchedule}} 
+    <ScheduleComponent id='schedule' ref={shedule => scheduleObj = shedule} timeFormat='HH' firstDayOfWeek='1' height='550px' editorTemplate={editorTemplate} selectedDate={new Date(2023, 1, 10, 24, 0)} eventSettings={{dataSource: lessonsOnSchedule}} 
  colorField='Color' actionBegin={onActionBegin} >
   {console.log(resourceData)}
     <ResourcesDirective>
@@ -202,10 +213,10 @@ export function ScheduleView() {
               </ResourceDirective>
             </ResourcesDirective>
     <ViewsDirective>
-      <ViewDirective option='Day' startHour='01:00' endHour='15:00' timeScale={{interval: 1, slotCount: 1 }}/>
-      <ViewDirective option='Week' startHour='01:00' endHour='15:00'timeScale={{ slotCount: 1 }}/>
-      <ViewDirective option='WorkWeek'/>
-      <ViewDirective option='Month'/>
+      <ViewDirective option='Day' startHour='01:00' endHour='15:00' timeScale={{interval: 1, slotCount: 1 }} eventTemplate={eventTemplate.bind(this)}/>
+      <ViewDirective option='Week' startHour='01:00' endHour='15:00'timeScale={{ slotCount: 1 }} eventTemplate={eventTemplate.bind(this)}/>
+      <ViewDirective option='WorkWeek' startHour='01:00' endHour='15:00' timeScale={{interval: 1, slotCount: 1 }} eventTemplate={eventTemplate.bind(this)}/>
+      <ViewDirective option='Month' startHour='01:00' endHour='15:00' timeScale={{interval: 1, slotCount: 1 }} eventTemplate={eventTemplate.bind(this)}/>
     </ViewsDirective>
     <Inject services={[Day, Week, WorkWeek, Month, Agenda, DragAndDrop, ExcelExport, Print]}/>
   </ScheduleComponent>
