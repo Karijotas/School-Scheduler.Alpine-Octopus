@@ -41,6 +41,7 @@ export function ViewGroupsSchedules() {
   const [activePage, setActivePage] = useState(0);
   const [schedule, setSchedule] = useState("");
   const [defaultDate, setDefaultDate] = useState(today);
+  const [dates, setDates] = useState([]);
 
   const fetchSchedules = async () => {
     fetch("/api/v1/schedule/page?page=" + activePage)
@@ -65,42 +66,39 @@ export function ViewGroupsSchedules() {
   const fetchFilterSchedulesByStartingDate = async () => {
     fetch(`/api/v1/schedule/page/starting-date-filter/${formatStartingDate()}`)
       .then((response) => response.json())
-      .then((jsonResponse) => setSchedules(jsonResponse))
-      ;
+      .then((jsonResponse) => setSchedules(jsonResponse));
   };
 
-  const fetchFilterSchedulesByPlannedTillDate = async () => {
-    fetch(`/api/v1/schedule/page/planned-till-filter/${formatPlannedTillDate()}`)
-      .then((response) => response.json())
-      .then((jsonResponse) => setSchedules(jsonResponse))
-      ;
-  };
+  // const fetchFilterSchedulesByPlannedTillDate = async () => {
+  //   fetch(
+  //     `/api/v1/schedule/page/planned-till-filter/${formatPlannedTillDate()}`
+  //   )
+  //     .then((response) => response.json())
+  //     .then((jsonResponse) => setSchedules(jsonResponse));
+  // };
 
   useEffect(() => {
     nameText.length > 0
       ? fetchFilterSchedulesByName()
-      : startingDate === "Invalid Date" || plannedTillDate === "Invalid Date"
-      ? fetchSchedules().then(setStartingDate(startingDate)).then(setPlannedTillDate(plannedTillDate))
-      : startingDate.length > 0  
+      : startingDate === "Invalid Date"
+      ? fetchSchedules()
+      : // .then(setStartingDate(""))
+      startingDate.length > 0
       ? fetchFilterSchedulesByStartingDate()
-      : plannedTillDate.length > 0
-      ? fetchFilterSchedulesByPlannedTillDate()
       : fetchSchedules();
-  }, [activePage, nameText, startingDate, plannedTillDate]);
-
+  }, [activePage, nameText, startingDate]);
 
   // useEffect(() => {
   //   nameText.length > 0
   //     ? setStartingDate("").then(setPlannedTillDate("")).then(fetchFilterSchedulesByName())
   //     : startingDate === "Invalid Date" || plannedTillDate === "Invalid Date"
   //     ? setStartingDate("").then(setPlannedTillDate("")).then(fetchSchedules())
-  //     : startingDate.length > 0  
+  //     : startingDate.length > 0
   //     ? setNameText("").then(setPlannedTillDate("")).then(fetchFilterSchedulesByStartingDate())
   //     : plannedTillDate.length > 0
   //     ? setNameText("").then(setStartingDate("")).then(fetchFilterSchedulesByPlannedTillDate())
   //     : fetchSchedules();
   // }, [activePage, nameText, startingDate, plannedTillDate]);
-
 
   // useEffect(() => {
   //   if (
@@ -124,16 +122,15 @@ export function ViewGroupsSchedules() {
   //   }
   // }, [activePage, nameText, startingDate, plannedTillDate]);
 
-
-
-
   const formatStartingDate = () => {
     return startingDate === "" ? "" : dayjs(startingDate).format("YYYY-MM-DD");
   };
 
-  const formatPlannedTillDate = () => {
-    return plannedTillDate === ""? "": dayjs(plannedTillDate).format("YYYY-MM-DD");
-  };
+  // const formatPlannedTillDate = () => {
+  //   return plannedTillDate === ""
+  //     ? ""
+  //     : dayjs(plannedTillDate).format("YYYY-MM-DD");
+  // };
 
   return (
     <div>
@@ -163,14 +160,28 @@ export function ViewGroupsSchedules() {
                 }}
               />
 
-              <DatePicker
+              {/* <DatePicker
                 className="controls4"
                 placeholder="Filtruoti iki"
                 onChange={(e) => {
                   const newDate = dayjs(e).format("YYYY-MM-DD");
                   setPlannedTillDate(newDate);
                 }}
-              />
+              /> */}
+              {/* <RangePicker
+                className="controls5"
+                onChange={(values) => {
+                  // const start = dayjs(values[0]).format("YYYY-MM-DD");
+                  // const end = dayjs(values[1]).format("YYYY-MM-DD");
+                  setDates(
+                    values.map((item) => {
+                      return dayjs(item).format("YYYY-MM-DD");
+                    })
+                  );
+                  setStartingDate(dates[0]);
+                  setPlannedTillDate(dates[1]);
+                }}
+              /> */}
 
               <Divider horizontal hidden></Divider>
 

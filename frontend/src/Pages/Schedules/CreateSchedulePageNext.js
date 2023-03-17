@@ -26,7 +26,7 @@ export function CreateSchedulePageNext() {
   const [teacherId, setTeacherId] = useState();
   const [teachers, setTeachers] = useState([]);
   const [lessonId, setLessonId] = useState();
-  const [groups, setGroups] = useState({    
+  const [groups, setGroups] = useState({
     name: "",
     studentAmount: "",
     schoolYear: "",
@@ -52,12 +52,12 @@ export function CreateSchedulePageNext() {
     fetch("/api/v1/schedule/" + params.id)
       .then((response) => response.json())
       .then(setSchedule);
-  }, [params]);
+  }, [params, schedule]);
 
-  // useEffect(() => {
-  //   console.log(schedule)
-  //   console.log(teacherId, roomId, lessonId)
-  // }, [teacherId, roomId, lessonId])
+  useEffect(() => {
+    console.log(schedule);
+    console.log(teacherId, roomId, lessonId);
+  }, [teacherId, roomId, lessonId]);
 
   useEffect(() => {
     fetch("/api/v1/groups/" + schedule.groupIdValue)
@@ -97,7 +97,7 @@ export function CreateSchedulePageNext() {
       );
   }, [teachers]);
 
-  //Room dropdown
+  // Room dropdown
   useEffect(() => {
     fetch("/api/v1/rooms/")
       .then((response) => response.json())
@@ -133,7 +133,7 @@ export function CreateSchedulePageNext() {
                   </Table.Row>
                 </Table.Header>
 
-                {/* <Table.Body>
+                <Table.Body>
                   <Table.Row>
                     <Table.Cell>{groups.programName}</Table.Cell>
                   </Table.Row>
@@ -148,7 +148,7 @@ export function CreateSchedulePageNext() {
                 <Table.Body>
                   {schedule.lessons.map((lesson) => (
                     <Table.Row key={lesson.id}>
-                      <Table.Cell>{lesson.subject.name}</Table.Cell>
+                      <Table.Cell>{lesson.subject.name} </Table.Cell>
                       <Table.Cell>
                         <Select
                           options={teachers}
@@ -174,7 +174,7 @@ export function CreateSchedulePageNext() {
                       </Table.Cell>
                     </Table.Row>
                   ))}
-                </Table.Body> */}
+                </Table.Body>
               </Table>
 
               <Divider horizontal hidden></Divider>
