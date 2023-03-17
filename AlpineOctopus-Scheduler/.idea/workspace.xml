@@ -67,6 +67,8 @@
     &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/User/Desktop/3sprint/AlpineOctopus-Scheduler&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -77,7 +79,6 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;com.haulmont.jpb.ioc&quot;,
     &quot;spring.configuration.checksum&quot;: &quot;dd5969d8c89564cbf8d5b95640e086b1&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
-
   },
   &quot;keyToStringList&quot;: {
     &quot;com.intellij.ide.scratch.LRUPopupBuilder$1/SQL Dialect&quot;: [
@@ -90,6 +91,12 @@
       <recent name="$PROJECT_DIR$/src/main/resources/db/migration" />
       <recent name="C:\Users\User\OneDrive\Desktop\2-teachers\AlpineOctopus-Scheduler\src\main\resources\db\migration" />
       <recent name="C:\Users\User\OneDrive\Desktop\2-teachers\AlpineOctopus-Scheduler\src\main\java\lt\techin\AlpineOctopusScheduler\api\dto" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="lt.techin.AlpineOctopusScheduler.api" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="lt.techin.AlpineOctopusScheduler.api.dto.mapper" />
@@ -109,6 +116,10 @@
       <command value="mvn clean" />
       <command value="spring-boot:run -Pprod" />
       <command value="mvn flyway:repair" />
+      <command value="mvn clean install" />
+      <command value="mvn cargo:run" />
+      <command value="mvn flyway:clean" />
+      <command value="mvn flyway:migrate" />
       <command value="mvn spring-boot:run" />
       <command value="mvn clean install &amp;&amp; mvn cargo:run" />
       <command value="mvn clean install &amp; mvn cargo:run" />
@@ -157,7 +168,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="All in AlpineOctopus-Scheduler (5)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="All in AlpineOctopus-Scheduler" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="AlpineOctopus-Scheduler" />
       <option name="PACKAGE_NAME" value="" />
       <option name="TEST_OBJECT" value="package" />
@@ -174,18 +185,18 @@
     </configuration>
     <list>
       <item itemvalue="Application.AlpineOctopusSchedulerApplication" />
+      <item itemvalue="JUnit.All in AlpineOctopus-Scheduler" />
+      <item itemvalue="JUnit.All in AlpineOctopus-Scheduler (4)" />
       <item itemvalue="JUnit.All in AlpineOctopus-Scheduler (2)" />
       <item itemvalue="JUnit.All in AlpineOctopus-Scheduler (3)" />
-      <item itemvalue="JUnit.All in AlpineOctopus-Scheduler (4)" />
-      <item itemvalue="JUnit.All in AlpineOctopus-Scheduler (5)" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.AlpineOctopusSchedulerApplication" />
+        <item itemvalue="JUnit.All in AlpineOctopus-Scheduler" />
         <item itemvalue="JUnit.All in AlpineOctopus-Scheduler (4)" />
         <item itemvalue="JUnit.All in AlpineOctopus-Scheduler (3)" />
         <item itemvalue="JUnit.All in AlpineOctopus-Scheduler (2)" />
-        <item itemvalue="JUnit.All in AlpineOctopus-Scheduler (5)" />
       </list>
     </recent_temporary>
   </component>
@@ -248,6 +259,14 @@
       <workItem from="1678272378367" duration="1408000" />
       <workItem from="1678288808653" duration="867000" />
       <workItem from="1678351849074" duration="2397000" />
+      <workItem from="1678708769846" duration="999000" />
+      <workItem from="1678727393104" duration="600000" />
+      <workItem from="1678783398727" duration="1856000" />
+      <workItem from="1678869328441" duration="2181000" />
+      <workItem from="1678900517117" duration="1966000" />
+      <workItem from="1678955185517" duration="1059000" />
+      <workItem from="1679047117415" duration="796000" />
+      <workItem from="1678992337741" duration="10968000" />
     </task>
     <servers />
   </component>
@@ -272,6 +291,11 @@
           <url>file://$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/service/TeacherService.java</url>
           <line>105</line>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/ScheduleController.java</url>
+          <line>164</line>
+          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

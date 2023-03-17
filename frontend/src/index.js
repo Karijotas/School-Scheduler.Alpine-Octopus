@@ -39,11 +39,15 @@ import { ViewArchivedProgram } from './Pages/Edit/Programs/ViewArchivedProgram';
 import { ViewArchivedShift } from './Pages/Edit/Shifts/ViewArchivedShift';
 import { ViewArchivedSubject } from './Pages/Edit/Subjects/ViewArchivedSubject';
 import { ViewArchivedTeacher } from './Pages/Edit/Teachers/ViewArchivedTeachers';
-import { ViewGroupsSchedules } from './Pages/Schedules/ViewGroupsSchedules';
-import { ScheduleView } from './Pages/Schedules/Schedule';
-import { ScheduleView1 } from './Pages/Schedules/Schedule1';
-import { registerLicense } from '@syncfusion/ej2-base';
-import { EditGroupScheduleObject } from './Pages/Schedules/EditGroupScheduleObject';
+import {ViewGroupsSchedules} from './Pages/Schedules/ViewGroupsSchedules';
+import { ScheduleView } from './Pages/Schedules/Schedule';   
+import { Sched1 } from './Pages/Schedules/Sched1';   
+
+import { ScheduleView1 } from './Pages/Schedules/Schedule1';     
+import { registerLicense } from '@syncfusion/ej2-base';  
+import { EditGroupScheduleObject} from './Pages/Schedules/EditGroupScheduleObject'; 
+import { CreateSchedule } from './Pages/Schedules/CreateSchedulePage';
+import { CreateSchedulePageNext } from './Pages/Schedules/CreateSchedulePageNext';       
 
 
 // Registering Syncfusion license key
@@ -115,11 +119,15 @@ root.render(
 
         {/* Group schedules routes: */}
         <Route path='/view/groupsSchedules' element={<ViewGroupsSchedules />} />
-        <Route path='/view/scheduleView' element={<ScheduleView />} />
+        <Route path='/view/scheduleView' element={<Sched1 />} />
         <Route path='/view/scheduleView1' element={<ScheduleView1 />} />
         {/* <Route path='/view/groupsSchedules/edit/:id' element={<EditModuleObject />} /> */}
         <Route path='/view/groupsSchedules/edit/:id' element={<EditGroupScheduleObject />} />
         {/* <Route path='/create/groupsSchedules' element={<CreateModulePage />} /> */}
+
+
+        <Route path='/create/groupsSchedules' element={<CreateSchedule/>} />
+        <Route path='/create/groupsSchedules/modify/:id' element={<CreateSchedulePageNext/>} />
 
       </Routes>
     </HashRouter>

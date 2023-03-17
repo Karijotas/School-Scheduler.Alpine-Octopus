@@ -59,7 +59,7 @@ public class Schedule {
     @JoinColumn(name = "shift_id")
     private Shift shift;
 
-    private String groupIdValue;
+    private Long groupIdValue;
     private String shiftName;
 
 
@@ -111,11 +111,11 @@ public class Schedule {
         this.shiftName = shiftName;
     }
 
-    public String getGroupIdValue() {
+    public Long getGroupIdValue() {
         return groupIdValue;
     }
 
-    public void setGroupIdValue(String groupIdValue) {
+    public void setGroupIdValue(Long groupIdValue) {
         this.groupIdValue = groupIdValue;
     }
 

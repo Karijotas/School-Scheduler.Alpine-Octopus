@@ -116,7 +116,7 @@ public class GroupService {
     }
 
     public Groups create(Groups groups, Long programId, Long shiftId) {
-        validateInputWithInjectedValidator(groups);
+//        validateInputWithInjectedValidator(groups);
         Program createdProgram = programRepository.findById(programId)
                 .orElseThrow(() -> new SchedulerValidationException("Program doesn't exist", "Program", "Program not found", programId.toString()));
         Shift createdShift = shiftRepository.findById(shiftId)
@@ -130,6 +130,22 @@ public class GroupService {
             throw new SchedulerValidationException("Invalid year value", "School year", "School year must be between 2023-3023", groups.getSchoolYear().toString());
         }
     }
+    
+    public Groups create(Groups groups) {
+//      validateInputWithInjectedValidator(groups);
+//      Program createdProgram = programRepository.findById(programId)
+//              .orElseThrow(() -> new SchedulerValidationException("Program doesn't exist", "Program", "Program not found", programId.toString()));
+//      Shift createdShift = shiftRepository.findById(shiftId)
+//              .orElseThrow(() -> new SchedulerValidationException("Shift doesn't exist", "Shift", "Shift not found", shiftId.toString()));
+
+//      if (schoolYearIsValid(groups)) {
+//          groups.setProgram(createdProgram);
+//          groups.setShift(createdShift);
+          return groupsRepository.save(groups);
+//      } else {
+//          throw new SchedulerValidationException("Invalid year value", "School year", "School year must be between 2023-3023", groups.getSchoolYear().toString());
+//      }
+  }
 
     //    .getById(programId)
     public Groups update(Long id, Groups groups, Long programId, Long shiftId) {

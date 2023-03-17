@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, useHref } from 'react-router-dom';
-import { Button, Form, Grid, Icon, Input, Segment, Select } from "semantic-ui-react";
-import { YEAR_OPTIONS } from '../../../Components/const';
-import { EditMenu } from '../../../Components/EditMenu';
-import MainMenu from '../../../Components/MainMenu';
+import { NavLink, useHref } from "react-router-dom";
+import {
+  Button,
+  Form,
+  Grid,
+  Icon,
+  Input,
+  Segment,
+  Select,
+} from "semantic-ui-react";
+import { YEAR_OPTIONS } from "../../../Components/const";
+import { EditMenu } from "../../../Components/EditMenu";
+import MainMenu from "../../../Components/MainMenu";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
 };
-
-
 
 const yearOptions = [
   { key: 23, value: 2023, text: "2023" },
@@ -28,14 +34,14 @@ const shiftOptions = [
 ];
 
 export function CreateGroupPage() {
-  const listUrl = useHref('/view/groups');
+  const listUrl = useHref("/view/groups");
 
-  const [hide, setHide] = useState(false)
-  const [name, setName] = useState('');
-  const [schoolYear, setSchoolYear] = useState(2023)
-  const [studentAmount, setStudentAmount] = useState('')
-  const [programs, setPrograms] = useState([])
-  const [programId, setProgramId] = useState()
+  const [hide, setHide] = useState(false);
+  const [name, setName] = useState("");
+  const [schoolYear, setSchoolYear] = useState(2023);
+  const [studentAmount, setStudentAmount] = useState("");
+  const [programs, setPrograms] = useState([]);
+  const [programId, setProgramId] = useState();
   const [shifts, setShifts] = useState([]);
   const [shiftId, setShiftId] = useState();
 
@@ -43,69 +49,67 @@ export function CreateGroupPage() {
   const [nameDirty, setNameDirty] = useState(false);
   const [studentDirty, setStudentDirty] = useState(false);
 
-  const [nameError, setNameError] = useState("Negali būti tuščias!")
-  const [studentError, setStudentError] = useState(" ")
+  const [nameError, setNameError] = useState("Negali būti tuščias!");
+  const [studentError, setStudentError] = useState(" ");
   // const [yearError, setYearError] = useState("*Privaloma")
-  const [programError, setProgramError] = useState("")
-  const [shiftError, setShiftError] = useState("")
-  const [formValid, setFormValid] = useState(false)
+  const [programError, setProgramError] = useState("");
+  const [shiftError, setShiftError] = useState("");
+  const [formValid, setFormValid] = useState(false);
 
   useEffect(() => {
-    if (studentError || nameError || programId === undefined || shiftId === undefined) {
-      setFormValid(false)
+    if (
+      studentError ||
+      nameError ||
+      programId === undefined ||
+      shiftId === undefined
+    ) {
+      setFormValid(false);
     } else {
-      setFormValid(true)
+      setFormValid(true);
     }
-  }, [studentError, nameError, programId, shiftId])
+  }, [studentError, nameError, programId, shiftId]);
 
   const blurHandler = (e) => {
     switch (e.target.name) {
-      case 'name':
+      case "name":
         setNameDirty(true);
-        break
-      case 'student':
+        break;
+      case "student":
         setStudentDirty(true);
-        break
+        break;
     }
-  }
+  };
 
   const nameHandler = (e) => {
-    setName(e.target.value)
+    setName(e.target.value);
     if (e.target.value.length < 2 || e.target.value.length > 100) {
-      setNameError("Įveskite nuo 2 iki 100 simbolių!")
+      setNameError("Įveskite nuo 2 iki 100 simbolių!");
       if (!e.target.value) {
-        setNameError("Negali būti tuščias!")
+        setNameError("Negali būti tuščias!");
       }
     } else {
-      setNameError("")
+      setNameError("");
     }
-  }
-
+  };
 
   const studentHandler = (e) => {
-    setStudentAmount(e.target.value)
+    setStudentAmount(e.target.value);
 
     if (!/^\d+$/.test(e.target.value)) {
-      setStudentError("Įveskite tik skaičius")
+      setStudentError("Įveskite tik skaičius");
       if (!e.target.value) {
-        setStudentError("Negali būti tuščias")
+        setStudentError("Negali būti tuščias");
       }
-
     } else if (e.target.value > 300 || e.target.value < 1) {
-      setStudentError("Skaičius turi būti tarp 1 ir 300")
+      setStudentError("Skaičius turi būti tarp 1 ir 300");
     } else {
       setStudentError("");
     }
   };
 
-
-
-
   // const selectYearHandler = () => {
   //   setYearError("")
   //     }
-
-
 
   const applyResult = (result) => {
     const clear = () => {
@@ -113,10 +117,12 @@ export function CreateGroupPage() {
     };
 
     if (result.ok) {
-      let info = result.json() 
-      .then((jsonResponse) => window.location = listUrl);
+
+      let info = result.json()
+        .then((jsonResponse) => window.location = listUrl);
+
     } else {
-      window.alert("Nepavyko sukurti: pavadinimas turi būti unikalus!");    
+      window.alert("Nepavyko sukurti: pavadinimas turi būti unikalus!");
     }
   };
 
@@ -131,7 +137,6 @@ export function CreateGroupPage() {
         studentAmount,
       }),
     }).then(applyResult);
-
   };
   useEffect(() => {
     fetch("/alpine-octopus/api/v1/programs/")
@@ -148,62 +153,122 @@ export function CreateGroupPage() {
   useEffect(() => {
     fetch('/alpine-octopus/api/v1/shifts')
       .then((response) => response.json())
-      .then((data) => setShifts(
-        data.map((x) => {
-          return { key: x.id, text: x.name, value: x.id };
-        })
-      )
-      )
+      .then((data) =>
+        setShifts(
+          data.map((x) => {
+            return { key: x.id, text: x.name, value: x.id };
+          })
+        )
+      );
   }, []);
 
-  return (<div className="create-new-page">
-    <MainMenu />
-    <Grid columns={2} >
-      <Grid.Column width={2} id='main'>
-        <EditMenu />
-      </Grid.Column>
-      <Grid.Column floated='left' textAlign='left' verticalAlign='top' width={13}>
-        <Segment id='segment' color='teal'>
-
-          <Form >
-            <Form.Field >
-              <label>"Teams" grupės pavadinimas</label>
-              {(nameDirty && nameError) && <div style={{ color: "red" }}>{nameError}</div>}
-              <input name="name" onBlur={blurHandler} placeholder='"Teams" grupės pavadinimas' value={name} onChange={(e) => nameHandler(e)} />
-            </Form.Field>
-            <Form.Group widths='equal'>
-              <Form.Field >
-                <label>Mokslo metai</label>
-                {/* {(yearError) && <div style={{color: "red"}}>{yearError}</div>} */}
-                <select id='selectYear' value={schoolYear} onChange={((e) => setSchoolYear(e.target.value))} >
-                  {Object.entries(YEAR_OPTIONS)
-                    .map(([key, value]) => <option value={key}>{value}</option>)
-                  }  </select>   </Form.Field>
-              <Form.Field >
-                {(studentError) && <div style={{ color: "red" }}>{studentError}</div>}
-                <label>Studentų skaičius</label>
-                <Input name="student" placeholder='Studentų skaičius' value={studentAmount} onChange={(e) => studentHandler(e)} />
-              </Form.Field> </Form.Group>
-            <Form.Group widths='equal'>
+  return (
+    <div className="create-new-page">
+      <MainMenu />
+      <Grid columns={2}>
+        <Grid.Column width={2} id="main">
+          <EditMenu />
+        </Grid.Column>
+        <Grid.Column
+          floated="left"
+          textAlign="left"
+          verticalAlign="top"
+          width={13}
+        >
+          <Segment id="segment" color="teal">
+            <Form>
               <Form.Field>
-                <label>Programa</label>
-                {(programError) && <div style={{ color: "red" }}>{programError}</div>}
-                <Select options={programs} placeholder='Programa' onClose={() => console.log(programId)} onChange={(e, data) => setProgramId(data.value)} />
-
+                <label>"Teams" grupės pavadinimas</label>
+                {nameDirty && nameError && (
+                  <div style={{ color: "red" }}>{nameError}</div>
+                )}
+                <input
+                  name="name"
+                  onBlur={blurHandler}
+                  placeholder='"Teams" grupės pavadinimas'
+                  value={name}
+                  onChange={(e) => nameHandler(e)}
+                />
               </Form.Field>
-              <Form.Field >
-                <label>Pamaina</label>
-                {(shiftError) && <div style={{ color: "red" }}>{shiftError}</div>}
-                <Select options={shifts} placeholder='Pamaina' onClose={() => console.log(shiftId)} onChange={(e, data) => setShiftId(data.value)} />
-              </Form.Field>
-            </Form.Group>
-            <div ><Button icon labelPosition="left" className="" as={NavLink} exact to='/view/groups'><Icon name="arrow left" />Atgal</Button>
-              <Button type='submit' disabled={!formValid} className="controls" id='details' onClick={createGroup}>Sukurti</Button></div>
-          </Form>
-
-        </Segment>
-      </Grid.Column>
-    </Grid>
-  </div>
+              <Form.Group widths="equal">
+                <Form.Field>
+                  <label>Mokslo metai</label>
+                  {/* {(yearError) && <div style={{color: "red"}}>{yearError}</div>} */}
+                  <select
+                    id="selectYear"
+                    value={schoolYear}
+                    onChange={(e) => setSchoolYear(e.target.value)}
+                  >
+                    {Object.entries(YEAR_OPTIONS).map(([key, value]) => (
+                      <option value={key}>{value}</option>
+                    ))}{" "}
+                  </select>{" "}
+                </Form.Field>
+                <Form.Field>
+                  {studentError && (
+                    <div style={{ color: "red" }}>{studentError}</div>
+                  )}
+                  <label>Studentų skaičius</label>
+                  <Input
+                    name="student"
+                    placeholder="Studentų skaičius"
+                    value={studentAmount}
+                    onChange={(e) => studentHandler(e)}
+                  />
+                </Form.Field>{" "}
+              </Form.Group>
+              <Form.Group widths="equal">
+                <Form.Field>
+                  <label>Programa</label>
+                  {programError && (
+                    <div style={{ color: "red" }}>{programError}</div>
+                  )}
+                  <Select
+                    options={programs}
+                    placeholder="Programa"
+                    onClose={() => console.log(programId)}
+                    onChange={(e, data) => setProgramId(data.value)}
+                  />
+                </Form.Field>
+                <Form.Field>
+                  <label>Pamaina</label>
+                  {shiftError && (
+                    <div style={{ color: "red" }}>{shiftError}</div>
+                  )}
+                  <Select
+                    options={shifts}
+                    placeholder="Pamaina"
+                    onClose={() => console.log(shiftId)}
+                    onChange={(e, data) => setShiftId(data.value)}
+                  />
+                </Form.Field>
+              </Form.Group>
+              <div>
+                <Button
+                  icon
+                  labelPosition="left"
+                  className=""
+                  as={NavLink}
+                  exact
+                  to="/view/groups"
+                >
+                  <Icon name="arrow left" />
+                  Atgal
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={!formValid}
+                  onClick={createGroup}
+                  className="controls"
+                  id="details"
+                >
+                  Sukurti
+                </Button>
+              </div>
+            </Form>
+          </Segment>
+        </Grid.Column>
+      </Grid>
+    </div>
   );
 }
