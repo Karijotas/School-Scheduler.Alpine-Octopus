@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   Button,
-  ButtonGroup, Divider, Grid, Icon,
-  Input,
-  Segment,
+  ButtonGroup, Divider, Grid, Icon, Segment,
   Table
 } from "semantic-ui-react";
 import { EditMenu } from '../../../Components/EditMenu';

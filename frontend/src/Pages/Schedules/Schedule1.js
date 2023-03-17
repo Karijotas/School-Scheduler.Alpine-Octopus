@@ -1,25 +1,15 @@
-import * as ReactDOM from "react-dom";
-import React, { useEffect, useState } from "react";
-import {
-  ScheduleComponent,
-  Print,
-  RecurrenceEditorComponent,
-  ViewsDirective,
-  ViewDirective,
-  Day,
-  Week,
-  WorkWeek,
-  Month,
-  Inject,
-} from "@syncfusion/ej2-react-schedule";
+import { L10n, loadCldr, setCulture } from "@syncfusion/ej2-base";
 import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
-import { extend, L10n, loadCldr, setCulture } from "@syncfusion/ej2-base";
+import {
+    Day, Inject, Month, Print, ScheduleComponent, ViewDirective, ViewsDirective, Week,
+    WorkWeek
+} from "@syncfusion/ej2-react-schedule";
 import * as gregorian from "cldr-data/main/lt/ca-gregorian.json";
 import * as numbers from "cldr-data/main/lt/numbers.json";
 import * as timeZoneNames from "cldr-data/main/lt/timeZoneNames.json";
 import * as numberingSystems from "cldr-data/supplemental/numberingSystems.json";
-import * as weekData from "cldr-data/supplemental/weekData.json";
+import React, { useEffect, useState } from "react";
 
 loadCldr(numberingSystems, gregorian, numbers, timeZoneNames);
 
@@ -41,7 +31,7 @@ export function ScheduleView1() {
   const [schedule, setSchedule] = useState([]);
 
   useEffect(() => {
-    fetch("/api/v1/schedule/1/lessons")
+    fetch("/alpine-octopus/api/v1/schedule/1/lessons")
       .then((response) => response.json())
       .then((jsonRespones) => setLesson(jsonRespones));
   }, []);

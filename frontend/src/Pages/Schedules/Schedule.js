@@ -67,14 +67,14 @@ export function ScheduleView() {
   }
 
   useEffect(() => {
-    fetch(`/api/v1/schedule/${params.id}/lessons`)
+    fetch(`/alpine-octopus/api/v1/schedule/${params.id}/lessons`)
       .then((response) => response.json())
       // .then((jsonRespones) => setLessons(jsonRespones))
       .then(setLessons)
   }, [params]);
 
   useEffect(() => {
-    fetch(`/api/v1/schedule/${params.id}/subjects`)
+    fetch(`/alpine-octopus/api/v1/schedule/${params.id}/subjects`)
       .then((response) => response.json())
       .then(setSubjects)
   }, []);
@@ -91,14 +91,14 @@ export function ScheduleView() {
 
   const createLessonOnSchedule = () => {
     fetch(
-      `/api/v1/schedule/${params.id}/create/3/${startTime}/${endTime}`, {
+      `/alpine-octopus/api/v1/schedule/${params.id}/create/3/${startTime}/${endTime}`, {
       method: 'PATCH'
     })
 
   }
 
   useEffect(() => {
-    fetch("/api/v1/schedule/" + params.id)
+    fetch("/alpine-octopus/api/v1/schedule/" + params.id)
       .then((response) => response.json())
       .then(setSchedules);
   }, [params]);

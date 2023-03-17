@@ -1,3 +1,6 @@
+import { DatePicker } from "antd";
+import "antd/dist/reset.css";
+import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { NavLink, useHref } from "react-router-dom";
 import {
@@ -5,16 +8,11 @@ import {
   Divider,
   Form,
   Grid,
-  Icon,
-  Input,
-  Segment,
-  Select,
+  Icon, Segment,
+  Select
 } from "semantic-ui-react";
 import MainMenu from "../../Components/MainMenu";
 import { SchedulesMenu } from "../../Components/SchedulesMenu";
-import { DatePicker } from "antd";
-import dayjs from "dayjs";
-import "antd/dist/reset.css";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -42,7 +40,7 @@ export function CreateSchedule() {
 
   const createSchedule = () => {
     fetch(
-      "/api/v1/schedule?groupId=" + groupId + "&startingDate=" + startingDate,
+      "/alpine-octopus/api/v1/schedule?groupId=" + groupId + "&startingDate=" + startingDate,
       {
         method: "POST",
         headers: JSON_HEADERS,
@@ -54,7 +52,7 @@ export function CreateSchedule() {
   };
 
   useEffect(() => {
-    fetch("/api/v1/groups/")
+    fetch("/alpine-octopus/api/v1/groups/")
       .then((response) => response.json())
       .then((data) =>
         setGroups(

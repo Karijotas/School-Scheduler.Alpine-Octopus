@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { DatePicker } from "antd";
+import "antd/dist/reset.css";
 import dayjs from "dayjs";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   ButtonGroup,
@@ -8,19 +9,11 @@ import {
   Divider,
   Grid,
   Icon,
-  Input,
-  Pagination,
-  Segment,
-  Table,
-  TextArea,
+  Input, Segment,
+  Table
 } from "semantic-ui-react";
-import moment from "moment";
 import MainMenu from "../../Components/MainMenu";
 import { SchedulesMenu } from "../../Components/SchedulesMenu";
-import { format } from "date-fns";
-import { DatePicker } from "antd";
-import "antd/dist/reset.css";
-import { ButtonSizes } from "./colors";
 const { RangePicker } = DatePicker;
 
 const JSON_HEADERS = {

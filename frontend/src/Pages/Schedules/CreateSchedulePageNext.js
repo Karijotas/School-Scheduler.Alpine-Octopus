@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, useHref } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import {
   Button,
   Divider,
   Grid,
-  Icon,
-  Input,
-  Message,
+  Icon, Message,
   Segment,
   Select,
-  Table,
+  Table
 } from "semantic-ui-react";
 import MainMenu from "../../Components/MainMenu";
 import { SchedulesMenu } from "../../Components/SchedulesMenu";
@@ -61,13 +58,13 @@ export function CreateSchedulePageNext() {
   };
 
   useEffect(() => {
-    fetch(`/api/v1/schedule/${params.id}/subjects`)
+    fetch(`/alpine-octopus/api/v1/schedule/${params.id}/subjects`)
       .then((response) => response.json())      
       .then(setSubjects)
   }, [params]);
 
   useEffect(() => {
-    fetch('/api/v1/schedule/' + params.id)
+    fetch('/alpine-octopus/api/v1/schedule/' + params.id)
       .then(response => response.json())
       .then(result => {getGroup(result)});
     
@@ -93,7 +90,7 @@ export function CreateSchedulePageNext() {
   // };
 
   const updateSchedule = (lessonId, ) => {
-    fetch(`/api/v1/schedule/${params.id}/${lessonId}/${teacherId}/${roomId}`, {
+    fetch(`/alpine-octopus/api/v1/schedule/${params.id}/${lessonId}/${teacherId}/${roomId}`, {
       method: 'PATCH'
     })
     .then(applyResult);
@@ -101,7 +98,7 @@ export function CreateSchedulePageNext() {
 
   //Teacher dropdown
   useEffect(() => {
-    fetch("/api/v1/teachers/")
+    fetch("/alpine-octopus/api/v1/teachers/")
       .then((response) => response.json())
       .then((data) =>
         setTeachers(
@@ -113,7 +110,7 @@ export function CreateSchedulePageNext() {
   }, []);
 
   const getGroup = (props)  => {    
-    fetch(`/api/v1/groups/${props.groupIdValue}`)
+    fetch(`/alpine-octopus/api/v1/groups/${props.groupIdValue}`)
       .then((response) => response.json())      
       .then(data => {setGroups(data)})
        
@@ -137,7 +134,7 @@ export function CreateSchedulePageNext() {
 
   // Room dropdown
   useEffect(() => {
-    fetch("/api/v1/rooms/")
+    fetch("/alpine-octopus/api/v1/rooms/")
       .then((response) => response.json())
       .then((data) =>
         setRooms(
@@ -149,7 +146,7 @@ export function CreateSchedulePageNext() {
   }, []);
 
   const getTeachersInSubjects = (props)  => {
-    fetch(`/api/v1/subjects/${props.id}/teachers`)
+    fetch(`/alpine-octopus/api/v1/subjects/${props.id}/teachers`)
       .then((response) => response.json())
       .then(setTeachersInSubjects)
       .then(console.log(teachersInSubjects));

@@ -4,14 +4,8 @@ import {
   Button,
   Divider,
   Grid,
-  Icon,
-  Input,
-  Message,
-  Segment,
-  Select,
-  Table,
-  TextArea,
-  Form,
+  Icon, Message,
+  Segment, Table
 } from "semantic-ui-react";
 import MainMenu from "../../Components/MainMenu";
 import { SchedulesMenu } from "../../Components/SchedulesMenu";
