@@ -1,15 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from 'react-router-dom';
-import { Button, Grid, Icon, Input, Segment, Table, Divider, List, Form, Select, TextArea } from "semantic-ui-react";
-import MainMenu from '../../../Components/MainMenu';
-import { EditMenu } from '../../../Components/EditMenu';
+import { useParams } from "react-router-dom";
+import {
+  Button,
+  Grid,
+  Icon,
+  Input,
+  Segment,
+  Table,
+  Divider,
+  List,
+  Form,
+  Select,
+  TextArea,
+} from "semantic-ui-react";
+import MainMenu from "../../../Components/MainMenu";
+import { EditMenu } from "../../../Components/EditMenu";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
 };
 
 export function EditModuleObject() {
-
   const params = useParams();
   const [hide, setHide] = useState(false);
   const [active, setActive] = useState(true);
@@ -26,53 +37,51 @@ export function EditModuleObject() {
     modifiedDate: "",
   });
 
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [nameError, setNameError] = useState("")
-  const [buildingError, setBuildingError] = useState("")
-  const [descriptionError, setDescriptionError] = useState("")
-  const [formValid, setFormValid] = useState(false)
-
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [buildingError, setBuildingError] = useState("");
+  const [descriptionError, setDescriptionError] = useState("");
+  const [formValid, setFormValid] = useState(false);
 
   useEffect(() => {
     if (nameError || descriptionError) {
-      setFormValid(false)
+      setFormValid(false);
     } else {
-      setFormValid(true)
+      setFormValid(true);
     }
-  }, [nameError, descriptionError])
+  }, [nameError, descriptionError]);
 
   const handleNameInputChange = (e) => {
-    modules.name = e.target.value
+    modules.name = e.target.value;
     setName(e.target.value);
     validateNameInput(e.target.value);
   };
 
   const handleDescriptionInputChange = (e) => {
-    modules.description = e.target.value
+    modules.description = e.target.value;
     setDescription(e.target.value);
     validateDescriptionInput(e.target.value);
   };
 
   const validateNameInput = (value) => {
     if (value.length < 2 || value.length > 100) {
-      setNameError("Įveskite nuo 2 iki 100 simbolių!")
+      setNameError("Įveskite nuo 2 iki 100 simbolių!");
       if (!value) {
-        setNameError("Pavadinimas negali būti tuščias!")
+        setNameError("Pavadinimas negali būti tuščias!");
       }
     } else {
-      setNameError("")
+      setNameError("");
     }
   };
 
   const validateDescriptionInput = (value) => {
     if (value.length > 500) {
-      setDescriptionError("Aprašymas negali viršyti 500 simbolių!")
+      setDescriptionError("Aprašymas negali viršyti 500 simbolių!");
     } else {
-      setDescriptionError("")
+      setDescriptionError("");
     }
   };
-
 
   const fetchModuleSubjects = async () => {
     fetch(`/api/v1/modules/${params.id}/subjects`)
@@ -119,12 +128,12 @@ export function EditModuleObject() {
       [property]: event.target.value,
     });
   };
+
   const [updated, setUpdated] = useState();
 
   useEffect(() => {
     setUpdated(true);
   }, [setUpdated]);
-
 
   const editThis = () => {
     setActive(false);
@@ -156,10 +165,10 @@ export function EditModuleObject() {
         moduleId,
         subject,
       }),
-    }).then(fetchModuleSubjects)
-    .then(setSubject(""));
+    })
+      .then(fetchModuleSubjects)
+      .then(setSubject(""));
   };
-
 
   const removeSubject = (moduleId, subjectId) => {
     fetch(`/api/v1/modules/${moduleId}/subjects/${subjectId}`, {
@@ -168,24 +177,24 @@ export function EditModuleObject() {
     }).then(fetchModuleSubjects);
   };
 
-
-
   return (
     <div>
       <MainMenu />
-      <Grid columns={2} >
-        <Grid.Column width={2} id='main'>
+      <Grid columns={2}>
+        <Grid.Column width={2} id="main">
           <EditMenu />
         </Grid.Column>
-        <Grid.Column textAlign='left' verticalAlign='top' width={13}>
-          <Segment id='segment' color='teal'>
+        <Grid.Column textAlign="left" verticalAlign="top" width={13}>
+          <Segment id="segment" color="teal">
             {active && !hide && (
               <div>
                 <Table celled>
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Modulio pavadinimas</Table.HeaderCell>
-                      <Table.HeaderCell>Paskutinis atnaujinimas</Table.HeaderCell>
+                      <Table.HeaderCell>
+                        Paskutinis atnaujinimas
+                      </Table.HeaderCell>
                       <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
@@ -193,9 +202,14 @@ export function EditModuleObject() {
                   <Table.Body>
                     <Table.Row>
                       <Table.Cell>{modules.name}</Table.Cell>
-                      <Table.Cell collapsing> {modules.modifiedDate} </Table.Cell>
                       <Table.Cell collapsing>
-                        <Button onClick={editThis} id='details'>Redaguoti</Button>
+                        {" "}
+                        {modules.modifiedDate}{" "}
+                      </Table.Cell>
+                      <Table.Cell collapsing>
+                        <Button onClick={editThis} id="details">
+                          Redaguoti
+                        </Button>
                       </Table.Cell>
                     </Table.Row>
                   </Table.Body>
@@ -219,9 +233,7 @@ export function EditModuleObject() {
                     <Table width={4}>
                       <Table.Header>
                         <Table.Row>
-                          <Table.HeaderCell width={4}>
-                            Dalykai
-                          </Table.HeaderCell>
+                          <Table.HeaderCell width={4}>Dalykai</Table.HeaderCell>
                         </Table.Row>
                       </Table.Header>
                       <Table.Body>
@@ -256,7 +268,7 @@ export function EditModuleObject() {
                   icon
                   labelPosition="left"
                   className=""
-                  href='#/view/modules'
+                  href="#/view/modules"
                 >
                   <Icon name="arrow left" />
                   Atgal
@@ -269,7 +281,9 @@ export function EditModuleObject() {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Modulio pavadinimas</Table.HeaderCell>
-                      <Table.HeaderCell width={3}>Paskutinis atnaujinimas</Table.HeaderCell>
+                      <Table.HeaderCell width={3}>
+                        Paskutinis atnaujinimas
+                      </Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
 
@@ -278,12 +292,16 @@ export function EditModuleObject() {
                       <Table.Cell collapsing>
                         <Input
                           value={modules.name}
-
                           onChange={(e) => handleNameInputChange(e)}
-                        />{(nameError) && <div style={{ color: "red" }}>{nameError}</div>}
-
+                        />
+                        {nameError && (
+                          <div style={{ color: "red" }}>{nameError}</div>
+                        )}
                       </Table.Cell>
-                      <Table.Cell collapsing> {modules.modifiedDate} </Table.Cell>
+                      <Table.Cell collapsing>
+                        {" "}
+                        {modules.modifiedDate}{" "}
+                      </Table.Cell>
                     </Table.Row>
                   </Table.Body>
                 </Table>
@@ -302,7 +320,12 @@ export function EditModuleObject() {
                             style={{ minHeight: 60 }}
                             value={modules.description}
                             onChange={(e) => handleDescriptionInputChange(e)}
-                          />{(descriptionError) && <div style={{ color: "red" }}>{descriptionError}</div>}
+                          />
+                          {descriptionError && (
+                            <div style={{ color: "red" }}>
+                              {descriptionError}
+                            </div>
+                          )}
                         </Form>
                       </Table.Cell>
                     </Table.Row>
@@ -313,9 +336,7 @@ export function EditModuleObject() {
                     <Table>
                       <Table.Header>
                         <Table.Row>
-                          <Table.HeaderCell width={8}>
-                            Dalykai
-                          </Table.HeaderCell>
+                          <Table.HeaderCell width={8}>Dalykai</Table.HeaderCell>
                         </Table.Row>
                       </Table.Header>
                       <Table.Body>
@@ -351,14 +372,14 @@ export function EditModuleObject() {
                                         setSubject(e.target.value),
                                         setSubjectId(data.value)
                                       )}
-                                    // onClose={() => console.log(subjectId)}
+                                      // onClose={() => console.log(subjectId)}
                                     />
                                   </Form.Field>
                                 </Form.Group>
                                 <Divider hidden />
                                 <List.Content floated="left">
                                   <Button
-                                    id='details'
+                                    id="details"
                                     onClick={() =>
                                       addSubject(params.id, subjectId)
                                     }
@@ -376,7 +397,12 @@ export function EditModuleObject() {
                 </Grid>
                 <Divider hidden></Divider>
                 <Button onClick={() => setActive(true)}>Atšaukti</Button>
-                <Button id='details' floated="right" primary onClick={updateModules}>
+                <Button
+                  id="details"
+                  floated="right"
+                  primary
+                  onClick={updateModules}
+                >
                   Atnaujinti
                 </Button>
               </div>
