@@ -198,7 +198,7 @@ export function CreateGroupPage() {
               </Form.Field>
             </Form.Group>
             <div ><Button icon labelPosition="left" className="" as={NavLink} exact to='/view/groups'><Icon name="arrow left" />Atgal</Button>
-              <Button type='submit' disabled={!formValid} className="controls" id='details' onClick={createGroup}>Sukurti</Button></div>
+              <Button type='submit' disabled={!formValid} className="controls" id='details' >Sukurti</Button></div>
           </Form>
 
         </Segment>

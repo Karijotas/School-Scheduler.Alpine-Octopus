@@ -198,7 +198,7 @@ export function ScheduleView() {
         <h1 className="title-text">{schedules.name}</h1>                 
     <ScheduleComponent id='schedule' ref={shedule => scheduleObj = shedule} timeFormat='HH' firstDayOfWeek='1' height='550px' editorTemplate={editorTemplate} selectedDate={schedules.startingDate} eventSettings={{dataSource: lessonsOnSchedule}} 
  colorField='Color' actionBegin={onActionBegin} >
-  {console.log(resourceData)}
+  {console.log()}
     <ResourcesDirective>
               <ResourceDirective field='GroupId' title='Owner' name='Owners' dataSource={resourceData} textField='GroupText' idField='GroupId' colorField='GroupColor'>
               </ResourceDirective>
