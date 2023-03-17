@@ -117,9 +117,10 @@ export function CreateGroupPage() {
     };
 
     if (result.ok) {
-      let info = result
-        .json()
-        .then((jsonResponse) => (window.location = listUrl));
+
+      let info = result.json()
+        .then((jsonResponse) => window.location = listUrl);
+
     } else {
       window.alert("Nepavyko sukurti: pavadinimas turi būti unikalus!");
     }
@@ -256,6 +257,7 @@ export function CreateGroupPage() {
                 <Button
                   type="submit"
                   disabled={!formValid}
+                  onClick={createGroup}
                   className="controls"
                   id="details"
                 >
