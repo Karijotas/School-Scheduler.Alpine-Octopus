@@ -125,7 +125,7 @@ const createLessonOnSchedule = () => {
       return (<div className="template-wrap" style={{ background: props.SecondaryColor }}>
     <div className="subject" style={{ background: props.ColorId }}>{props.Subject}</div>  
     <div className="event-description">{props.Description}</div>
-    <div className="footer" style={{ background: props.PrimaryColor }}></div></div>);
+    </div>);
   }
 
     function editorTemplate(props) {
@@ -150,10 +150,10 @@ const createLessonOnSchedule = () => {
         </DropDownListComponent>
       </td></tr>
       <tr><td className="e-textlabel">Data nuo</td><td colSpan={4}>
-        <DateTimePickerComponent firstDayOfWeek={1} format='yyyy/MM/dd HH' timeFormat={"HH"} step={60} locale='lt' id="StartTime" data-name="StartTime" value={new Date(props.startTime || props.StartTime)} onChange={(e) => setStartTime(e.value)} className="e-field"></DateTimePickerComponent>
+        <DateTimePickerComponent firstDayOfWeek={1} format='yyyy/MM/dd HH' timeFormat={"HH"} step={60} locale='lt' id="StartTime" data-name="StartTime" value={new Date(props.startTime || props.StartTime || startTime)} onChange={(e) => setStartTime(new Date(e.value).toISOString())}  className="e-field"></DateTimePickerComponent>
       </td></tr>
       <tr><td className="e-textlabel">Data iki</td><td colSpan={4}>
-        <DateTimePickerComponent firstDayOfWeek={1} locale='lt' format='yyyy/MM/dd HH' timeFormat={"HH"} step={60} id="EndTime" data-name="EndTime" value={new Date(props.endTime || props.EndTime)} onChange={(e) => setEndTime(e.value)} className="e-field"></DateTimePickerComponent>
+        <DateTimePickerComponent firstDayOfWeek={1} locale='lt' format='yyyy/MM/dd HH' timeFormat={"HH"} step={60} id="EndTime" data-name="EndTime" value={new Date(props.endTime || props.EndTime || endTime)} onChange={(e) => setEndTime(new Date(e.value).toISOString())} className="e-field"></DateTimePickerComponent>
       </td></tr>        
       <tr><td className="e-textlabel">Pamoka nuo</td><td colSpan={4}>
         <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14']}>
@@ -253,7 +253,8 @@ const createLessonOnSchedule = () => {
         <h1 className="title-text">{schedules.name}</h1>                 
     <ScheduleComponent id='schedule' ref={shedule => scheduleObj = shedule} timeFormat='HH' firstDayOfWeek='1' height='550px' editorTemplate={editorTemplate} selectedDate={new Date(2023, 1, 10, 24, 0)} eventSettings={{dataSource: lessonsOnSchedule}} 
  colorField='Color' actionBegin={onActionBegin} >
-  {console.log(startTime)}
+  {console.log(schedules)}
+  {console.log(endTime)}
     <ResourcesDirective>
               <ResourceDirective field='GroupId' title='Owner' name='Owners' dataSource={resourceData} textField='GroupText' idField='GroupId' colorField='GroupColor'>
               </ResourceDirective>

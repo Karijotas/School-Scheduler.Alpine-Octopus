@@ -104,7 +104,7 @@ public class ScheduleController {
     @ResponseBody
     public Set<Lesson> getSubjectsByScheduleId(@PathVariable Long scheduleId) {
 
-        return scheduleService.getAllLessonsByScheduleId(scheduleId);
+        return scheduleService.getAllSubjectsByScheduleId(scheduleId);
     }
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})
