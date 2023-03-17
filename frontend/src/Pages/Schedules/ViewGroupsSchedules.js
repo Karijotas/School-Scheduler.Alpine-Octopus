@@ -82,8 +82,8 @@ export function ViewGroupsSchedules() {
       ? fetchFilterSchedulesByName()
       : startingDate === "Invalid Date"
       ? fetchSchedules()
-      : // .then(setStartingDate(""))
-      startingDate.length > 0
+       // .then(setStartingDate(""))
+      : startingDate.length > 0
       ? fetchFilterSchedulesByStartingDate()
       : fetchSchedules();
   }, [activePage, nameText, startingDate]);
