@@ -253,7 +253,7 @@ const createLessonOnSchedule = () => {
     return (
     <Container>
       <Button onClick={() => createLessonOnSchedule()}>add</Button>
-      <Button onClick={() => newStartTime()}>change</Button>
+      
         <h1 className="title-text">{schedules.name}</h1>                 
     <ScheduleComponent id='schedule' ref={shedule => scheduleObj = shedule} timeFormat='HH' firstDayOfWeek='1' height='550px' editorTemplate={editorTemplate} selectedDate={new Date(2023, 1, 10, 24, 0)} eventSettings={{dataSource: lessonsOnSchedule}} 
  colorField='Color' actionBegin={onActionBegin} >

@@ -34,6 +34,7 @@ export function CreateSchedule() {
       let info = result
         .json()
         .then((jsonResponse) => (window.location = listUrl + jsonResponse.id));
+        console.log(info);
     } else {
       window.alert("Nepavyko sukurti: pavadinimas turi būti unikalus!");
     }
