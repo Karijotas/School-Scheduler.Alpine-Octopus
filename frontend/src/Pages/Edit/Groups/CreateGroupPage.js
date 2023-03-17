@@ -34,7 +34,7 @@ const shiftOptions = [
 ];
 
 export function CreateGroupPage() {
-  const listUrl = useHref("/view/groups");
+  const listUrl = useHref("/view/groups/");
 
   const [hide, setHide] = useState(false);
   const [name, setName] = useState("");

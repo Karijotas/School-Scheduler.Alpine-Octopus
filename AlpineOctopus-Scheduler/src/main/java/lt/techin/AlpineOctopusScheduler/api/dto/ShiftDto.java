@@ -1,7 +1,5 @@
 package lt.techin.AlpineOctopusScheduler.api.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -14,10 +12,10 @@ public class ShiftDto {
 
     private int ends;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime createdDate;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime modifiedDate;
+    //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+//    private LocalDateTime createdDate;
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+//    private LocalDateTime modifiedDate;
     private Boolean deleted;
 
     public ShiftDto() {
@@ -27,8 +25,8 @@ public class ShiftDto {
         this.name = name;
         this.starts = starts;
         this.ends = ends;
-        this.createdDate = createdDate;
-        this.modifiedDate = modifiedDate;
+//        this.createdDate = createdDate;
+//        this.modifiedDate = modifiedDate;
         this.deleted = deleted;
     }
 
@@ -56,21 +54,21 @@ public class ShiftDto {
         this.ends = ends;
     }
 
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public LocalDateTime getModifiedDate() {
-        return modifiedDate;
-    }
-
-    public void setModifiedDate(LocalDateTime modifiedDate) {
-        this.modifiedDate = modifiedDate;
-    }
+//    public LocalDateTime getCreatedDate() {
+//        return createdDate;
+//    }
+//
+//    public void setCreatedDate(LocalDateTime createdDate) {
+//        this.createdDate = createdDate;
+//    }
+//
+//    public LocalDateTime getModifiedDate() {
+//        return modifiedDate;
+//    }
+//
+//    public void setModifiedDate(LocalDateTime modifiedDate) {
+//        this.modifiedDate = modifiedDate;
+//    }
 
     public Boolean getDeleted() {
         return deleted;
@@ -85,12 +83,12 @@ public class ShiftDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ShiftDto shiftDto = (ShiftDto) o;
-        return starts == shiftDto.starts && ends == shiftDto.ends && Objects.equals(name, shiftDto.name) && Objects.equals(createdDate, shiftDto.createdDate) && Objects.equals(modifiedDate, shiftDto.modifiedDate) && Objects.equals(deleted, shiftDto.deleted);
+        return starts == shiftDto.starts && ends == shiftDto.ends && Objects.equals(name, shiftDto.name) && Objects.equals(deleted, shiftDto.deleted);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, starts, ends, createdDate, modifiedDate, deleted);
+        return Objects.hash(name, starts, ends, deleted);
     }
 
     @Override
@@ -99,8 +97,8 @@ public class ShiftDto {
                 "name='" + name + '\'' +
                 ", starts=" + starts +
                 ", ends=" + ends +
-                ", createdDate=" + createdDate +
-                ", modifiedDate=" + modifiedDate +
+//                ", createdDate=" + createdDate +
+//                ", modifiedDate=" + modifiedDate +
                 ", deleted=" + deleted +
                 '}';
     }

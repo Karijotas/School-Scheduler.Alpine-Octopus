@@ -13,8 +13,8 @@ public class ShiftMapper {
         shiftDto.setName(shift.getName());
         shiftDto.setStarts(shift.getStarts());
         shiftDto.setEnds(shift.getEnds());
-        shiftDto.setCreatedDate(shift.getCreatedDate());
-        shiftDto.setModifiedDate(shift.getModifiedDate());
+//        shiftDto.setCreatedDate(shift.getCreatedDate());
+//        shiftDto.setModifiedDate(shift.getModifiedDate());
 
         return shiftDto;
     }
@@ -25,8 +25,8 @@ public class ShiftMapper {
         shift.setName(shiftDto.getName());
         shift.setStarts(shiftDto.getStarts());
         shift.setEnds(shiftDto.getEnds());
-        shift.setCreatedDate(shiftDto.getCreatedDate());
-        shift.setModifiedDate(shiftDto.getModifiedDate());
+//        shift.setCreatedDate(shiftDto.getCreatedDate());
+//        shift.setModifiedDate(shiftDto.getModifiedDate());
 
         return shift;
     }
@@ -37,8 +37,8 @@ public class ShiftMapper {
         shiftEntityDto.setName(shift.getName());
         shiftEntityDto.setStarts(shift.getStarts());
         shiftEntityDto.setEnds(shift.getEnds());
-        shiftEntityDto.setCreatedDate(shift.getCreatedDate());
-        shiftEntityDto.setModifiedDate(shift.getModifiedDate());
+//        shiftEntityDto.setCreatedDate(shift.getCreatedDate());
+//        shiftEntityDto.setModifiedDate(shift.getModifiedDate());
         shiftEntityDto.setDeleted(shift.getDeleted());
 
         return shiftEntityDto;
@@ -51,8 +51,8 @@ public class ShiftMapper {
         shift.setName(shiftEntityDto.getName());
         shift.setStarts(shiftEntityDto.getStarts());
         shift.setEnds(shiftEntityDto.getEnds());
-        shift.setCreatedDate(shiftEntityDto.getCreatedDate());
-        shift.setModifiedDate(shiftEntityDto.getModifiedDate());
+//        shift.setCreatedDate(shiftEntityDto.getCreatedDate());
+//        shift.setModifiedDate(shiftEntityDto.getModifiedDate());
         shift.setDeleted(shiftEntityDto.getDeleted());
 
         return shift;

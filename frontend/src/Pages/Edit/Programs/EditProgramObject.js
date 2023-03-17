@@ -177,8 +177,8 @@ export function EditProgramObject() {
       .then((response) => response.json())
       .then((data) =>
         setSubjects(
-          data.map((x) => {
-            return { key: x.id, text: x.name, value: x.id };
+          data.map((x, index) => {
+            return { key: index, text: x.name, value: x.id };
           })
         )
       );
@@ -525,8 +525,8 @@ export function EditProgramObject() {
                           </Table.Cell>
                           <Table.Cell>
                             <Table.Body>
-                              {subjectsInProgram.map((subject) => (
-                                <Table.Row key={subject.id}>
+                              {subjectsInProgram.map((subject, index) => (
+                                <Table.Row key={index}>
                                   <Table.Cell>
                                     {subject.subject.name}
                                   </Table.Cell>
