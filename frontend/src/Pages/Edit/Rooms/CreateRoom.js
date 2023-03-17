@@ -9,11 +9,9 @@ const JSON_HEADERS = {
   'Content-Type': 'application/json'
 };
 
-
-
 export function CreateRoom() {
   // const [create, setCreate] = useState()
-  const listUrl = useHref('/view/rooms');
+  const listUrl = useHref('/view/rooms/');
   const [hide, setHide] = useState(false);
   const [name, setName] = useState('');
   const [building, setBuilding] = useState('');
