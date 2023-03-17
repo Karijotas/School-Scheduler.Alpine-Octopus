@@ -67,7 +67,7 @@ export function ScheduleView() {
   }
 
   useEffect(() => {
-    fetch(`/alpine-octopus/api/v1/schedule/${params.id}/lessons`)
+    fetch(`/api/v1/schedule/${params.id}/lessons`)
       .then((response) => response.json())
       // .then((jsonRespones) => setLessons(jsonRespones))
       .then(setLessons)

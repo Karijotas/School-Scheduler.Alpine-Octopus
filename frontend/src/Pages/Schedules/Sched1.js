@@ -65,7 +65,7 @@ export function Sched1() {
   // }, [])
 
   useEffect(() => {
-    fetch("/alpine-octopus/api/v1/scheduler/1/6")
+    fetch("/api/v1/scheduler/1/6")
     .then((response) => response.json)
     .then(setLesson)
   }, [])
