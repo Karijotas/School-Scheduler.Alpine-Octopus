@@ -146,7 +146,7 @@ export function EditModuleObject() {
   };
 
   useEffect(() => {
-    fetch("/api/v1/subjects/")
+    fetch("/api/v1/subjects")
       .then((response) => response.json())
       .then((data) =>
         setSubjects(

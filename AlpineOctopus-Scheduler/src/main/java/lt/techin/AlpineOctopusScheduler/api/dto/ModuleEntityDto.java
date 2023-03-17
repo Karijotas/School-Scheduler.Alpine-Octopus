@@ -11,8 +11,8 @@ public class ModuleEntityDto extends ModuleDto {
 
     }
 
-    public ModuleEntityDto(String name, String description, LocalDateTime createdDate, LocalDateTime modifiedDate, Long id, Boolean deleted) {
-        super(name, description, createdDate, modifiedDate, deleted);
+    public ModuleEntityDto(String name, String description, Long id, Boolean deleted) {
+        super(name, description, deleted);
         this.id = id;
     }
 

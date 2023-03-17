@@ -84,7 +84,7 @@ export function CreateRoom() {
 
     if (result.ok) {
       let info = result.json() 
-      .then((jsonResponse) => window.location = listUrl + jsonResponse.id);
+      .then((jsonResponse) => window.location = listUrl);
     } else {
       window.alert("Nepavyko sukurti: pavadinimas turi būti unikalus!");
     }

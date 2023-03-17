@@ -13,8 +13,8 @@ public class SubjectMapper {
 
         subjectDto.setName(subject.getName());
         subjectDto.setDescription(subject.getDescription());
-        subjectDto.setCreatedDate(subject.getCreatedDate());
-        subjectDto.setModifiedDate(subject.getModifiedDate());
+//        subjectDto.setCreatedDate(subject.getCreatedDate());
+//        subjectDto.setModifiedDate(subject.getModifiedDate());
         subjectDto.setSubjectModules(subject.getSubjectModules());
         subjectDto.setSubjectRooms(subject.getSubjectRooms());
 
@@ -27,8 +27,8 @@ public class SubjectMapper {
 
         subject.setName(subjectDto.getName());
         subject.setDescription(subjectDto.getDescription());
-        subject.setCreatedDate(subjectDto.getCreatedDate());
-        subject.setModifiedDate(subjectDto.getModifiedDate());
+//        subject.setCreatedDate(subjectDto.getCreatedDate());
+//        subject.setModifiedDate(subjectDto.getModifiedDate());
         subject.setSubjectModules(subjectDto.getSubjectModules());
         subject.setSubjectRooms(subjectDto.getSubjectRooms());
 
@@ -43,8 +43,8 @@ public class SubjectMapper {
         subjectEntityDto.setId(subject.getId());
         subjectEntityDto.setName(subject.getName());
         subjectEntityDto.setDescription(subject.getDescription());
-        subjectEntityDto.setCreatedDate(subject.getCreatedDate());
-        subjectEntityDto.setModifiedDate(subject.getModifiedDate());
+//        subjectEntityDto.setCreatedDate(subject.getCreatedDate());
+//        subjectEntityDto.setModifiedDate(subject.getModifiedDate());
         subjectEntityDto.setSubjectModules(subject.getSubjectModules());
         subjectEntityDto.setSubjectRooms(subject.getSubjectRooms());
         subjectEntityDto.setDeleted(subject.getDeleted());
@@ -59,8 +59,8 @@ public class SubjectMapper {
         subject.setId(subjectEntityDto.getId());
         subject.setName(subjectEntityDto.getName());
         subject.setDescription(subjectEntityDto.getDescription());
-        subject.setCreatedDate(subjectEntityDto.getCreatedDate());
-        subject.setModifiedDate(subjectEntityDto.getModifiedDate());
+//        subject.setCreatedDate(subjectEntityDto.getCreatedDate());
+//        subject.setModifiedDate(subjectEntityDto.getModifiedDate());
         subject.setSubjectModules(subjectEntityDto.getSubjectModules());
         subject.setSubjectRooms(subjectEntityDto.getSubjectRooms());
         subject.setDeleted(subjectEntityDto.getDeleted());

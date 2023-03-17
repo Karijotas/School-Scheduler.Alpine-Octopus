@@ -45,19 +45,20 @@ export function ScheduleView() {
   const [subjectId, setSubjectId] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
+  const [active, setActive] = useState(false);
 
 
-  function onActionBegin(args) {
-    if (args.requestType === 'toolbarItemRendering') {
-      let exportItem = {
-        align: 'Right', showTextOn: 'Both', prefixIcon: "e-icons e-print",
-        text: 'Spausdinti', cssClass: 'e-schedule-print', click: onPrintIconClick,
-        // align: 'Center', showTextOn: 'Both', prefixIcon: 'e-icon-schedule-excel-export',
-        // text: 'Excel Export', cssClass: 'e-excel-export', click: onExportClick
-      };
-      args.items.push(exportItem);
-    }
-  }
+  // function onActionBegin(args) {
+  //   if (args.requestType === 'toolbarItemRendering') {
+  //     let exportItem = {
+  //       align: 'Right', showTextOn: 'Both', prefixIcon: "e-icons e-print",
+  //       text: 'Spausdinti', cssClass: 'e-schedule-print', click: onPrintIconClick,
+  //       // align: 'Center', showTextOn: 'Both', prefixIcon: 'e-icon-schedule-excel-export',
+  //       // text: 'Excel Export', cssClass: 'e-excel-export', click: onExportClick
+  //     };
+  //     args.items.push(exportItem);
+  //   }
+  // }
   function onPrintIconClick() {
     scheduleObj.print();
   }
@@ -71,7 +72,8 @@ export function ScheduleView() {
       .then((response) => response.json())
       // .then((jsonRespones) => setLessons(jsonRespones))
       .then(setLessons)
-  }, [params]);
+      .then(setActive(false))
+  }, [params, active]);
 
   useEffect(() => {
     fetch(`/api/v1/schedule/${params.id}/subjects`)
@@ -91,10 +93,10 @@ export function ScheduleView() {
 
   const createLessonOnSchedule = () => {
     fetch(
-      `/api/v1/schedule/${params.id}/create/3/${startTime}/${endTime}`, {
+      `/api/v1/schedule/${params.id}/create/${subjectId}/${startTime}/${endTime}`, {
       method: 'PATCH'
     })
-
+    .then(setActive(true));   
   }
 
   useEffect(() => {
@@ -111,7 +113,7 @@ export function ScheduleView() {
       StartTime: l.startTime,
       EndTime: l.endTime,
       GroupId: l.subject.id,
-      Description: "ONLINE"
+      Description: l.online? "ONLINE" : ""
     }
   });
 
@@ -135,6 +137,7 @@ export function ScheduleView() {
   function eventTemplate(props) {
     return (<div className="template-wrap" style={{ background: props.SecondaryColor }}>
       <div className="subject" style={{ background: props.GroupId }}>{props.Subject}</div>
+      {console.log(props.Subject)}
       <div className="event-description">{props.Description}</div>
     </div>);
   }
@@ -148,7 +151,7 @@ export function ScheduleView() {
           </DropDownListComponent>
 
         </td></tr>
-        <tr><td className="e-textlabel">Nuotolinė pamoka</td><td colSpan={4}>
+        {/* <tr><td className="e-textlabel">Nuotolinė pamoka</td><td colSpan={4}>
           <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['Taip', 'Ne']}>
           </DropDownListComponent>
         </td></tr>
@@ -159,26 +162,25 @@ export function ScheduleView() {
         <tr><td className="e-textlabel">Kabinetas</td><td colSpan={4}>
           <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['Kabinetas1', 'Kabinetas2']}>
           </DropDownListComponent>
-        </td></tr>
+        </td></tr> */}
         <tr><td className="e-textlabel">Data nuo</td><td colSpan={4}>
           <DateTimePickerComponent firstDayOfWeek={1} format='yyyy/MM/dd HH' timeFormat={"HH"} step={60} locale='lt' id="StartTime" data-name="StartTime" value={new Date(props.startTime || props.StartTime || startTime)} onChange={(e) => setStartTime(new Date(e.value).toISOString())} className="e-field"></DateTimePickerComponent>
         </td></tr>
         <tr><td className="e-textlabel">Data iki</td><td colSpan={4}>
           <DateTimePickerComponent firstDayOfWeek={1} locale='lt' format='yyyy/MM/dd HH' timeFormat={"HH"} step={60} id="EndTime" data-name="EndTime" value={new Date(props.endTime || props.EndTime || endTime)} onChange={(e) => setEndTime(new Date(e.value).toISOString())} className="e-field"></DateTimePickerComponent>
         </td></tr>
-        <tr><td className="e-textlabel">Pamoka nuo</td><td colSpan={4}>
+        {/* <tr><td className="e-textlabel">Pamoka nuo</td><td colSpan={4}>
           <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14']}>
           </DropDownListComponent>
         </td></tr>
         <tr><td className="e-textlabel">Pamoka iki</td><td colSpan={4}>
           <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14']}>
           </DropDownListComponent>
-        </td></tr>
-
+        </td></tr> */}
         <tr><td className="e-textlabel">Pastabos</td><td colSpan={4}>
           <textarea id="Description" className="e-field e-input" name="Description" rows={3} cols={50} style={{ width: '100%', height: '60px !important', resize: 'vertical' }}></textarea>
         </td></tr>
-        <ButtonComponent onClick={ClickButton}>Close Editor Window </ButtonComponent></tbody>
+       </tbody>
     </table> : '');
   }
 
@@ -263,12 +265,12 @@ export function ScheduleView() {
 
   return (
     <Container>
-      <Button onClick={() => createLessonOnSchedule()}>add</Button>
+      
 
       <h1 className="title-text">{schedules.name}</h1>
       <ScheduleComponent id='schedule' ref={shedule => scheduleObj = shedule} timeFormat='HH' firstDayOfWeek='1' height='550px' editorTemplate={editorTemplate} selectedDate={new Date(2023, 1, 10, 24, 0)} eventSettings={{ dataSource: lessonsOnSchedule }}
-        colorField='Color' actionBegin={onActionBegin} >
-        {console.log(subjectsOnSchedule)}
+        colorField='Color' currentView='Month' > 
+        {console.log(lessons)}
         {console.log(endTime)}
         <ResourcesDirective>
           <ResourceDirective field='GroupId' title='Owner' name='Owners' dataSource={resourceData} textField='GroupText' idField='GroupId' colorField='GroupColor'>
@@ -277,13 +279,13 @@ export function ScheduleView() {
         <ViewsDirective>
           <ViewDirective option='Day' startHour='01:00' endHour='15:00' timeScale={{ interval: 1, slotCount: 1 }} eventTemplate={eventTemplate.bind(this)} />
           <ViewDirective option='Week' startHour='01:00' endHour='15:00' timeScale={{ slotCount: 1 }} eventTemplate={eventTemplate.bind(this)} />
-          <ViewDirective option='WorkWeek' startHour='01:00' endHour='15:00' timeScale={{ interval: 1, slotCount: 1 }} eventTemplate={eventTemplate.bind(this)} />
-          <ViewDirective option='Month' startHour='01:00' endHour='15:00' timeScale={{ interval: 1, slotCount: 1 }} eventTemplate={eventTemplate.bind(this)} />
+          <ViewDirective option='WorkWeek' startHour='01:00' endHour='15:00' timeScale={{ slotCount: 1}} eventTemplate={eventTemplate.bind(this)} />
+          <ViewDirective option='Month' startHour='01:00' endHour='15:00' timeScale={{ slotCount: 1 }} eventTemplate={eventTemplate.bind(this)} />
         </ViewsDirective>
-        <Inject services={[Day, Week, WorkWeek, Month, Agenda, DragAndDrop, ExcelExport, Print]} />
+        <Inject services={[Day, Week, WorkWeek, Month, Agenda, DragAndDrop, ExcelExport]} />
       </ScheduleComponent>
 
-
+      <Button onClick={() => createLessonOnSchedule()}>add</Button>
     </Container>);
 
   /**
