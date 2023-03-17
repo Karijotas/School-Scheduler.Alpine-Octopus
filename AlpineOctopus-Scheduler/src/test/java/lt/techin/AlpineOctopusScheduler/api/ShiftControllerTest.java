@@ -139,4 +139,41 @@ public class ShiftControllerTest {
         assertEquals(200, status);
         assertEquals(mappedResponse.getName(), "Rytas");
     }
+
+    @Test
+    @Order(5)
+    void removeShift_shouldSetBooleanToTrue() throws Exception {
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .patch("/api/v1/shifts/delete/2")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Shift mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+                new TypeReference<Shift>() {
+                });
+
+        Assertions.assertTrue(mappedResponse.getDeleted());
+    }
+
+    @Test
+    void restoreShift_shouldSetBooleanToFalse() throws Exception {
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .patch("/api/v1/shifts/restore/4")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Shift mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+                new TypeReference<Shift>() {
+                });
+
+        Assertions.assertFalse(mappedResponse.getDeleted());
+    }
 }

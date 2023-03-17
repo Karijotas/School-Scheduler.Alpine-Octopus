@@ -119,7 +119,7 @@ public class ScheduleController {
     }
 
     @PatchMapping("/{scheduleId}/{lessonId}")
-    public ResponseEntity<ScheduleEntityDto> setTeacherAndRoomInASchedule(@PathVariable Long scheduleId, Long lessonId, Long teacherId, Long roomId) {
+    public ResponseEntity<ScheduleEntityDto> setTeacherAndRoomInASchedule(@PathVariable Long scheduleId, @PathVariable Long lessonId, Long teacherId, Long roomId) {
         var updatedSchedule = scheduleService.setTeacherAndRoomInASchedule(scheduleId, lessonId, teacherId, roomId);
         return ok(toScheduleEntityDto(updatedSchedule));
     }

@@ -71,7 +71,7 @@ public class Groups {
 
     public Groups() {
     }
-
+    
     public Long getId() {
         return id;
     }

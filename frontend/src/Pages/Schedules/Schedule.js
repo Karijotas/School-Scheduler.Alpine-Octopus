@@ -10,7 +10,6 @@ import { Schedule, Print, ExcelExport, ScheduleComponent, ResourcesDirective, Re
 import { ButtonComponent, SwitchComponent } from '@syncfusion/ej2-react-buttons';
 import { extend, closest, remove, addClass, Ajax  } from '@syncfusion/ej2-base';
 import { TreeViewComponent } from '@syncfusion/ej2-react-navigations';
-import * as datasource from './datasource.json';
 import { DataManager, WebApiAdaptor, ODataV4Adaptor } from '@syncfusion/ej2-data';
 import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap5.css";
 
@@ -171,24 +170,27 @@ export function ScheduleView() {
         }];
 
         const resourceData = [
-            { GroupText: schedules.name, ColorId: 1, GroupColor: '#1aaa55' },
-            { GroupText: schedules.name, ColorId: 2, GroupColor: '#357cd2' },
-            { GroupText: schedules.name, ColorId: 3, GroupColor: '#1aaa55' },
-            { GroupText: schedules.name, ColorId: 4, GroupColor: '#357cd2' },
-            { GroupText: schedules.name, ColorId: 5, GroupColor: '#1aaa55' },
-            { GroupText: schedules.name, ColorId: 6, GroupColor: '#357cd2' },
-            { GroupText: schedules.name, ColorId: 7, GroupColor: '#1aaa55' },
-            { GroupText: schedules.name, ColorId: 8, GroupColor: '#357cd2' },
-            { GroupText: schedules.name, ColorId: 9, GroupColor: '#1aaa55' },
-            { GroupText: schedules.name, ColorId: 10, GroupColor: '#357cd2' },
-            { GroupText: schedules.name, ColorId: 11, GroupColor: '#1aaa55' },
-            { GroupText: schedules.name, ColorId: 12, GroupColor: '#357cd2' },
-            { GroupText: schedules.name, ColorId: 13, GroupColor: '#1aaa55' },
-            { GroupText: schedules.name, ColorId: 14, GroupColor: '#357cd2' },
-            { GroupText: schedules.name, ColorId: 15, GroupColor: '#1aaa55' },
-            { GroupText: schedules.name, ColorId: 16, GroupColor: '#357cd2' },
-            { GroupText: schedules.name, ColorId: 17, GroupColor: '#1aaa55' },
-            { GroupText: schedules.name, ColorId: 18, GroupColor: '#357cd2' },
+            { GroupText: schedules.name, ColorId: 1, GroupColor: '#1c5252' },
+            { GroupText: schedules.name, ColorId: 2, GroupColor: '#2a787a' },
+            { GroupText: schedules.name, ColorId: 3, GroupColor: '#569a9b' },
+            { GroupText: schedules.name, ColorId: 4, GroupColor: '#40b3b6' },
+            { GroupText: schedules.name, ColorId: 5, GroupColor: '#73cdce' },
+            { GroupText: schedules.name, ColorId: 6, GroupColor: '#a8e0e1' },
+            { GroupText: schedules.name, ColorId: 7, GroupColor: '#c3e3e4' },
+            { GroupText: schedules.name, ColorId: 8, GroupColor: '#deebec' },
+            { GroupText: schedules.name, ColorId: 9, GroupColor: '#e4e4e4' },
+            { GroupText: schedules.name, ColorId: 10, GroupColor: '#cfcccc' },
+            { GroupText: schedules.name, ColorId: 11, GroupColor: '#b5b4b4' },
+            { GroupText: schedules.name, ColorId: 12, GroupColor: '#9d968d' },
+            { GroupText: schedules.name, ColorId: 13, GroupColor: '#8f7c64' },
+            { GroupText: schedules.name, ColorId: 14, GroupColor: '#866947' },
+            { GroupText: schedules.name, ColorId: 15, GroupColor: '#8a5c2b' },
+            { GroupText: schedules.name, ColorId: 16, GroupColor: '#9e580e' },
+            { GroupText: schedules.name, ColorId: 17, GroupColor: '#c56907' },
+            { GroupText: schedules.name, ColorId: 18, GroupColor: '#e17604' },
+            { GroupText: schedules.name, ColorId: 19, GroupColor: '#fd901b' },
+            { GroupText: schedules.name, ColorId: 20, GroupColor: '#faa952' },
+            { GroupText: schedules.name, ColorId: 21, GroupColor: '#f7c48e' },
         ];
         
     return (

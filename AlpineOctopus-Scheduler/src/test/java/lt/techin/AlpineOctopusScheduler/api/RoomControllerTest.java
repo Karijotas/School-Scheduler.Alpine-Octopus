@@ -147,5 +147,50 @@ public class RoomControllerTest {
         assertEquals(200, status);
         assertEquals(mappedResponse.getName(), "LAK-101");
     }
+
+    @Test
+    @Order(5)
+    void removeRoom_shouldSetBooleanToTrue() throws Exception {
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .patch("/api/v1/rooms/delete/2")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Room mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+                new TypeReference<Room>() {
+                });
+
+        Assertions.assertTrue(mappedResponse.getDeleted());
+    }
+
+    @Test
+    void restoreRoom_shouldSetBooleanToFalse() throws Exception {
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .patch("/api/v1/rooms/restore/4")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Room mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+                new TypeReference<Room>() {
+                });
+
+        Assertions.assertFalse(mappedResponse.getDeleted());
+    }
+//    @Test
+//    void deleteTeacherSetsDeletedPropertyToTrue() throws Exception {
+//        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.patch("/api/v1/rooms/delete/4").contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk()).andReturn();
+//        Room resultTeacher = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<Room>() {});
+//        Assertions.assertTrue(resultTeacher.isDeleted());
+//    }
+
 }
 
