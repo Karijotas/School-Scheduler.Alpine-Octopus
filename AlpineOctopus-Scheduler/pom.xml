@@ -84,7 +84,7 @@
     <!--        </repository>-->
     <!--    </repositories>-->
     <build>
-        <finalName>alpine-scheduler</finalName>
+        <finalName>alpine-octopus</finalName>
         <plugins>
 
             <!--            <plugin>-->

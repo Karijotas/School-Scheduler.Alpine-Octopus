@@ -109,7 +109,7 @@ export function EditGroupObject() {
 
 
     useEffect(() => {
-        fetch('/scheduler/api/v1/groups/' + params.id)
+        fetch('/alpine-octopus/api/v1/groups/' + params.id)
             .then(response => response.json())
             .then(setGroups);
     }, [active, params]);
@@ -119,7 +119,7 @@ export function EditGroupObject() {
     }
 
     const updateGroups = () => {
-        fetch('/scheduler/api/v1/groups/' + params.id + '?programId=' + programId + '&shiftId=' + shiftId, {
+        fetch('/alpine-octopus/api/v1/groups/' + params.id + '?programId=' + programId + '&shiftId=' + shiftId, {
             method: 'PATCH',
             headers: JSON_HEADERS,
             body: JSON.stringify(groups,)
@@ -147,7 +147,7 @@ export function EditGroupObject() {
     }
 
     useEffect(() => {
-        fetch('/scheduler/api/v1/programs/')
+        fetch('/alpine-octopus/api/v1/programs/')
             .then((response) => response.json())
             .then((data) =>
                 setPrograms(
@@ -159,7 +159,7 @@ export function EditGroupObject() {
     }, []);
 
     useEffect(() => {
-        fetch('/scheduler/api/v1/shifts')
+        fetch('/alpine-octopus/api/v1/shifts')
             .then((response) => response.json())
             .then((data) => setShifts(
                 data.map((x) => {

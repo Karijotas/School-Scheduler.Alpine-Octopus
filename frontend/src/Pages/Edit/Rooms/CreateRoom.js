@@ -94,7 +94,7 @@ export function CreateRoom() {
 
   const createRoom = () => {
     fetch(
-      '/scheduler/api/v1/rooms', {
+      '/alpine-octopus/api/v1/rooms', {
       method: 'POST',
       headers: JSON_HEADERS,
       body: JSON.stringify({

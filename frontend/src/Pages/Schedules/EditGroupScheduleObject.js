@@ -139,13 +139,13 @@ export function EditGroupScheduleObject() {
   };
 
   useEffect(() => {
-    fetch("/scheduler/api/v1/groups/" + schedules.groupName)
+    fetch("/alpine-octopus/api/v1/groups/" + schedules.groupName)
       .then((response) => response.json())
       .then(setGroups);
   }, [schedules]);
 
   useEffect(() => {
-    fetch("/scheduler/api/v1/schedule/" + params.id)
+    fetch("/alpine-octopus/api/v1/schedule/" + params.id)
       .then((response) => response.json())
       .then(setSchedules);
   }, [active, params]);
@@ -156,7 +156,7 @@ export function EditGroupScheduleObject() {
 
   const updateSchedules = () => {
     fetch(
-      "/scheduler/api/v1/schedule/" +
+      "/alpine-octopus/api/v1/schedule/" +
       params.id +
       "?groupId=" +
       groupId +

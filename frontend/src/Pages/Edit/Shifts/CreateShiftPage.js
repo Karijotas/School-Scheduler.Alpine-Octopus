@@ -123,7 +123,7 @@ export function CreateShiftPage() {
   };
 
   const createShift = () => {
-    fetch("/scheduler/api/v1/shifts", {
+    fetch("/alpine-octopus/api/v1/shifts", {
       method: "POST",
       headers: JSON_HEADERS,
       body: JSON.stringify({
@@ -135,7 +135,7 @@ export function CreateShiftPage() {
   };
 
   const fetchShifts = async () => {
-    fetch(`/scheduler/api/v1/shifts/`)
+    fetch(`/alpine-octopus/api/v1/shifts/`)
       .then((response) => response.json())
       .then((jsonRespones) => setShifts(jsonRespones));
   };

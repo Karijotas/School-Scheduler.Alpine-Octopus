@@ -24,32 +24,32 @@ export function ViewProgramsArchive() {
   const [pagecount, setPageCount] = useState();
 
   const fetchSinglePrograms = async () => {
-    fetch('/scheduler/api/v1/programs/archive/')
+    fetch('/alpine-octopus/api/v1/programs/archive/')
       .then((response) => response.json())
       .then((jsonResponse) => setProgramsForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(programsforPaging.length / 10)));
   };
 
   const fetchPagedPrograms = async () => {
-    fetch('/scheduler/api/v1/programs/archive/page?page=' + activePage)
+    fetch('/alpine-octopus/api/v1/programs/archive/page?page=' + activePage)
       .then((response) => response.json())
       .then((jsonResponse) => setPrograms(jsonResponse));
   };
 
   const fetchPrograms = async () => {
-    fetch(`/scheduler/api/v1/programs/archive/`)
+    fetch(`/alpine-octopus/api/v1/programs/archive/`)
       .then((response) => response.json())
       .then((jsonRespones) => setPrograms(jsonRespones));
   };
 
   useEffect(() => {
-    fetch("/scheduler/api/v1/programs/archive/page?page=" + activePage)
+    fetch("/alpine-octopus/api/v1/programs/archive/page?page=" + activePage)
       .then((response) => response.json())
       .then((jsonRespones) => setPrograms(jsonRespones));
   }, []);
 
   const restoreProgram = (id) => {
-    fetch("/scheduler/api/v1/programs/restore/" + id, {
+    fetch("/alpine-octopus/api/v1/programs/restore/" + id, {
       method: "PATCH",
     }).then(fetchPagedPrograms);
   };

@@ -42,13 +42,13 @@ export function ViewGroupsSchedules() {
   const [defaultDate, setDefaultDate] = useState(today);
 
   const fetchSchedules = async () => {
-    fetch("/scheduler/api/v1/schedule/page?page=" + activePage)
+    fetch("/alpine-octopus/api/v1/schedule/page?page=" + activePage)
       .then((response) => response.json())
       .then((jsonResponse) => setSchedules(jsonResponse));
   };
 
   const removeSchedule = (id) => {
-    fetch("/scheduler/api/v1/schedule/delete/" + id, {
+    fetch("/alpine-octopus/api/v1/schedule/delete/" + id, {
       method: "PATCH",
     })
       .then(fetchSchedules)
@@ -56,20 +56,20 @@ export function ViewGroupsSchedules() {
   };
 
   const fetchFilterSchedulesByName = async () => {
-    fetch(`/scheduler/api/v1/schedule/page/name-filter/${nameText}`)
+    fetch(`/alpine-octopus/api/v1/schedule/page/name-filter/${nameText}`)
       .then((response) => response.json())
       .then((jsonRespone) => setSchedules(jsonRespone));
   };
 
   const fetchFilterSchedulesByStartingDate = async () => {
-    fetch(`/scheduler/api/v1/schedule/page/starting-date-filter/${formatStartingDate()}`)
+    fetch(`/alpine-octopus/api/v1/schedule/page/starting-date-filter/${formatStartingDate()}`)
       .then((response) => response.json())
       .then((jsonResponse) => setSchedules(jsonResponse))
       ;
   };
 
   const fetchFilterSchedulesByPlannedTillDate = async () => {
-    fetch(`/scheduler/api/v1/schedule/page/planned-till-filter/${formatPlannedTillDate()}`)
+    fetch(`/alpine-octopus/api/v1/schedule/page/planned-till-filter/${formatPlannedTillDate()}`)
       .then((response) => response.json())
       .then((jsonResponse) => setSchedules(jsonResponse))
       ;
