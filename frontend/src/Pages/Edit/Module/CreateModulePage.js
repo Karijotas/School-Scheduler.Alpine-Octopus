@@ -75,7 +75,7 @@ export function CreateModulePage() {
   };
 
   const createModule = () => {
-    fetch("/api/v1/modules", {
+    fetch("/alpine-octopus/api/v1/modules", {
       method: "POST",
       headers: JSON_HEADERS,
       body: JSON.stringify({
@@ -86,7 +86,7 @@ export function CreateModulePage() {
   };
 
   const fetchModules = async () => {
-    fetch(`/api/v1/modules/`)
+    fetch(`/alpine-octopus/api/v1/modules/`)
       .then((response) => response.json())
       .then((jsonRespones) => setModules(jsonRespones));
   };

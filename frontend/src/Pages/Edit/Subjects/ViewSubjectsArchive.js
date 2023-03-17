@@ -20,32 +20,32 @@ export function ViewSubjectsArchive() {
   const [pagecount, setPageCount] = useState();
 
   const fetchSingleSubject = async () => {
-    fetch('/api/v1/subjects/archive/')
+    fetch('/alpine-octopus/api/v1/subjects/archive/')
       .then((response) => response.json())
       .then((jsonResponse) => setSubjectsForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(subjectsForPaging.length / 10)));
   };
 
   const fetchPagedSubjects = async () => {
-    fetch('/api/v1/subjects/archive/page?page=' + activePage)
+    fetch('/alpine-octopus/api/v1/subjects/archive/page?page=' + activePage)
       .then((response) => response.json())
       .then((jsonResponse) => setSubjects(jsonResponse));
   };
 
   const fetchSubjects = async () => {
-    fetch(`/api/v1/subjects/archive/`)
+    fetch(`/alpine-octopus/api/v1/subjects/archive/`)
       .then((response) => response.json())
       .then((jsonRespones) => setSubjects(jsonRespones));
   };
 
   useEffect(() => {
-    fetch("/api/v1/subjects/archive/page?page=" + activePage)
+    fetch("/alpine-octopus/api/v1/subjects/archive/page?page=" + activePage)
       .then((response) => response.json())
       .then((jsonRespones) => setSubjects(jsonRespones));
   }, []);
 
   const restoreSubject = (id) => {
-    fetch("/api/v1/subjects/restore/" + id, {
+    fetch("/alpine-octopus/api/v1/subjects/restore/" + id, {
       method: "PATCH",
     }).then(fetchPagedSubjects);
   };

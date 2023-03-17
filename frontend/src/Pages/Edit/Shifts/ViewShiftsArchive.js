@@ -20,32 +20,32 @@ export function ViewShiftsArchive() {
   const [pagecount, setPageCount] = useState();
 
   const fetchSingleShifts = async () => {
-    fetch('/api/v1/shifts/archive/')
+    fetch('/alpine-octopus/api/v1/shifts/archive/')
       .then((response) => response.json())
       .then((jsonResponse) => setShiftsForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(shiftsforPaging.length / 10)));
   };
 
   const fetchPagedShifts = async () => {
-    fetch('/api/v1/shifts/archive/page?page=' + activePage)
+    fetch('/alpine-octopus/api/v1/shifts/archive/page?page=' + activePage)
       .then((response) => response.json())
       .then((jsonResponse) => setShifts(jsonResponse));
   };
 
   const fetchShifts = async () => {
-    fetch(`/api/v1/shifts/archive/`)
+    fetch(`/alpine-octopus/api/v1/shifts/archive/`)
       .then((response) => response.json())
       .then((jsonRespones) => setShifts(jsonRespones));
   };
 
   useEffect(() => {
-    fetch("/api/v1/shifts/archive/page?page=" + activePage)
+    fetch("/alpine-octopus/api/v1/shifts/archive/page?page=" + activePage)
       .then((response) => response.json())
       .then((jsonRespones) => setShifts(jsonRespones));
   }, []);
 
   const restoreShift = (id) => {
-    fetch("/api/v1/shifts/restore/" + id, {
+    fetch("/alpine-octopus/api/v1/shifts/restore/" + id, {
       method: "PATCH",
     }).then(fetchPagedShifts);
   };

@@ -32,7 +32,7 @@ export function ViewArchivedGroup() {
 
  
     useEffect(() => {
-        fetch('/api/v1/groups/' + params.id)
+        fetch('/alpine-octopus/api/v1/groups/' + params.id)
             .then(response => response.json())
             .then(setGroups)
             .then(console.log(groups))
@@ -43,14 +43,14 @@ export function ViewArchivedGroup() {
     }
 
     const restoreGroup = (id) => {
-        fetch("/api/v1/groups/restore/" + id, {
+        fetch("/alpine-octopus/api/v1/groups/restore/" + id, {
           method: "PATCH",
         })
         .then(applyResult)
       };
 
     useEffect(() => {
-        fetch('/api/v1/programs/')
+        fetch('/alpine-octopus/api/v1/programs/')
             .then((response) => response.json())
             .then((data) =>
                 setPrograms(
@@ -62,7 +62,7 @@ export function ViewArchivedGroup() {
     }, []);
 
     useEffect(() => {
-        fetch('/api/v1/shifts')
+        fetch('/alpine-octopus/api/v1/shifts')
             .then((response) => response.json())
             .then((data) => setShifts(
                 data.map((x) => {

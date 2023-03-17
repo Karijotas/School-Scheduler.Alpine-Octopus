@@ -21,32 +21,32 @@ export function ViewTeachersArchive() {
   const [pagecount, setPageCount] = useState();
 
   const fetchSingleTeachers = async () => {
-    fetch('/api/v1/teachers/archive/')
+    fetch('/alpine-octopus/api/v1/teachers/archive/')
       .then((response) => response.json())
       .then((jsonResponse) => setTeachersForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(teachersforPaging.length / 10)));
   };
 
   const fetchPagedTeachers = async () => {
-    fetch('/api/v1/teachers/archive/page?page=' + activePage)
+    fetch('/alpine-octopus/api/v1/teachers/archive/page?page=' + activePage)
       .then((response) => response.json())
       .then((jsonResponse) => setTeachers(jsonResponse));
   };
 
   const fetchTeachers = async () => {
-    fetch(`/api/v1/teachers/archive/`)
+    fetch(`/alpine-octopus/api/v1/teachers/archive/`)
       .then((response) => response.json())
       .then((jsonRespones) => setTeachers(jsonRespones));
   };
 
   useEffect(() => {
-    fetch("/api/v1/teachers/archive/page?page=" + activePage)
+    fetch("/alpine-octopus/api/v1/teachers/archive/page?page=" + activePage)
       .then((response) => response.json())
       .then((jsonRespones) => setTeachers(jsonRespones));
   }, []);
 
   const restoreTeacher = (id) => {
-    fetch("/api/v1/teachers/restore/" + id, {
+    fetch("/alpine-octopus/api/v1/teachers/restore/" + id, {
       method: "PATCH",
     }).then(fetchPagedTeachers);
   };

@@ -60,10 +60,6 @@ public class ProgramService {
                 .stream()
                 .noneMatch(program1 -> program1.getName().equals(program.getName()));
     }
-    
-    public List<Program> getAll() {
-    	return programRepository.findAll();
-    }
 
     public List<ProgramTestDto> getAllPrograms() {
         return programRepository.findAll().stream()
@@ -96,7 +92,7 @@ public class ProgramService {
     }
 
     public Program create(Program program) {
-//        validateInputWithInjectedValidator(program);
+        validateInputWithInjectedValidator(program);
         return programRepository.save(program);
     }
 

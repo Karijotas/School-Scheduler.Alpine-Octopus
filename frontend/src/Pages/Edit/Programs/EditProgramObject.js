@@ -114,33 +114,33 @@ export function EditProgramObject() {
   };
 
   useEffect(() => {
-    fetch("/api/v1/programs/" + params.id)
+    fetch("/alpine-octopus/api/v1/programs/" + params.id)
       .then((response) => response.json())
       .then(setPrograms);
   }, [totalHours, active, params]);
 
   useEffect(() => {
-    fetch(`/api/v1/programs/${params.id}/subjects`)
+    fetch(`/alpine-octopus/api/v1/programs/${params.id}/subjects`)
       .then((response) => response.json())
       .then(setSubjectsInProgram)
       .then(console.log(subjectsInProgram));
   }, [params, totalHours, subjectHours]);
 
   const getSubjectsInProgram = () => {
-    fetch(`/api/v1/programs/${params.id}/subjects`)
+    fetch(`/alpine-octopus/api/v1/programs/${params.id}/subjects`)
       .then((response) => response.json())
       .then(setSubjectsInProgram)
       .then(console.log(subjectsInProgram));
   };
 
   useEffect(() => {
-    fetch(`/api/v1/programs/${params.id}/subjects/hours`)
+    fetch(`/alpine-octopus/api/v1/programs/${params.id}/subjects/hours`)
       .then((response) => response.json())
       .then(setTotalHours);
   }, [subjectsInProgram]);
 
   const removeSubject = (programId, subjectId, hours) => {
-    fetch(`/api/v1/programs/${programId}/subjects/${subjectId}/${hours}`, {
+    fetch(`/alpine-octopus/api/v1/programs/${programId}/subjects/${subjectId}/${hours}`, {
       method: "DELETE",
       headers: JSON_HEADERS,
     })
@@ -151,7 +151,7 @@ export function EditProgramObject() {
 
   const addSubjectAndHours = (programId, subjectId, hours) => {
     fetch(
-      `/api/v1/programs/${programId}/subjects/${subjectId}/${hours}/newSubjectsWithHours`,
+      `/alpine-octopus/api/v1/programs/${programId}/subjects/${subjectId}/${hours}/newSubjectsWithHours`,
       {
         method: "POST",
         header: JSON_HEADERS,
@@ -173,7 +173,7 @@ export function EditProgramObject() {
   };
 
   useEffect(() => {
-    fetch(`/api/v1/programs/${params.id}/availableSubjects`)
+    fetch(`/alpine-octopus/api/v1/programs/${params.id}/availableSubjects`)
       .then((response) => response.json())
       .then((data) =>
         setSubjects(
@@ -189,7 +189,7 @@ export function EditProgramObject() {
   };
 
   const updatePrograms = () => {
-    fetch("/api/v1/programs/" + params.id, {
+    fetch("/alpine-octopus/api/v1/programs/" + params.id, {
       method: "PATCH",
       headers: JSON_HEADERS,
       body: JSON.stringify(programs),
@@ -306,10 +306,10 @@ export function EditProgramObject() {
                         ))}
                         <Table.Row>
                           <Table.Cell>
-                            <h5><b>Programos valandų skaičius:</b></h5>
+                            <h5>Programos valandų skaičius:</h5>
                           </Table.Cell>
                           <Table.Cell>
-                            <h5><b>{totalHours} val.</b></h5>
+                            <h5>{totalHours} val.</h5>
                           </Table.Cell>
                         </Table.Row>
                       </Table.Body>
@@ -552,10 +552,10 @@ export function EditProgramObject() {
                               ))}
                               <Table.Row>
                                       <Table.Cell>
-                                        <h5><b>Programos valandų skaičius:</b></h5>
+                                        <h5>Programos valandų skaičius:</h5>
                                       </Table.Cell>
                                       <Table.Cell>
-                                        <h5><b>{totalHours} val.</b></h5>
+                                        <h5>{totalHours} val.</h5>
                                       </Table.Cell>
                                     </Table.Row>
                             </Table.Body>

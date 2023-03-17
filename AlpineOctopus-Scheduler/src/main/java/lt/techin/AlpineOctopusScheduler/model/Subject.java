@@ -54,7 +54,7 @@ public class Subject {
     private Set<Module> subjectModules = new HashSet<>();
     ;
     @ManyToMany(fetch = FetchType.LAZY)
-    //@JsonIgnore
+    @JsonIgnore
     @JoinTable(
             name = "rooms_subjects",
             joinColumns = @JoinColumn(name = "subject_id"),

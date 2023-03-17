@@ -37,7 +37,6 @@ public class ProgramMapper {
         programDto.setDescription(program.getDescription());
         programDto.setModifiedDate(program.getModifiedDate());
         programDto.setCreatedDate(program.getCreatedDate());
-        programDto.setDeleted(program.getDeleted());
 
 
         return programDto;
@@ -51,7 +50,6 @@ public class ProgramMapper {
         program.setDescription(programEntityDto.getDescription());
         program.setModifiedDate(programEntityDto.getModifiedDate());
         program.setCreatedDate(programEntityDto.getCreatedDate());
-        program.setDeleted(programEntityDto.getDeleted());
 
         return program;
     }

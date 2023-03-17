@@ -78,7 +78,7 @@ public class ModuleService {
 
 
     public Module create(Module module) {
-//        validateInputWithInjectedValidator(module);
+        validateInputWithInjectedValidator(module);
         return moduleRepository.save(module);
     }
 

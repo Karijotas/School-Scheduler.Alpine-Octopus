@@ -15,7 +15,6 @@ import {
 } from "semantic-ui-react";
 import MainMenu from "../../Components/MainMenu";
 import { SchedulesMenu } from "../../Components/SchedulesMenu";
-import { ScheduleView } from "./Schedule";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -27,13 +26,19 @@ export function EditGroupScheduleObject() {
   const [active, setActive] = useState(true);
   const [startingDate, setStartingDate] = useState("");
   const [plannedTillDate, setPlannedTillDate] = useState("");
+
+  const [programs, setPrograms] = useState([]);
+
+  const [shifts, setShifts] = useState([]);
+
   const [error, setError] = useState();
+
   const [groupId, setGroupId] = useState("");
-  const [groups, setGroups] = useState({    
+  const [groups, setGroups] = useState({
     name: "",
     studentAmount: "",
     schoolYear: "",
-    programName: "",
+    program: "",
     shift: "",
     modifiedDate: "",
   });
@@ -45,14 +50,16 @@ export function EditGroupScheduleObject() {
     lessons: "",
     group: "",
     shift: "",
-    groupIdValue: "",
+    groupName: "",
     shiftName: "",
-    groupIdValue: "",
   });
+
+  const [programId, setProgramId] = useState();
 
   const [shiftId, setShiftId] = useState();
 
   const [name, setName] = useState("");
+  const [studentAmount, setstudentAmount] = useState("");
 
   const [nameError, setNameError] = useState("");
   const [studentAmountError, setstudentAmountError] = useState("");
@@ -68,6 +75,13 @@ export function EditGroupScheduleObject() {
       setFormValid(true);
     }
   }, [nameError, studentAmountError]);
+
+  //   const selectProgramHandler = () => {
+  //     setSelectErrorProgram("")
+  //   }
+  //   const selectShiftHandler = () => {
+  //     setSelectErrorShift("")
+  //   }
 
   const handleNameInputChange = (e) => {
     groups.name = e.target.value;
@@ -123,19 +137,18 @@ export function EditGroupScheduleObject() {
       setStartingDateError("");
     }
   };
-  useEffect(() => {
-    fetch("/api/v1/schedule/" + params.id)
-      .then((response) => response.json())
-      .then(setSchedules);
-  }, [active, params]);
 
   useEffect(() => {
-    fetch("/api/v1/groups/" + schedules.groupIdValue)
+    fetch("/alpine-octopus/pi/v1/groups/" + schedules.groupName)
       .then((response) => response.json())
       .then(setGroups);
   }, [schedules]);
 
-  
+  useEffect(() => {
+    fetch("/alpine-octopus/pi/v1/schedule/" + params.id)
+      .then((response) => response.json())
+      .then(setSchedules);
+  }, [active, params]);
 
   const applyResult = () => {
     setActive(true);
@@ -143,12 +156,12 @@ export function EditGroupScheduleObject() {
 
   const updateSchedules = () => {
     fetch(
-      "/api/v1/schedule/" +
-        params.id +
-        "?groupId=" +
-        groupId +
-        "&shiftId=" +
-        shiftId,
+      "/alpine-octopus/pi/v1/schedule/" +
+      params.id +
+      "?groupId=" +
+      groupId +
+      "&shiftId=" +
+      shiftId,
       {
         method: "PATCH",
         headers: JSON_HEADERS,
@@ -174,7 +187,32 @@ export function EditGroupScheduleObject() {
 
   const editThis = () => {
     setActive(false);
+    // setProgramId(groups.programId);
+    // setShiftId(groups.shiftId)
   };
+
+  // useEffect(() => {
+  //     fetch('/api/v1/programs/')
+  //         .then((response) => response.json())
+  //         .then((data) =>
+  //             setPrograms(
+  //                 data.map((x) => {
+  //                     return { key: x.id, text: x.name, value: x.id };
+  //                 })
+  //             )
+  //         )
+  // }, []);
+
+  // useEffect(() => {
+  //     fetch('/api/v1/shifts')
+  //         .then((response) => response.json())
+  //         .then((data) => setShifts(
+  //             data.map((x) => {
+  //                 return { key: x.id, text: x.name, value: x.id };
+  //             })
+  //         )
+  //         )
+  // }, []);
 
   const [updated, setUpdated] = useState();
 
@@ -212,7 +250,6 @@ export function EditGroupScheduleObject() {
                       </Table.HeaderCell>
                       <Table.HeaderCell>Data nuo</Table.HeaderCell>
                       <Table.HeaderCell>Data iki</Table.HeaderCell>
-                      <Table.HeaderCell>Statusas</Table.HeaderCell>
                       <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
@@ -223,33 +260,6 @@ export function EditGroupScheduleObject() {
                       <Table.Cell width={3}>
                         {" "}
                         {schedules.plannedTillDate}{" "}
-                      </Table.Cell>
-                      <Table.Cell collapsing>
-                        {schedules.status === "invalid" ? (
-                          <Button
-                            id="grey"
-                            basic
-                            compact
-                            icon="clock outline"
-                            title="Negaliojantis"
-                          />
-                        ) : schedules.status === "Valid" ? (
-                          <Button
-                            id="okey"
-                            basic
-                            compact
-                            icon="check"
-                            title="Galiojantis"
-                          />
-                        ) : (
-                          <Button
-                            id="attention"
-                            basic
-                            compact
-                            icon="attention"
-                            title="Nevaliduotas"
-                          />
-                        )}
                       </Table.Cell>
                       <Table.Cell width={1}>
                         {" "}
@@ -323,9 +333,8 @@ export function EditGroupScheduleObject() {
                   </Grid.Column>
                 </Grid> */}
                 <Divider hidden />
-                <ScheduleView />
-                <Divider hidden />
-                <Button icon labelPosition="left" href="#/view/groupsSchedules">
+
+                <Button icon labelPosition="left" href="#/view/groups">
                   <Icon name="arrow left" />
                   Atgal
                 </Button>
@@ -346,7 +355,15 @@ export function EditGroupScheduleObject() {
                   </Table.Header>
                   <Table.Body>
                     <Table.Row>
-                      <Table.Cell width={6}>{schedules.name}</Table.Cell>
+                      <Table.Cell width={6}>
+                        <Form>
+                          <Input
+                            fluid
+                            value={schedules.name}
+                            onChange={(e) => updateProperty("name", e)}
+                          />
+                        </Form>
+                      </Table.Cell>
                       <Table.Cell>{schedules.startingDate}</Table.Cell>
                       <Table.Cell width={3}>
                         {" "}
@@ -356,10 +373,8 @@ export function EditGroupScheduleObject() {
                   </Table.Body>
                 </Table>
                 <Divider hidden />
-                <ScheduleView id={params.id} />
-                <Divider hidden />
 
-                {/* <Table.Cell width={6}>y
+                {/* <Table.Cell width={6}>
                         {nameError && (
                           <div style={{ color: "red" }}>{nameError}</div>
                         )}

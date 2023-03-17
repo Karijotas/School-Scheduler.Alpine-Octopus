@@ -78,7 +78,7 @@ export function CreateSubjecPage() {
   };
 
   const createSubject = () => {
-    fetch("/api/v1/subjects?moduleId=" + moduleId, {
+    fetch("/alpine-octopus/api/v1/subjects?moduleId=" + moduleId, {
       method: "POST",
       headers: JSON_HEADERS,
       body: JSON.stringify({
@@ -92,7 +92,7 @@ export function CreateSubjecPage() {
   };
 
   useEffect(() => {
-    fetch("/api/v1/modules/")
+    fetch("/alpine-octopus/api/v1/modules/")
       .then((response) => response.json())
       .then((data) =>
         setModules(
@@ -104,7 +104,7 @@ export function CreateSubjecPage() {
   }, []);
 
   useEffect(() => {
-    fetch("/api/v1/teachers/")
+    fetch("/alpine-octopus/api/v1/teachers/")
       .then((response) => response.json())
       .then((data) =>
         setTeachers(
@@ -116,7 +116,7 @@ export function CreateSubjecPage() {
   }, []);
 
   useEffect(() => {
-    fetch("/api/v1/rooms/")
+    fetch("/alpine-octopus/api/v1/rooms/")
       .then((response) => response.json())
       .then((data) =>
         setRooms(

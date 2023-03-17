@@ -4,7 +4,9 @@ import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.ShiftDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ShiftEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ShiftTestDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ShiftMapper;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
+
 import lt.techin.AlpineOctopusScheduler.model.Shift;
 import lt.techin.AlpineOctopusScheduler.service.ShiftService;
 import org.slf4j.Logger;
@@ -20,7 +22,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ShiftMapper.*;
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ShiftMapper.toShift;
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ShiftMapper.toShiftDto;
 import static org.springframework.http.ResponseEntity.ok;
 
 @Controller
@@ -45,13 +48,6 @@ public class ShiftController {
     @ResponseBody
     public List<ShiftEntityDto> getAvailableShifts() {
         return shiftService.getAllAvailableShifts();
-    }
-
-
-    @GetMapping(path = "/all")
-    @ResponseBody
-    public List<ShiftTestDto> getAllShifts() {
-        return shiftService.getAllShifts();
     }
 
     @GetMapping(path = "/archive/", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -103,11 +99,11 @@ public class ShiftController {
 
 
     @PostMapping
-    public ResponseEntity<ShiftEntityDto> createShift(@Valid @RequestBody ShiftEntityDto shiftDto) {
+    public ResponseEntity<ShiftDto> createShift(@Valid @RequestBody ShiftDto shiftDto) {
 
         if (shiftService.shiftNameIsUnique(toShift(shiftDto))) {
             var createdShift = shiftService.create(toShift(shiftDto));
-            return ok(toShiftEntityDto(createdShift));
+            return ok(toShiftDto(createdShift));
         } else {
             throw new SchedulerValidationException("Shift already exists", "Shift name", "Already exists", shiftDto.getName());
         }

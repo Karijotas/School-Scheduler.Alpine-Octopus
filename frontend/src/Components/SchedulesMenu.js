@@ -14,7 +14,7 @@ export function SchedulesMenu() {
           className="controls3"
           as={NavLink}
           exact
-          to="/create/groupsSchedules"
+          to="/create/groups"
         >
           <Icon name="calendar" />
           Kurti naują
@@ -33,18 +33,22 @@ export function SchedulesMenu() {
               to="/view/groupsSchedules"
             />
             <Menu.Item
-              disabled
-              // id="icocolor"
+              id="icocolor"
               name="teachers"
               icon="user"
               content="Mokytojai"
+              //   as={NavLink}
+              //   exact
+              //   to="/view/teachers"
             />
             <Menu.Item
-              disabled
-              // id="icocolor"
+              id="icocolor"
               name="rooms"
               icon="warehouse"
               content="Kabinetai"
+              //   as={NavLink}
+              //   exact
+              //   to="/view/rooms"
             />
           </Menu>
         </Grid.Column>

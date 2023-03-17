@@ -3,7 +3,6 @@ package lt.techin.AlpineOctopusScheduler.api;
 import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.GroupsDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.GroupsEntityDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.GroupsTestDto;
 import lt.techin.AlpineOctopusScheduler.dao.GroupsRepository;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.service.GroupService;
@@ -129,12 +128,12 @@ public class GroupsController {
     }
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE,})
-    public ResponseEntity<GroupsEntityDto> createGroup(@Valid @RequestBody GroupsEntityDto groupsDto, Long programId, Long shiftId) {
+    public ResponseEntity<GroupsDto> createGroup(@Valid @RequestBody GroupsDto groupsDto, Long programId, Long shiftId) {
         if (groupService.groupNameIsUnique(toGroup(groupsDto))) {
 //            if (groupService.studentAmountIsValid(toGroup(groupsDto))) {
             if (groupService.schoolYearIsValid(toGroup(groupsDto))) {
                 var createdGroup = groupService.create(toGroup(groupsDto), programId, shiftId);
-                return ok(toGroupEntityDto(createdGroup));
+                return ok(toGroupDto(createdGroup));
             } else {
                 throw new SchedulerValidationException("Invalid year value", "School year", "School year must be between 2023-3023", groupsDto.getSchoolYear().toString());
             }
@@ -195,11 +194,5 @@ public class GroupsController {
     public ResponseEntity<GroupsEntityDto> restoreGroup(@PathVariable Long groupId) {
         var updatedGroup = groupService.restoreGroup(groupId);
         return ok(updatedGroup);
-    }
-
-    @GetMapping(path = "/all")
-    @ResponseBody
-    public List<GroupsTestDto> getAllGroups() {
-        return groupService.getAllGroups();
     }
 }

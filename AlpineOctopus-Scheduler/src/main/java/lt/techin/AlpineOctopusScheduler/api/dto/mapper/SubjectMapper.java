@@ -47,7 +47,6 @@ public class SubjectMapper {
         subjectEntityDto.setModifiedDate(subject.getModifiedDate());
         subjectEntityDto.setSubjectModules(subject.getSubjectModules());
         subjectEntityDto.setSubjectRooms(subject.getSubjectRooms());
-        subjectEntityDto.setDeleted(subject.getDeleted());
 
 
         return subjectEntityDto;
@@ -63,7 +62,6 @@ public class SubjectMapper {
         subject.setModifiedDate(subjectEntityDto.getModifiedDate());
         subject.setSubjectModules(subjectEntityDto.getSubjectModules());
         subject.setSubjectRooms(subjectEntityDto.getSubjectRooms());
-        subject.setDeleted(subjectEntityDto.getDeleted());
 
 
         return subject;

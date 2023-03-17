@@ -87,7 +87,7 @@ public class TeacherService {
 
     public Teacher create(Teacher teacher) {
 
-//        validateInputWithInjectedValidator(teacher);
+        validateInputWithInjectedValidator(teacher);
         return teacherRepository.save(teacher);
     }
 

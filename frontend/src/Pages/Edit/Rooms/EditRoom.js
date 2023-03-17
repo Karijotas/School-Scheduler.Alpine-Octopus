@@ -98,7 +98,7 @@ export function EditRoom() {
   };
 
   useEffect(() => {
-    fetch('/api/v1/rooms/' + params.id)
+    fetch('/alpine-octopus/api/v1/rooms/' + params.id)
       .then(response => response.json())
       .then(setRooms);
 
@@ -115,7 +115,7 @@ export function EditRoom() {
   }
 
   const updateRooms = () => {
-    fetch('/api/v1/rooms/' + params.id, {
+    fetch('/alpine-octopus/api/v1/rooms/' + params.id, {
       method: 'PUT',
       headers: JSON_HEADERS,
       body: JSON.stringify(rooms)
