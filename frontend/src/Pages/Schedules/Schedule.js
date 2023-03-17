@@ -68,7 +68,7 @@ export function ScheduleView() {
   }
 
   useEffect(() => {
-    fetch(`/api/v1/schedule/${params.id}/lessons`)
+    fetch(`/alpine-octopus/api/v1/schedule/${params.id}/lessons`)
       .then((response) => response.json())
       // .then((jsonRespones) => setLessons(jsonRespones))
       .then(setLessons)
@@ -96,7 +96,7 @@ export function ScheduleView() {
       `/alpine-octopus/api/v1/schedule/${params.id}/create/${subjectId}/${startTime}/${endTime}`, {
       method: 'PATCH'
     })
-    .then(setActive(true));   
+      .then(setActive(true));
   }
 
   useEffect(() => {
@@ -113,7 +113,7 @@ export function ScheduleView() {
       StartTime: l.startTime,
       EndTime: l.endTime,
       GroupId: l.subject.id,
-      Description: l.online? "ONLINE" : ""
+      Description: l.online ? "ONLINE" : ""
     }
   });
 
@@ -180,7 +180,7 @@ export function ScheduleView() {
         <tr><td className="e-textlabel">Pastabos</td><td colSpan={4}>
           <textarea id="Description" className="e-field e-input" name="Description" rows={3} cols={50} style={{ width: '100%', height: '60px !important', resize: 'vertical' }}></textarea>
         </td></tr>
-       </tbody>
+      </tbody>
     </table> : '');
   }
 
@@ -265,11 +265,11 @@ export function ScheduleView() {
 
   return (
     <Container>
-      
+
 
       <h1 className="title-text">{schedules.name}</h1>
       <ScheduleComponent id='schedule' ref={shedule => scheduleObj = shedule} timeFormat='HH' firstDayOfWeek='1' height='550px' editorTemplate={editorTemplate} selectedDate={new Date(2023, 1, 10, 24, 0)} eventSettings={{ dataSource: lessonsOnSchedule }}
-        colorField='Color' currentView='Month' > 
+        colorField='Color' currentView='Month' >
         {console.log(lessons)}
         {console.log(endTime)}
         <ResourcesDirective>
@@ -279,7 +279,7 @@ export function ScheduleView() {
         <ViewsDirective>
           <ViewDirective option='Day' startHour='01:00' endHour='15:00' timeScale={{ interval: 1, slotCount: 1 }} eventTemplate={eventTemplate.bind(this)} />
           <ViewDirective option='Week' startHour='01:00' endHour='15:00' timeScale={{ slotCount: 1 }} eventTemplate={eventTemplate.bind(this)} />
-          <ViewDirective option='WorkWeek' startHour='01:00' endHour='15:00' timeScale={{ slotCount: 1}} eventTemplate={eventTemplate.bind(this)} />
+          <ViewDirective option='WorkWeek' startHour='01:00' endHour='15:00' timeScale={{ slotCount: 1 }} eventTemplate={eventTemplate.bind(this)} />
           <ViewDirective option='Month' startHour='01:00' endHour='15:00' timeScale={{ slotCount: 1 }} eventTemplate={eventTemplate.bind(this)} />
         </ViewsDirective>
         <Inject services={[Day, Week, WorkWeek, Month, Agenda, DragAndDrop, ExcelExport]} />

@@ -6,33 +6,33 @@
   <component name="ChangeListManager">
     <list default="true" id="be4542e8-401c-4b51-a94d-0543b0658664" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/dto/GroupsDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/dto/GroupsDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/dto/ModuleDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/dto/ModuleDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/dto/ModuleEntityDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/dto/ModuleEntityDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/dto/ModuleTestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/dto/ModuleTestDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/dto/ProgramDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/dto/ProgramDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/dto/ShiftDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/dto/ShiftDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/dto/SubjectDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/dto/SubjectDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/dto/mapper/GroupsMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/dto/mapper/GroupsMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/dto/mapper/ModuleMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/dto/mapper/ModuleMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/dto/mapper/ProgramMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/dto/mapper/ProgramMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/dto/mapper/ShiftMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/dto/mapper/ShiftMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/dto/mapper/SubjectMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/dto/mapper/SubjectMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/service/ModuleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/service/ModuleService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/db/migration/V3_13__insert_lesson_test_data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/db/migration/V3_13__insert_lesson_test_data.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Groups/CreateGroupPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Groups/CreateGroupPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Groups/EditGroupObject.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Groups/EditGroupObject.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Module/CreateModulePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Module/CreateModulePage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Module/EditModuleObject.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Module/EditModuleObject.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Programs/EditProgramObject.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Programs/EditProgramObject.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Schedules/CreateSchedulePageNext.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Schedules/CreateSchedulePageNext.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Schedules/DumbSchedules.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Schedules/DumbSchedules.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/migration/V1_0__create_subject_schema.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/migration/V3_0__insert_subject_test_data.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/migration/V3_10__insert_room_subjects_test_data.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/migration/V3_11__insert_teacher_shift_test_data.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/migration/V3_12__insert_schedule_test_data.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/migration/V3_13__insert_lesson_test_data.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/migration/V3_14__insert_schedule_subject_test_data.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/migration/V3_15__insert_schedule_lesson_test_data.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/migration/V3_1__insert_module_test_data.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/migration/V3_2__insert_program_test_data.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/migration/V3_3__insert_program_subjects_test_data.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/migration/V3_4__insert_shift_test_data.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/migration/V3_5__insert_room_test_data.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/migration/V3_6__insert_teacher_test_data.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/migration/V3_7__insert_group_test_data.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/migration/V3_8__insert_teacher_subjects_test_data.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db/migration/V3_9__insert_module_subjects_test_data.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/public/asset-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/public/asset-manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/public/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/public/static/css/main.13f6901e.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/public/static/css/main.13f6901e.css.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/public/static/js/main.53a7180c.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/public/static/js/main.53a7180c.js.LICENSE.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/public/static/js/main.53a7180c.js.map" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Schedules/EditGroupScheduleObject.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Schedules/EditGroupScheduleObject.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Schedules/Sched1.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Schedules/Sched1.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Schedules/Schedule.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Schedules/Schedule.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Schedules/ViewGroupsSchedules.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Schedules/ViewGroupsSchedules.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -135,17 +135,17 @@
       <command value="mvn package" />
       <command value="mvn clean" />
       <command value="spring-boot:run -Pprod" />
-      <command value="mvn flyway:repair" />
       <command value="mvn cargo:run" />
-      <command value="mvn flyway:migrate" />
       <command value="mvn spring-boot:run" />
       <command value="mvn clean install &amp;&amp; mvn cargo:run" />
       <command value="mvn clean install &amp; mvn cargo:run" />
       <command value="mvn cargo:run" />
-      <command value="mvn flyway:clean" />
       <command value="mvn flyway:migrate" />
       <command value="mvn clean install" />
+      <command value="mvn flyway:repair" />
       <command value="mvn flyway:clean" />
+      <command value="mvn flyway:clean" />
+      <command value="mvn flyway:migrate" />
       <command value="mvn clean install" />
       <command value="mvn org.codehaus.cargo:cargo-maven2-plugin:1.7.7:run -Dcargo.maven.containerId=tomcat9x -Dcargo.servlet.port=8081 -Dcargo.maven.containerUrl=https://repo1.maven.org/maven2/org/apache/tomcat/tomcat/9.0.40/tomcat-9.0.40.zip " />
     </option>

@@ -47,7 +47,6 @@ export function EditGroupScheduleObject() {
     shift: "",
     groupIdValue: "",
     shiftName: "",
-    groupIdValue: "",
   });
 
   const [shiftId, setShiftId] = useState();
@@ -125,7 +124,7 @@ export function EditGroupScheduleObject() {
   };
 
   useEffect(() => {
-    fetch("/alpine-octopus/api/v1/groups/" + schedules.groupName)
+    fetch("/alpine-octopus/api/v1/groups/" + schedules.groupIdValue)
       .then((response) => response.json())
       .then(setGroups);
   }, [schedules]);
