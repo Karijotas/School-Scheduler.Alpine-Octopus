@@ -48,6 +48,7 @@ import { registerLicense } from '@syncfusion/ej2-base';
 import { EditGroupScheduleObject} from './Pages/Schedules/EditGroupScheduleObject'; 
 import { CreateSchedule } from './Pages/Schedules/CreateSchedulePage';
 import { CreateSchedulePageNext } from './Pages/Schedules/CreateSchedulePageNext';       
+import ExternalDragDrop from './Pages/Schedules/ExternalDragAndDropExample';
 
 
 // Registering Syncfusion license key
@@ -119,7 +120,7 @@ root.render(
 
         {/* Group schedules routes: */}
         <Route path='/view/groupsSchedules' element={<ViewGroupsSchedules />} />
-        <Route path='/view/scheduleView' element={<Sched1 />} />
+        <Route path='/view/scheduleView' element={<ExternalDragDrop />} />
         <Route path='/view/scheduleView1' element={<ScheduleView1 />} />
         {/* <Route path='/view/groupsSchedules/edit/:id' element={<EditModuleObject />} /> */}
         <Route path='/view/groupsSchedules/edit/:id' element={<EditGroupScheduleObject />} />

@@ -98,6 +98,13 @@ public class ScheduleController {
         return scheduleService.getAllLessonsByScheduleId(scheduleId);
     }
 
+    @GetMapping(value = "/{scheduleId}/subjects", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public Set<Lesson> getsubjectsByScheduleId(@PathVariable Long scheduleId) {
+
+        return scheduleService.getAllSubjectsByScheduleId(scheduleId);
+    }
+
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<ScheduleEntityDto> createSchedule(@RequestBody ScheduleEntityDto scheduleEntityDto, Long groupId,
                                                             @RequestParam(value = "startingDate", required = false) String startingDate) {

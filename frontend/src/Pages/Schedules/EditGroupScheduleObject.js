@@ -16,6 +16,11 @@ import {
 import MainMenu from "../../Components/MainMenu";
 import { SchedulesMenu } from "../../Components/SchedulesMenu";
 import { ScheduleView } from "./Schedule";
+import { TreeViewComponent } from '@syncfusion/ej2-react-navigations';
+import { Tree } from "antd";
+import { updateSampleSection } from "./sample-base";
+import { extend, addClass, remove, closest } from '@syncfusion/ej2-base';
+
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -29,7 +34,8 @@ export function EditGroupScheduleObject() {
   const [plannedTillDate, setPlannedTillDate] = useState("");
   const [error, setError] = useState();
   const [groupId, setGroupId] = useState("");
-  const [groups, setGroups] = useState({    
+
+  const [groups, setGroups] = useState({
     name: "",
     studentAmount: "",
     schoolYear: "",
@@ -135,7 +141,7 @@ export function EditGroupScheduleObject() {
       .then(setGroups);
   }, [schedules]);
 
-  
+
 
   const applyResult = () => {
     setActive(true);
@@ -144,11 +150,11 @@ export function EditGroupScheduleObject() {
   const updateSchedules = () => {
     fetch(
       "/api/v1/schedule/" +
-        params.id +
-        "?groupId=" +
-        groupId +
-        "&shiftId=" +
-        shiftId,
+      params.id +
+      "?groupId=" +
+      groupId +
+      "&shiftId=" +
+      shiftId,
       {
         method: "PATCH",
         headers: JSON_HEADERS,
@@ -176,11 +182,7 @@ export function EditGroupScheduleObject() {
     setActive(false);
   };
 
-  const [updated, setUpdated] = useState();
 
-  useEffect(() => {
-    setUpdated(true);
-  }, [setUpdated]);
 
   return (
     <div>
@@ -295,7 +297,11 @@ export function EditGroupScheduleObject() {
                   </Grid.Column>
                 </Grid> */}
                 <Divider hidden />
+
+
                 <ScheduleView />
+
+
                 <Divider hidden />
                 <Button icon labelPosition="left" href="#/view/groupsSchedules">
                   <Icon name="arrow left" />
@@ -329,6 +335,7 @@ export function EditGroupScheduleObject() {
                 </Table>
                 <Divider hidden />
                 <ScheduleView id={params.id} />
+
                 <Divider hidden />
 
                 {/* <Table.Cell width={6}>y
