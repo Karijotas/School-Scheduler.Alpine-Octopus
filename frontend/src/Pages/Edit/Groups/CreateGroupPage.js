@@ -34,7 +34,7 @@ const shiftOptions = [
 ];
 
 export function CreateGroupPage() {
-  const listUrl = useHref("/view/groups");
+  const listUrl = useHref("/view/groups/");
 
   const [hide, setHide] = useState(false);
   const [name, setName] = useState("");
@@ -138,7 +138,7 @@ export function CreateGroupPage() {
     }).then(applyResult);
   };
   useEffect(() => {
-    fetch("/api/v1/programs/")
+    fetch("/api/v1/programs")
       .then((response) => response.json())
       .then((data) =>
         setPrograms(
@@ -260,6 +260,7 @@ export function CreateGroupPage() {
                   onClick={createGroup}
                   className="controls"
                   id="details"
+                  onClick={createGroup}
                 >
                   Sukurti
                 </Button>

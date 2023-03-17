@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -65,6 +66,7 @@ public class GroupService {
     public boolean studentAmountIsValid(Groups groups) {
         return groups.getStudentAmount() >= 1 && groups.getStudentAmount() <= 300;
     }
+
     public List<GroupsTestDto> getAllGroups() {
         return groupsRepository.findAll().stream()
                 .map(GroupsMapper::toGroupsTestDto).collect(Collectors.toList());
@@ -130,7 +132,7 @@ public class GroupService {
             throw new SchedulerValidationException("Invalid year value", "School year", "School year must be between 2023-3023", groups.getSchoolYear().toString());
         }
     }
-    
+
     public Groups create(Groups groups) {
 //      validateInputWithInjectedValidator(groups);
 //      Program createdProgram = programRepository.findById(programId)
@@ -141,11 +143,11 @@ public class GroupService {
 //      if (schoolYearIsValid(groups)) {
 //          groups.setProgram(createdProgram);
 //          groups.setShift(createdShift);
-          return groupsRepository.save(groups);
+        return groupsRepository.save(groups);
 //      } else {
 //          throw new SchedulerValidationException("Invalid year value", "School year", "School year must be between 2023-3023", groups.getSchoolYear().toString());
 //      }
-  }
+    }
 
     //    .getById(programId)
     public Groups update(Long id, Groups groups, Long programId, Long shiftId) {
@@ -162,16 +164,18 @@ public class GroupService {
         existingGroups.setProgram(createdProgram);
         existingGroups.setSchoolYear(groups.getSchoolYear());
         existingGroups.setStudentAmount(groups.getStudentAmount());
+        existingGroups.setModifiedDate(LocalDateTime.now());
+
         return groupsRepository.save(existingGroups);
     }
 
     public Groups replace(Long id, Groups groups) {
 //        validateInputWithInjectedValidator(groups);
-    	
-    	Groups existingGroups = groupsRepository.findById(id)
+
+        Groups existingGroups = groupsRepository.findById(id)
                 .orElseThrow(() -> new SchedulerValidationException("Group does not exist", "id", "Group doesn't exist", id.toString()));
-    	
-    	
+
+
         groups.setId(id);
         return groupsRepository.save(groups);
     }
