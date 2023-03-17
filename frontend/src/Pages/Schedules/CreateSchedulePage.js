@@ -34,6 +34,7 @@ export function CreateSchedule() {
       let info = result
         .json()
         .then((jsonResponse) => (window.location = listUrl + jsonResponse.id));
+        console.log(info);
     } else {
       window.alert("Nepavyko sukurti: pavadinimas turi būti unikalus!");
     }
@@ -68,44 +69,39 @@ export function CreateSchedule() {
     return startingDate === "" ? "" : dayjs(startingDate).format("YYYY-MM-DD");
   };
 
-  return (
-    <div className="create-new-page">
-      <MainMenu />
+  return (<div className="create-new-page">
+    <MainMenu />
 
-      <Grid columns={2}>
-        <Grid.Column width={2} id="main">
-          <SchedulesMenu />
-        </Grid.Column>
-        <Grid.Column
-          floated="left"
-          textAlign="left"
-          verticalAlign="top"
-          width={13}
-        >
-          <Segment id="segment" color="teal">
-            <Form>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <Form.Field style={{ marginRight: "1em" }}>
-                  <label>Grupe su programa</label>
-                  <Select
-                    options={groups}
-                    placeholder="Grupe su programa"
-                    onChange={(e, data) => setGroupId(data.value)}
-                  />
-                </Form.Field>
-                <div style={{ flexShrink: 0, paddingTop: "9px" }}>
-                  <Button
-                    id="icocolor"
-                    basic
-                    icon="plus"
-                    title="Sukurti grupę"
-                    href={"/create/groups#/create/groups"}
-                  />
-                </div>
+    <Grid columns={2} >
+
+      <Grid.Column width={2} id='main'>
+
+        <SchedulesMenu />
+
+      </Grid.Column>
+      <Grid.Column floated='left' textAlign='left' verticalAlign='top' width={13}>
+        <Segment id='segment' color='teal'>
+
+          <Form >
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <Form.Field style={{ marginRight: '1em' }}>
+                <label>Grupė su programa</label>
+                <Select options={groups} placeholder='Grupė su programa' onChange={(e, data) => setGroupId(data.value)} />
+              </Form.Field>
+              <div style={{ flexShrink: 0, paddingTop: '9px' }}>
+                <Button
+                  id="icocolor"
+                  basic
+                  icon="plus"
+                  title="Sukurti grupę"
+                  href={"/create/groups#/create/groups"}
+                />
+              </div>
               </div>
               <Form.Field>
                 <label>Data nuo</label>
               </Form.Field>
+              
             </Form>
 
             <DatePicker
@@ -117,31 +113,15 @@ export function CreateSchedule() {
               }}
             />
 
-            <Divider hidden></Divider>
-
-            <Form>
-              <div>
-                <Button
-                  icon
-                  labelPosition="left"
-                  className=""
-                  as={NavLink}
-                  exact
-                  to="/view/groupsSchedules"
-                >
-                  <Icon name="arrow left" />
-                  Atgal
-                </Button>
-                <Button
-                  type="submit"
-                  onClick={createSchedule}
-                  className=""
-                  id="details"
-                >
-                  Sukurti
-                </Button>
-              </div>
-            </Form>
+          <Divider hidden></Divider>
+          
+          <Form>
+            <div>
+              <Button icon labelPosition="left" className="" as={NavLink} exact to='/view/groupsSchedules'><Icon name="arrow left" />Atgal</Button>
+              <Button type="submit" onClick={() => createSchedule()} className="" id='details'>Sukurti</Button>
+            </div>
+          </Form>
+            
           </Segment>
         </Grid.Column>
       </Grid>
