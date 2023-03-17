@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { DatePicker } from "antd";
+import "antd/dist/reset.css";
 import dayjs from "dayjs";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   ButtonGroup,
@@ -8,19 +9,11 @@ import {
   Divider,
   Grid,
   Icon,
-  Input,
-  Pagination,
-  Segment,
-  Table,
-  TextArea,
+  Input, Segment,
+  Table
 } from "semantic-ui-react";
-import moment from "moment";
 import MainMenu from "../../Components/MainMenu";
 import { SchedulesMenu } from "../../Components/SchedulesMenu";
-import { format } from "date-fns";
-import { DatePicker } from "antd";
-import "antd/dist/reset.css";
-import { ButtonSizes } from "./colors";
 const { RangePicker } = DatePicker;
 
 const JSON_HEADERS = {
@@ -41,16 +34,15 @@ export function ViewGroupsSchedules() {
   const [activePage, setActivePage] = useState(0);
   const [schedule, setSchedule] = useState("");
   const [defaultDate, setDefaultDate] = useState(today);
-  const [dates, setDates] = useState([]);
 
   const fetchSchedules = async () => {
-    fetch("/api/v1/schedule/page?page=" + activePage)
+    fetch("/alpine-octopus/api/v1/schedule/page?page=" + activePage)
       .then((response) => response.json())
       .then((jsonResponse) => setSchedules(jsonResponse));
   };
 
   const removeSchedule = (id) => {
-    fetch("/api/v1/schedule/delete/" + id, {
+    fetch("/alpine-octopus/api/v1/schedule/delete/" + id, {
       method: "PATCH",
     })
       .then(fetchSchedules)
@@ -58,83 +50,47 @@ export function ViewGroupsSchedules() {
   };
 
   const fetchFilterSchedulesByName = async () => {
-    fetch(`/api/v1/schedule/page/name-filter/${nameText}`)
+    fetch(`/alpine-octopus/api/v1/schedule/page/name-filter/${nameText}`)
       .then((response) => response.json())
       .then((jsonRespone) => setSchedules(jsonRespone));
   };
 
   const fetchFilterSchedulesByStartingDate = async () => {
-    fetch(`/api/v1/schedule/page/starting-date-filter/${formatStartingDate()}`)
+    fetch(`/alpine-octopus/api/v1/schedule/page/starting-date-filter/${formatStartingDate()}`)
       .then((response) => response.json())
-      .then((jsonResponse) => setSchedules(jsonResponse));
+      .then((jsonResponse) => setSchedules(jsonResponse))
+      ;
   };
 
-  // const fetchFilterSchedulesByPlannedTillDate = async () => {
-  //   fetch(
-  //     `/api/v1/schedule/page/planned-till-filter/${formatPlannedTillDate()}`
-  //   )
-  //     .then((response) => response.json())
-  //     .then((jsonResponse) => setSchedules(jsonResponse));
-  // };
+  const fetchFilterSchedulesByPlannedTillDate = async () => {
+    fetch(`/alpine-octopus/api/v1/schedule/page/planned-till-filter/${formatPlannedTillDate()}`)
+      .then((response) => response.json())
+      .then((jsonResponse) => setSchedules(jsonResponse))
+      ;
+  };
 
   useEffect(() => {
     nameText.length > 0
       ? fetchFilterSchedulesByName()
-      : startingDate === "Invalid Date"
-      ? fetchSchedules()
-       // .then(setStartingDate(""))
-      : startingDate.length > 0
+      : startingDate === "Invalid Date" || plannedTillDate === "Invalid Date"
+      ? fetchSchedules().then(setStartingDate("")).then(setPlannedTillDate(""))
+      : startingDate.length > 0  
       ? fetchFilterSchedulesByStartingDate()
+      : plannedTillDate.length > 0
+      ? fetchFilterSchedulesByPlannedTillDate()
       : fetchSchedules();
-  }, [activePage, nameText, startingDate]);
-
-  // useEffect(() => {
-  //   nameText.length > 0
-  //     ? setStartingDate("").then(setPlannedTillDate("")).then(fetchFilterSchedulesByName())
-  //     : startingDate === "Invalid Date" || plannedTillDate === "Invalid Date"
-  //     ? setStartingDate("").then(setPlannedTillDate("")).then(fetchSchedules())
-  //     : startingDate.length > 0
-  //     ? setNameText("").then(setPlannedTillDate("")).then(fetchFilterSchedulesByStartingDate())
-  //     : plannedTillDate.length > 0
-  //     ? setNameText("").then(setStartingDate("")).then(fetchFilterSchedulesByPlannedTillDate())
-  //     : fetchSchedules();
-  // }, [activePage, nameText, startingDate, plannedTillDate]);
-
-  // useEffect(() => {
-  //   if (
-  //     (nameText.length === 0 &&
-  //       startingDate.length === 0 &&
-  //       plannedTillDate.length === 0)
-  //   ) {
-  //     fetchSchedules();
-  //   } else if (nameText.length > 0 ) {
-  //     setNameText("");
-  //     setStartingDate("");
-  //     fetchFilterSchedulesByName();
-  //   } else if (startingDate > 0 ) {
-  //     setNameText("");
-  //     setPlannedTillDate("");
-  //     fetchFilterSchedulesByStartingDate();
-  //   } else if (plannedTillDate.length > 0) {
-  //     setNameText("");
-  //     setStartingDate("");
-  //     fetchFilterSchedulesByPlannedTillDate();
-  //   }
-  // }, [activePage, nameText, startingDate, plannedTillDate]);
+  }, [activePage, nameText, startingDate, plannedTillDate]);
 
   const formatStartingDate = () => {
     return startingDate === "" ? "" : dayjs(startingDate).format("YYYY-MM-DD");
   };
 
-  // const formatPlannedTillDate = () => {
-  //   return plannedTillDate === ""
-  //     ? ""
-  //     : dayjs(plannedTillDate).format("YYYY-MM-DD");
-  // };
+  const formatPlannedTillDate = () => {
+    return plannedTillDate === ""? "": dayjs(plannedTillDate).format("YYYY-MM-DD");
+  };
 
   return (
     <div>
-      {/* <ButtonSizes/> */}
       <MainMenu />
       <Grid columns={2}>
         <Grid.Column width={2} id="main">
@@ -151,6 +107,14 @@ export function ViewGroupsSchedules() {
                 onChange={(e) => setNameText(e.target.value)}
               />
 
+              {/* <Input
+                className="controls1"
+                title="Filtruoti nuo"
+                placeholder="Filtruoti nuo"
+                value={startingDate}
+                onChange={(e) => setStartingDate(e.target.value)}
+                required={plannedTillDate}
+              /> */}
               <DatePicker
                 className="controls4"
                 placeholder="Filtruoti nuo"
@@ -160,29 +124,22 @@ export function ViewGroupsSchedules() {
                 }}
               />
 
-              {/* <DatePicker
+              <DatePicker
                 className="controls4"
                 placeholder="Filtruoti iki"
                 onChange={(e) => {
                   const newDate = dayjs(e).format("YYYY-MM-DD");
                   setPlannedTillDate(newDate);
                 }}
-              /> */}
-              {/* <RangePicker
-                className="controls5"
-                onChange={(values) => {
-                  // const start = dayjs(values[0]).format("YYYY-MM-DD");
-                  // const end = dayjs(values[1]).format("YYYY-MM-DD");
-                  setDates(
-                    values.map((item) => {
-                      return dayjs(item).format("YYYY-MM-DD");
-                    })
-                  );
-                  setStartingDate(dates[0]);
-                  setPlannedTillDate(dates[1]);
-                }}
-              /> */}
+              />
 
+              {/* <Input
+                className="controls1"
+                title="Filtruoti iki"
+                placeholder="Filtruoti iki"
+                value={plannedTillDate}
+                onChange={(e) => setPlannedTillDate(e.target.value)}
+              /> */}
               <Divider horizontal hidden></Divider>
 
               <Table selectable>
@@ -210,7 +167,7 @@ export function ViewGroupsSchedules() {
                             basic
                             compact
                             icon="clock outline"
-                            title="Negaliojantis"
+                            title="Statusas"
                           />
                         ) : schedule.status === "Valid" ? (
                           <Button
@@ -218,7 +175,7 @@ export function ViewGroupsSchedules() {
                             basic
                             compact
                             icon="check"
-                            title="Galiojantis"
+                            title="Statusas"
                           />
                         ) : (
                           <Button
@@ -226,7 +183,7 @@ export function ViewGroupsSchedules() {
                             basic
                             compact
                             icon="attention"
-                            title="Nevaliduotas"
+                            title="Statusas"
                           />
                         )}
                       </Table.Cell>

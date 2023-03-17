@@ -45,55 +45,55 @@ export function EditSubjectObject() {
 
   const [state, setState] = useState("")
   const [nameError, setNameError] = useState("")
-
+    
   const [descriptionError, setDescriptionError] = useState("")
+    
+
+   
+
+    const [formValid, setFormValid] = useState(false)
 
 
+    useEffect(() => {
+        if(nameError || descriptionError) {
+          setFormValid(false)
+        } else {
+          setFormValid(true)
+        }
+      }, [nameError, descriptionError]) 
 
+    
 
-  const [formValid, setFormValid] = useState(false)
+    const handleNameInputChange = (e) => {
+        subjects.name = e.target.value
+        setState(e.target.value);
+        validateNameInput(e.target.value);
+      };
 
+    const handleDescriptionInputChange = (e) => {
+      subjects.description = e.target.value
+      setState(e.target.value);
+        validateDescriptionInput(e.target.value);
+      };
+      
+    const validateNameInput = (value) => {
+        if (value.length <2 || value.length > 100) {
+            setNameError("Įveskite nuo 2 iki 100 simbolių!")
+            if(!value){
+                setNameError("Pavadinimas negali būti tuščias!")
+              } 
+        } else {
+            setNameError("")
+        }
+      };
 
-  useEffect(() => {
-    if (nameError || descriptionError) {
-      setFormValid(false)
-    } else {
-      setFormValid(true)
-    }
-  }, [nameError, descriptionError])
-
-
-
-  const handleNameInputChange = (e) => {
-    subjects.name = e.target.value
-    setState(e.target.value);
-    validateNameInput(e.target.value);
-  };
-
-  const handleDescriptionInputChange = (e) => {
-    subjects.description = e.target.value
-    setState(e.target.value);
-    validateDescriptionInput(e.target.value);
-  };
-
-  const validateNameInput = (value) => {
-    if (value.length < 2 || value.length > 100) {
-      setNameError("Įveskite nuo 2 iki 100 simbolių!")
-      if (!value) {
-        setNameError("Pavadinimas negali būti tuščias!")
-      }
-    } else {
-      setNameError("")
-    }
-  };
-
-  const validateDescriptionInput = (value) => {
-    if (value.length > 500) {
-      setDescriptionError("Aprašymas negali viršyti 500 simbolių!")
-    } else {
-      setDescriptionError("")
-    }
-  };
+      const validateDescriptionInput = (value) => {
+        if (value.length > 500) {
+            setDescriptionError("Aprašymas negali viršyti 500 simbolių!")
+        } else {
+            setDescriptionError("") 
+        }
+      };
 
   useEffect(() => {
     fetch("/alpine-octopus/api/v1/subjects/" + params.id)
@@ -111,7 +111,7 @@ export function EditSubjectObject() {
   //         .then(jsonResponse => setModulesInSubjects(jsonResponse));
   // };
 
-  const getModulesInSubjects = () => {
+  const getModulesInSubjects = ()  => {
     fetch(`/alpine-octopus/api/v1/subjects/${params.id}/modules`)
       .then((response) => response.json())
       .then(setModulesInSubjects)
@@ -125,7 +125,7 @@ export function EditSubjectObject() {
       .then(console.log(modulesInSubjects));
   }, [params]);
 
-  const getRoomsInSubjects = () => {
+  const getRoomsInSubjects = ()  => {
     fetch(`/alpine-octopus/api/v1/subjects/${params.id}/rooms`)
       .then((response) => response.json())
       .then(setRoomsInSubjects)
@@ -139,7 +139,7 @@ export function EditSubjectObject() {
       .then(console.log(roomsInSubjects));
   }, [params]);
 
-  const getTeachersInSubjects = () => {
+  const getTeachersInSubjects = ()  => {
     fetch(`/alpine-octopus/api/v1/subjects/${params.id}/teachers`)
       .then((response) => response.json())
       .then(setTeachersInSubjects)
@@ -151,7 +151,7 @@ export function EditSubjectObject() {
       .then((response) => response.json())
       .then(setTeachersInSubjects)
       .then(console.log(teachersInSubjects));
-  }, [params]);
+  }, [params]); 
 
   const updateSubjects = () => {
     fetch("/alpine-octopus/api/v1/subjects/" + params.id, {
@@ -167,7 +167,7 @@ export function EditSubjectObject() {
         }
       })
       .then(applyResult);
-  };
+  }; 
 
   const updateProperty = (property, event) => {
     setSubjects({
@@ -232,7 +232,7 @@ export function EditSubjectObject() {
         module,
       }),
     }).then(getModulesInSubjects)
-      .then(setModule(""));
+    .then(setModule(""));
   };
 
   const removeModule = (subjectId, moduleId) => {
@@ -251,8 +251,8 @@ export function EditSubjectObject() {
         teacher,
       }),
     }).then(getTeachersInSubjects)
-      .then(setTeacher(""))
-      .then(setTeachersChange(false));
+    .then(setTeacher(""))
+    .then(setTeachersChange(false));
   };
 
   const removeTeacher = (subjectId, teacherId) => {
@@ -260,7 +260,7 @@ export function EditSubjectObject() {
       method: "DELETE",
       headers: JSON_HEADERS,
     }).then(getTeachersInSubjects)
-      .then(setTeachersChange(false));
+    .then(setTeachersChange(false));
   };
 
   const addRoom = (subjectId, roomId) => {
@@ -272,7 +272,7 @@ export function EditSubjectObject() {
         room,
       }),
     }).then(getRoomsInSubjects)
-      .then(setRoom(""));
+    .then(setRoom(""));
   };
 
   const removeRoom = (subjectId, roomId) => {
@@ -443,8 +443,8 @@ export function EditSubjectObject() {
 
                   <Table.Body>
                     <Table.Row>
-                      <Table.Cell collapsing>
-                        {(nameError) && <div style={{ color: "red" }}>{nameError}</div>}
+                    <Table.Cell collapsing>
+                      {(nameError) && <div style={{color: "red"}}>{nameError}</div>}
                         <Input
                           value={subjects.name}
                           onChange={(e) => handleNameInputChange(e)}
@@ -457,7 +457,7 @@ export function EditSubjectObject() {
                     </Table.Row>
                   </Table.Body>
                 </Table>
-
+               
 
                 <Table celled>
                   <Table.Header>
@@ -470,14 +470,14 @@ export function EditSubjectObject() {
                     <Table.Row>
                       <Table.Cell collapsing>
                         <Form>
-                          {(descriptionError) && <div style={{ color: "red" }}>{descriptionError}</div>}
+                        {(descriptionError) && <div style={{color: "red"}}>{descriptionError}</div>}
                           <TextArea
                             fluid
                             style={{ minHeight: 60 }}
                             value={subjects.description}
                             onChange={(e) => handleDescriptionInputChange(e)}
                           />
-
+                          
                         </Form>
                       </Table.Cell>
                     </Table.Row>
@@ -508,7 +508,7 @@ export function EditSubjectObject() {
                                       icon="remove"
                                       title="Pašalinti"
                                       onClick={() =>
-                                        removeModule(params.id, module.id)
+                                        removeModule(params.id, module.id)                                                                                
                                       }
                                     ></Button>
                                   </Table.Cell>
@@ -534,13 +534,13 @@ export function EditSubjectObject() {
                                 <Divider hidden />
                                 <List.Content floated="left">
                                   <Button
-                                    id='details'
+                                  id='details'
                                     onClick={() =>
                                       addModule(params.id, moduleId)
                                     }
-                                  // onClose={fetch(
-                                  //   `/api/v1/subjects/${params.id}/modules`
-                                  // )}
+                                    // onClose={fetch(
+                                    //   `/api/v1/subjects/${params.id}/modules`
+                                    // )}
                                   >
                                     Pridėti
                                   </Button>
@@ -595,20 +595,20 @@ export function EditSubjectObject() {
                                         setTeacher(e.target.value),
                                         setTeacherId(data.value)
                                       )}
-                                    // onClose={() => console.log(moduleId)}
+                                      // onClose={() => console.log(moduleId)}
                                     />
                                   </Form.Field>
                                 </Form.Group>
                                 <Divider hidden />
                                 <List.Content floated="left">
                                   <Button
-                                    id='details'
+                                  id='details'
                                     onClick={() =>
                                       addTeacher(params.id, teacherId)
                                     }
-                                  // onChange={fetch(
-                                  //   `/api/v1/subjects/${params.id}/teachers`
-                                  // )}
+                                    // onChange={fetch(
+                                    //   `/api/v1/subjects/${params.id}/teachers`
+                                    // )}
                                   >
                                     Pridėti
                                   </Button>
@@ -663,18 +663,18 @@ export function EditSubjectObject() {
                                         setRoom(e.target.value),
                                         setRoomId(data.value)
                                       )}
-                                    // onClose={() => console.log(roomId)}
+                                      // onClose={() => console.log(roomId)}
                                     />
                                   </Form.Field>
                                 </Form.Group>
                                 <Divider hidden />
                                 <List.Content floated="left">
                                   <Button
-                                    id='details'
+                                  id='details'
                                     onClick={() => addRoom(params.id, roomId)}
-                                  // onClose={fetch(
-                                  //   `/api/v1/subjects/${params.id}/rooms`
-                                  // )}
+                                    // onClose={fetch(
+                                    //   `/api/v1/subjects/${params.id}/rooms`
+                                    // )}
                                   >
                                     Pridėti
                                   </Button>
