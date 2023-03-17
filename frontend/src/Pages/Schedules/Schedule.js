@@ -408,7 +408,7 @@ export function ScheduleView() {
   //             </ResourcesDirective>
   //             <ViewsDirective>
   //               <ViewDirective option='Day' startHour='01:00' endHour='15:00' timeScale={{interval: 1, slotCount: 1 }}/>
-  //               <ViewDirective option='TimelineDay'/>
+  //               <ViewDirective option='WorkWeek'/>
   //               <ViewDirective option='Week' startHour='01:00' endHour='15:00' timeScale={{interval: 1, slotCount: 1 }}/>
   //               <ViewDirective option='TimelineMonth'/>
   //             </ViewsDirective>
