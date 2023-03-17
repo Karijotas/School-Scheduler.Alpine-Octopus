@@ -69,7 +69,7 @@ export function CreateSchedulePageNext() {
   useEffect(() => {
     fetch('/api/v1/schedule/' + params.id)
       .then(response => response.json())
-      .then(result => {setSchedule(result)});
+      .then(result => {getGroup(result)});
     
   }, []);
 
@@ -78,11 +78,11 @@ export function CreateSchedulePageNext() {
   //   console.log(teacherId, roomId, lessonId)
   // }, [teacherId, roomId, lessonId])
 
-  useEffect(() => {
-    fetch("/api/v1/groups/" + schedule.groupIdValue)
-      .then((response) => response.json())
-      .then(setGroups);
-  }, [schedule]);
+  // useEffect(() => {
+  //   fetch("/api/v1/groups/" + schedule.groupIdValue)
+  //     .then((response) => response.json())
+  //     .then(setGroups);
+  // }, [schedule]);
 
   // const updateSchedule = () => {
   //   fetch('/api/v1/schedule/' + params.id + '?lessonId=' + lessonId + '&teacherId='+ teacherId + '&roomId=' + roomId,  {
@@ -112,12 +112,12 @@ export function CreateSchedulePageNext() {
       );
   }, []);
 
-  useEffect(() => {    
-    fetch(`/api/v1/groups/${schedule.groupIdValue}`)
+  const getGroup = (props)  => {    
+    fetch(`/api/v1/groups/${props.groupIdValue}`)
       .then((response) => response.json())      
       .then(data => {setGroups(data)})
        
-    }, []);
+    };
 
 
 //   const getProgramInGroup = (props)  =>  {
@@ -187,7 +187,7 @@ export function CreateSchedulePageNext() {
                 {okey && (<Message size='tiny' color='teal'>{okey}</Message>)}
               </Table.Header>
               
-              {schedule.subjects.map((subject) =>
+              {subjects.map((subject) =>
                 <Table.Row key={subject.id}>                  
                   {console.log(subject.subject.id)}
                   <Table.Cell>{subject.subject.name}</Table.Cell>                  
@@ -195,7 +195,7 @@ export function CreateSchedulePageNext() {
                   <Table.Cell><Select options={subject.subject.subjectRooms.map((x) => {
             return { key: x.id, text: x.name, value: x.id };
           })} placeholder='Kabinetai' onChange={(e, data) => setRoomId(data.value)} /></Table.Cell>
-                  <Table.Cell><Button className='controls' onClick={() => updateSchedule(subject.id)} id='details' >Set</Button></Table.Cell>
+                  <Table.Cell><Button className='controls' onClick={() => updateSchedule(subject.id)} id='details' >Priskirti</Button></Table.Cell>
 
                 </Table.Row>
               )}
@@ -204,7 +204,7 @@ export function CreateSchedulePageNext() {
             <Divider horizontal hidden></Divider>
 
             <Button icon labelPosition="left" className="" as={NavLink} exact to={'/create/groupsSchedules/'}><Icon name="arrow left" />Atgal</Button>
-            <Button className='controls' id='details'  as={NavLink} exact to={'/view/groupsSchedules/edit/' + schedule.id} >Testi</Button>
+            <Button className='controls' id='details'  as={NavLink} exact to={'/view/groupsSchedules/edit/' + params.id} >Tęsti</Button>
 
           </div>
         </Segment>

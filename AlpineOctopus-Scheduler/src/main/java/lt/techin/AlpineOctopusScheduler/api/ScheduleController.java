@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ScheduleMapper.toSchedule;
@@ -131,12 +133,15 @@ public class ScheduleController {
         return ok(toScheduleEntityDto(updatedSchedule));
     }
 
-    @PatchMapping("/{scheduleId}/")
-    public ResponseEntity<ScheduleEntityDto> scheduleLesson(@PathVariable Long scheduleId, Long subjectId,
-                                                            @RequestParam(value = "startTime", required = true) String startTime,
-                                                            @RequestParam(value = "endTime", required = true) String endTime) {
-        var starting = LocalDateTime.parse(startTime.toString());
-        var ending = LocalDateTime.parse(endTime.toString());
+    @PatchMapping("/{scheduleId}/create/{subjectId}/{startTime}/{endTime}")
+    public ResponseEntity<ScheduleEntityDto> scheduleLesson(@PathVariable Long scheduleId, @PathVariable Long subjectId,
+                                                            @PathVariable(value = "startTime", required = true) String startTime,
+                                                            @PathVariable(value = "endTime", required = true) String endTime) {
+        DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH);
+
+        var starting = LocalDateTime.parse(startTime.toString(), formatter);
+        var ending = LocalDateTime.parse(endTime.toString(), formatter);
 
         var updatedSchedule = scheduleService.ScheduleLesson(scheduleId, subjectId, starting, ending);
         return ok(toScheduleEntityDto(updatedSchedule));

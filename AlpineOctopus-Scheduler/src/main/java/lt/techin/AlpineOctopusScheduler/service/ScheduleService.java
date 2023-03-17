@@ -209,9 +209,11 @@ public class ScheduleService {
     public Set<Lesson> getAllSubjectsByScheduleId(Long scheduleId) {
         var existingSchedule = scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", scheduleId.toString()));
-        Set<Lesson> lessons = new HashSet<>();
-        lessons.addAll(existingSchedule.getSubjects());
-        return lessons;
+        Set<Lesson> subjects = new HashSet<>();
+        subjects.addAll(existingSchedule.getSubjects());
+        return subjects;
+
+
     }
 
     public Schedule setLessonOnline(Long scheduleId, Long lessonId) {
