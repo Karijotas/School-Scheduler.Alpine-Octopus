@@ -1,6 +1,5 @@
 package lt.techin.AlpineOctopusScheduler.api.dto;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class ModuleTestDto extends ModuleDto {
@@ -14,8 +13,8 @@ public class ModuleTestDto extends ModuleDto {
         this.id = id;
     }
 
-    public ModuleTestDto(String name, String description, LocalDateTime createdDate, LocalDateTime modifiedDate, Boolean deleted) {
-        super(name, description, createdDate, modifiedDate, deleted);
+    public ModuleTestDto(String name, String description, Boolean deleted) {
+        super(name, description, deleted);
         this.id = id;
     }
 

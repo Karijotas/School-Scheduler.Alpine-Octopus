@@ -69,6 +69,7 @@ export function CreateModulePage() {
     if (result.ok) {
       let info = result.json()
         .then((jsonResponse) => window.location = listUrl + jsonResponse.id);
+
     } else {
       window.alert("Nepavyko sukurti: pavadinimas turi būti unikalus!");
     }
@@ -86,7 +87,7 @@ export function CreateModulePage() {
   };
 
   const fetchModules = async () => {
-    fetch(`/api/v1/modules/`)
+    fetch(`/api/v1/modules`)
       .then((response) => response.json())
       .then((jsonRespones) => setModules(jsonRespones));
   };

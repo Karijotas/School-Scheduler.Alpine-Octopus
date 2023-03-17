@@ -1,21 +1,7 @@
 package lt.techin.AlpineOctopusScheduler.api.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ProgramMapper;
-import lt.techin.AlpineOctopusScheduler.model.ProgramSubjectHours;
-import lt.techin.AlpineOctopusScheduler.model.Subject;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
-
-import javax.persistence.Column;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 public class ProgramDto {
     private String name;
@@ -24,10 +10,10 @@ public class ProgramDto {
 
     private Boolean deleted;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime createdDate;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime modifiedDate;
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+//    private LocalDateTime createdDate;
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+//    private LocalDateTime modifiedDate;
 
     public ProgramDto() {
     }
@@ -35,8 +21,8 @@ public class ProgramDto {
     public ProgramDto(String name, String description, LocalDateTime createdDate, LocalDateTime modifiedDate, Boolean deleted) {
         this.name = name;
         this.description = description;
-        this.createdDate = createdDate;
-        this.modifiedDate = modifiedDate;
+//        this.createdDate = createdDate;
+//        this.modifiedDate = modifiedDate;
         this.deleted = deleted;
 
     }
@@ -57,21 +43,21 @@ public class ProgramDto {
         this.description = description;
     }
 
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
+//    public LocalDateTime getCreatedDate() {
+//        return createdDate;
+//    }
 
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public LocalDateTime getModifiedDate() {
-        return modifiedDate;
-    }
-
-    public void setModifiedDate(LocalDateTime modifiedDate) {
-        this.modifiedDate = modifiedDate;
-    }
+//    public void setCreatedDate(LocalDateTime createdDate) {
+//        this.createdDate = createdDate;
+//    }
+//
+//    public LocalDateTime getModifiedDate() {
+//        return modifiedDate;
+//    }
+//
+//    public void setModifiedDate(LocalDateTime modifiedDate) {
+//        this.modifiedDate = modifiedDate;
+//    }
 
     public Boolean getDeleted() {
         return deleted;
@@ -86,12 +72,12 @@ public class ProgramDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProgramDto that = (ProgramDto) o;
-        return Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(deleted, that.deleted) && Objects.equals(createdDate, that.createdDate) && Objects.equals(modifiedDate, that.modifiedDate);
+        return Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(deleted, that.deleted);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, deleted, createdDate, modifiedDate);
+        return Objects.hash(name, description, deleted);
     }
 
     @Override
@@ -100,8 +86,8 @@ public class ProgramDto {
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", deleted=" + deleted +
-                ", createdDate=" + createdDate +
-                ", modifiedDate=" + modifiedDate +
+//                ", createdDate=" + createdDate +
+//                ", modifiedDate=" + modifiedDate +
                 '}';
     }
 }

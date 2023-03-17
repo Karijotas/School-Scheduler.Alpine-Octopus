@@ -79,7 +79,14 @@ public class ModuleService {
 
     public Module create(Module module) {
 //        validateInputWithInjectedValidator(module);
-        return moduleRepository.save(module);
+        var newModule = new Module();
+        newModule.setId(module.getId());
+        newModule.setName(module.getName());
+        newModule.setCreatedDate(module.getCreatedDate());
+        newModule.setModifiedDate(module.getModifiedDate());
+        newModule.setDescription(module.getDescription());
+        newModule.setDeleted(Boolean.FALSE);
+        return moduleRepository.save(newModule);
     }
 
     public Module update(Long id, Module module) {
