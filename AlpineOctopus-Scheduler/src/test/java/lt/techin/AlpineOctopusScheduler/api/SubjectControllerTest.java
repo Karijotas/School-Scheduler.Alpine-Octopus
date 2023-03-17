@@ -4,6 +4,7 @@ package lt.techin.AlpineOctopusScheduler.api;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lt.techin.AlpineOctopusScheduler.AlpineOctopusSchedulerApplication;
+import lt.techin.AlpineOctopusScheduler.api.dto.RoomDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.SubjectTestDto;
 import lt.techin.AlpineOctopusScheduler.model.Subject;
@@ -152,23 +153,60 @@ class SubjectControllerTest {
         assertEquals(mappedResponse.getName(), "Reactas");
     }
 
-//    @Test
-//    void getAllTeachersById() throws Exception {
-//        var mvcResult = mockMvc.perform(
-//                        MockMvcRequestBuilders
-//                                .get("/api/v1/subjects/1/modules")
-//                                .accept(MediaType.APPLICATION_JSON)
-//                )
-//                .andExpect(status().isOk())
-//                .andReturn();
-//
-//        var mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
-//                new TypeReference<List<ModuleDto>>() {
-//                });
-//
-//        int status = mvcResult.getResponse().getStatus();
-//        assertEquals(200, status);
-//        assertThat(mappedResponse)
-//                .containsExactlyInAnyOrder(subjectDto1, subjectDto2, subjectDto3, subjectDto4, subjectDto5, subjectDto6, subjectDto7, subjectDto8, subjectDto9, subjectDto10, subjectDto11, subjectDto12, subjectDto13, subjectDto14, subjectDto15, subjectDto16, subjectDto17, subjectDto18, subjectDto19, subjectDto20, subjectDto21);
-//    }
+    @Test
+    @Order(5)
+    void removeSubject_shouldSetBooleanToTrue() throws Exception {
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .patch("/api/v1/subjects/delete/2")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Subject mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+                new TypeReference<Subject>() {
+                });
+
+        Assertions.assertTrue(mappedResponse.getDeleted());
+    }
+
+    @Test
+    void restoreSubject_shouldSetBooleanToFalse() throws Exception {
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .patch("/api/v1/subjects/restore/4")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Subject mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+                new TypeReference<Subject>() {
+                });
+
+        Assertions.assertFalse(mappedResponse.getDeleted());
+    }
+
+    @Test
+    void getAllRoomsById_shouldReturnCorrectRoomCount() throws Exception {
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .get("/api/v1/subjects/1/rooms")
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        var mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+                new TypeReference<List<RoomDto>>() {
+                });
+
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(200, status);
+        assertThat(mappedResponse.size() == 1);
+
+    }
 }

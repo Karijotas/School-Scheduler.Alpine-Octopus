@@ -37,6 +37,7 @@ public class ModuleMapper {
         moduleEntityDto.setDescription(module.getDescription());
         moduleEntityDto.setCreatedDate(module.getCreatedDate());
         moduleEntityDto.setModifiedDate(module.getModifiedDate());
+        moduleEntityDto.setDeleted(module.getDeleted());
 
         return moduleEntityDto;
     }
@@ -49,6 +50,7 @@ public class ModuleMapper {
         module.setDescription(moduleEntityDto.getDescription());
         module.setCreatedDate(moduleEntityDto.getCreatedDate());
         module.setModifiedDate(moduleEntityDto.getModifiedDate());
+        module.setDeleted(moduleEntityDto.getDeleted());
 
         return module;
     }

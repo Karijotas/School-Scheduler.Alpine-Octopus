@@ -1,9 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, useHref } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
-import { Button, Divider, Grid, Icon, Input, Message, Segment, Select, Table } from 'semantic-ui-react';
-import MainMenu from '../../Components/MainMenu';
-import { SchedulesMenu } from '../../Components/SchedulesMenu';
+import { NavLink, useHref } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import {
+  Button,
+  Divider,
+  Grid,
+  Icon,
+  Input,
+  Message,
+  Segment,
+  Select,
+  Table,
+} from "semantic-ui-react";
+import MainMenu from "../../Components/MainMenu";
+import { SchedulesMenu } from "../../Components/SchedulesMenu";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -68,6 +78,11 @@ export function CreateSchedulePageNext() {
   //   console.log(teacherId, roomId, lessonId)
   // }, [teacherId, roomId, lessonId])
 
+  useEffect(() => {
+    fetch("/api/v1/groups/" + schedule.groupIdValue)
+      .then((response) => response.json())
+      .then(setGroups);
+  }, [schedule]);
 
   // const updateSchedule = () => {
   //   fetch('/api/v1/schedule/' + params.id + '?lessonId=' + lessonId + '&teacherId='+ teacherId + '&roomId=' + roomId,  {
@@ -120,7 +135,7 @@ export function CreateSchedulePageNext() {
 
 
 
-  //Room dropdown
+  // Room dropdown
   useEffect(() => {
     fetch("/api/v1/rooms/")
       .then((response) => response.json())
@@ -143,16 +158,14 @@ export function CreateSchedulePageNext() {
 
   
 
-  return (<div className="create-new-page">
-
-    <MainMenu />
-
-    <Grid columns={2} >
-      <Grid.Column width={2} id='main'>
-
-        <SchedulesMenu />
-
-      </Grid.Column>
+  return (
+    <div className="create-new-page">
+      <MainMenu />
+      <Grid columns={2}>        
+        <Grid.Column width={2} id="main">
+          <SchedulesMenu />
+        </Grid.Column>       
+      
       <Grid.Column floated='left' textAlign='left' verticalAlign='top' width={13}>
         <Segment id='segment' color='teal'>
 
