@@ -52,6 +52,7 @@ public class TeacherMapper {
         teacherEntityDto.setTeacherSubjects(teacher.getTeacherSubjects());
         teacherEntityDto.setCreatedDate(teacher.getCreatedDate());
         teacherEntityDto.setModifiedDate(teacher.getModifiedDate());
+        teacherEntityDto.setDeleted(teacher.getDeleted());
 
 
         return teacherEntityDto;
@@ -69,6 +70,7 @@ public class TeacherMapper {
         teacher.setPhone(teacherEntityDto.getPhone());
         teacher.setTeacherShifts(teacherEntityDto.getTeacherShifts());
         teacher.setTeacherSubjects(teacherEntityDto.getTeacherSubjects());
+        teacher.setDeleted(teacherEntityDto.getDeleted());
 
         return teacher;
     }

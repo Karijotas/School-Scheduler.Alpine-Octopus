@@ -1,11 +1,15 @@
 package lt.techin.AlpineOctopusScheduler.service;
 
-import lt.techin.AlpineOctopusScheduler.api.dto.ShiftEntityDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.ShiftTestDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ShiftMapper;
-import lt.techin.AlpineOctopusScheduler.dao.ShiftRepository;
-import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
-import lt.techin.AlpineOctopusScheduler.model.Shift;
+import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ShiftMapper.toShiftEntityDto;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
@@ -13,14 +17,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ShiftMapper.toShiftEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.ShiftEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.ShiftTestDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ShiftMapper;
+import lt.techin.AlpineOctopusScheduler.dao.ShiftRepository;
+import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
+import lt.techin.AlpineOctopusScheduler.model.Shift;
 
 @Service
 public class ShiftService {
@@ -139,7 +141,7 @@ public class ShiftService {
                 "id", "Shift not found", shiftId.toString()));
         existingShift.setDeleted(Boolean.FALSE);
         shiftRepository.save(existingShift);
-        return toShiftEntityDto(existingShift);
+        return toShiftEntityDto(existingShift); 
     }
 
     public ShiftEntityDto deleteShift(Long shiftId) {

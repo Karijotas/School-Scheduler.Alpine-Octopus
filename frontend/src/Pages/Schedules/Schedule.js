@@ -10,7 +10,7 @@ import { Schedule, Print, ExcelExport, ScheduleComponent, ResourcesDirective, Re
 import { ButtonComponent, SwitchComponent } from '@syncfusion/ej2-react-buttons';
 import { extend, closest, remove, addClass, Ajax  } from '@syncfusion/ej2-base';
 import { TreeViewComponent } from '@syncfusion/ej2-react-navigations';
-import * as datasource from './datasource.json';
+
 import { DataManager, WebApiAdaptor, ODataV4Adaptor,  Query} from '@syncfusion/ej2-data';
 import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap5.css";
 
@@ -29,7 +29,7 @@ export function ScheduleView() {
     Subject: "",
     StartTime: "",
     EndTime: "",            
-    ColorId: 1,
+    GroupId: 1,
     Description: "ONLINE"
   });
 
@@ -104,7 +104,7 @@ const createLessonOnSchedule = () => {
           Subject: l.subject.name,
               StartTime: l.startTime,
               EndTime: l.endTime,            
-              ColorId: l.subject.id,
+              GroupId: l.subject.id,
               Description: "ONLINE"
       }
     });
@@ -115,15 +115,16 @@ const createLessonOnSchedule = () => {
           Subject: s.subject.name,
               StartTime: s.startTime,
               EndTime: s.endTime,            
-              ColorId: s.subject.id              
-      }
+              GroupId: s.subject.id                            
+      }   
+      
     });
 
   const subjectFields = {text: 'Subject', value: 'Id' };
 
     function eventTemplate(props) {
       return (<div className="template-wrap" style={{ background: props.SecondaryColor }}>
-    <div className="subject" style={{ background: props.ColorId }}>{props.Subject}</div>  
+    <div className="subject" style={{ background: props.GroupId }}>{props.Subject}</div>  
     <div className="event-description">{props.Description}</div>
     </div>);
   }
@@ -200,7 +201,7 @@ const createLessonOnSchedule = () => {
             // Subject: lesson.subject.name,
             // StartTime: lesson.startTime,
             // EndTime: lesson.endTime,            
-            // ColorId: 1
+            // GroupId: 1
     },
         
         {
@@ -211,7 +212,7 @@ const createLessonOnSchedule = () => {
             IsAllDay: true,
             IsBlock: true,
             CategoryColor: "#357cd2",
-            ColorId: 2
+            GroupId: 2
                    
             
         },
@@ -226,24 +227,27 @@ const createLessonOnSchedule = () => {
         }];
 
         const resourceData = [
-            { GroupText: schedules.name, ColorId: 1, GroupColor: '#1aaa55' },
-            { GroupText: schedules.name, ColorId: 2, GroupColor: '#357cd2' },
-            { GroupText: schedules.name, ColorId: 3, GroupColor: '#1aaa55' },
-            { GroupText: schedules.name, ColorId: 4, GroupColor: '#357cd2' },
-            { GroupText: schedules.name, ColorId: 5, GroupColor: '#1aaa55' },
-            { GroupText: schedules.name, ColorId: 6, GroupColor: '#357cd2' },
-            { GroupText: schedules.name, ColorId: 7, GroupColor: '#1aaa55' },
-            { GroupText: schedules.name, ColorId: 8, GroupColor: '#357cd2' },
-            { GroupText: schedules.name, ColorId: 9, GroupColor: '#1aaa55' },
-            { GroupText: schedules.name, ColorId: 10, GroupColor: '#357cd2' },
-            { GroupText: schedules.name, ColorId: 11, GroupColor: '#1aaa55' },
-            { GroupText: schedules.name, ColorId: 12, GroupColor: '#357cd2' },
-            { GroupText: schedules.name, ColorId: 13, GroupColor: '#1aaa55' },
-            { GroupText: schedules.name, ColorId: 14, GroupColor: '#357cd2' },
-            { GroupText: schedules.name, ColorId: 15, GroupColor: '#1aaa55' },
-            { GroupText: schedules.name, ColorId: 16, GroupColor: '#357cd2' },
-            { GroupText: schedules.name, ColorId: 17, GroupColor: '#1aaa55' },
-            { GroupText: schedules.name, ColorId: 18, GroupColor: '#357cd2' },
+            { GroupText: schedules.name, GroupId: 1, GroupColor: '#2a787a' },
+            { GroupText: schedules.name, GroupId: 2, GroupColor: '#1c5252' },
+            { GroupText: schedules.name, GroupId: 3, GroupColor: '#569a9b' },
+            { GroupText: schedules.name, GroupId: 4, GroupColor: '#40b3b6' },
+            { GroupText: schedules.name, GroupId: 5, GroupColor: '#73cdce' },
+            { GroupText: schedules.name, GroupId: 6, GroupColor: '#a8e0e1' },
+            { GroupText: schedules.name, GroupId: 7, GroupColor: '#c3e3e4' },
+            { GroupText: schedules.name, GroupId: 8, GroupColor: '#deebec' },
+            { GroupText: schedules.name, GroupId: 9, GroupColor: '#e4e4e4' },
+            { GroupText: schedules.name, GroupId: 10, GroupColor: '#cfcccc' },
+            { GroupText: schedules.name, GroupId: 11, GroupColor: '#b5b4b4' },
+            { GroupText: schedules.name, GroupId: 12, GroupColor: '#9d968d' },
+            { GroupText: schedules.name, GroupId: 13, GroupColor: '#8f7c64' },
+            { GroupText: schedules.name, GroupId: 14, GroupColor: '#866947' },
+            { GroupText: schedules.name, GroupId: 15, GroupColor: '#8a5c2b' },
+            { GroupText: schedules.name, GroupId: 16, GroupColor: '#9e580e' },
+            { GroupText: schedules.name, GroupId: 17, GroupColor: '#c56907' },
+            { GroupText: schedules.name, GroupId: 18, GroupColor: '#e17604' },
+            { GroupText: schedules.name, GroupId: 19, GroupColor: '#fd901b' },
+            { GroupText: schedules.name, GroupId: 20, GroupColor: '#faa952' },
+            { GroupText: schedules.name, GroupId: 21, GroupColor: '#f7c48e' },
         ];
         
     return (
@@ -253,7 +257,7 @@ const createLessonOnSchedule = () => {
         <h1 className="title-text">{schedules.name}</h1>                 
     <ScheduleComponent id='schedule' ref={shedule => scheduleObj = shedule} timeFormat='HH' firstDayOfWeek='1' height='550px' editorTemplate={editorTemplate} selectedDate={new Date(2023, 1, 10, 24, 0)} eventSettings={{dataSource: lessonsOnSchedule}} 
  colorField='Color' actionBegin={onActionBegin} >
-  {console.log(schedules)}
+  {console.log(subjectsOnSchedule)}
   {console.log(endTime)}
     <ResourcesDirective>
               <ResourceDirective field='GroupId' title='Owner' name='Owners' dataSource={resourceData} textField='GroupText' idField='GroupId' colorField='GroupColor'>

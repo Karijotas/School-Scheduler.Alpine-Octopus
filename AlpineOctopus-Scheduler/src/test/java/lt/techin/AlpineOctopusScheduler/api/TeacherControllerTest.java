@@ -145,4 +145,100 @@ public class TeacherControllerTest {
         assertEquals(200, status);
         assertEquals(mappedResponse.getName(), "Mantvydas Mantukas");
     }
+
+    @Test
+    @Order(5)
+    void removeTeacher_shouldSetBooleanToTrue() throws Exception {
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .patch("/api/v1/teachers/delete/2")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Teacher mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+                new TypeReference<Teacher>() {
+                });
+
+        Assertions.assertTrue(mappedResponse.getDeleted());
+    }
+
+    @Test
+    void restoreTeacher_shouldSetBooleanToFalse() throws Exception {
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .patch("/api/v1/teachers/restore/4")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Teacher mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+                new TypeReference<Teacher>() {
+                });
+
+        Assertions.assertFalse(mappedResponse.getDeleted());
+    }
+
+    @Test
+    void getAllSubjectsById_shouldReturnCorrectSubjectCount() throws Exception {
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .get("/api/v1/teachers/1/subjects")
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        var mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+                new TypeReference<List<TeacherDto>>() {
+                });
+
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(200, status);
+        assertEquals(2, mappedResponse.size());
+
+    }
+
+
+    @Test
+    void getAllShiftsById_shouldReturnCorrectShiftCount() throws Exception {
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .get("/api/v1/teachers/1/shifts")
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        var mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+                new TypeReference<List<TeacherDto>>() {
+                });
+
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(200, status);
+        assertEquals(2, mappedResponse.size());
+    }
+
+//    @Test
+//    void addSubjectToTeacher() throws Exception {
+//        var mvcResult = mockMvc.perform(
+//                        MockMvcRequestBuilders
+//                                .get("/api/v1/teachers/6/subjects/6/newSubjects")
+//                                .accept(MediaType.APPLICATION_JSON)
+//                )
+//                .andExpect(status().isOk())
+//                .andReturn();
+//
+//        var mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+//                new TypeReference<TeacherDto>() {
+//                });
+//
+//        int status = mvcResult.getResponse().getStatus();
+//        assertEquals(200, status);
+//        assertEquals(mappedResponse.getName(), "Mantvydas Mantukas");
+//    }
 }

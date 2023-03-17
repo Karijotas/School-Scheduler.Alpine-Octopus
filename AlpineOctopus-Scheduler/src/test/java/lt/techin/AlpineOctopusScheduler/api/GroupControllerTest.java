@@ -109,15 +109,14 @@ public class GroupControllerTest {
     @Test
     @Order(3)
     void updateGroup_shouldUpdateGroup() throws Exception {
-        Groups newGroup2 = new Groups();
+        GroupsDto newGroup2 = new GroupsDto();
         newGroup2.setName("Grupele");
         newGroup2.setSchoolYear(2022);
         newGroup2.setStudentAmount(55);
 
-
         var mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders
-                                .put("/api/v1/groups/2")
+                                .patch("/api/v1/groups/2")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(newGroup2)))
                 .andReturn();
@@ -145,5 +144,42 @@ public class GroupControllerTest {
         int status = mvcResult.getResponse().getStatus();
         assertEquals(200, status);
         assertEquals(mappedResponse.getName(), "Akademija.it JP 22/1");
+    }
+
+    @Test
+    @Order(5)
+    void removeGroup_shouldSetBooleanToTrue() throws Exception {
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .patch("/api/v1/groups/delete/2")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Groups mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+                new TypeReference<Groups>() {
+                });
+
+        Assertions.assertTrue(mappedResponse.getDeleted());
+    }
+
+    @Test
+    void restoreGroup_shouldSetBooleanToFalse() throws Exception {
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .patch("/api/v1/groups/restore/4")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        Groups mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
+                new TypeReference<Groups>() {
+                });
+
+        Assertions.assertFalse(mappedResponse.getDeleted());
     }
 }

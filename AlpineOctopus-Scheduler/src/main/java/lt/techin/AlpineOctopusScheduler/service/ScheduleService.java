@@ -212,6 +212,8 @@ public class ScheduleService {
         Set<Lesson> subjects = new HashSet<>();
         subjects.addAll(existingSchedule.getSubjects());
         return subjects;
+
+
     }
 
     public Schedule setLessonOnline(Long scheduleId, Long lessonId) {

@@ -80,7 +80,7 @@ public class ScheduleControllerTest {
     @Order(4)
     void createSchedule_shouldCreateSchedule() throws Exception {
         Schedule newSchedule = new Schedule();
-        newSchedule.setName("Penktasis");
+        newSchedule.setName("Akademija.it NET 22/2 Visa diena 2023");
         newSchedule.setStatus("Valid");
 
         var mvcResult = mockMvc.perform(
@@ -101,7 +101,7 @@ public class ScheduleControllerTest {
     @Order(2)
     void updateSchedule_shouldUpdateSchedule() throws Exception {
         Schedule newSchedules = new Schedule();
-        newSchedules.setName("Penktasis");
+        newSchedules.setName("Akademija.it NET 22/2 Visa diena 2023");
 
         var mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders
@@ -111,7 +111,7 @@ public class ScheduleControllerTest {
                 .andReturn();
 
 
-        assertEquals("Penktasis", newSchedules.getName());
+        assertEquals("Akademija.it NET 22/2 Visa diena 2023", newSchedules.getName());
     }
 
     @Test
@@ -131,7 +131,7 @@ public class ScheduleControllerTest {
 
         int status = mvcResult.getResponse().getStatus();
         assertEquals(200, status);
-        assertEquals(mappedResponse.getName(), "Penktasis");
+        assertEquals(mappedResponse.getName(), "Akademija.it NET 22/2 Visa diena 2023");
     }
 }
 

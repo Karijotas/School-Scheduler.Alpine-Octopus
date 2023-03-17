@@ -17,7 +17,8 @@ export default class MainMenu extends Component {
                     exact
                     to='/'
                     name='home'
-                    content={<img alt="logo" src={logo} />}
+                    content={<img alt="logo" src={logo}
+                     />}
                 />
                 <Menu.Item
                     href='#/view/modules'
