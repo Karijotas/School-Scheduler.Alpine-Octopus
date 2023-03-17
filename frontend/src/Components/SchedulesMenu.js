@@ -14,7 +14,7 @@ export function SchedulesMenu() {
           className="controls3"
           as={NavLink}
           exact
-          to="/create/groups"
+          to="/create/groupsSchedules"
         >
           <Icon name="calendar" />
           Kurti naują

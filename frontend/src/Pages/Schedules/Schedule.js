@@ -10,7 +10,6 @@ import { Schedule, Print, ExcelExport, ScheduleComponent, ResourcesDirective, Re
 import { ButtonComponent, SwitchComponent } from '@syncfusion/ej2-react-buttons';
 import { extend, closest, remove, addClass, Ajax  } from '@syncfusion/ej2-base';
 import { TreeViewComponent } from '@syncfusion/ej2-react-navigations';
-import * as datasource from './datasource.json';
 import { DataManager, WebApiAdaptor, ODataV4Adaptor } from '@syncfusion/ej2-data';
 import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap5.css";
 
@@ -196,7 +195,7 @@ export function ScheduleView() {
         <h1 className="title-text">{schedules.name}</h1>                 
     <ScheduleComponent id='schedule' ref={shedule => scheduleObj = shedule} timeFormat='HH' firstDayOfWeek='1' height='550px' editorTemplate={editorTemplate} selectedDate={schedules.startingDate} eventSettings={{dataSource: lessonsOnSchedule}} 
  colorField='Color' actionBegin={onActionBegin} >
-  {console.log(resourceData)}
+  {console.log()}
     <ResourcesDirective>
               <ResourceDirective field='GroupId' title='Owner' name='Owners' dataSource={resourceData} textField='GroupText' idField='GroupId' colorField='GroupColor'>
               </ResourceDirective>

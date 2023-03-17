@@ -75,8 +75,8 @@ export function CreateSchedule() {
           <Form >
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <Form.Field style={{ marginRight: '1em' }}>
-                <label>Grupe su programa</label>
-                <Select options={groups} placeholder='Grupe su programa' onChange={(e, data) => setGroupId(data.value)} />
+                <label>Grupė su programa</label>
+                <Select options={groups} placeholder='Grupė su programa' onChange={(e, data) => setGroupId(data.value)} />
               </Form.Field>
               <div style={{ flexShrink: 0, paddingTop: '9px' }}>
                 <Button
@@ -107,7 +107,7 @@ export function CreateSchedule() {
           <Form>
             <div>
               <Button icon labelPosition="left" className="" as={NavLink} exact to='/view/groupsSchedules'><Icon name="arrow left" />Atgal</Button>
-              <Button type="submit" onClick={createSchedule} className="" id='details'>Sukurti</Button>
+              <Button type="submit" onClick={() => createSchedule()} className="" id='details'>Sukurti</Button>
             </div>
           </Form>
 

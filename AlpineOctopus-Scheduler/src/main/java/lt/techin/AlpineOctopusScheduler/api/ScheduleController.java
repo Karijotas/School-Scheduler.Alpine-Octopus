@@ -98,6 +98,13 @@ public class ScheduleController {
         return scheduleService.getAllLessonsByScheduleId(scheduleId);
     }
 
+    @GetMapping(value = "/{scheduleId}/subjects", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public Set<Lesson> getSubjectsByScheduleId(@PathVariable Long scheduleId) {
+
+        return scheduleService.getAllSubjectsByScheduleId(scheduleId);
+    }
+
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<ScheduleEntityDto> createSchedule(@RequestBody ScheduleEntityDto scheduleEntityDto, Long groupId,
                                                             @RequestParam(value = "startingDate", required = false) String startingDate) {
@@ -118,8 +125,8 @@ public class ScheduleController {
         }
     }
 
-    @PatchMapping("/{scheduleId}/{lessonId}")
-    public ResponseEntity<ScheduleEntityDto> setTeacherAndRoomInASchedule(@PathVariable Long scheduleId, Long lessonId, Long teacherId, Long roomId) {
+    @PatchMapping("/{scheduleId}/{lessonId}/{teacherId}/{roomId}")
+    public ResponseEntity<ScheduleEntityDto> setTeacherAndRoomInASchedule(@PathVariable Long scheduleId, @PathVariable Long lessonId, @PathVariable Long teacherId, @PathVariable Long roomId) {
         var updatedSchedule = scheduleService.setTeacherAndRoomInASchedule(scheduleId, lessonId, teacherId, roomId);
         return ok(toScheduleEntityDto(updatedSchedule));
     }
