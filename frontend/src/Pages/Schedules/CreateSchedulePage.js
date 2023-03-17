@@ -34,7 +34,7 @@ export function CreateSchedule() {
       let info = result
         .json()
         .then((jsonResponse) => (window.location = listUrl + jsonResponse.id));
-        console.log(info);
+      console.log(info);
     } else {
       window.alert("Nepavyko sukurti: pavadinimas turi būti unikalus!");
     }
@@ -94,37 +94,37 @@ export function CreateSchedule() {
                   basic
                   icon="plus"
                   title="Sukurti grupę"
-                  href={"/create/groups#/create/groups"}
+                  href={"#/create/groups"}
                 />
               </div>
-              </div>
-              <Form.Field>
-                <label>Data nuo</label>
-              </Form.Field>
-              
-            </Form>
+            </div>
+            <Form.Field>
+              <label>Data nuo</label>
+            </Form.Field>
 
-            <DatePicker
-              className="controls4"
-              placeholder="Data nuo"
-              onChange={(e) => {
-                const newDate = dayjs(e).format("YYYY-MM-DD");
-                setStartingDate(newDate);
-              }}
-            />
+          </Form>
+
+          <DatePicker
+            className="controls4"
+            placeholder="Data nuo"
+            onChange={(e) => {
+              const newDate = dayjs(e).format("YYYY-MM-DD");
+              setStartingDate(newDate);
+            }}
+          />
 
           <Divider hidden></Divider>
-          
+
           <Form>
             <div>
               <Button icon labelPosition="left" className="" as={NavLink} exact to='/view/groupsSchedules'><Icon name="arrow left" />Atgal</Button>
               <Button type="submit" onClick={() => createSchedule()} className="" id='details'>Sukurti</Button>
             </div>
           </Form>
-            
-          </Segment>
-        </Grid.Column>
-      </Grid>
-    </div>
+
+        </Segment>
+      </Grid.Column>
+    </Grid>
+  </div>
   );
 }
