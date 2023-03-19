@@ -11,7 +11,6 @@ public class GroupsEntityDto extends GroupsDto {
 
     private String shiftName;
 
-
     public GroupsEntityDto(String name, Integer schoolYear, Integer studentAmount, Long shiftId, Long programId, LocalDateTime createdDate, LocalDateTime modifiedDate, String createdBy, String modifiedBy, Boolean deleted, Long id, String programName, String shiftName) {
         super(name, schoolYear, studentAmount, shiftId, programId, createdDate, modifiedDate, createdBy, modifiedBy, deleted);
         this.id = id;

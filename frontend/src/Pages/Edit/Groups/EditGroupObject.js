@@ -154,7 +154,7 @@ export function EditGroupObject() {
   };
 
   useEffect(() => {
-    fetch("/api/v1/programs/")
+    fetch("/api/v1/programs")
       .then((response) => response.json())
       .then((data) =>
         setPrograms(

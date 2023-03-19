@@ -7,13 +7,10 @@ import lt.techin.AlpineOctopusScheduler.api.dto.TeacherDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.TeacherTestDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper;
-import lt.techin.AlpineOctopusScheduler.api.dto.mapper.TeacherMapper;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Shift;
 import lt.techin.AlpineOctopusScheduler.model.Subject;
 import lt.techin.AlpineOctopusScheduler.model.Teacher;
-import lt.techin.AlpineOctopusScheduler.service.ShiftService;
-import lt.techin.AlpineOctopusScheduler.service.SubjectService;
 import lt.techin.AlpineOctopusScheduler.service.TeacherService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,14 +38,11 @@ public class TeacherController {
 
     public static Logger logger = LoggerFactory.getLogger(TeacherController.class);
     private final TeacherService teacherService;
-    private final ShiftService shiftService;
-    private final SubjectService subjectService;
 
-    public TeacherController(TeacherService teacherService, ShiftService shiftService, SubjectService subjectService) {
+
+    public TeacherController(TeacherService teacherService) {
 
         this.teacherService = teacherService;
-        this.shiftService = shiftService;
-        this.subjectService = subjectService;
     }
 
     @GetMapping(path = "/all")
@@ -95,15 +89,15 @@ public class TeacherController {
 //                .map(TeacherMapper::toTeacherEntityDto)
 //                .collect(toList());
 //    }
-
-    @GetMapping(path = "/page/all", produces = {MediaType.APPLICATION_JSON_VALUE})
-    @ResponseBody
-    public List<TeacherEntityDto> getPagedAllTeachers(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
-                                                      @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        return teacherService.getPagedAllTeachers(page, pageSize).stream()
-                .map(TeacherMapper::toTeacherEntityDto)
-                .collect(toList());
-    }
+//
+//    @GetMapping(path = "/page/all", produces = {MediaType.APPLICATION_JSON_VALUE})
+//    @ResponseBody
+//    public List<TeacherEntityDto> getPagedAllTeachers(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
+//                                                      @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+//        return teacherService.getPagedAllTeachers(page, pageSize).stream()
+//                .map(TeacherMapper::toTeacherEntityDto)
+//                .collect(toList());
+//    }
 
     @PostMapping
     public ResponseEntity<TeacherEntityDto> createTeacher(@Valid @RequestBody TeacherEntityDto teacherDto) {

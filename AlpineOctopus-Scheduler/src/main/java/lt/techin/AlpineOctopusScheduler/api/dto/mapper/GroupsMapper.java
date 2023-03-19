@@ -43,7 +43,7 @@ public class GroupsMapper {
         groupEntityDto.setShiftName(groups.getShift().getName());
         groupEntityDto.setProgramId(groups.getProgram().getId());
         groupEntityDto.setShiftId(groups.getShift().getId());
-//        groupEntityDto.setModifiedDate(groups.getModifiedDate());
+        groupEntityDto.setModifiedDate(groups.getModifiedDate());
         groupEntityDto.setDeleted(groups.getDeleted());
 
         return groupEntityDto;

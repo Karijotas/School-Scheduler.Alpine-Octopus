@@ -1,5 +1,7 @@
 package lt.techin.AlpineOctopusScheduler.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -13,11 +15,11 @@ public class GroupsDto {
     private Long programId;
 
     private Boolean deleted;
-//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-//    private LocalDateTime createdDate;
-//
-//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-//    private LocalDateTime modifiedDate;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createdDate;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime modifiedDate;
 
     private String createdBy;
 
@@ -32,8 +34,8 @@ public class GroupsDto {
         this.studentAmount = studentAmount;
         this.shiftId = shiftId;
         this.programId = programId;
-//        this.createdDate = createdDate;
-//        this.modifiedDate = modifiedDate;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
         this.createdBy = createdBy;
         this.modifiedBy = modifiedBy;
         this.deleted = deleted;
@@ -47,21 +49,21 @@ public class GroupsDto {
         this.programId = programId;
     }
 
-//    public LocalDateTime getCreatedDate() {
-//        return createdDate;
-//    }
-//
-//    public void setCreatedDate(LocalDateTime createdDate) {
-//        this.createdDate = createdDate;
-//    }
-//
-//    public LocalDateTime getModifiedDate() {
-//        return modifiedDate;
-//    }
-//
-//    public void setModifiedDate(LocalDateTime modifiedDate) {
-//        this.modifiedDate = modifiedDate;
-//    }
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public LocalDateTime getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(LocalDateTime modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
 
     public String getCreatedBy() {
         return createdBy;

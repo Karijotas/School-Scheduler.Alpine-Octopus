@@ -4,7 +4,6 @@ import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.GroupsDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.GroupsEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.GroupsTestDto;
-import lt.techin.AlpineOctopusScheduler.dao.GroupsRepository;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.service.GroupService;
 import org.slf4j.Logger;
@@ -31,8 +30,8 @@ public class GroupsController {
     private final Logger logger = LoggerFactory.getLogger(GroupsController.class);
     private final GroupService groupService;
 
-    public GroupsController(GroupService groupService,
-                            GroupsRepository groupsRepository) {
+    public GroupsController(GroupService groupService
+    ) {
         this.groupService = groupService;
     }
 
@@ -49,7 +48,6 @@ public class GroupsController {
         return groupService.getAllDeletedGroups();
     }
 
-
     @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public List<GroupsEntityDto> getPagedAvailableGroups(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
@@ -59,23 +57,23 @@ public class GroupsController {
         return groupService.getAllAvailablePagedGroups(page, pageSize);
     }
 
-    @GetMapping(path = "/archive/page", produces = {MediaType.APPLICATION_JSON_VALUE})
-    @ResponseBody
-    public List<GroupsEntityDto> getPagedDeletedGroups(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                                       @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+//    @GetMapping(path = "/archive/page", produces = {MediaType.APPLICATION_JSON_VALUE})
+//    @ResponseBody
+//    public List<GroupsEntityDto> getPagedDeletedGroups(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
+//                                                       @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+//
+//        return groupService.getAllDeletedPagedGroups(page, pageSize);
+//    }
 
-        return groupService.getAllDeletedPagedGroups(page, pageSize);
-    }
-
-    @GetMapping(path = "/page/all", produces = {MediaType.APPLICATION_JSON_VALUE})
-    @ResponseBody
-
-    public List<GroupsEntityDto> getPagedAllGroups(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
-
-                                                   @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        return groupService.getAllAvailableGroups();
-
-    }
+//    @GetMapping(path = "/page/all", produces = {MediaType.APPLICATION_JSON_VALUE})
+//    @ResponseBody
+//
+//    public List<GroupsEntityDto> getPagedAllGroups(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
+//
+//                                                   @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+//        return groupService.getAllAvailableGroups();
+//
+//    }
 
 //    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE,})
 //    @ResponseBody
@@ -146,16 +144,16 @@ public class GroupsController {
 //        }
     }
 
-    @DeleteMapping("/{groupId}")
-    public ResponseEntity<Void> deleteGroup(@PathVariable Long groupId) {
-        logger.info("Attempt to delete Group by id: {}", groupId);
-        boolean deleted = groupService.deleteById(groupId);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+//    @DeleteMapping("/{groupId}")
+//    public ResponseEntity<Void> deleteGroup(@PathVariable Long groupId) {
+//        logger.info("Attempt to delete Group by id: {}", groupId);
+//        boolean deleted = groupService.deleteById(groupId);
+//        if (deleted) {
+//            return ResponseEntity.noContent().build();
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 
 //    @PutMapping("/{groupId}")
 //    public ResponseEntity<GroupsDto> replaceGroup(@PathVariable Long groupId, @Valid @RequestBody GroupsDto groupsDto) {

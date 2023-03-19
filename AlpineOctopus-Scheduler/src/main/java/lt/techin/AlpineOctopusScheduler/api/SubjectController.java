@@ -9,10 +9,7 @@ import lt.techin.AlpineOctopusScheduler.model.Module;
 import lt.techin.AlpineOctopusScheduler.model.Room;
 import lt.techin.AlpineOctopusScheduler.model.Subject;
 import lt.techin.AlpineOctopusScheduler.model.Teacher;
-import lt.techin.AlpineOctopusScheduler.service.ModuleService;
-import lt.techin.AlpineOctopusScheduler.service.RoomService;
 import lt.techin.AlpineOctopusScheduler.service.SubjectService;
-import lt.techin.AlpineOctopusScheduler.service.TeacherService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -26,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-
 import static java.util.stream.Collectors.toList;
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.SubjectMapper.*;
 import static org.springframework.http.ResponseEntity.ok;
@@ -38,17 +34,9 @@ public class SubjectController {
     public static Logger logger = LoggerFactory.getLogger(SubjectController.class);
     private final SubjectService subjectService;
 
-    private final TeacherService teacherService;
 
-    private final RoomService roomService;
-
-    private final ModuleService moduleService;
-
-    public SubjectController(SubjectService subjectService, TeacherService teacherService, RoomService roomService, ModuleService moduleService) {
+    public SubjectController(SubjectService subjectService) {
         this.subjectService = subjectService;
-        this.teacherService = teacherService;
-        this.roomService = roomService;
-        this.moduleService = moduleService;
     }
 
     @GetMapping
@@ -141,17 +129,17 @@ public class SubjectController {
         }
     }
 
-    @DeleteMapping("/{subjectId}")
-    public ResponseEntity<Void> deleteSubject(@PathVariable Long subjectId) {
-        var subjectDeleted = subjectService.deleteById(subjectId);
-
-        if (subjectDeleted) {
-            return ResponseEntity.noContent().build();
-//            new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
-        }
-
-        return ResponseEntity.notFound().build();
-    }
+//    @DeleteMapping("/{subjectId}")
+//    public ResponseEntity<Void> deleteSubject(@PathVariable Long subjectId) {
+//        var subjectDeleted = subjectService.deleteById(subjectId);
+//
+//        if (subjectDeleted) {
+//            return ResponseEntity.noContent().build();
+////            new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+//        }
+//
+//        return ResponseEntity.notFound().build();
+//    }
 
     @PutMapping("/{subjectId}")
     public ResponseEntity<SubjectDto> updateSubject(@PathVariable Long subjectId, @Valid @RequestBody SubjectDto subjectDto) {

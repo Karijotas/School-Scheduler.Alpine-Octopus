@@ -38,7 +38,7 @@ export function ViewRooms() {
   };
 
   const fetchFilterRooms = async () => {
-    fetch(`/api/v1/rooms/page/name-filter/${nameText}`)
+    fetch(`/api/v1/rooms/name-filter/${nameText}`)
       .then((response) => response.json())
       .then((jsonRespone) => setRooms(jsonRespone));
   };
@@ -53,7 +53,7 @@ export function ViewRooms() {
 
   const fetchBuildingRooms = async () => {
     fetch(
-      `/api/v1/rooms/page/building-filter/${buildingText}`
+      `/api/v1/rooms/building-filter/${buildingText}`
     )
       .then((response) => response.json())
       .then((jsonRespone) => setRooms(jsonRespone));

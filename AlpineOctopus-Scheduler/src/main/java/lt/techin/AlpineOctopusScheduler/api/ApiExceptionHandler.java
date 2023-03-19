@@ -2,8 +2,6 @@ package lt.techin.AlpineOctopusScheduler.api;
 
 import lt.techin.AlpineOctopusScheduler.api.dto.ErrorDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ErrorFieldDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.mapper.ErrorFieldMapper;
-import lt.techin.AlpineOctopusScheduler.exception.SchedulerServiceDisabledException;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +9,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -21,8 +18,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @ControllerAdvice
 public class ApiExceptionHandler {
@@ -103,35 +98,35 @@ public class ApiExceptionHandler {
     }
 
 
-    @ExceptionHandler(SchedulerServiceDisabledException.class)
-    public ResponseEntity<Void> handleSchedulerServiceDisabledException(HttpServletRequest request, SchedulerServiceDisabledException serviceDisabledException) {
-        logger.error("SchedulerValidationException: {}", serviceDisabledException.getMessage());
+//    @ExceptionHandler(SchedulerServiceDisabledException.class)
+//    public ResponseEntity<Void> handleSchedulerServiceDisabledException(HttpServletRequest request, SchedulerServiceDisabledException serviceDisabledException) {
+//        logger.error("SchedulerValidationException: {}", serviceDisabledException.getMessage());
+//
+//        var errorStatus = HttpStatus.SERVICE_UNAVAILABLE;
+//
+//        return new ResponseEntity<>(errorStatus);
+//    }
 
-        var errorStatus = HttpStatus.SERVICE_UNAVAILABLE;
-
-        return new ResponseEntity<>(errorStatus);
-    }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorDto> handleMethodArgumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException notValidException) {
-        logger.error("MethodArgumentNotValidException: {}", notValidException.getMessage());
-
-        var errorStatus = HttpStatus.BAD_REQUEST;
-
-        var errorFields = notValidException.getBindingResult()
-                .getAllErrors().stream()
-                .map(ErrorFieldMapper::toErrorFieldDto)
-                .collect(toList());
-
-        var errorDto = new ErrorDto(request.getRequestURL().toString(),
-                errorFields,
-                notValidException.getMessage(),
-                errorStatus.value(),
-                errorStatus.getReasonPhrase(),
-                request.getRequestURL().toString(),
-                LocalDateTime.now());
-        return ResponseEntity.badRequest().body(errorDto);
-    }
+//    @ExceptionHandler(MethodArgumentNotValidException.class)
+//    public ResponseEntity<ErrorDto> handleMethodArgumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException notValidException) {
+//        logger.error("MethodArgumentNotValidException: {}", notValidException.getMessage());
+//
+//        var errorStatus = HttpStatus.BAD_REQUEST;
+//
+//        var errorFields = notValidException.getBindingResult()
+//                .getAllErrors().stream()
+//                .map(ErrorFieldMapper::toErrorFieldDto)
+//                .collect(toList());
+//
+//        var errorDto = new ErrorDto(request.getRequestURL().toString(),
+//                errorFields,
+//                notValidException.getMessage(),
+//                errorStatus.value(),
+//                errorStatus.getReasonPhrase(),
+//                request.getRequestURL().toString(),
+//                LocalDateTime.now());
+//        return ResponseEntity.badRequest().body(errorDto);
+//    }
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "We do not support this")
     @ExceptionHandler(HttpMediaTypeException.class)

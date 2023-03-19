@@ -68,7 +68,6 @@ public class ModuleController {
         return moduleService.getAllDeletedModules();
     }
 
-
     @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public List<ModuleEntityDto> getPagedAvailableModules(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
@@ -86,15 +85,15 @@ public class ModuleController {
         return moduleService.getAllDeletedPagedModules(page, pageSize);
     }
 
-    @GetMapping(path = "/page/all", produces = {MediaType.APPLICATION_JSON_VALUE})
-    @ResponseBody
-
-    public List<ModuleEntityDto> getPagedAllModules(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
-
-                                                    @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        return moduleService.getAllAvailableModules();
-
-    }
+//    @GetMapping(path = "/page/all", produces = {MediaType.APPLICATION_JSON_VALUE})
+//    @ResponseBody
+//
+//    public List<ModuleEntityDto> getPagedAllModules(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
+//
+//                                                    @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+//        return moduleService.getAllAvailableModules();
+//
+//    }
 
     @PatchMapping("/delete/{moduleId}")
     public ResponseEntity<ModuleEntityDto> removeModule(@PathVariable Long moduleId) {
@@ -118,16 +117,16 @@ public class ModuleController {
         }
     }
 
-    @DeleteMapping("/delete/{moduleId}")
-    public ResponseEntity<Void> deleteModule(@PathVariable Long moduleId) {
-        var moduleDeleted = moduleService.deleteById(moduleId);
-
-        if (moduleDeleted) {
-            return ResponseEntity.noContent().build();
-        }
-
-        return ResponseEntity.notFound().build();
-    }
+//    @DeleteMapping("/delete/{moduleId}")
+//    public ResponseEntity<Void> deleteModule(@PathVariable Long moduleId) {
+//        var moduleDeleted = moduleService.deleteById(moduleId);
+//
+//        if (moduleDeleted) {
+//            return ResponseEntity.noContent().build();
+//        }
+//
+//        return ResponseEntity.notFound().build();
+//    }
 
     @PutMapping("/update/{moduleId}")
     public ResponseEntity<ModuleDto> updateModule(@PathVariable Long moduleId, @Valid @RequestBody ModuleDto moduleDto) {
