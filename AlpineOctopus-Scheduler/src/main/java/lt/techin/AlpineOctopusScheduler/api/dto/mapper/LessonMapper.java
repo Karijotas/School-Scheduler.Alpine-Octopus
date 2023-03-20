@@ -22,6 +22,7 @@ public class LessonMapper {
         newLesson.setSubject(lesson.getSubject());
         newLesson.setTeacher(lesson.getTeacher());
         newLesson.setRoom(lesson.getRoom());
+        newLesson.setStatus(lesson.getStatus());
 
 
         return newLesson;
