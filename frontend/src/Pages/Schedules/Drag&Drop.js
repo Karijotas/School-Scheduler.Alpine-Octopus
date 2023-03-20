@@ -15,7 +15,7 @@ Schedule.Inject(Day, Week, WorkWeek, Month, Agenda, Resize, DragAndDrop, Print, 
 
 export function Drag_Drop() {
     let scheduleObj;
-    const params = useParams();    
+    const params = useParams();
     let treeObj;
     let isTreeItemDropped = false;
     let draggedItemId = '';
@@ -25,10 +25,10 @@ export function Drag_Drop() {
     }, []);
 
     function treeTemplate(props) {
-        return (<div id="waiting"><div id="waitdetails"><div id="waitlist">{props.Subject}</div>
+        return (<div id="waiting"><div id="waitdetails"><div id="waitlist">{props.Name}</div>
             <div id="waitcategory">{props.LessonHours} val {props.id}</div></div></div>);
     }
-    
+
     function onItemSelecting(args) {
         args.cancel = true;
     }
@@ -56,16 +56,19 @@ export function Drag_Drop() {
     }
     function editorTemplate(props) {
         return (props !== undefined ? <table className="custom-event-editor" style={{ width: '100%' }}>
-          <tbody>
-            <tr><td className="e-textlabel">Pamoka</td><td colSpan={4}>
-              <DropDownListComponent id="Subject" placeholder='Pasirinkti' data-name="Subject" className="e-field" style={{ width: '100%' }} 
-              dataSource={subjectsOnSchedule } 
-              fields={fields}
-                // onChange={(e) => setSubjectId(e.value)}
-                >
-              </DropDownListComponent>
-              </td></tr>
-            {/* <tr><td className="e-textlabel">Nuotolinė pamoka</td><td colSpan={4}>
+            <tbody>
+                {/* <tr><td className="e-textlabel">Pamoka</td><td colSpan={4}>
+                    <DropDownListComponent id="Subject" placeholder='Pasirinkti' data-name="Name" className="e-field" style={{ width: '100%' }}
+                        dataSource={subjectsOnSchedule}
+                        fields={fields}
+                    // onChange={(e) => setSubjectId(e.value)}
+                    >
+                    </DropDownListComponent>
+                </td></tr> */}
+                <tr><td className="e-textlabel">Pamoka</td><td colSpan={4}>
+          <input id="Summary" className="e-field e-input" type="text" name="Name" style={{ width: '100%' }} />
+        </td></tr>
+                {/* <tr><td className="e-textlabel">Nuotolinė pamoka</td><td colSpan={4}>
               <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['Taip', 'Ne']}>
               </DropDownListComponent>
             </td></tr>
@@ -77,22 +80,22 @@ export function Drag_Drop() {
               <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['Kabinetas1', 'Kabinetas2']}>
               </DropDownListComponent>
             </td></tr> */}
-            <tr><td className="e-textlabel">Data nuo</td><td colSpan={4}>
-              <DateTimePickerComponent firstDayOfWeek={1} format='yyyy/MM/dd HH' timeFormat={"HH"} step={60} locale='lt' id="StartTime" data-name="StartTime" 
-              value={new Date(props.startTime || props.StartTime 
-                // || startTime
-              )} 
-            //   onChange={(e) => setStartTime(new Date(e.value).toISOString())} 
-              className="e-field"></DateTimePickerComponent>
-            </td></tr>
-            <tr><td className="e-textlabel">Data iki</td><td colSpan={4}>
-              <DateTimePickerComponent firstDayOfWeek={1} locale='lt' format='yyyy/MM/dd HH' timeFormat={"HH"} step={60} id="EndTime" data-name="EndTime" value={new Date(props.endTime || props.EndTime 
-                // || endTime
-                )} 
-                // onChange={(e) => setEndTime(new Date(e.value).toISOString())} 
-                className="e-field"></DateTimePickerComponent>
-            </td></tr>
-            {/* <tr><td className="e-textlabel">Pamoka nuo</td><td colSpan={4}>
+                <tr><td className="e-textlabel">Data nuo</td><td colSpan={4}>
+                    <DateTimePickerComponent firstDayOfWeek={1} format='yyyy/MM/dd HH' timeFormat={"HH"} step={60} locale='lt' id="StartTime" data-name="StartTime"
+                        value={new Date(props.startTime || props.StartTime
+                            // || startTime
+                        )}
+                        //   onChange={(e) => setStartTime(new Date(e.value).toISOString())} 
+                        className="e-field"></DateTimePickerComponent>
+                </td></tr>
+                <tr><td className="e-textlabel">Data iki</td><td colSpan={4}>
+                    <DateTimePickerComponent firstDayOfWeek={1} locale='lt' format='yyyy/MM/dd HH' timeFormat={"HH"} step={60} id="EndTime" data-name="EndTime" value={new Date(props.endTime || props.EndTime
+                        // || endTime
+                    )}
+                        // onChange={(e) => setEndTime(new Date(e.value).toISOString())} 
+                        className="e-field"></DateTimePickerComponent>
+                </td></tr>
+                {/* <tr><td className="e-textlabel">Pamoka nuo</td><td colSpan={4}>
               <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14']}>
               </DropDownListComponent>
             </td></tr>
@@ -100,12 +103,12 @@ export function Drag_Drop() {
               <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14']}>
               </DropDownListComponent>
             </td></tr> */}
-            <tr><td className="e-textlabel">Pastabos</td><td colSpan={4}>
-              <textarea id="Description" className="e-field e-input" name="Description" rows={3} cols={50} style={{ width: '100%', height: '60px !important', resize: 'vertical' }}></textarea>
-            </td></tr>
-           </tbody>
+                <tr><td className="e-textlabel">Pastabos</td><td colSpan={4}>
+                    <textarea id="Description" className="e-field e-input" name="Description" rows={3} cols={50} style={{ width: '100%', height: '60px !important', resize: 'vertical' }}></textarea>
+                </td></tr>
+            </tbody>
         </table> : '');
-      }
+    }
     const [subjects, setSubjects] = useState([]);
 
     useEffect(() => {
@@ -119,7 +122,7 @@ export function Drag_Drop() {
     const subjectsOnSchedule = subjects.map(s => {
         return {
             Id: s.id,
-            Subject: s.subject.name,
+            Name: s.subject.name,
             LessonHours: s.lessonHours
         }
     })
@@ -138,7 +141,7 @@ export function Drag_Drop() {
                     const filteredData = treeviewData.filter((item) => item.Id === parseInt(event.draggedNodeData.id, 10));
                     let cellData = scheduleObj.getCellDetails(event.target);
                     let eventData = {
-                        Name: filteredData[0].Subject,
+                        Name: filteredData[0].Name,
                         StartTime: cellData.startTime,
                         EndTime: cellData.endTime,
 
@@ -196,7 +199,7 @@ export function Drag_Drop() {
 
 
     const [updated, setUpdated] = useState();
-    const fields = { dataSource: subjectsOnSchedule, id: 'Id', text: 'Subject' };
+    const fields = { dataSource: subjectsOnSchedule, text: 'Name', id: 'Id', };
     const data = extend([], { dataSource: lessonsOnSchedule }, null, true);
 
     useEffect(() => {
@@ -260,10 +263,10 @@ export function Drag_Drop() {
 
     // }];
 
-    function resourceHeaderTemplate(props) {
-        return (<div className="template-wrap"><div className="specialist-category"><div className={"specialist-image " + props}></div><div className="specialist-name">
-            {props}</div><div className="specialist-designation">{props}</div></div></div>);
-    }
+    // function resourceHeaderTemplate(props) {
+    //     return (<div className="template-wrap"><div className="specialist-category"><div className={"specialist-image " + props}></div><div className="specialist-name">
+    //         {props}</div><div className="specialist-designation">{props}</div></div></div>);
+    // }
 
     const departmentData = [
         { Text: 'GENERAL', Id: 1, Color: '#bbdc00' },
@@ -298,7 +301,7 @@ export function Drag_Drop() {
                             height='650px'
                             selectedDate={new Date(2021, 7, 2)}
                             currentView='Month'
-                            resourceHeaderTemplate={resourceHeaderTemplate.bind(this)}
+                            // resourceHeaderTemplate={resourceHeaderTemplate.bind(this)}
                             editorTemplate={editorTemplate}
                             eventSettings={{
                                 dataSource: data,
@@ -335,7 +338,7 @@ export function Drag_Drop() {
                             cssClass='treeview-external-drag'
                             dragArea=".drag-sample-wrapper"
                             nodeTemplate={treeTemplate.bind(this)}
-                            fields={{ dataSource: subjectsOnSchedule, id: 'Id', text: 'Subject' }}
+                            fields={{ dataSource: subjectsOnSchedule, text: 'Name', id: 'Id', }}
                             nodeDragStop={onTreeDragStop.bind(this)}
                             nodeSelecting={onItemSelecting.bind(this)}
                             nodeDragging={onTreeDrag.bind(this)}
