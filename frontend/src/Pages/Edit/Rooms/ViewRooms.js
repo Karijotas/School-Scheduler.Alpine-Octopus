@@ -21,14 +21,11 @@ const JSON_HEADERS = {
 
 export function ViewRooms() {
   const [active, setActive] = useState("");
-
   const [rooms, setRooms] = useState([]);
-  //
   const [activePage, setActivePage] = useState(0);
   const [nameText, setNameText] = useState("");
   const [buildingText, setBuildingText] = useState("");
   const [pagecount, setPageCount] = useState();
-
   const [roomsforPaging, setRoomsForPaging] = useState([]);
 
   const fetchRooms = async () => {
@@ -74,24 +71,6 @@ export function ViewRooms() {
       nameText.length > 0 ? setBuildingText("") : setNameText("");
       buildingText.length > 0 ? setNameText("") : setBuildingText("");
     }
-    //  else if (buildingText.length > 0){
-    //     setNameText('')
-    //     fetchBuildingRooms();
-    //  }
-    //  if(nameText.length > 0){
-    //         setBuildingText('')
-    //         fetchFilterRooms();
-    //     }
-
-    //  else if (nameText.length > 0 ){
-    //     setBuildingText('')
-    //     fetchFilterRooms();
-    //  } else if(nameText.length > 0 && buildingText > 0){
-    //     setNameText('')
-    //     fetchBuildingRooms();
-    //  }
-    //nameText.length > 0 ? fetchFilterRooms() : fetchRooms();
-    //  buildingText.length > 0 ? fetchBuildingRooms() : fetchRooms();
   }, [activePage, nameText, buildingText]);
 
   useEffect(() => {

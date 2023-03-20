@@ -72,6 +72,15 @@ export function EditMenu() {
               exact
               to="/view/programs"
             />
+            <Menu.Item
+              id="icocolor"
+              name="holiday"
+              icon="calendar alternate"
+              content="Atostogos"
+              as={NavLink}
+              exact
+              to="/view/holidays"
+            />
             <Menu.Item>
               <Dropdown
                 text="Archyvas"
