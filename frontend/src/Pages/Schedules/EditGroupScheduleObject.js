@@ -225,7 +225,7 @@ export function EditGroupScheduleObject() {
                         {schedules.plannedTillDate}{" "}
                       </Table.Cell>
                       <Table.Cell collapsing>
-                        {schedules.status === "invalid" ? (
+                        {schedules.status === 3 ? (
                           <Button
                             id="grey"
                             basic
@@ -233,7 +233,7 @@ export function EditGroupScheduleObject() {
                             icon="clock outline"
                             title="Negaliojantis"
                           />
-                        ) : schedules.status === "Valid" ? (
+                        ) : schedules.status === 0 ? (
                           <Button
                             id="okey"
                             basic
