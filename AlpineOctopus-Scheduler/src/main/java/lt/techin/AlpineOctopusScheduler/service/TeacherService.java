@@ -18,7 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -28,8 +27,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.TeacherMapper.toTeacherEntityDto;
-
-//Mantvydas Juršys
 
 
 @Service
@@ -47,12 +44,12 @@ public class TeacherService {
         this.validator = validator;
     }
 
-    void validateInputWithInjectedValidator(Teacher teacher) {
-        Set<ConstraintViolation<Teacher>> violations = validator.validate(teacher);
-        if (!violations.isEmpty()) {
-            throw new SchedulerValidationException(violations.toString(), "Teacher", "Error in teacher entity", teacher.toString());
-        }
-    }
+//    void validateInputWithInjectedValidator(Teacher teacher) {
+//        Set<ConstraintViolation<Teacher>> violations = validator.validate(teacher);
+//        if (!violations.isEmpty()) {
+//            throw new SchedulerValidationException(violations.toString(), "Teacher", "Error in teacher entity", teacher.toString());
+//        }
+//    }
 
     public boolean loginEmailIsUnique(Teacher teacher) {
         return teacherRepository.findAll()
@@ -88,7 +85,18 @@ public class TeacherService {
     public Teacher create(Teacher teacher) {
 
 //        validateInputWithInjectedValidator(teacher);
-        return teacherRepository.save(teacher);
+        var newTeacher = new Teacher();
+        newTeacher.setId(teacher.getId());
+        newTeacher.setName(teacher.getName());
+        newTeacher.setLoginEmail(teacher.getLoginEmail());
+        newTeacher.setContactEmail(teacher.getContactEmail());
+        newTeacher.setPhone(teacher.getPhone());
+        newTeacher.setWorkHoursPerWeek(teacher.getWorkHoursPerWeek());
+        newTeacher.setDeleted(Boolean.FALSE);
+        newTeacher.setCreatedDate(teacher.getCreatedDate());
+        newTeacher.setModifiedDate(teacher.getModifiedDate());
+
+        return teacherRepository.save(newTeacher);
     }
 
     public Teacher update(Long id, Teacher teacher) {

@@ -85,12 +85,12 @@ public class ShiftController {
 //                .collect(toList());
 //    }
 
-    @GetMapping(path = "/page/all", produces = {MediaType.APPLICATION_JSON_VALUE})
-    @ResponseBody
-    public List<ShiftEntityDto> getPagedAllShifts(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                                  @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        return shiftService.getPagedAllShifts(page, pageSize);
-    }
+//    @GetMapping(path = "/page/all", produces = {MediaType.APPLICATION_JSON_VALUE})
+//    @ResponseBody
+//    public List<ShiftEntityDto> getPagedAllShifts(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
+//                                                  @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+//        return shiftService.getPagedAllShifts(page, pageSize);
+//    }
 
     @GetMapping(path = "page/name-filter/{nameText}")
     @ApiOperation(value = "Get Paged Shifts starting with", notes = "Returns list of Shifts starting with passed String")

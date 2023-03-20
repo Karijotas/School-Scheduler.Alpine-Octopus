@@ -7,19 +7,19 @@ import lt.techin.AlpineOctopusScheduler.model.Schedule;
 
 public class ScheduleMapper {
 
-    public static ScheduleDto toScheduleDto(Schedule schedule) {
-        var scheduleDto = new ScheduleDto();
-
-        scheduleDto.setName(schedule.getName());
-        scheduleDto.setStartingDate(schedule.getStartingDate());
-        scheduleDto.setPlannedTillDate(schedule.getPlannedTillDate());
-        scheduleDto.setStatus(schedule.getStatus());
-        scheduleDto.setSubjects(schedule.getSubjects());
-        scheduleDto.setGroupId(schedule.getGroup().getId());
-        scheduleDto.setShiftId(schedule.getGroup().getShift().getId());
-
-        return scheduleDto;
-    }
+//    public static ScheduleDto toScheduleDto(Schedule schedule) {
+//        var scheduleDto = new ScheduleDto();
+//
+//        scheduleDto.setName(schedule.getName());
+//        scheduleDto.setStartingDate(schedule.getStartingDate());
+//        scheduleDto.setPlannedTillDate(schedule.getPlannedTillDate());
+//        scheduleDto.setStatus(schedule.getStatus());
+//        scheduleDto.setSubjects(schedule.getSubjects());
+//        scheduleDto.setGroupId(schedule.getGroup().getId());
+//        scheduleDto.setShiftId(schedule.getGroup().getShift().getId());
+//
+//        return scheduleDto;
+//    }
 
     public static Schedule toSchedule(ScheduleDto scheduleDto) {
         var schedule = new Schedule();

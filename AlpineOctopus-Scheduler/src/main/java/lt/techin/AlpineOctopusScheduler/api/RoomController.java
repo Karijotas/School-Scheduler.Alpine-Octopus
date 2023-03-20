@@ -72,15 +72,15 @@ public class RoomController {
 
         return roomService.getAllDeletedPagedRooms(page, pageSize);
     }
-
-    @GetMapping(path = "/page/all", produces = {MediaType.APPLICATION_JSON_VALUE})
-    @ResponseBody
-
-    public List<RoomEntityDto> getPagedAllPRooms(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
-
-                                                 @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        return roomService.getAllAvailableRooms();
-    }
+//
+//    @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
+//    @ResponseBody
+//
+//    public List<RoomEntityDto> getPagedAllPRooms(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
+//
+//                                                 @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+//        return roomService.getAllAvailableRooms();
+//    }
 
     @GetMapping(path = "/all")
     @ResponseBody
@@ -115,16 +115,16 @@ public class RoomController {
         return ok(toRoomDto(updatedRoom));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteRoom(@PathVariable Long id) {
-        var roomDeleted = roomService.deleteById(id);
-
-        if (roomDeleted) {
-            return ResponseEntity.noContent().build();
-//            new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
-        }
-        return ResponseEntity.notFound().build();
-    }
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<Void> deleteRoom(@PathVariable Long id) {
+//        var roomDeleted = roomService.deleteById(id);
+//
+//        if (roomDeleted) {
+//            return ResponseEntity.noContent().build();
+////            new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+//        }
+//        return ResponseEntity.notFound().build();
+//    }
 
 //    @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
 //    @ResponseBody
@@ -136,25 +136,25 @@ public class RoomController {
 //
 //    }
 
-    @GetMapping(path = "page/name-filter/{nameText}")
-    @ApiOperation(value = "Get Paged Programs starting with", notes = "Returns list of Programs starting with passed String")
-    @ResponseBody
-    public List<RoomEntityDto> getPagedRoomsByNameContaining(@PathVariable String nameText,
-                                                             @RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                                             @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        return roomService.getAvailablePagedRoomsByNameContaining(nameText, page, pageSize);
-    }
+//    @GetMapping(path = "page/name-filter/{nameText}")
+//    @ApiOperation(value = "Get Paged Programs starting with", notes = "Returns list of Programs starting with passed String")
+//    @ResponseBody
+//    public List<RoomEntityDto> getPagedRoomsByNameContaining(@PathVariable String nameText,
+//                                                             @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+//                                                             @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+//        return roomService.getAvailablePagedRoomsByNameContaining(nameText, page, pageSize);
+//    }
+//
+//    @GetMapping(path = "page/building-filter/{buildingText}")
+//    @ApiOperation(value = "Get Paged Programs starting with", notes = "Returns list of Programs starting with passed String")
+//    @ResponseBody
+//    public List<RoomEntityDto> getPagedBuildingsByNameContaining(@PathVariable String buildingText,
+//                                                                 @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+//                                                                 @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+//        return roomService.getAvailablePagedBuildingsByNameContaining(buildingText, page, pageSize);
+//    }
 
-    @GetMapping(path = "page/building-filter/{buildingText}")
-    @ApiOperation(value = "Get Paged Programs starting with", notes = "Returns list of Programs starting with passed String")
-    @ResponseBody
-    public List<RoomEntityDto> getPagedBuildingsByNameContaining(@PathVariable String buildingText,
-                                                                 @RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                                                 @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        return roomService.getAvailablePagedBuildingsByNameContaining(buildingText, page, pageSize);
-    }
-
-    @GetMapping(path = "name-filter/{nameText}")
+    @GetMapping(path = "/name-filter/{nameText}")
     @ApiOperation(value = "Get Paged Programs starting with", notes = "Returns list of Programs starting with passed String")
     @ResponseBody
     public List<RoomEntityDto> getRoomsByNameContaining(@PathVariable String nameText,
@@ -163,7 +163,7 @@ public class RoomController {
         return roomService.getAvailablePagedRoomsByNameContaining(nameText, page, pageSize);
     }
 
-    @GetMapping(path = "building-filter/{buildingText}")
+    @GetMapping(path = "/building-filter/{buildingText}")
     @ApiOperation(value = "Get Paged Programs starting with", notes = "Returns list of Programs starting with passed String")
     @ResponseBody
     public List<RoomEntityDto> getBuildingsByNameContaining(@PathVariable String buildingText,

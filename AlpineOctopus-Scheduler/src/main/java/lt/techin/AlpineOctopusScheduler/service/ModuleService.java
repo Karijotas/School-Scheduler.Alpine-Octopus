@@ -9,19 +9,16 @@ import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Module;
 import lt.techin.AlpineOctopusScheduler.model.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ModuleMapper.toModuleEntityDto;
@@ -30,11 +27,8 @@ import static lt.techin.AlpineOctopusScheduler.api.dto.mapper.ModuleMapper.toMod
 
 public class ModuleService {
 
-
     private final ModuleRepository moduleRepository;
-
     private final SubjectRepository subjectRepository;
-
     private final Validator validator;
 
     @Autowired
@@ -44,12 +38,12 @@ public class ModuleService {
         this.validator = validator;
     }
 
-    void validateInputWithInjectedValidator(Module module) {
-        Set<ConstraintViolation<Module>> violations = validator.validate(module);
-        if (!violations.isEmpty()) {
-            throw new SchedulerValidationException(violations.toString(), "Module", "Error in module entity", module.toString());
-        }
-    }
+//    void validateInputWithInjectedValidator(Module module) {
+//        Set<ConstraintViolation<Module>> violations = validator.validate(module);
+//        if (!violations.isEmpty()) {
+//            throw new SchedulerValidationException(violations.toString(), "Module", "Error in module entity", module.toString());
+//        }
+//    }
 
     public boolean moduleNameIsUnique(Module module) {
         return moduleRepository.findAll()
@@ -102,14 +96,14 @@ public class ModuleService {
         return moduleRepository.save(existingModule);
     }
 
-    public Boolean deleteById(Long id) {
-        try {
-            moduleRepository.deleteById(id);
-            return true;
-        } catch (EmptyResultDataAccessException e) {
-            return false;
-        }
-    }
+//    public Boolean deleteById(Long id) {
+//        try {
+//            moduleRepository.deleteById(id);
+//            return true;
+//        } catch (EmptyResultDataAccessException e) {
+//            return false;
+//        }
+//    }
 
     @Transactional(readOnly = true)
     public List<ModuleEntityDto> getPagedModulesByNameContaining(String nameText, int page, int pageSize) {
@@ -119,33 +113,32 @@ public class ModuleService {
                 .map(ModuleMapper::toModuleEntityDto).collect(Collectors.toList());
     }
 
-    public List<ModuleEntityDto> getPagedAllModules(int page, int pageSize) {
-
-        Pageable pageable = PageRequest.of(page, pageSize, Sort.by("modifiedDate"));
-
-        return moduleRepository.findAll(pageable).stream()
-//                .sorted(Comparator.comparing(Module::getModifiedDate).reversed())
-                .map(ModuleMapper::toModuleEntityDto).collect(Collectors.toList());
-    }
+//    public List<ModuleEntityDto> getPagedAllModules(int page, int pageSize) {
+//
+//        Pageable pageable = PageRequest.of(page, pageSize, Sort.by("modifiedDate"));
+//
+//        return moduleRepository.findAll(pageable).stream()
+////                .sorted(Comparator.comparing(Module::getModifiedDate).reversed())
+//                .map(ModuleMapper::toModuleEntityDto).collect(Collectors.toList());
+//    }
 
 
     public List<Subject> getAllSubjectsById(Long moduleId) {
         return subjectRepository.findAllBySubjectModules_Id(moduleId);
     }
 
-    public boolean deleteSubjectInModuleById(Long moduleId, Long subjectId) {
-        try {
-            var existingModule = moduleRepository.findById(moduleId).get();
-            var existingSubject = subjectRepository.findAllBySubjectModules_Id(existingModule.getId())
-                    .remove(subjectId);
-//            existingModule.getSubjectModules().remove(moduleRepository.findById(moduleId).get());
-            moduleRepository.save(existingModule);
-            return true;
-        } catch (EmptyResultDataAccessException exception) {
-            return false;
-        }
-
-    }
+//    public boolean deleteSubjectInModuleById(Long moduleId, Long subjectId) {
+//        try {
+//            var existingModule = moduleRepository.findById(moduleId).get();
+//            var existingSubject = subjectRepository.findAllBySubjectModules_Id(existingModule.getId())
+//                    .remove(subjectId);
+////            existingModule.getSubjectModules().remove(moduleRepository.findById(moduleId).get());
+//            moduleRepository.save(existingModule);
+//            return true;
+//        } catch (EmptyResultDataAccessException exception) {
+//            return false;
+//        }
+//    }
 
     public List<ModuleEntityDto> getAllAvailablePagedModules(int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
@@ -220,7 +213,6 @@ public class ModuleService {
             moduleRepository.save(existingModule);
             return true;
         }
-
         return false;
     }
 }

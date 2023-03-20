@@ -28,11 +28,11 @@ public class Groups {
     @NotNull
     private Integer studentAmount;
     @Valid
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "program_id")
     private Program program;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "shift_id")
     private Shift shift;
 
@@ -71,7 +71,7 @@ public class Groups {
 
     public Groups() {
     }
-    
+
     public Long getId() {
         return id;
     }
