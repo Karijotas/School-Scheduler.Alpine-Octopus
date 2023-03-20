@@ -18,7 +18,7 @@ CREATE TABLE schedule (
    name VARCHAR(255),
    starting_date date,
    planned_till_date date,
-   status VARCHAR(255),
+   status BIGINT,
    group_id BIGINT,
    shift_id BIGINT,
    group_id_value VARCHAR(255),
