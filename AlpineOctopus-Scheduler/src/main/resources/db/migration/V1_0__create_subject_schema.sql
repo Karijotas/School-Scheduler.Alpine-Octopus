@@ -98,6 +98,14 @@ CREATE TABLE modules_subjects (
    CONSTRAINT pk_modules_subjects PRIMARY KEY (module_id, subject_id)
 );
 
+CREATE TABLE holiday (
+  id BIGINT AUTO_INCREMENT NOT NULL,
+   name VARCHAR(255),
+   start_date date,
+   end_date date,
+   CONSTRAINT pk_holiday PRIMARY KEY (id)
+);
+
 ALTER TABLE modules_subjects ADD CONSTRAINT fk_modsub_on_module FOREIGN KEY (module_id) REFERENCES module (id);
 
 ALTER TABLE modules_subjects ADD CONSTRAINT fk_modsub_on_subject FOREIGN KEY (subject_id) REFERENCES subject (id);

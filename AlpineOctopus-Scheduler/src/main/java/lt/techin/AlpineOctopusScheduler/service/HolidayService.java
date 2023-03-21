@@ -12,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.xml.validation.Validator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,12 +19,12 @@ import java.util.stream.Collectors;
 @Service
 public class HolidayService {
     private final HolidayRepository holidayRepository;
-    private final Validator validator;
+
 
     @Autowired
-    public HolidayService(HolidayRepository holidayRepository, Validator validator) {
+    public HolidayService(HolidayRepository holidayRepository) {
         this.holidayRepository = holidayRepository;
-        this.validator = validator;
+
     }
 
     public boolean classIsUnique(Holiday holiday) {
@@ -39,14 +38,20 @@ public class HolidayService {
                 .map(HolidayMapper::toHolidayTestDto).collect(Collectors.toList());
     }
 
+    public List<HolidayEntityDto> getAllPagedHolidays(int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return holidayRepository.findAll(pageable).stream()
+                .map(HolidayMapper::toHolidayEntityDto).collect(Collectors.toList());
+    }
+
     public List<Holiday> getAll() {
         return holidayRepository.findAll();
     }
 
     @Transactional(readOnly = true)
-    public List<HolidayEntityDto> getAvailablePagedHolidaysByNameContaining(String nameText, int page, int pageSize) {
+    public List<HolidayEntityDto> getPagedHolidaysByNameContaining(String nameText, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        return holidayRepository.finByNameContainingIgnoreCase(nameText).stream()
+        return holidayRepository.findByNameContainingIgnoreCase(nameText, pageable).stream()
                 .map(HolidayMapper::toHolidayEntityDto).collect(Collectors.toList());
     }
 

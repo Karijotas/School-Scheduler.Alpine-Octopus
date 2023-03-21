@@ -3,7 +3,6 @@ package lt.techin.AlpineOctopusScheduler.api;
 import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.HolidayDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.HolidayEntityDto;
-import lt.techin.AlpineOctopusScheduler.api.dto.HolidayTestDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.HolidayMapper;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Holiday;
@@ -34,19 +33,13 @@ public class HolidayController {
         this.holidayService = holidayService;
     }
 
-    //////////////////////////////////////////
+
     @GetMapping
     @ResponseBody
     public List<HolidayEntityDto> getAllHolidays() {
         return holidayService.getAll().stream()
                 .map(HolidayMapper::toHolidayEntityDto)
                 .collect(toList());
-    }
-
-    @GetMapping(path = "/all")
-    @ResponseBody
-    public List<HolidayTestDto> getAllHoliday() {
-        return holidayService.getAllHolidays();
     }
 
     @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
@@ -82,55 +75,28 @@ public class HolidayController {
 
         if (holidayDeleted) {
             return ResponseEntity.noContent().build();
-//            new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+
         }
         return ResponseEntity.notFound().build();
     }
 
-//    @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
-//    @ResponseBody
-//    public List<RoomEntityDto> getPagedAllRooms(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
-//                                                @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-//
-//
-//        return roomService.getPagedAllRooms(page, pageSize);
-//
-//    }
-
-//    @GetMapping(path = "page/name-filter/{nameText}")
-//    @ApiOperation(value = "Get Paged Programs starting with", notes = "Returns list of Programs starting with passed String")
-//    @ResponseBody
-//    public List<RoomEntityDto> getPagedRoomsByNameContaining(@PathVariable String nameText,
-//                                                             @RequestParam(value = "page", defaultValue = "0", required = false) int page,
-//                                                             @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-//        return roomService.getAvailablePagedRoomsByNameContaining(nameText, page, pageSize);
-//    }
-//
-//    @GetMapping(path = "page/building-filter/{buildingText}")
-//    @ApiOperation(value = "Get Paged Programs starting with", notes = "Returns list of Programs starting with passed String")
-//    @ResponseBody
-//    public List<RoomEntityDto> getPagedBuildingsByNameContaining(@PathVariable String buildingText,
-//                                                                 @RequestParam(value = "page", defaultValue = "0", required = false) int page,
-//                                                                 @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-//        return roomService.getAvailablePagedBuildingsByNameContaining(buildingText, page, pageSize);
-//    }
-
-    @GetMapping(path = "/name-filter/{nameText}")
-    @ApiOperation(value = "Get Paged Holidays starting with", notes = "Returns list of Holidayss starting with passed String")
+    @GetMapping(path = "/page", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public List<HolidayEntityDto> getHolidaysByNameContaining(@PathVariable String nameText,
-                                                              @RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                                              @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        return holidayService.getAvailablePagedHolidaysByNameContaining(nameText, page, pageSize);
+    public List<HolidayEntityDto> getPagedHolidays(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                   @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+
+
+        return holidayService.getAllPagedHolidays(page, pageSize);
+
     }
 
-//    @GetMapping(path = "/building-filter/{buildingText}")
-//    @ApiOperation(value = "Get Paged Programs starting with", notes = "Returns list of Programs starting with passed String")
-//    @ResponseBody
-//    public List<RoomEntityDto> getBuildingsByNameContaining(@PathVariable String buildingText,
-//                                                            @RequestParam(value = "page", defaultValue = "0", required = false) int page,
-//                                                            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-//        return roomService.getAvailablePagedBuildingsByNameContaining(buildingText, page, pageSize);
-//    }
+    @GetMapping(path = "page/name-filter/{nameText}")
+    @ApiOperation(value = "Get Paged Holidays starting with", notes = "Returns list of Holidays starting with passed String")
+    @ResponseBody
+    public List<HolidayEntityDto> getPagedHolidaysByNameContaining(@PathVariable String nameText,
+                                                                   @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                                   @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+        return holidayService.getPagedHolidaysByNameContaining(nameText, page, pageSize);
+    }
 
 }
