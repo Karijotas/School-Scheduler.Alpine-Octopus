@@ -45,6 +45,7 @@ CREATE TABLE lesson (
    room_id BIGINT,
    lesson_hours INT NOT NULL,
    online BOOLEAN NOT NULL,
+   status BIGINT,
    start_time TIMESTAMP,
    end_time TIMESTAMP,
    created_date TIMESTAMP,

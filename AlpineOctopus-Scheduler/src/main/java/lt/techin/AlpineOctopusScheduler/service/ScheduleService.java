@@ -141,23 +141,32 @@ public class ScheduleService {
         //finding the schedule in repository
         var existingSchedule = scheduleRepository.findById(id)
                 .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", id.toString()));
-        //finding the teacher
-        var existingTeacher = teacherRepository.findById(teacherId)
-                .orElseThrow(() -> new SchedulerValidationException("Teacher does not exist", "id", "Teacher not found", teacherId.toString()));
-        //setting the teacher
-        existingSchedule.getSubjects()
-                .stream()
-                .filter(lesson -> lesson.getId().equals(lessonId))
-                .forEach(lesson -> lesson.setTeacher(existingTeacher));
-        //finding the room
-        var existingRoom = roomRepository.findById(roomId)
-                .orElseThrow(() -> new SchedulerValidationException("Room does not exist", "id", "Room not found", roomId.toString()));
-        //setting the room
-        existingSchedule.getSubjects()
-                .stream()
-                .filter(lesson -> lesson.getId().equals(lessonId))
-                .forEach(lesson -> lesson.setRoom(existingRoom));
 
+        if (teacherId != null) {
+            //finding the teacher
+            var existingTeacher = teacherRepository.findById(teacherId)
+                    .orElseThrow(() -> new SchedulerValidationException("Teacher does not exist", "id", "Teacher not found", teacherId.toString()));
+            //setting the teacher
+            existingSchedule.getSubjects()
+                    .stream()
+                    .filter(lesson -> lesson.getId().equals(lessonId))
+                    .forEach(lesson -> lesson.setTeacher(existingTeacher));
+        } else {
+            existingSchedule.setStatus(2);
+        }
+
+        if (roomId != null) {
+            //finding the room
+            var existingRoom = roomRepository.findById(roomId)
+                    .orElseThrow(() -> new SchedulerValidationException("Room does not exist", "id", "Room not found", roomId.toString()));
+            //setting the room
+            existingSchedule.getSubjects()
+                    .stream()
+                    .filter(lesson -> lesson.getId().equals(lessonId))
+                    .forEach(lesson -> lesson.setRoom(existingRoom));
+        } else {
+            existingSchedule.setStatus(2);
+        }
         //replacing the subjectList
         existingSchedule.setSubjects(existingSchedule.getSubjects());
         //save to repository
