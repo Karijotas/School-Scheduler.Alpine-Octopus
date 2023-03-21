@@ -1,4 +1,4 @@
-import { L10n } from '@syncfusion/ej2-base';
+import { L10n, setCulture } from '@syncfusion/ej2-base';
 import { ButtonComponent } from '@syncfusion/ej2-react-buttons';
 import { DateTimePickerComponent } from '@syncfusion/ej2-react-calendars';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
@@ -6,6 +6,7 @@ import { Agenda, Day, DragAndDrop, ExcelExport, Inject, Month, Print, Resize, Re
 import React, { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
 import { Button, Container } from "semantic-ui-react";
+import { UploaderComponent, TextBoxComponent } from '@syncfusion/ej2-react-inputs';
 import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap5.css";
 import './Schedule.css';
 
@@ -14,15 +15,25 @@ const JSON_HEADERS = {
 };
 
 L10n.load({
-  'en-US': {
-    'schedule': {
-      'saveButton': 'Add',
-      'cancelButton': 'Close',
-      'deleteButton': 'Remove',
-      'newEvent': 'Add Event',
+  lt: {
+    datetimepicker: {
+      placeholder: "Pasirinkite datą",
+      today: "Šiandien",
     },
-  }
+    timeFormats: {
+      short: "HH",
+    },
+    schedule: {
+      saveButton: 'Pridėti' ,
+      cancelButton: 'Uždaryti',
+      deleteButton: 'Pašalinti',
+      newEvent: 'Pridėti pamoką',
+      editEvent: 'Redaguoti pamoką',
+    },  
+  },
 });
+setCulture("lt");
+  
 
 Schedule.Inject(Day, Week, WorkWeek, Month, Agenda, Resize, DragAndDrop, Print, ExcelExport);
 
@@ -38,6 +49,15 @@ export function ScheduleView() {
     GroupId: 1,
     Description: "ONLINE"
   });
+  let eventTypeObj;
+  let titleObj;
+  let notesObj;
+  let contextMenuObj;
+  let isTimelineView = false;
+  let selectedTarget;
+ 
+  let workWeekObj;
+  let resourceObj;
 
   const [schedules, setSchedules] = useState([]);
   const [lessons, setLessons] = useState([]);
@@ -59,10 +79,10 @@ export function ScheduleView() {
   //     args.items.push(exportItem);
   //   }
   // }
-  function onPrintIconClick() {
-    scheduleObj.print();
-  }
 
+  function onPrint() {
+    scheduleObj.print();
+}
   function onExportClick() {
     scheduleObj.exportToExcel();
   }
@@ -105,7 +125,13 @@ export function ScheduleView() {
       .then(setSchedules);
   }, [params]);
 
+  function onPrint() {
+    scheduleObj.print();
+}
 
+function onExportClick() {
+  scheduleObj.exportToExcel();
+}
   const lessonsOnSchedule = lessons.map(l => {
     return {
       Id: l.id,
@@ -128,6 +154,8 @@ export function ScheduleView() {
 
   });
 
+  
+
   function ClickButton() {
     scheduleObj.closeEditor();
   }
@@ -142,48 +170,112 @@ export function ScheduleView() {
     </div>);
   }
 
-  function editorTemplate(props) {
-    return (props !== undefined ? <table className="custom-event-editor" style={{ width: '100%' }}>
-      <tbody>
-        <tr><td className="e-textlabel">Pamoka</td><td colSpan={4}>
-          <DropDownListComponent id="Subject" placeholder='Pasirinkti' data-name="Subject" className="e-field" style={{ width: '100%' }} dataSource={subjectsOnSchedule} fields={subjectFields}
-            onChange={(e) => setSubjectId(e.value)}>
-          </DropDownListComponent>
+  // function editorTemplate(props) {
+  //   return (props !== undefined ? <table className="custom-event-editor" style={{ width: '100%' }}>
+  //     <tbody>
+  //       <tr><td className="e-textlabel">Pamoka</td><td colSpan={4}>
+  //         <DropDownListComponent id="Subject" placeholder='Pasirinkti' data-name="Subject" className="e-field" style={{ width: '100%' }} dataSource={subjectsOnSchedule} fields={subjectFields}
+  //           onChange={(e) => setSubjectId(e.value)}>
+  //         </DropDownListComponent>
 
-        </td></tr>
-        {/* <tr><td className="e-textlabel">Nuotolinė pamoka</td><td colSpan={4}>
-          <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['Taip', 'Ne']}>
-          </DropDownListComponent>
-        </td></tr>
-        <tr><td className="e-textlabel">Mokytojas</td><td colSpan={4}>
-          <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['Mokytojas1', 'Mokytojas2', 'Mokytojas']}>
-          </DropDownListComponent>
-        </td></tr>
-        <tr><td className="e-textlabel">Kabinetas</td><td colSpan={4}>
-          <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['Kabinetas1', 'Kabinetas2']}>
-          </DropDownListComponent>
-        </td></tr> */}
-        <tr><td className="e-textlabel">Data nuo</td><td colSpan={4}>
-          <DateTimePickerComponent firstDayOfWeek={1} format='yyyy/MM/dd HH' timeFormat={"HH"} step={60} locale='lt' id="StartTime" data-name="StartTime" value={new Date(props.startTime || props.StartTime || startTime)} onChange={(e) => setStartTime(new Date(e.value).toISOString())} className="e-field"></DateTimePickerComponent>
-        </td></tr>
-        <tr><td className="e-textlabel">Data iki</td><td colSpan={4}>
-          <DateTimePickerComponent firstDayOfWeek={1} locale='lt' format='yyyy/MM/dd HH' timeFormat={"HH"} step={60} id="EndTime" data-name="EndTime" value={new Date(props.endTime || props.EndTime || endTime)} onChange={(e) => setEndTime(new Date(e.value).toISOString())} className="e-field"></DateTimePickerComponent>
-        </td></tr>
-        {/* <tr><td className="e-textlabel">Pamoka nuo</td><td colSpan={4}>
-          <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14']}>
-          </DropDownListComponent>
-        </td></tr>
-        <tr><td className="e-textlabel">Pamoka iki</td><td colSpan={4}>
-          <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14']}>
-          </DropDownListComponent>
-        </td></tr> */}
-        <tr><td className="e-textlabel">Pastabos</td><td colSpan={4}>
-          <textarea id="Description" className="e-field e-input" name="Description" rows={3} cols={50} style={{ width: '100%', height: '60px !important', resize: 'vertical' }}></textarea>
-        </td></tr>
-       </tbody>
-    </table> : '');
-  }
+  //       </td></tr>
+  //       {/* <tr><td className="e-textlabel">Nuotolinė pamoka</td><td colSpan={4}>
+  //         <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['Taip', 'Ne']}>
+  //         </DropDownListComponent>
+  //       </td></tr>
+  //       <tr><td className="e-textlabel">Mokytojas</td><td colSpan={4}>
+  //         <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['Mokytojas1', 'Mokytojas2', 'Mokytojas']}>
+  //         </DropDownListComponent>
+  //       </td></tr>
+  //       <tr><td className="e-textlabel">Kabinetas</td><td colSpan={4}>
+  //         <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['Kabinetas1', 'Kabinetas2']}>
+  //         </DropDownListComponent>
+  //       </td></tr> */}
+  //       <tr><td className="e-textlabel">Data nuo</td><td colSpan={4}>
+  //         <DateTimePickerComponent firstDayOfWeek={1} format='yyyy/MM/dd HH' timeFormat={"HH"} step={60} locale='lt' id="StartTime" data-name="StartTime" value={new Date(props.startTime || props.StartTime || startTime)} onChange={(e) => setStartTime(new Date(e.value).toISOString())} className="e-field"></DateTimePickerComponent>
+  //       </td></tr>
+  //       <tr><td className="e-textlabel">Data iki</td><td colSpan={4}>
+  //         <DateTimePickerComponent firstDayOfWeek={1} locale='lt' format='yyyy/MM/dd HH' timeFormat={"HH"} step={60} id="EndTime" data-name="EndTime" value={new Date(props.endTime || props.EndTime || endTime)} onChange={(e) => setEndTime(new Date(e.value).toISOString())} className="e-field"></DateTimePickerComponent>
+  //       </td></tr>
+  //       {/* <tr><td className="e-textlabel">Pamoka nuo</td><td colSpan={4}>
+  //         <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14']}>
+  //         </DropDownListComponent>
+  //       </td></tr>
+  //       <tr><td className="e-textlabel">Pamoka iki</td><td colSpan={4}>
+  //         <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14']}>
+  //         </DropDownListComponent>
+  //       </td></tr> */}
+  //       <tr><td className="e-textlabel">Pastabos</td><td colSpan={4}>
+  //         <textarea id="Description" className="e-field e-input" name="Description" rows={3} cols={50} style={{ width: '100%', height: '60px !important', resize: 'vertical' }}></textarea>
+  //       </td></tr>        
+  //      </tbody>       
+  //   </table> : '');
+  // }
 
+  function footerTemplate(props) {
+    return (<div className="quick-info-footer">
+    {props.elementType == "cell" ?
+            <div className="cell-footer">
+        <ButtonComponent id="more-details" cssClass='e-flat' content="More Details" />
+        <ButtonComponent id="add" cssClass='e-flat' content="Add" isPrimary={true} />
+      </div>
+            :
+                <div className="event-footer">
+        <ButtonComponent id="delete" cssClass='e-flat' content="Delete" />
+        <ButtonComponent id="more-details" cssClass='e-flat' content="More Details" isPrimary={true} />
+      </div>}
+  </div>);
+}
+
+function headerTemplate(props) {
+  return (<div className="quick-info-header">
+  {/* <div className="quick-info-header-content" style={getHeaderStyles(props)}>
+    <div className="quick-info-title">{getHeaderTitle(props)}</div>
+    <div className="duration-text">{getHeaderDetails(props)}</div>
+  </div> */}
+</div>);
+}
+function contentTemplate(props) {
+  return (<div className="quick-info-content">
+  {props.elementType === 'cell' ?
+          <div className="e-cell-content">
+      <div className="content-area">
+        <TextBoxComponent id="title" ref={(textbox) => titleObj = textbox} placeholder="Title"/>
+      </div>
+      <div className="content-area">
+        <TextBoxComponent id="notes" ref={(textbox) => notesObj = textbox} placeholder="Notes"/>
+      </div>
+    </div>
+          :
+              <div className="event-content">
+      <div className="meeting-type-wrap">
+        <label>Subject</label>:
+        <span>{props.Subject}</span>
+      </div>
+      <div className="meeting-subject-wrap">
+        
+      </div>
+      <div className="notes-wrap">
+        <label>Notes</label>:
+        <span>{props.Description}</span>
+      </div>
+    </div>}
+</div>);
+}
+function footerTemplate(props) {
+  return (<div className="quick-info-footer">
+  {props.elementType == "cell" ?
+          <div className="cell-footer">
+      <ButtonComponent id="more-details" cssClass='e-flat' content="More Details" />
+      <ButtonComponent id="add" cssClass='e-flat' content="Add" isPrimary={true}/>
+    </div>
+          :
+              <div className="event-footer">
+      <ButtonComponent id="delete" cssClass='e-flat' content="Delete" />
+      <ButtonComponent id="more-details" cssClass='e-flat' content="More Details" isPrimary={true} />
+    </div>}
+</div>);
+}
   // function change(args) {
   //     scheduleObj.selectedDate = args.value;
   //     scheduleObj.dataBind();
@@ -236,7 +328,6 @@ export function ScheduleView() {
     EndTime: new Date(2023, 1, 6, 12, 0),
     IsAllDay: false,
     IsBlock: true,
-
   }];
 
   const resourceData = [
@@ -268,8 +359,20 @@ export function ScheduleView() {
       
 
       <h1 className="title-text">{schedules.name}</h1>
-      <ScheduleComponent id='schedule' ref={shedule => scheduleObj = shedule} timeFormat='HH' firstDayOfWeek='1' height='550px' editorTemplate={editorTemplate} selectedDate={new Date(2023, 1, 10, 24, 0)} eventSettings={{ dataSource: lessonsOnSchedule }}
-        colorField='Color' currentView='Month' > 
+      <div className='right-panel'>
+                  <div className='control-panel calendar-export'>
+                    <ButtonComponent id='printBtn' cssClass='title-bar-btn' iconCss='e-icons e-print' onClick={(onPrint.bind(this))} content='Print'/>
+                  </div>
+                  {/* <div className='control-panel calendar-export'>
+                    <ButtonComponent id='exportBtn' cssClass='title-bar-btn' iconCss='e-icons export-excel' onClick={(onExportClick.bind(this))} content='Excel'/>
+                  </div>               */}
+                </div>
+      <ScheduleComponent id='schedule' ref={shedule => scheduleObj = shedule} timeZone='UTC+2'timeFormat='HH' firstDayOfWeek='1' height='550px'  selectedDate={new Date(2023, 1, 10, 24, 0)} eventSettings={{ dataSource: lessonsOnSchedule}} quickInfoTemplates={{
+            header: headerTemplate.bind(this),
+            content: contentTemplate.bind(this),
+            footer: footerTemplate.bind(this)
+        }}
+        colorField='Color' currentView='Month'> 
         {console.log(lessons)}
         {console.log(endTime)}
         <ResourcesDirective>
@@ -277,12 +380,12 @@ export function ScheduleView() {
           </ResourceDirective>
         </ResourcesDirective>
         <ViewsDirective>
-          <ViewDirective option='Day' startHour='01:00' endHour='15:00' timeScale={{ interval: 1, slotCount: 1 }} eventTemplate={eventTemplate.bind(this)} />
+          <ViewDirective option='Day' startHour='01:00' endHour='15:00' timeScale={{ slotCount: 1 }} eventTemplate={eventTemplate.bind(this)}  />
           <ViewDirective option='Week' startHour='01:00' endHour='15:00' timeScale={{ slotCount: 1 }} eventTemplate={eventTemplate.bind(this)} />
-          <ViewDirective option='WorkWeek' startHour='01:00' endHour='15:00' timeScale={{ slotCount: 1}} eventTemplate={eventTemplate.bind(this)} />
-          <ViewDirective option='Month' startHour='01:00' endHour='15:00' timeScale={{ slotCount: 1 }} eventTemplate={eventTemplate.bind(this)} />
+          <ViewDirective option='WorkWeek' startHour='01:00' endHour='15:00' timeScale={{ slotCount: 1}} eventTemplate={eventTemplate.bind(this)}  />
+          <ViewDirective option='Month' startHour='01:00' endHour='15:00' timeScale={{ slotCount: 1 }} eventTemplate={eventTemplate.bind(this)}/>
         </ViewsDirective>
-        <Inject services={[Day, Week, WorkWeek, Month, Agenda, DragAndDrop, ExcelExport]} />
+        <Inject services={[Day, Week, WorkWeek, Month, Agenda, DragAndDrop, ExcelExport, Print]} />
       </ScheduleComponent>
 
       <Button onClick={() => createLessonOnSchedule()}>add</Button>
