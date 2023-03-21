@@ -1,5 +1,5 @@
 import { addClass, closest, extend, remove } from '@syncfusion/ej2-base';
-import { DatePickerComponent, DateTimePickerComponent } from '@syncfusion/ej2-react-calendars';
+import { DateTimePickerComponent } from '@syncfusion/ej2-react-calendars';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { TreeViewComponent } from '@syncfusion/ej2-react-navigations';
 import { Agenda, Day, DragAndDrop, ExcelExport, Inject, Month, Print, Resize, ResourcesDirective, Schedule, ScheduleComponent, TimelineMonth, TimelineViews, ViewDirective, ViewsDirective, Week, WorkWeek } from '@syncfusion/ej2-react-schedule';
@@ -19,19 +19,21 @@ export function Drag_Drop() {
     let treeObj;
     let isTreeItemDropped = false;
     let draggedItemId = '';
+    const [subjectId, setSubjectId] = useState()
     const allowDragAndDrops = true;
     useEffect(() => {
         updateSampleSection();
     }, []);
 
     function treeTemplate(props) {
-        return (<div id="waiting"><div id="waitdetails"><div id="waitlist">{props.Name}</div>
+        return (<div id="waiting"><div id="waitdetails"><div id="waitlist">{props.Subject}</div>
             <div id="waitcategory">{props.LessonHours} val {props.id}</div></div></div>);
     }
 
     function onItemSelecting(args) {
         args.cancel = true;
     }
+
     function onTreeDrag(event) {
         if (scheduleObj.isAdaptive) {
             let classElement = scheduleObj.element.querySelector('.e-device-hover');
@@ -54,20 +56,68 @@ export function Drag_Drop() {
             }
         }
     }
+
+    function onTreeDragStop(event) {
+        let treeElement = closest(event.target, '.e-treeview');
+        let classElement = scheduleObj.element.querySelector('.e-device-hover');
+        if (classElement) {
+            classElement.classList.remove('e-device-hover');
+        }
+        if (!treeElement) {
+            event.cancel = true;
+            let scheduleElement = closest(event.target, '.e-content-wrap');
+            if (scheduleElement) {
+                let treeviewData = treeObj.fields.dataSource;
+                if (event.target.classList.contains('e-work-cells')) {
+                    const filteredData = treeviewData.filter((item) => item.Id === parseInt(event.draggedNodeData.id, 10));
+                    let cellData = scheduleObj.getCellDetails(event.target);
+                    let eventData = {
+                        Id: filteredData[0].Id,
+                        Subject: filteredData[0].Subject,
+                        StartTime: cellData.startTime,
+                        EndTime: cellData.endTime,
+
+                    };
+                    scheduleObj.openEditor(eventData, 'Add', true);
+                    isTreeItemDropped = true;
+                    draggedItemId = event.draggedNodeData.id;
+                    setSubjectId(eventData.Id);
+                }
+            }
+        }
+        document.body.classList.remove('e-disble-not-allowed');
+    }
+    function onTreeDragStart() {
+        document.body.classList.add('e-disble-not-allowed');
+    }
+  const [updated, setUpdated] = useState();
+    const fields = { dataSource: subjectsOnSchedule, text: 'Subject', id: 'Id', };
+    const data = extend([], { dataSource: lessonsOnSchedule }, null, true);
+
+    useEffect(() => {
+        setUpdated(true);
+    }, [setUpdated]);
+
     function editorTemplate(props) {
         return (props !== undefined ? <table className="custom-event-editor" style={{ width: '100%' }}>
             <tbody>
-                {/* <tr><td className="e-textlabel">Pamoka</td><td colSpan={4}>
-                    <DropDownListComponent id="Subject" placeholder='Pasirinkti' data-name="Name" className="e-field" style={{ width: '100%' }}
+                <tr><td className="e-textlabel">Pamoka</td><td colSpan={4}>
+                    <DropDownListComponent
+                        id="Subject"
+                        placeholder='Pasirinkti'
+                        data-name="Name"
+                        className="e-field"
+                        style={{ width: '100%' }}
+                        value={props.Subject}
                         dataSource={subjectsOnSchedule}
                         fields={fields}
-                    // onChange={(e) => setSubjectId(e.value)}
+                        onChange={(e) => setSubjectId(e.value)}
                     >
                     </DropDownListComponent>
-                </td></tr> */}
-                <tr><td className="e-textlabel">Pamoka</td><td colSpan={4}>
-          <input id="Summary" className="e-field e-input" type="text" name="Name" style={{ width: '100%' }} />
-        </td></tr>
+                </td></tr>
+                {/* <tr><td className="e-textlabel">Pamoka</td><td colSpan={4}>
+          <input id="Summary" className="e-field e-input" type="text" name="Subject" style={{ width: '100%' }} value={props.Subject} />
+        </td></tr> */}
                 {/* <tr><td className="e-textlabel">Nuotolinė pamoka</td><td colSpan={4}>
               <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['Taip', 'Ne']}>
               </DropDownListComponent>
@@ -88,13 +138,14 @@ export function Drag_Drop() {
                         //   onChange={(e) => setStartTime(new Date(e.value).toISOString())} 
                         className="e-field"></DateTimePickerComponent>
                 </td></tr>
-                <tr><td className="e-textlabel">Data iki</td><td colSpan={4}>
-                    <DateTimePickerComponent firstDayOfWeek={1} locale='lt' format='yyyy/MM/dd HH' timeFormat={"HH"} step={60} id="EndTime" data-name="EndTime" value={new Date(props.endTime || props.EndTime
-                        // || endTime
-                    )}
-                        // onChange={(e) => setEndTime(new Date(e.value).toISOString())} 
-                        className="e-field"></DateTimePickerComponent>
-                </td></tr>
+                <tr>
+                    <td className="e-textlabel">Data iki</td><td colSpan={4}>
+                        <DateTimePickerComponent firstDayOfWeek={1} locale='lt' format='yyyy/MM/dd HH' timeFormat={"HH"} step={60} id="EndTime" data-name="EndTime" value={new Date(props.endTime || props.EndTime
+                            // || endTime
+                        )}
+                            // onChange={(e) => setEndTime(new Date(e.value).toISOString())} 
+                            className="e-field"></DateTimePickerComponent>
+                    </td></tr>
                 {/* <tr><td className="e-textlabel">Pamoka nuo</td><td colSpan={4}>
               <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14']}>
               </DropDownListComponent>
@@ -122,41 +173,11 @@ export function Drag_Drop() {
     const subjectsOnSchedule = subjects.map(s => {
         return {
             Id: s.id,
-            Name: s.subject.name,
+            Subject: s.subject.name,
             LessonHours: s.lessonHours
         }
     })
-    function onTreeDragStop(event) {
-        let treeElement = closest(event.target, '.e-treeview');
-        let classElement = scheduleObj.element.querySelector('.e-device-hover');
-        if (classElement) {
-            classElement.classList.remove('e-device-hover');
-        }
-        if (!treeElement) {
-            event.cancel = true;
-            let scheduleElement = closest(event.target, '.e-content-wrap');
-            if (scheduleElement) {
-                let treeviewData = treeObj.fields.dataSource;
-                if (event.target.classList.contains('e-work-cells')) {
-                    const filteredData = treeviewData.filter((item) => item.Id === parseInt(event.draggedNodeData.id, 10));
-                    let cellData = scheduleObj.getCellDetails(event.target);
-                    let eventData = {
-                        Name: filteredData[0].Name,
-                        StartTime: cellData.startTime,
-                        EndTime: cellData.endTime,
 
-                    };
-                    scheduleObj.openEditor(eventData, 'Add', true);
-                    isTreeItemDropped = true;
-                    draggedItemId = event.draggedNodeData.id;
-                }
-            }
-        }
-        document.body.classList.remove('e-disble-not-allowed');
-    }
-    function onTreeDragStart() {
-        document.body.classList.add('e-disble-not-allowed');
-    }
 
     const [lessons, setLessons] = useState([]);
 
@@ -198,14 +219,7 @@ export function Drag_Drop() {
     })
 
 
-    const [updated, setUpdated] = useState();
-    const fields = { dataSource: subjectsOnSchedule, text: 'Name', id: 'Id', };
-    const data = extend([], { dataSource: lessonsOnSchedule }, null, true);
-
-    useEffect(() => {
-        setUpdated(true);
-    }, [setUpdated]);
-
+  
 
 
     // function change(args) {
@@ -292,7 +306,7 @@ export function Drag_Drop() {
                 <div className='control-wrapper drag-sample-wrapper'>
                     {/* <Grid.Column stretched width={13}> */}
                     <div className="schedule-container">
-
+                        {console.log(subjectId)}
                         <h1 className="title-text">Tvarkaraštis</h1>
                         <ScheduleComponent
                             ref={schedule => scheduleObj = schedule}
@@ -338,7 +352,7 @@ export function Drag_Drop() {
                             cssClass='treeview-external-drag'
                             dragArea=".drag-sample-wrapper"
                             nodeTemplate={treeTemplate.bind(this)}
-                            fields={{ dataSource: subjectsOnSchedule, text: 'Name', id: 'Id', }}
+                            fields={{ dataSource: subjectsOnSchedule, text: 'Subject', id: 'Id', }}
                             nodeDragStop={onTreeDragStop.bind(this)}
                             nodeSelecting={onItemSelecting.bind(this)}
                             nodeDragging={onTreeDrag.bind(this)}
