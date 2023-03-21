@@ -131,6 +131,7 @@ public class ScheduleService {
         schedule.setShift(createdGroup.getShift());
         schedule.setShiftName(createdGroup.getShift().getName());
         schedule.setSubjects(lessonList);
+        schedule.setStatus(1);
 
 
         return scheduleRepository.save(schedule);
@@ -151,8 +152,9 @@ public class ScheduleService {
                     .stream()
                     .filter(lesson -> lesson.getId().equals(lessonId))
                     .forEach(lesson -> lesson.setTeacher(existingTeacher));
+            existingSchedule.setStatus(0);
         } else {
-            existingSchedule.setStatus(2);
+            existingSchedule.setStatus(1);
         }
 
         if (roomId != null) {
@@ -164,6 +166,7 @@ public class ScheduleService {
                     .stream()
                     .filter(lesson -> lesson.getId().equals(lessonId))
                     .forEach(lesson -> lesson.setRoom(existingRoom));
+            existingSchedule.setStatus(0);
         } else {
             existingSchedule.setStatus(2);
         }

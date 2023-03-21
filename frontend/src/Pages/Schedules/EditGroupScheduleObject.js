@@ -241,13 +241,21 @@ export function EditGroupScheduleObject() {
                             icon="check"
                             title="Galiojantis"
                           />
-                        ) : (
+                        ) : schedules.status === 1 ?(
                           <Button
-                            id="attention"
+                            id="attention1"
                             basic
                             compact
                             icon="attention"
                             title="Nevaliduotas"
+                          />
+                        ) : (
+                          <Button
+                            id="attention2"
+                            basic
+                            compact
+                            icon="attention"
+                            title="Dėmesio"
                           />
                         )}
                       </Table.Cell>

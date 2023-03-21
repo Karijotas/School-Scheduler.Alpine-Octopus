@@ -220,13 +220,21 @@ export function ViewGroupsSchedules() {
                             icon="check"
                             title="Galiojantis"
                           />
-                        ) : (
+                        ) : schedule.status === 1 ?(
                           <Button
-                            id="attention"
+                            id="attention1"
                             basic
                             compact
                             icon="attention"
                             title="Nevaliduotas"
+                          />
+                        ) : (
+                          <Button
+                            id="attention2"
+                            basic
+                            compact
+                            icon="attention"
+                            title="Dėmesio"
                           />
                         )}
                       </Table.Cell>
