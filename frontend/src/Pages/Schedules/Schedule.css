@@ -10,12 +10,13 @@
 
 
 #treeview{
-    margin-top: 50px;
+    margin-top: 20vmin;
 }
 
 .drag-sample-wrapper {
     display: -ms-flexbox;
     display: flex;
+    
 }
 
 .schedule-container {
@@ -30,6 +31,7 @@
 .treeview-external-drag #waiting {
     height: 100%;
     padding: 0;
+
 }
 
 .treeview-external-drag #waitdetails {
@@ -37,6 +39,7 @@
     float: left;
     height: 100%;
     padding: 0;
+    
 }
 
 .e-schedule.schedule-drag-drop .e-resource-cells.e-parent-node .template-wrap {
@@ -60,6 +63,7 @@
     padding: 5px 0 0 10px;
     overflow: hidden;
     text-overflow: ellipsis;
+    
 }
 
 .treeview-external-drag #waitcategory {
@@ -71,6 +75,7 @@
     padding-top: 5px;
     overflow: hidden;
     text-overflow: ellipsis;
+    
 }
 
 .treeview-external-drag .e-list-text, .treeview-external-drag.e-rtl .e-list-text, .e-bigger .treeview-external-drag .e-list-text, .e-bigger .treeview-external-drag.e-rtl .e-list-text {
@@ -79,6 +84,7 @@
     line-height: 15px;
     padding: 0 5px;
     width: 220px;
+    
 }
 
 .treeview-external-drag .e-list-parent, .treeview-external-drag.e-rtl .e-list-parent, .e-bigger .treeview-external-drag .e-list-parent, .e-bigger .treeview-external-drag.e-rtl .e-list-parent {

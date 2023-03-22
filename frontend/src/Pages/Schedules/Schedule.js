@@ -5,7 +5,7 @@ import { TreeViewComponent } from '@syncfusion/ej2-react-navigations';
 import { Agenda, Day, DragAndDrop, ExcelExport, Inject, Month, Print, Resize, ResourceDirective, ResourcesDirective, Schedule, ScheduleComponent, ViewDirective, ViewsDirective, Week, WorkWeek } from '@syncfusion/ej2-react-schedule';
 import React, { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
-import { Button, Grid, Segment } from "semantic-ui-react";
+import { Button, Grid, Header, Message, Segment } from "semantic-ui-react";
 import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap5.css";
 import { updateSampleSection } from './sample-base';
 import './Schedule.css';
@@ -61,7 +61,7 @@ export function ScheduleView() {
 
   function treeTemplate(props) {
     return (<div id="waiting"><div id="waitdetails"><div id="waitlist">{props.Subject}</div>
-      <div id="waitcategory">{props.LessonHours} val {props.id}</div></div></div>);
+      <div id="waitcategory">{props.LessonHours} val </div></div></div>);
   }
 
   function onItemSelecting(args) {
@@ -209,7 +209,6 @@ export function ScheduleView() {
       GroupId: s.subject.id,
       LessonHours: s.lessonHours
     }
-
   });
 
   function ClickButton() {
@@ -405,8 +404,9 @@ export function ScheduleView() {
                 </ScheduleComponent></Grid.Column>
               <Grid.Column width={3}>
 
-                <Segment compact id="treeview" >
+                <Segment  compact id="treeview" > <Header textAlign='center'>Nesuplanuotos Pamokos</Header>
                   <TreeViewComponent ref={tree => treeObj = tree}
+
                     cssClass='treeview-external-drag'
                     dragArea=".drag-sample-wrapper"
                     nodeTemplate={treeTemplate.bind(this)}

@@ -81,11 +81,11 @@ export function ViewGroupsSchedules() {
     nameText.length > 0
       ? fetchFilterSchedulesByName()
       : startingDate === "Invalid Date"
-      ? fetchSchedules()
-       // .then(setStartingDate(""))
-      : startingDate.length > 0
-      ? fetchFilterSchedulesByStartingDate()
-      : fetchSchedules();
+        ? fetchSchedules()
+        // .then(setStartingDate(""))
+        : startingDate.length > 0
+          ? fetchFilterSchedulesByStartingDate()
+          : fetchSchedules();
   }, [activePage, nameText, startingDate]);
 
   // useEffect(() => {
@@ -252,7 +252,7 @@ export function ViewGroupsSchedules() {
                         <Confirm
                           open={open}
                           header="Dėmesio!"
-                          content="Ar tikrai norite perkelti į archyvą?"
+                          content="Ar tikrai norite ištrinti?"
                           cancelButton="Grįžti atgal"
                           confirmButton="Taip"
                           onCancel={() => setOpen(false)}
