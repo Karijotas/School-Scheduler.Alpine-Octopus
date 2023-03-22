@@ -17,10 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -59,6 +56,30 @@ public class ScheduleService {
         this.scheduleLessonsRepository = scheduleLessonsRepository;
         this.lessonRepository = lessonRepository;
     }
+
+
+    public boolean lessonIsNotPlanned(Long scheduleId, LocalDateTime startTime, LocalDateTime endTime) {
+        var existingSchedule = scheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", scheduleId.toString()));
+
+
+        return existingSchedule.getLessons()
+                .stream()
+                .anyMatch(lesson -> lesson.getStartTime().equals(startTime) && lesson.getEndTime().equals(endTime)
+                        && (lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime)));
+    }
+
+    public boolean lessonDateValidation(Long scheduleId, LocalDateTime startTime) {
+        var existingSchedule = scheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", scheduleId.toString()));
+
+        if (existingSchedule.getStartingDate().equals(startTime) || (existingSchedule.getStartingDate().isBefore(startTime.toLocalDate()))) {
+            return true;
+        }
+        return false;
+
+    }
+
 
     @Transactional
     public List<ScheduleEntityDto> getSchedulesByNameContaining(String nameText, int page, int pageSize) {
@@ -181,39 +202,64 @@ public class ScheduleService {
         var existingSchedule = scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", scheduleId.toString()));
 
-        //finding and getting the subject to schedule, then turning it to a new lesson object
-        Lesson createdLesson = existingSchedule.getSubjects()
-                .stream()
-                .filter(lesson -> lesson.getId().equals(subjectId))
-                .map(LessonMapper::toIndividualLesson)
-                .findAny()
-                .get();
+        if (endTime.isAfter(startTime)) {
+            if (lessonIsNotPlanned(scheduleId, startTime, endTime)) {
+                if (lessonDateValidation(scheduleId, startTime)) {
 
-        //setting the time in the schedule
-        createdLesson.setStartTime(startTime);
-        createdLesson.setEndTime(endTime);
+                    //finding and getting the subject to schedule, then turning it to a new lesson object
+                    Lesson createdLesson = existingSchedule.getSubjects()
+                            .stream()
+                            .filter(lesson -> lesson.getId().equals(subjectId))
+                            .map(LessonMapper::toIndividualLesson)
+                            .findAny()
+                            .get();
 
-        //setting lesson duration
-        createdLesson.setLessonHours(endTime.getHour() - startTime.getHour());
+                    //setting the time in the schedule
+                    createdLesson.setStartTime(startTime);
+                    createdLesson.setEndTime(endTime);
 
-        existingSchedule.scheduleLesson(createdLesson);
+                    //setting lesson duration
+                    createdLesson.setLessonHours(endTime.getHour() - startTime.getHour());
 
-        //subtracting the subjectHours from subjectTotalHours
-        existingSchedule.getSubjects()
-                .stream()
-                .filter(lesson -> lesson.getId()
-                        .equals(subjectId))
-                .forEach(
-                        lesson -> {
-                            if ((lesson.getLessonHours() - createdLesson.getLessonHours()) >= 0) {
-                                lesson.setLessonHours(lesson.getLessonHours() - createdLesson.getLessonHours());
-                            } else {
-                                throw new SchedulerValidationException("Too many lessons taken", "lesson", "Lesson amount", scheduleId.toString());
-                            }
-                        });
+                    existingSchedule.scheduleLesson(createdLesson);
 
-        return scheduleRepository.save(existingSchedule);
+                    //subtracting the subjectHours from subjectTotalHours
+                    existingSchedule.getSubjects()
+                            .stream()
+                            .filter(lesson -> lesson.getId()
+                                    .equals(subjectId))
+                            .forEach(
+                                    lesson -> {
+                                        if ((lesson.getLessonHours() - createdLesson.getLessonHours()) >= 0) {
+                                            lesson.setLessonHours(lesson.getLessonHours() - createdLesson.getLessonHours());
+                                        } else {
+                                            throw new SchedulerValidationException("Too many lessons taken", "lesson", "Lesson amount", scheduleId.toString());
+                                        }
+                                    });
+
+                    // finding and setting last day of planned schedule (last planned lesson)
+                    var last = existingSchedule.getLessons()
+                            .stream()
+                            .sorted(Comparator.comparing(Lesson::getEndTime))
+                            .collect(Collectors.toList())
+                            .get(existingSchedule.getLessons().size() - 1).getEndTime();
+
+                    existingSchedule.setPlannedTillDate(last.toLocalDate());
+
+
+                    return scheduleRepository.save(existingSchedule);
+                } else {
+                    throw new SchedulerValidationException("Lesson date is not in schedule time scope", "time", "Invalid time", scheduleId.toString());
+                }
+            } else {
+                throw new SchedulerValidationException("Other lessons are planned during selected time", "time", "Invalid time", scheduleId.toString());
+            }
+        } else {
+            throw new SchedulerValidationException("End time is before start time", "time", "Invalid time", scheduleId.toString());
+        }
     }
+
+    ;
 
     public Set<Lesson> getAllLessonsByScheduleId(Long scheduleId) {
         var existingSchedule = scheduleRepository.findById(scheduleId)
