@@ -50,8 +50,8 @@ export function ViewGroupsSchedules() {
   };
 
   const removeSchedule = (id) => {
-    fetch("/api/v1/schedule/delete/" + id, {
-      method: "PATCH",
+    fetch("/api/v1/schedule/" + id, {
+      method: "DELETE",
     })
       .then(fetchSchedules)
       .then(setOpen(false));
@@ -245,8 +245,8 @@ export function ViewGroupsSchedules() {
                           id="icocolor"
                           basic
                           compact
-                          title="Suarchyvuoti"
-                          icon="archive"
+                          title="Ištrinti"
+                          icon="trash"
                           onClick={() => setOpen(schedule.id)}
                         ></Button>
                         <Confirm
@@ -256,7 +256,7 @@ export function ViewGroupsSchedules() {
                           cancelButton="Grįžti atgal"
                           confirmButton="Taip"
                           onCancel={() => setOpen(false)}
-                          // onConfirm={() => removeGroup(open)}
+                          onConfirm={() => removeSchedule(open)}
                           size="small"
                         />
                       </Table.Cell>
