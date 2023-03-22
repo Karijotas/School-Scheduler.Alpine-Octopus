@@ -13,18 +13,19 @@
     margin-top: 50px;
 }
 
-
-.treeview-external-drag #waitlist {
-    width: 100%;
-    height: 50%;
-    font-weight: bold;
-    font-family: "Segoe UI";
-    font-size: 12px;
-    padding: 5px 0 0 10px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.drag-sample-wrapper {
+    display: -ms-flexbox;
+    display: flex;
 }
 
+.schedule-container {
+    padding-right: 10px;
+    width: 100%;
+}
+
+.title-container {
+    padding-bottom: 10px;
+}
 
 .treeview-external-drag #waiting {
     height: 100%;
@@ -38,11 +39,28 @@
     padding: 0;
 }
 
-
 .e-schedule.schedule-drag-drop .e-resource-cells.e-parent-node .template-wrap {
     padding: 3px 0px;
 }
 
+.title-text {
+    font-size: 18px;
+    margin: 0px;
+    font-weight: bold;
+    text-align: center;
+}
+
+
+.treeview-external-drag #waitlist {
+    width: 100%;
+    height: 50%;
+    font-weight: bold;
+    font-family: "Segoe UI";
+    font-size: 12px;
+    padding: 5px 0 0 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
 .treeview-external-drag #waitcategory {
     height: 50%;
@@ -92,3 +110,98 @@
     padding: 0 !important;
 }
 
+.e-schedule.schedule-drag-drop .e-timeline-view .e-resource-left-td, .e-schedule.schedule-drag-drop .e-timeline-month-view .e-resource-left-td {
+    width: 160px;
+}
+
+.e-schedule.schedule-drag-drop .e-resource-cells.e-parent-node .specialist-category {
+    padding-left: 30px
+}
+
+.e-schedule.e-rtl.schedule-drag-drop .e-resource-cells.e-parent-node .specialist-category {
+    padding-right: 30px
+}
+
+.e-schedule.schedule-drag-drop .e-resource-cells.e-child-node .specialist-category, .e-schedule.schedule-drag-drop .e-resource-cells.e-child-node .specialist-name {
+    padding: 5px
+}
+
+.tailwind .e-schedule.schedule-drag-drop .e-resource-cells.e-child-node .specialist-category, .tailwind .e-schedule.schedule-drag-drop .e-resource-cells.e-child-node .specialist-name, .tailwind-dark .e-schedule.schedule-drag-drop .e-resource-cells.e-child-node .specialist-category, .tailwind-dark .e-schedule.schedule-drag-drop .e-resource-cells.e-child-node .specialist-name {
+    padding: unset !important;
+}
+
+.e-schedule.schedule-drag-drop .e-resource-cells.e-parent-node .specialist-name {
+    padding: 0 10px
+}
+
+.e-schedule.schedule-drag-drop .e-resource-cells .specialist-name {
+    font-size: 13px;
+}
+
+.e-schedule.schedule-drag-drop .e-resource-cells .specialist-designation {
+    font-size: 10px;
+}
+
+.e-schedule.schedule-drag-drop .specialist-image {
+    width: 45px;
+    height: 40px;
+    float: left;
+    border-radius: 50%;
+    margin-right: 10px;
+    background-repeat: no-repeat;
+    background-size: 45px;
+}
+
+.e-device-hover {
+    background-color: #e0e0e0 !important;
+}
+
+.e-schedule.schedule-drag-drop .e-resource-cells.e-parent-node .specialist-image {
+    display: none;
+}
+
+.schedule-drag-drop.e-schedule .template-wrap .specialist-image.alice {
+    background-image: url('https://ej2.syncfusion.com/react/demos/src/schedule/images/alice.png');
+}
+
+.schedule-drag-drop.e-schedule .template-wrap .specialist-image.robert {
+    background-image: url('https://ej2.syncfusion.com/react/demos/src/schedule/images/robert.png');
+}
+
+.schedule-drag-drop.e-schedule .template-wrap .specialist-image.robson {
+    background-image: url('https://ej2.syncfusion.com/react/demos/src/schedule/images/robson.png');
+}
+
+.schedule-drag-drop.e-schedule .template-wrap .specialist-image.laura {
+    background-image: url('https://ej2.syncfusion.com/react/demos/src/schedule/images/laura.png');
+}
+
+.schedule-drag-drop.e-schedule .template-wrap .specialist-image.nancy {
+    background-image: url('https://ej2.syncfusion.com/react/demos/src/schedule/images/nancy.png');
+}
+
+.schedule-drag-drop.e-schedule .template-wrap .specialist-image.margaret {
+    background-image: url('https://ej2.syncfusion.com/react/demos/src/schedule/images/margaret.png');
+}
+
+@media (max-width: 550px) {
+    .drag-sample-wrapper {
+        display: block;
+    }
+    .schedule-container {
+        padding-bottom: 10px
+    }
+    .treeview-external-drag.e-treeview, .e-bigger .treeview-external-drag.e-treeview {
+        width: 250px;
+    }
+    .e-bigger .treeview-external-drag.e-treeview.e-drag-item {
+        position: relative !important;
+    }
+}
+.e-disble-not-allowed {
+   cursor: unset !important;
+}
+
+.e-drag-item.treeview-external-drag .e-icon-expandable {
+   display: none;
+}
