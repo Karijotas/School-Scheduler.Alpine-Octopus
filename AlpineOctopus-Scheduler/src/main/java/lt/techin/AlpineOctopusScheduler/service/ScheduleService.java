@@ -192,8 +192,13 @@ public class ScheduleService {
                 .filter(lesson -> lesson.getId()
                         .equals(subjectId))
                 .forEach(
-                        lesson -> lesson.setLessonHours(lesson.getLessonHours() - createdLesson.getLessonHours())
-                );
+                        lesson -> {
+                            if ((lesson.getLessonHours() - createdLesson.getLessonHours()) >= 0) {
+                                lesson.setLessonHours(lesson.getLessonHours() - createdLesson.getLessonHours());
+                            } else {
+                                throw new SchedulerValidationException("Too many lessons taken", "lesson", "Lesson amount", scheduleId.toString());
+                            }
+                        });
 
         return scheduleRepository.save(existingSchedule);
     }

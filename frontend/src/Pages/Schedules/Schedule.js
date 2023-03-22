@@ -1,13 +1,11 @@
-import { L10n, remove, closest, addClass } from '@syncfusion/ej2-base';
-import { ButtonComponent } from '@syncfusion/ej2-react-buttons';
+import { addClass, closest, L10n, remove } from '@syncfusion/ej2-base';
 import { DateTimePickerComponent } from '@syncfusion/ej2-react-calendars';
-import { DropDownListComponent, ListBoxComponent } from '@syncfusion/ej2-react-dropdowns';
+import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { TreeViewComponent } from '@syncfusion/ej2-react-navigations';
 import { Agenda, Day, DragAndDrop, ExcelExport, Inject, Month, Print, Resize, ResourceDirective, ResourcesDirective, Schedule, ScheduleComponent, ViewDirective, ViewsDirective, Week, WorkWeek } from '@syncfusion/ej2-react-schedule';
 import React, { useEffect, useState } from 'react';
-import { act } from 'react-dom/test-utils';
 import { useParams } from "react-router-dom";
-import { Button, Card, Container, Grid, Segment } from "semantic-ui-react";
+import { Button, Grid, Segment } from "semantic-ui-react";
 import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap5.css";
 import { updateSampleSection } from './sample-base';
 import './Schedule.css';
