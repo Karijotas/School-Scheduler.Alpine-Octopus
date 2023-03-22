@@ -210,7 +210,6 @@ export function ViewGroupsSchedules() {
                             basic
                             compact
                             icon="clock outline"
-                            title="Negaliojantis"
                           />
                         ) : schedule.status === 0 ? (
                           <Button
@@ -218,7 +217,6 @@ export function ViewGroupsSchedules() {
                             basic
                             compact
                             icon="check"
-                            title="Galiojantis"
                           />
                         ) : schedule.status === 1 ?(
                           <Button
@@ -226,7 +224,6 @@ export function ViewGroupsSchedules() {
                             basic
                             compact
                             icon="attention"
-                            title="Nevaliduotas"
                           />
                         ) : (
                           <Button
@@ -234,7 +231,6 @@ export function ViewGroupsSchedules() {
                             basic
                             compact
                             icon="attention"
-                            title="Dėmesio"
                           />
                         )}
                       </Table.Cell>

@@ -231,7 +231,6 @@ export function EditGroupScheduleObject() {
                             basic
                             compact
                             icon="clock outline"
-                            title="Negaliojantis"
                           />
                         ) : schedules.status === 0 ? (
                           <Button
@@ -239,7 +238,6 @@ export function EditGroupScheduleObject() {
                             basic
                             compact
                             icon="check"
-                            title="Galiojantis"
                           />
                         ) : schedules.status === 1 ?(
                           <Button
@@ -247,7 +245,6 @@ export function EditGroupScheduleObject() {
                             basic
                             compact
                             icon="attention"
-                            title="Nevaliduotas"
                           />
                         ) : (
                           <Button
@@ -255,7 +252,6 @@ export function EditGroupScheduleObject() {
                             basic
                             compact
                             icon="attention"
-                            title="Dėmesio"
                           />
                         )}
                       </Table.Cell>
