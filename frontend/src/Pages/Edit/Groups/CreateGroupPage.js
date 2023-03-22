@@ -259,8 +259,7 @@ export function CreateGroupPage() {
                   disabled={!formValid}
                   onClick={createGroup}
                   className="controls"
-                  id="details"
-                  onClick={createGroup}
+                  id="details"                  
                 >
                   Sukurti
                 </Button>

@@ -3,11 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@syncfusion/ej2-icons": "^20.4.48",
     "@syncfusion/ej2-data": "^20.4.48",
+    "@syncfusion/ej2-icons": "^20.4.48",
     "@syncfusion/ej2-react-buttons": "^20.4.53",
     "@syncfusion/ej2-react-calendars": "^20.4.52",
     "@syncfusion/ej2-react-dropdowns": "^20.4.53",
+    "@syncfusion/ej2-react-inputs": "^20.4.54",
     "@syncfusion/ej2-react-navigations": "^20.4.53",
     "@syncfusion/ej2-react-schedule": "^20.4.53",
     "@testing-library/jest-dom": "^5.16.5",
@@ -27,7 +28,7 @@
     "react-semantic-ui-datepickers": "^2.17.2",
     "semantic-ui-css": "^2.5.0",
     "semantic-ui-react": "^2.1.4",
-    "web-vitals": "^2.1.4"      
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -57,6 +58,4 @@
   "devDependencies": {
     "systemjs-plugin-json": "^0.3.0"
   }
-
-
 }
