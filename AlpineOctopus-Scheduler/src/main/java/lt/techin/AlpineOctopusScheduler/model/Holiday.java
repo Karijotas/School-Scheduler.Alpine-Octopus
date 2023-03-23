@@ -24,6 +24,8 @@ public class Holiday {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
 
+//    private Boolean reccuring;
+
     public Holiday() {
     }
 

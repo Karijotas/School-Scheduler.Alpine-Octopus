@@ -49,9 +49,9 @@ public class HolidayService {
     }
 
     @Transactional(readOnly = true)
-    public List<HolidayEntityDto> getPagedHolidaysByNameContaining(String nameText, int page, int pageSize) {
-        Pageable pageable = PageRequest.of(page, pageSize);
-        return holidayRepository.findByNameContainingIgnoreCase(nameText, pageable).stream()
+    public List<HolidayEntityDto> getHolidaysByNameContaining(String nameText) {
+
+        return holidayRepository.findByNameContainingIgnoreCase(nameText).stream()
                 .map(HolidayMapper::toHolidayEntityDto).collect(Collectors.toList());
     }
 

@@ -61,8 +61,7 @@ const removeHoliday = (id) => {
     if (nameText.length === 0) {
       fetchHolidays();
     } else {
-      nameText.length > 0 ? fetchFilterHolidays() : fetchHolidays();
-      
+       fetchFilterHolidays();
     }
   }, [activePage, nameText]);
 
@@ -130,7 +129,7 @@ const removeHoliday = (id) => {
                           basic
                           compact
                           title="Suarchyvuoti"
-                          icon="archive"
+                          icon="trash alternate"
                           onClick={() => setOpen(holiday.id)}
                         ></Button>
                         <Confirm

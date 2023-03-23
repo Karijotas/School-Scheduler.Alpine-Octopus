@@ -90,13 +90,12 @@ public class HolidayController {
 
     }
 
-    @GetMapping(path = "page/name-filter/{nameText}")
-    @ApiOperation(value = "Get Paged Holidays starting with", notes = "Returns list of Holidays starting with passed String")
+    @GetMapping(path = "/name-filter/{nameText}")
+    @ApiOperation(value = "Get Holidays starting with", notes = "Returns list of Holidays starting with passed String")
     @ResponseBody
-    public List<HolidayEntityDto> getPagedHolidaysByNameContaining(@PathVariable String nameText,
-                                                                   @RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                                                   @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        return holidayService.getPagedHolidaysByNameContaining(nameText, page, pageSize);
+    public List<HolidayEntityDto> getHolidaysByNameContaining(@PathVariable String nameText) {
+        return holidayService.getHolidaysByNameContaining(nameText);
     }
+
 
 }
