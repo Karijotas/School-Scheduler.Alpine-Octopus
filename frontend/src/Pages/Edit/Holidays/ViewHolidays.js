@@ -100,7 +100,7 @@ const removeHoliday = (id) => {
               <Table selectable>
                 <Table.Header>
                   <Table.Row>
-                    <Table.HeaderCell>Pavadinimas</Table.HeaderCell>
+                    <Table.HeaderCell>Atostogų Pavadinimas</Table.HeaderCell>
                     <Table.HeaderCell>Data nuo</Table.HeaderCell>
                     <Table.HeaderCell>Data iki</Table.HeaderCell>
                     <Table.HeaderCell>Veiksmai</Table.HeaderCell>
@@ -128,14 +128,14 @@ const removeHoliday = (id) => {
                           id="icocolor"
                           basic
                           compact
-                          title="Suarchyvuoti"
+                          title="Ištrinti"
                           icon="trash alternate"
                           onClick={() => setOpen(holiday.id)}
                         ></Button>
                         <Confirm
                           open={open}
                           header="Dėmesio!"
-                          content="Ar tikrai norite istrinti?"
+                          content="Ar tikrai norite Ištrinti?"
                           cancelButton="Grįžti atgal"
                           confirmButton="Taip"
                           onCancel={() => setOpen(false)}
