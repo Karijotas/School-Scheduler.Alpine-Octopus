@@ -77,8 +77,31 @@ public class ScheduleService {
             return true;
         }
         return false;
-
     }
+
+    public boolean allTeachersAreSet(Long scheduleId) {
+
+        var existingSchedule = scheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", scheduleId.toString()));
+
+        var setTeachers = existingSchedule.getSubjects()
+                .stream()
+                .anyMatch(lesson -> lesson.getTeacher().equals());
+//        var containingSubjects = existingSchedule.getSubjects().stream().collect(Collectors.toList());
+//
+//        var setTeachers = containingSubjects.stream().anyMatch(subject -> subject.getTeacher().setTeacherSubjects());
+        if (setTeachers) {
+            return true;
+        }
+        return false;
+    }
+
+//    public boolean teacherWorkingHoursValidation (Long teacherId, Double workHoursPerWeek ){
+//        var existingTeacher = teacherRepository.findById(teacherId)
+//                .orElseThrow(() -> new SchedulerValidationException("Teacher does not exist", "id", "Teacher not found", teacherId.toString()));
+//
+//        if (existingTeacher.getWorkHoursPerWeek()<= )
+//    }
 
 
     @Transactional
@@ -173,10 +196,18 @@ public class ScheduleService {
                     .stream()
                     .filter(lesson -> lesson.getId().equals(lessonId))
                     .forEach(lesson -> lesson.setTeacher(existingTeacher));
+
+//                existingSchedule.getSubjects()
+//                        .stream()
+//                        .anyMatch(lesson -> lesson.getTeacher().equals(null));
+//            if (!allTeachersAreSet(id)) {
             existingSchedule.setStatus(0);
         } else {
             existingSchedule.setStatus(1);
         }
+//        } else {
+//            existingSchedule.setStatus(1);
+//        }
 
         if (roomId != null) {
             //finding the room
@@ -223,19 +254,23 @@ public class ScheduleService {
 
                     existingSchedule.scheduleLesson(createdLesson);
 
-                    //subtracting the subjectHours from subjectTotalHours
+                    //subtracting the subjectHours from subjectTotalHours & setting teacher working hours
                     existingSchedule.getSubjects()
                             .stream()
                             .filter(lesson -> lesson.getId()
                                     .equals(subjectId))
                             .forEach(
                                     lesson -> {
-                                        if ((lesson.getLessonHours() - createdLesson.getLessonHours()) >= 0) {
+                                        if ((lesson.getLessonHours() - createdLesson.getLessonHours()) >= 0
+                                                && lesson.getTeacher().getWorkHoursPerWeek() + createdLesson.getLessonHours() <= 12
+                                        ) {
                                             lesson.setLessonHours(lesson.getLessonHours() - createdLesson.getLessonHours());
+                                            lesson.getTeacher().setWorkHoursPerWeek(lesson.getTeacher().getWorkHoursPerWeek() + createdLesson.getLessonHours());
                                         } else {
                                             throw new SchedulerValidationException("Too many lessons taken", "lesson", "Lesson amount", scheduleId.toString());
                                         }
                                     });
+
 
                     // finding and setting last day of planned schedule (last planned lesson)
                     var last = existingSchedule.getLessons()
