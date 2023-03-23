@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -23,6 +24,8 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     List<Schedule> findByLessons_Teacher(Teacher teacher);
 
     List<Schedule> findByLessons_Room(Room room);
+
+    List<Schedule> findByLessons_StartTimeGreaterThanEqualAndLessons_EndTimeLessThanEqual(LocalDateTime startTime, LocalDateTime endTime);
 
 
 }

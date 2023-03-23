@@ -260,7 +260,6 @@ export function CreateGroupPage() {
                   onClick={createGroup}
                   className="controls"
                   id="details"
-                  onClick={createGroup}
                 >
                   Sukurti
                 </Button>

@@ -12,7 +12,7 @@ public class ScheduleDto {
 
 
     private String name;
-    private String status;
+    private Integer status;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate startingDate;
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -36,7 +36,7 @@ public class ScheduleDto {
     public ScheduleDto() {
     }
 
-    public ScheduleDto(String name, String status, LocalDate startingDate, LocalDate plannedTillDate, LocalDateTime createdDate, LocalDateTime modifiedDate, Set<Lesson> subjects, String groupName, String shiftName, Long groupId, Long shiftId) {
+    public ScheduleDto(String name, Integer status, LocalDate startingDate, LocalDate plannedTillDate, LocalDateTime createdDate, LocalDateTime modifiedDate, Set<Lesson> subjects, String groupName, String shiftName, Long groupId, Long shiftId) {
         this.name = name;
         this.status = status;
         this.startingDate = startingDate;
@@ -82,11 +82,11 @@ public class ScheduleDto {
         this.shiftId = shiftId;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -143,24 +143,24 @@ public class ScheduleDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ScheduleDto that = (ScheduleDto) o;
-        return Objects.equals(getName(), that.getName()) && Objects.equals(getStatus(), that.getStatus()) && Objects.equals(getStartingDate(), that.getStartingDate()) && Objects.equals(getPlannedTillDate(), that.getPlannedTillDate()) && Objects.equals(getCreatedDate(), that.getCreatedDate()) && Objects.equals(getModifiedDate(), that.getModifiedDate()) && Objects.equals(getSubjects(), that.getSubjects()) && Objects.equals(getGroupName(), that.getGroupName()) && Objects.equals(getShiftName(), that.getShiftName()) && Objects.equals(getGroupId(), that.getGroupId()) && Objects.equals(getShiftId(), that.getShiftId());
+        return Objects.equals(name, that.name) && Objects.equals(status, that.status) && Objects.equals(startingDate, that.startingDate) && Objects.equals(plannedTillDate, that.plannedTillDate) && Objects.equals(createdDate, that.createdDate) && Objects.equals(modifiedDate, that.modifiedDate) && Objects.equals(subjects, that.subjects) && Objects.equals(groupName, that.groupName) && Objects.equals(shiftName, that.shiftName) && Objects.equals(groupId, that.groupId) && Objects.equals(shiftId, that.shiftId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getStatus(), getStartingDate(), getPlannedTillDate(), getCreatedDate(), getModifiedDate(), getSubjects(), getGroupName(), getShiftName(), getGroupId(), getShiftId());
+        return Objects.hash(name, status, startingDate, plannedTillDate, createdDate, modifiedDate, subjects, groupName, shiftName, groupId, shiftId);
     }
 
     @Override
     public String toString() {
         return "ScheduleDto{" +
                 "name='" + name + '\'' +
-                ", status='" + status + '\'' +
+                ", status=" + status +
                 ", startingDate=" + startingDate +
                 ", plannedTillDate=" + plannedTillDate +
                 ", createdDate=" + createdDate +
                 ", modifiedDate=" + modifiedDate +
-                ", lessons=" + subjects +
+                ", subjects=" + subjects +
                 ", groupName='" + groupName + '\'' +
                 ", shiftName='" + shiftName + '\'' +
                 ", groupId=" + groupId +

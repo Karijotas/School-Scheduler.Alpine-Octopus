@@ -204,29 +204,33 @@ export function ViewGroupsSchedules() {
                       <Table.Cell>{schedule.startingDate}</Table.Cell>
                       <Table.Cell>{schedule.plannedTillDate}</Table.Cell>
                       <Table.Cell collapsing>
-                        {schedule.status === "invalid" ? (
+                        {schedule.status === 3 ? (
                           <Button
                             id="grey"
                             basic
                             compact
                             icon="clock outline"
-                            title="Negaliojantis"
                           />
-                        ) : schedule.status === "Valid" ? (
+                        ) : schedule.status === 0 ? (
                           <Button
                             id="okey"
                             basic
                             compact
                             icon="check"
-                            title="Galiojantis"
                           />
-                        ) : (
+                        ) : schedule.status === 1 ?(
                           <Button
-                            id="attention"
+                            id="attention1"
                             basic
                             compact
                             icon="attention"
-                            title="Nevaliduotas"
+                          />
+                        ) : (
+                          <Button
+                            id="attention2"
+                            basic
+                            compact
+                            icon="attention"
                           />
                         )}
                       </Table.Cell>
