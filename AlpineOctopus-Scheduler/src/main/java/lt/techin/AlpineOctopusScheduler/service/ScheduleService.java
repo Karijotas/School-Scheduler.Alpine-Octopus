@@ -65,7 +65,7 @@ public class ScheduleService {
 
         return existingSchedule.getLessons()
                 .stream()
-                .anyMatch(lesson -> lesson.getStartTime().equals(startTime) && lesson.getEndTime().equals(endTime)
+                .noneMatch(lesson -> lesson.getStartTime().equals(startTime) && lesson.getEndTime().equals(endTime)
                         && (lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime)));
     }
 
@@ -79,22 +79,22 @@ public class ScheduleService {
         return false;
     }
 
-    public boolean allTeachersAreSet(Long scheduleId) {
-
-        var existingSchedule = scheduleRepository.findById(scheduleId)
-                .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", scheduleId.toString()));
-
-        var setTeachers = existingSchedule.getSubjects()
-                .stream()
-                .anyMatch(lesson -> lesson.getTeacher().equals());
-//        var containingSubjects = existingSchedule.getSubjects().stream().collect(Collectors.toList());
+//    public boolean allTeachersAreSet(Long scheduleId) {
 //
-//        var setTeachers = containingSubjects.stream().anyMatch(subject -> subject.getTeacher().setTeacherSubjects());
-        if (setTeachers) {
-            return true;
-        }
-        return false;
-    }
+//        var existingSchedule = scheduleRepository.findById(scheduleId)
+//                .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", scheduleId.toString()));
+//
+//        var setTeachers = existingSchedule.getSubjects()
+//                .stream()
+//                .anyMatch(lesson -> lesson.getTeacher().equals());
+////        var containingSubjects = existingSchedule.getSubjects().stream().collect(Collectors.toList());
+////
+////        var setTeachers = containingSubjects.stream().anyMatch(subject -> subject.getTeacher().setTeacherSubjects());
+//        if (setTeachers) {
+//            return true;
+//        }
+//        return false;
+//    }
 
 //    public boolean teacherWorkingHoursValidation (Long teacherId, Double workHoursPerWeek ){
 //        var existingTeacher = teacherRepository.findById(teacherId)
@@ -262,10 +262,10 @@ public class ScheduleService {
                             .forEach(
                                     lesson -> {
                                         if ((lesson.getLessonHours() - createdLesson.getLessonHours()) >= 0
-                                                && lesson.getTeacher().getWorkHoursPerWeek() + createdLesson.getLessonHours() <= 12
+//                                                && lesson.getTeacher().getWorkHoursPerWeek() + createdLesson.getLessonHours() <= 12
                                         ) {
                                             lesson.setLessonHours(lesson.getLessonHours() - createdLesson.getLessonHours());
-                                            lesson.getTeacher().setWorkHoursPerWeek(lesson.getTeacher().getWorkHoursPerWeek() + createdLesson.getLessonHours());
+//                                            lesson.getTeacher().setWorkHoursPerWeek(lesson.getTeacher().getWorkHoursPerWeek() + createdLesson.getLessonHours());
                                         } else {
                                             throw new SchedulerValidationException("Too many lessons taken", "lesson", "Lesson amount", scheduleId.toString());
                                         }
