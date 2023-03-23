@@ -9,6 +9,7 @@ import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Lesson;
 import lt.techin.AlpineOctopusScheduler.model.ProgramSubjectHours;
 import lt.techin.AlpineOctopusScheduler.model.Schedule;
+import lt.techin.AlpineOctopusScheduler.model.Teacher;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -58,6 +59,12 @@ public class ScheduleService {
         this.teacherRepository = teacherRepository;
         this.scheduleLessonsRepository = scheduleLessonsRepository;
         this.lessonRepository = lessonRepository;
+    }
+
+    public boolean validatingIsThereTeachersAtTheSameTimeInDifferentSchedules(Teacher teacher) {
+        var scheduleByTeacherList = scheduleRepository.findByLessons_Teacher(teacher);
+
+        scheduleByTeacherList.stream().filter(schedule -> schedule.getLessons().stream().noneMatch(lesson -> lesson.getStartTime().isAfter(lesson.getStartTime())));
     }
 
     @Transactional
