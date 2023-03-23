@@ -159,6 +159,12 @@ export function CreateSchedulePageNext() {
       .then(console.log(teachersInSubjects));
   };
 
+  const checkAndSetStatus = () => {
+    fetch(`/api/v1/schedule/validation/${params.id}`, {
+      method: "PATCH",
+    }).then(applyResult);
+  }
+
   return (
     <div className="create-new-page">
       <MainMenu />
@@ -248,6 +254,7 @@ export function CreateSchedulePageNext() {
                 as={NavLink}
                 exact
                 to={"/view/groupsSchedules/edit/" + params.id}
+                onClick={() => checkAndSetStatus()}
               >
                 Tęsti
               </Button>

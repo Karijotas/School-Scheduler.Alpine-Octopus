@@ -79,22 +79,36 @@ public class ScheduleService {
         return false;
     }
 
-//    public boolean allTeachersAreSet(Long scheduleId) {
-//
-//        var existingSchedule = scheduleRepository.findById(scheduleId)
-//                .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", scheduleId.toString()));
-//
-//        var setTeachers = existingSchedule.getSubjects()
-//                .stream()
-//                .anyMatch(lesson -> lesson.getTeacher().equals());
-////        var containingSubjects = existingSchedule.getSubjects().stream().collect(Collectors.toList());
-////
-////        var setTeachers = containingSubjects.stream().anyMatch(subject -> subject.getTeacher().setTeacherSubjects());
-//        if (setTeachers) {
-//            return true;
-//        }
-//        return false;
-//    }
+    public Schedule allTeachersAreSet(Long scheduleId) {
+
+        var existingSchedule = scheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", scheduleId.toString()));
+
+        // finding all teachers that are set for subjects
+        var scheduleSubjectsTeachers = existingSchedule.getSubjects()
+                .stream()
+                .map(subject -> subject.getTeacher())
+                .collect(Collectors.toList());
+
+        // finding all rooms that are set for subjects
+        var scheduleSubjectsRooms = existingSchedule.getSubjects()
+                .stream()
+                .map(subject -> subject.getRoom())
+                .collect(Collectors.toList());
+//        System.out.println(Arrays.toString(scheduleSubjectsRooms.toArray()) + "uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu" + scheduleSubjectsTeachers +
+//                scheduleSubjectsTeachers.size() + " " + existingSchedule.getSubjects().size() + " " + scheduleSubjectsRooms.size() + " " + existingSchedule.getSubjects().size());
+
+        //checking if any was not set
+        if (scheduleSubjectsTeachers.contains(null) || scheduleSubjectsRooms.contains(null)) {
+            existingSchedule.setStatus(1);
+        } else {
+            existingSchedule.setStatus(0);
+        }
+        scheduleRepository.save(existingSchedule);
+
+        return existingSchedule;
+    }
+
 
 //    public boolean teacherWorkingHoursValidation (Long teacherId, Double workHoursPerWeek ){
 //        var existingTeacher = teacherRepository.findById(teacherId)
@@ -201,32 +215,28 @@ public class ScheduleService {
 //                        .stream()
 //                        .anyMatch(lesson -> lesson.getTeacher().equals(null));
 //            if (!allTeachersAreSet(id)) {
-            existingSchedule.setStatus(0);
-        } else {
-            existingSchedule.setStatus(1);
-        }
 //        } else {
 //            existingSchedule.setStatus(1);
 //        }
 
-        if (roomId != null) {
-            //finding the room
-            var existingRoom = roomRepository.findById(roomId)
-                    .orElseThrow(() -> new SchedulerValidationException("Room does not exist", "id", "Room not found", roomId.toString()));
-            //setting the room
-            existingSchedule.getSubjects()
-                    .stream()
-                    .filter(lesson -> lesson.getId().equals(lessonId))
-                    .forEach(lesson -> lesson.setRoom(existingRoom));
-            existingSchedule.setStatus(0);
-        } else {
-            existingSchedule.setStatus(2);
+            if (roomId != null) {
+                //finding the room
+                var existingRoom = roomRepository.findById(roomId)
+                        .orElseThrow(() -> new SchedulerValidationException("Room does not exist", "id", "Room not found", roomId.toString()));
+                //setting the room
+                existingSchedule.getSubjects()
+                        .stream()
+                        .filter(lesson -> lesson.getId().equals(lessonId))
+                        .forEach(lesson -> lesson.setRoom(existingRoom));
+
+                //replacing the subjectList
+                existingSchedule.setSubjects(existingSchedule.getSubjects());
+                //save to repository
+            }
         }
-        //replacing the subjectList
-        existingSchedule.setSubjects(existingSchedule.getSubjects());
-        //save to repository
         return scheduleRepository.save(existingSchedule);
     }
+
 
     public Schedule ScheduleLesson(Long scheduleId, Long subjectId, LocalDateTime startTime, LocalDateTime endTime) {
         //finding the schedule in repository
