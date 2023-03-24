@@ -32,27 +32,28 @@ import { ViewGroupsArchive } from './Pages/Edit/Groups/ViewGroupsArchive';
 import { ViewShiftsArchive } from './Pages/Edit/Shifts/ViewShiftsArchive';
 import { ViewRoomsArchive } from './Pages/Edit/Rooms/ViewRoomsArchive';
 import { ViewModulesArchive } from './Pages/Edit/Module/ViewModulesArchive';
-import { ViewArchivedGroup} from './Pages/Edit/Groups/ViewArchivedGroup';
+import { ViewArchivedGroup } from './Pages/Edit/Groups/ViewArchivedGroup';
 import { ViewArchivedModule } from './Pages/Edit/Module/ViewArchivedModule';
 import { ViewArchivedRooms } from './Pages/Edit/Rooms/ViewArchivedRoom';
 import { ViewArchivedProgram } from './Pages/Edit/Programs/ViewArchivedProgram';
 import { ViewArchivedShift } from './Pages/Edit/Shifts/ViewArchivedShift';
 import { ViewArchivedSubject } from './Pages/Edit/Subjects/ViewArchivedSubject';
 import { ViewArchivedTeacher } from './Pages/Edit/Teachers/ViewArchivedTeachers';
-import {ViewGroupsSchedules} from './Pages/Schedules/ViewGroupsSchedules';
-import { ScheduleView } from './Pages/Schedules/Schedule';   
-import { Sched1 } from './Pages/Schedules/Sched1';   
+import { ViewGroupsSchedules } from './Pages/Schedules/ViewGroupsSchedules';
+import { ScheduleView } from './Pages/Schedules/Schedule';
+import { Sched1 } from './Pages/Schedules/Sched1';
 
-import { ScheduleView1 } from './Pages/Schedules/Schedule1';     
-import { registerLicense } from '@syncfusion/ej2-base';  
-import { EditGroupScheduleObject} from './Pages/Schedules/EditGroupScheduleObject'; 
+import { ScheduleView1 } from './Pages/Schedules/Schedule1';
+import { registerLicense } from '@syncfusion/ej2-base';
+import { EditGroupScheduleObject } from './Pages/Schedules/EditGroupScheduleObject';
 import { CreateSchedule } from './Pages/Schedules/CreateSchedulePage';
-import { CreateSchedulePageNext } from './Pages/Schedules/CreateSchedulePageNext';       
+import { CreateSchedulePageNext } from './Pages/Schedules/CreateSchedulePageNext';
+import { Drag_Drop } from './Pages/Schedules/Drag&Drop';
 
 
 // Registering Syncfusion license key
 registerLicense('Mgo+DSMBaFt/QHRqVVhjVFpFdEBBXHxAd1p/VWJYdVt5flBPcDwsT3RfQF5jSn5adkFhXn9ccHFXTw==;Mgo+DSMBPh8sVXJ0S0J+XE9HflRDX3xKf0x/TGpQb19xflBPallYVBYiSV9jS31TdUVqWXtcd3RXRmZbWA==;ORg4AjUWIQA/Gnt2VVhkQlFadVdJXGFWfVJpTGpQdk5xdV9DaVZUTWY/P1ZhSXxQdkZjUH9acnNVRGBUVU0=;MTI4NzAxNUAzMjMwMmUzNDJlMzBQeVBLZVJjcHpDSjRFRXMxaWlWWUl1bnRtTzJOMFhqU3BsVno3ZWZlNDRNPQ==;MTI4NzAxNkAzMjMwMmUzNDJlMzBkbFJ3c0hROEg4V09pVHRBNEVVNUtKYTMzeWxzM0drL3MrU2xvSnBpdGVvPQ==;NRAiBiAaIQQuGjN/V0Z+WE9EaFxKVmJLYVB3WmpQdldgdVRMZVVbQX9PIiBoS35RdUVgWXZedHZSRmJdV0x/;MTI4NzAxOEAzMjMwMmUzNDJlMzBCRDNWaHVpbEV3ZUxvL2xZUWdNcTVNc0R1dTRBRDlvZmdFRUV3bG5JUnYwPQ==;MTI4NzAxOUAzMjMwMmUzNDJlMzBLbUZsVkZCdHZwSUgvNVVyd3lLbUZYR0tua3pPTDN0Mml4ak5PdXBROEpBPQ==;Mgo+DSMBMAY9C3t2VVhkQlFadVdJXGFWfVJpTGpQdk5xdV9DaVZUTWY/P1ZhSXxQdkZjUH9acnNVRGJYUk0=;MTI4NzAyMUAzMjMwMmUzNDJlMzBXUDhkYm5QM3RTMXhTSHg0R3pRNHM5bXNjbXN4WjJxa3JGQ2xjRlJHVnRvPQ==;MTI4NzAyMkAzMjMwMmUzNDJlMzBhUW9IZGZSdEFLL0VGd1gwY3A2TnY4dEVqUVNGc1Y1dTM2WWNESUJSdUtBPQ==;MTI4NzAyM0AzMjMwMmUzNDJlMzBCRDNWaHVpbEV3ZUxvL2xZUWdNcTVNc0R1dTRBRDlvZmdFRUV3bG5JUnYwPQ==');
-    
+
 
 
 // basename={process.env.REACT_APP_PUBLIC_URL}
@@ -121,13 +122,15 @@ root.render(
         <Route path='/view/groupsSchedules' element={<ViewGroupsSchedules />} />
         <Route path='/view/scheduleView' element={<Sched1 />} />
         <Route path='/view/scheduleView1' element={<ScheduleView1 />} />
+        <Route path='/view/dnd' element={<Drag_Drop />} />
+
         {/* <Route path='/view/groupsSchedules/edit/:id' element={<EditModuleObject />} /> */}
         <Route path='/view/groupsSchedules/edit/:id' element={<EditGroupScheduleObject />} />
         {/* <Route path='/create/groupsSchedules' element={<CreateModulePage />} /> */}
 
 
-        <Route path='/create/groupsSchedules' element={<CreateSchedule/>} />
-        <Route path='/create/groupsSchedules/modify/:id' element={<CreateSchedulePageNext/>} />
+        <Route path='/create/groupsSchedules' element={<CreateSchedule />} />
+        <Route path='/create/groupsSchedules/modify/:id' element={<CreateSchedulePageNext />} />
 
       </Routes>
     </HashRouter>

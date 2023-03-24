@@ -14,7 +14,7 @@ public class ScheduleEntityDto extends ScheduleDto {
     }
 
 
-    public ScheduleEntityDto(String name, String status, LocalDate startingDate, LocalDate plannedTillDate, LocalDateTime createdDate, LocalDateTime modifiedDate, Set<Lesson> lessons, String groupName, String shiftName, Long groupId, Long shiftId, Long id) {
+    public ScheduleEntityDto(String name, Integer status, LocalDate startingDate, LocalDate plannedTillDate, LocalDateTime createdDate, LocalDateTime modifiedDate, Set<Lesson> lessons, String groupName, String shiftName, Long groupId, Long shiftId, Long id) {
         super(name, status, startingDate, plannedTillDate, createdDate, modifiedDate, lessons, groupName, shiftName, groupId, shiftId);
         this.id = id;
     }
