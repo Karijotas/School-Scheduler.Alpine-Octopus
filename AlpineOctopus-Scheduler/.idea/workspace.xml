@@ -9,6 +9,9 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/dao/LessonRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/dao/LessonRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/dao/ScheduleLessonsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/dao/ScheduleLessonsRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/service/ScheduleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/service/ScheduleService.java" afterDir="false" />
+
+      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Groups/CreateGroupPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Edit/Groups/CreateGroupPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Schedules/Schedule.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Schedules/Schedule.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
