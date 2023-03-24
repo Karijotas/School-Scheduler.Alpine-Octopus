@@ -9,6 +9,8 @@ import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Lesson;
 import lt.techin.AlpineOctopusScheduler.model.ProgramSubjectHours;
 import lt.techin.AlpineOctopusScheduler.model.Schedule;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
 public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
+    public static Logger logger = LoggerFactory.getLogger(ScheduleService.class);
 
     private final ScheduleSubjectsRepository scheduleSubjectsRepository;
 
@@ -67,6 +70,20 @@ public class ScheduleService {
                 .stream()
                 .noneMatch(lesson -> lesson.getStartTime().equals(startTime) && lesson.getEndTime().equals(endTime)
                         && (lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime)));
+    }
+
+    public boolean validateTeacherBetweenSchedules(Long teacher, LocalDateTime startTime, LocalDateTime endTime) {
+        var teacherSchedules = lessonRepository.findByTeacher_Id(teacher);
+        logger.info("Trying to validate teachers");
+        return teacherSchedules.stream().noneMatch(lesson -> lesson.getStartTime().equals(startTime) && lesson.getEndTime().equals(endTime)
+                && (lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime)));
+    }
+
+    public boolean validateRoomBetweenSchedules(Long roomId, LocalDateTime startTime, LocalDateTime endTime) {
+        var roomSchedules = lessonRepository.findByRoom_Id(roomId);
+        logger.info("Trying to validate rooms");
+        return roomSchedules.stream().noneMatch(lesson -> lesson.getStartTime().equals(startTime) && lesson.getEndTime().equals(endTime)
+                && lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime));
     }
 
     public boolean lessonDateValidation(Long scheduleId, LocalDateTime startTime) {
@@ -227,6 +244,81 @@ public class ScheduleService {
                 //save to repository
             }
         }
+        //save to repository
+        return scheduleRepository.save(existingSchedule);
+    }
+
+    public Schedule setTeacherAndRoomInALesson(Long id, Long lessonId, Long teacherId, Long roomId) {
+        //finding the schedule in repository
+        var existingSchedule = scheduleRepository.findById(id)
+                .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", id.toString()));
+
+
+        //finding the lesson start and end times
+        var startTime = existingSchedule.getLessons()
+                .stream()
+                .filter(lesson -> lesson.getId().equals(lessonId))
+                .findFirst()
+                .get()
+                .getStartTime();
+        var endTime = existingSchedule.getLessons()
+                .stream()
+                .filter(lesson -> lesson.getId().equals(lessonId))
+                .findFirst()
+                .get()
+                .getEndTime();
+
+        if (teacherId != null) {
+
+            //finding the teacher
+            var existingTeacher = teacherRepository.findById(teacherId)
+                    .orElseThrow(() -> new SchedulerValidationException("Teacher does not exist", "id", "Teacher not found", teacherId.toString()));
+            //validation
+            if (validateTeacherBetweenSchedules(existingTeacher.getId(), startTime, endTime)) {
+                existingSchedule.getLessons()
+                        .stream()
+                        .filter(lesson -> lesson.getId().equals(lessonId))
+                        .forEach(lesson -> lesson.setStatus(1));
+                existingSchedule.setStatus(1);
+            }
+
+            //setting the teacher
+            existingSchedule.getLessons()
+                    .stream()
+                    .filter(lesson -> lesson.getId().equals(lessonId))
+                    .forEach(lesson -> lesson.setTeacher(existingTeacher));
+
+            existingSchedule.setStatus(0);
+        } else {
+            existingSchedule.setStatus(1);
+        }
+
+        if (roomId != null) {
+            //finding the room
+            var existingRoom = roomRepository.findById(roomId)
+                    .orElseThrow(() -> new SchedulerValidationException("Room does not exist", "id", "Room not found", roomId.toString()));
+
+            if (validateRoomBetweenSchedules(existingRoom.getId(), startTime, endTime)) {
+                existingSchedule.getLessons()
+                        .stream()
+                        .filter(lesson -> lesson.getId().equals(lessonId))
+                        .forEach(lesson -> lesson.setStatus(1));
+                existingSchedule.setStatus(1);
+            }
+
+            //setting the room
+            existingSchedule.getLessons()
+                    .stream()
+                    .filter(lesson -> lesson.getId().equals(lessonId))
+                    .forEach(lesson -> lesson.setRoom(existingRoom));
+            existingSchedule.setStatus(0);
+        } else {
+            existingSchedule.setStatus(2);
+        }
+
+
+        //save to repository
+
         return scheduleRepository.save(existingSchedule);
     }
 
@@ -245,7 +337,6 @@ public class ScheduleService {
         if (endTime.isAfter(startTime)) {
             if (lessonIsNotPlanned(scheduleId, startTime, endTime)) {
                 if (lessonDateValidation(scheduleId, startTime)) {
-
                     //finding and getting the subject to schedule, then turning it to a new lesson object
                     Lesson createdLesson = existingSchedule.getSubjects()
                             .stream()
@@ -253,6 +344,17 @@ public class ScheduleService {
                             .map(LessonMapper::toIndividualLesson)
                             .findAny()
                             .get();
+
+                    //validating if the teacher already teaches during the timeframe in another lesson. If so, setting the status to warning
+                    if (validateTeacherBetweenSchedules(createdLesson.getTeacher().getId(), startTime, endTime)) {
+                        createdLesson.setStatus(1);
+                        existingSchedule.setStatus(1);
+                    }
+                    //validating if the classroom is already in use in another Schedule lesson. If so, setting the status to warning
+                    if (validateRoomBetweenSchedules(createdLesson.getRoom().getId(), startTime, endTime)) {
+                        createdLesson.setStatus(1);
+                        existingSchedule.setStatus(1);
+                    }
 
                     //setting the time in the schedule
                     createdLesson.setStartTime(startTime);

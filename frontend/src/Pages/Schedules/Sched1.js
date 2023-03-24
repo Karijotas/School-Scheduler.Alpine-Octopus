@@ -26,7 +26,7 @@ export function Sched1() {
   });
   const [lesson, setLesson] = useState([]);
 
-  const [startDate, setStartDate]= useState('')
+  const [startDate, setStartDate] = useState('')
 
   const data = [{
     Id: 2,
@@ -66,32 +66,32 @@ export function Sched1() {
 
   useEffect(() => {
     fetch("/api/v1/scheduler/1/6")
-    .then((response) => response.json)
-    .then(setLesson)
+      .then((response) => response.json)
+      .then(setLesson)
   }, [])
 
 
   return (
     <Container>
-     <Table celled>
-                  <Table.Header>
-                    <Table.Row>
-                      <Table.HeaderCell>
-                        Tvarkaraščio pavadinimas
-                      </Table.HeaderCell>
-                      <Table.HeaderCell>Data nuo</Table.HeaderCell>
-                      <Table.HeaderCell>Data iki</Table.HeaderCell>
-                      <Table.HeaderCell>Veiksmai</Table.HeaderCell>
-                    </Table.Row>
-                  </Table.Header>
-                  <Table.Body>
-                  {/* {lesson.map((lesson) => (
+      <Table celled>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell>
+              Tvarkaraščio pavadinimas
+            </Table.HeaderCell>
+            <Table.HeaderCell>Data nuo</Table.HeaderCell>
+            <Table.HeaderCell>Data iki</Table.HeaderCell>
+            <Table.HeaderCell>Veiksmai</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {/* {lesson.map((lesson) => (
                           <Table.Row key={lesson.id}>
                             <Table.Cell>{lesson.id}</Table.Cell>
                             <Table.Cell>{lesson.id} val.</Table.Cell>
                           </Table.Row>
                         ))} */}
-                    {/* <Table.Row>
+          {/* <Table.Row>
                       <Table.Cell width={6}>{schedules.name}</Table.Cell>
                       <Table.Cell>{schedules.startingDate}</Table.Cell>
                       <Table.Cell width={3}>
@@ -103,12 +103,12 @@ export function Sched1() {
                         
                       </Table.Cell>
                     </Table.Row> */}
-                  </Table.Body>
-                </Table>
+        </Table.Body>
+      </Table>
       <h1 className="title-text">{schedules.name}</h1>
       <ScheduleComponent timeFormat='HH' firstDayOfWeek='1' height='550px' selectedDate={new Date(2021, 8, 14, 10, 0)} eventSettings={{ dataSource: data }} colorField='Color'>
         <ResourcesDirective>
-          <ResourceDirective field='GroupId' title='Owner' name='Owners'  textField='GroupText' idField='GroupId' colorField='GroupColor'>
+          <ResourceDirective field='GroupId' title='Owner' name='Owners' textField='GroupText' idField='GroupId' colorField='GroupColor'>
           </ResourceDirective>
         </ResourcesDirective>
         <ViewsDirective>
