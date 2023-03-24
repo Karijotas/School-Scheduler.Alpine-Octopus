@@ -134,6 +134,12 @@ public class ScheduleService {
 //        if (existingTeacher.getWorkHoursPerWeek()<= )
 //    }
 
+    public Integer teacherLessonsPerDay(Long teacherId, LocalDateTime day) {
+        var teacherSetLessons = lessonRepository.findByTeacher_IdAndStartTime(teacherId, day);
+
+        return teacherSetLessons.size();
+
+    }
 
     @Transactional
     public List<ScheduleEntityDto> getSchedulesByNameContaining(String nameText, int page, int pageSize) {
@@ -322,12 +328,6 @@ public class ScheduleService {
         return scheduleRepository.save(existingSchedule);
     }
 
-    public Integer teacherLessonsPerDay(Long teacherId, LocalDateTime day) {
-        var teacherSetLessons = lessonRepository.findByTeacher_IdAndStartTime(teacherId, day);
-
-        return teacherSetLessons.size();
-
-    }
 
     public Schedule ScheduleLesson(Long scheduleId, Long subjectId, LocalDateTime startTime, LocalDateTime endTime) {
         //finding the schedule in repository
