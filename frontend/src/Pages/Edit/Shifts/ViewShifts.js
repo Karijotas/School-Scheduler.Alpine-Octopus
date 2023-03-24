@@ -54,9 +54,8 @@ export function ViewShifts() {
   };
 
   useEffect(() => {
-    nameText.length > 0 && !nameText.includes('/') && !nameText.includes('#') && !nameText.includes('.') && !nameText.includes(';') && !nameText.match(new RegExp( /^\s/)) ?
-     fetchFilterSubjects() : (moduleText.length > 0 && !nameText.includes('/') && !nameText.includes('#') && !nameText.includes('.') && !nameText.includes(';') && !nameText.match(new RegExp( /^\s/)) ? fetchSubjectsByModules() : fetchSubjects())
-  }, [activePage, nameText, moduleText]);
+    nameText.length > 0 && !nameText.includes('/') && !nameText.includes('#') && !nameText.includes('.') && !nameText.includes(';') && !nameText.match(new RegExp( /^\s/)) ? fetchFilterShifts() : fetchShifts();
+  }, [activePage, nameText]);
 
   const [open, setOpen] = useState(false);
   const [close, setClose] = useState(false);
