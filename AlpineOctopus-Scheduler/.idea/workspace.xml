@@ -52,6 +52,9 @@
     <option name="myRunOnSave" value="true" />
   </component>
   <component name="ProjectId" id="2LDwZWUEvUJyiiMebmzGJR0ciIe" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />

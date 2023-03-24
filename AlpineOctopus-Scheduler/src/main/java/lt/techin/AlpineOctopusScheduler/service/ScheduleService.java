@@ -235,8 +235,7 @@ public class ScheduleService {
                 var existingRoom = roomRepository.findById(roomId)
                         .orElseThrow(() -> new SchedulerValidationException("Room does not exist", "id", "Room not found", roomId.toString()));
                 //setting the room
-                existingSchedule.getSubjects()
-                        .stream()
+                existingSchedule.getSubjects().stream()
                         .filter(lesson -> lesson.getId().equals(lessonId))
                         .forEach(lesson -> lesson.setRoom(existingRoom));
 

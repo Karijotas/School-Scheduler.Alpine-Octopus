@@ -1,4 +1,5 @@
 import { addClass, closest, L10n, remove } from '@syncfusion/ej2-base';
+import { ButtonComponent } from '@syncfusion/ej2-react-buttons';
 import { DateTimePickerComponent } from '@syncfusion/ej2-react-calendars';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { TreeViewComponent } from '@syncfusion/ej2-react-navigations';
@@ -324,7 +325,9 @@ export function ScheduleView() {
 
             <Grid>
               <Grid.Column width={13}>
-
+                <div className='control-panel calendar-export'>
+                  <ButtonComponent id='printBtn' cssClass='title-bar-btn' iconCss='e-icons e-print' onClick={(onPrint.bind(this))} content='Print' />
+                </div>
                 <h1 className="title-text">{schedules.name}</h1>
 
 
