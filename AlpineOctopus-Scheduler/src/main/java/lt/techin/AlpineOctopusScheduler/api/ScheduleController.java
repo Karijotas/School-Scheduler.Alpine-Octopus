@@ -5,8 +5,10 @@ import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleTestDto;
 import lt.techin.AlpineOctopusScheduler.dao.LessonRepository;
 import lt.techin.AlpineOctopusScheduler.dao.ScheduleLessonsRepository;
+import lt.techin.AlpineOctopusScheduler.dao.TeacherRepository;
 import lt.techin.AlpineOctopusScheduler.model.Lesson;
 import lt.techin.AlpineOctopusScheduler.model.Schedule;
+import lt.techin.AlpineOctopusScheduler.model.Teacher;
 import lt.techin.AlpineOctopusScheduler.service.ScheduleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,13 +40,16 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
     private final ScheduleLessonsRepository scheduleLessonsRepository;
     private final LessonRepository lessonRepository;
+    private final TeacherRepository teacherRepository;
 
     public ScheduleController(ScheduleService scheduleService,
                               ScheduleLessonsRepository scheduleLessonsRepository,
-                              LessonRepository lessonRepository) {
+                              LessonRepository lessonRepository,
+                              TeacherRepository teacherRepository) {
         this.scheduleService = scheduleService;
         this.scheduleLessonsRepository = scheduleLessonsRepository;
         this.lessonRepository = lessonRepository;
+        this.teacherRepository = teacherRepository;
     }
 
 
@@ -111,10 +116,10 @@ public class ScheduleController {
         return scheduleService.getAllSubjectsByScheduleId(scheduleId);
     }
 
-    @GetMapping(value = "/lesson/{teacherId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/teachers/{subjectId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public List<Lesson> lessonsByTeacher(@PathVariable Long teacherId) {
-        return lessonRepository.findByTeacher_Id(teacherId);
+    public List<Teacher> teachersBySubject(@PathVariable Long subjectId) {
+        return teacherRepository.findAllByTeacherSubjects_Id(subjectId);
     }
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})

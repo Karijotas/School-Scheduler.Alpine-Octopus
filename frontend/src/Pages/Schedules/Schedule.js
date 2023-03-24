@@ -5,7 +5,7 @@ import { TreeViewComponent } from '@syncfusion/ej2-react-navigations';
 import { Agenda, Day, DragAndDrop, ExcelExport, Inject, Month, Print, Resize, ResourceDirective, ResourcesDirective, Schedule, ScheduleComponent, ViewDirective, ViewsDirective, Week, WorkWeek } from '@syncfusion/ej2-react-schedule';
 import React, { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
-import { Button, Grid, Header, Message, Segment } from "semantic-ui-react";
+import { Button, Grid, Header, Segment } from "semantic-ui-react";
 import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap5.css";
 import { updateSampleSection } from './sample-base';
 import './Schedule.css';
@@ -15,22 +15,31 @@ const JSON_HEADERS = {
 };
 
 L10n.load({
-  'en-US': {
-    'schedule': {
-      'saveButton': 'Add',
-      'cancelButton': 'Close',
-      'deleteButton': 'Remove',
-      'newEvent': 'Add Event',
+  lt: {
+    datetimepicker: {
+      placeholder: "Pasirinkite datą",
+      today: "Šiandien",
     },
-  }
+    timeFormats: {
+      short: "HH",
+    },
+    schedule: {
+      saveButton: 'Pridėti',
+      cancelButton: 'Uždaryti',
+      deleteButton: 'Pašalinti',
+      newEvent: 'Pridėti pamoką',
+      editEvent: 'Redaguoti pamoką',
+    },
+  },
 });
+// setCulture("lt");
+
 
 Schedule.Inject(Day, Week, WorkWeek, Month, Agenda, Resize, DragAndDrop, Print, ExcelExport, DragAndDrop);
 
 export function ScheduleView() {
   let scheduleObj;
   const params = useParams();
-
 
   const [schedules, setSchedules] = useState([]);
   const [lessons, setLessons] = useState([]);
@@ -121,6 +130,9 @@ export function ScheduleView() {
     scheduleObj.print();
   }
 
+  function onPrint() {
+    scheduleObj.print();
+  }
   function onExportClick() {
     scheduleObj.exportToExcel();
   }
@@ -161,10 +173,13 @@ export function ScheduleView() {
       .then(setSchedules);
   }, [params]);
 
+  function onPrint() {
+    scheduleObj.print();
+  }
 
-
-
-
+  function onExportClick() {
+    scheduleObj.exportToExcel();
+  }
   const lessonsOnSchedule = lessons.map(l => {
     return {
       Id: l.id,
@@ -186,6 +201,8 @@ export function ScheduleView() {
       LessonHours: s.lessonHours
     }
   });
+
+
 
   function ClickButton() {
     scheduleObj.closeEditor();
