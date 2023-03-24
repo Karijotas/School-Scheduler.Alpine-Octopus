@@ -83,7 +83,7 @@ public class ScheduleService {
         var roomSchedules = lessonRepository.findByRoom_Id(roomId);
         logger.info("Trying to validate rooms");
         return roomSchedules.stream().noneMatch(lesson -> lesson.getStartTime().equals(startTime) && lesson.getEndTime().equals(endTime)
-                && (lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime)));
+                && lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime));
     }
 
     public boolean lessonDateValidation(Long scheduleId, LocalDateTime startTime) {
@@ -217,11 +217,35 @@ public class ScheduleService {
         var existingSchedule = scheduleRepository.findById(id)
                 .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", id.toString()));
 
+
+        //finding the lesson start and end times
+        var startTime = existingSchedule.getLessons()
+                .stream()
+                .filter(lesson -> lesson.getId().equals(lessonId))
+                .findFirst()
+                .get()
+                .getStartTime();
+        var endTime = existingSchedule.getLessons()
+                .stream()
+                .filter(lesson -> lesson.getId().equals(lessonId))
+                .findFirst()
+                .get()
+                .getEndTime();
+
         if (teacherId != null) {
 
             //finding the teacher
             var existingTeacher = teacherRepository.findById(teacherId)
                     .orElseThrow(() -> new SchedulerValidationException("Teacher does not exist", "id", "Teacher not found", teacherId.toString()));
+            //validation
+            if (validateTeacherBetweenSchedules(existingTeacher.getId(), startTime, endTime)) {
+                existingSchedule.getLessons()
+                        .stream()
+                        .filter(lesson -> lesson.getId().equals(lessonId))
+                        .forEach(lesson -> lesson.setStatus(1));
+                existingSchedule.setStatus(1);
+            }
+
             //setting the teacher
             existingSchedule.getLessons()
                     .stream()
@@ -237,6 +261,15 @@ public class ScheduleService {
             //finding the room
             var existingRoom = roomRepository.findById(roomId)
                     .orElseThrow(() -> new SchedulerValidationException("Room does not exist", "id", "Room not found", roomId.toString()));
+
+            if (validateRoomBetweenSchedules(existingRoom.getId(), startTime, endTime)) {
+                existingSchedule.getLessons()
+                        .stream()
+                        .filter(lesson -> lesson.getId().equals(lessonId))
+                        .forEach(lesson -> lesson.setStatus(1));
+                existingSchedule.setStatus(1);
+            }
+
             //setting the room
             existingSchedule.getLessons()
                     .stream()
@@ -246,7 +279,8 @@ public class ScheduleService {
         } else {
             existingSchedule.setStatus(2);
         }
-        
+
+
         //save to repository
         return scheduleRepository.save(existingSchedule);
     }
