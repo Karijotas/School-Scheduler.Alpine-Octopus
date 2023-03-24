@@ -75,8 +75,11 @@ export function ViewTeachers() {
   // };
 
   useEffect(() => {
-    nameText.length > 0 ? fetchFilterTeachers() : (shiftText.length > 0 ? fetchTeachersByShifts(): (subjectText.length > 0 ? fetchFilterTeachersBySubjects():fetchTeachers()));
+    nameText.length > 0 && !nameText.includes('/') && !nameText.includes('#') && !nameText.includes('.') && !nameText.includes(';') && !nameText.match(new RegExp( /^\s/)) ? 
+    fetchFilterTeachers() : (shiftText.length > 0 && !shiftText.includes('/') && !shiftText.includes('#') && !shiftText.includes('.') && !shiftText.includes(';') && !shiftText.match(new RegExp( /^\s/)) ? 
+    fetchTeachersByShifts(): (subjectText.length > 0 && !subjectText.includes('/') && !subjectText.includes('#') && !subjectText.includes('.') && !subjectText.includes(';') && !subjectText.match(new RegExp( /^\s/)) ? fetchFilterTeachersBySubjects():fetchTeachers()));
   }, [activePage, nameText, shiftText, subjectText]);
+
 
 
   useEffect(() => {

@@ -54,8 +54,9 @@ export function ViewShifts() {
   };
 
   useEffect(() => {
-    nameText.length > 0 ? fetchFilterShifts() : fetchShifts();
-  }, [activePage, nameText]);
+    nameText.length > 0 && !nameText.includes('/') && !nameText.includes('#') && !nameText.includes('.') && !nameText.includes(';') && !nameText.match(new RegExp( /^\s/)) ?
+     fetchFilterSubjects() : (moduleText.length > 0 && !nameText.includes('/') && !nameText.includes('#') && !nameText.includes('.') && !nameText.includes(';') && !nameText.match(new RegExp( /^\s/)) ? fetchSubjectsByModules() : fetchSubjects())
+  }, [activePage, nameText, moduleText]);
 
   const [open, setOpen] = useState(false);
   const [close, setClose] = useState(false);
@@ -107,7 +108,7 @@ export function ViewShifts() {
                 <Table selectable>
                   <Table.Header>
                     <Table.Row>
-                      <Table.HeaderCell>Pavadinimas</Table.HeaderCell>
+                      <Table.HeaderCell>Pamainos pavadinimas</Table.HeaderCell>
                       <Table.HeaderCell>Pamokos nuo</Table.HeaderCell>
                       <Table.HeaderCell>Pamokos iki</Table.HeaderCell>
                       <Table.HeaderCell>Veiksmai</Table.HeaderCell>
