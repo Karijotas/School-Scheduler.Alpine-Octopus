@@ -15,10 +15,12 @@ const JSON_HEADERS = {
 };
 
 L10n.load({
-  lt: {
-    datetimepicker: {
-      placeholder: "Pasirinkite datą",
-      today: "Šiandien",
+  'en-US': {
+    'schedule': {
+      'saveButton': 'Add',
+      'cancelButton': 'Close',
+      'deleteButton': 'Remove',
+      'newEvent': 'Add Event',
     },
     timeFormats: {
       short: "HH",
@@ -130,9 +132,6 @@ export function ScheduleView() {
     scheduleObj.print();
   }
 
-  function onPrint() {
-    scheduleObj.print();
-  }
   function onExportClick() {
     scheduleObj.exportToExcel();
   }

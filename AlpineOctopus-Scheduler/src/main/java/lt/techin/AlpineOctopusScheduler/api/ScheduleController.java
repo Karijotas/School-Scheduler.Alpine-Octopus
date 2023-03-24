@@ -154,6 +154,13 @@ public class ScheduleController {
         return ok(toScheduleEntityDto(updatedSchedule));
     }
 
+    @PatchMapping("/validation/{scheduleId}")
+    public ResponseEntity<ScheduleEntityDto> checkAndSetScheduleStatus(@PathVariable Long scheduleId) {
+        var updatedSchedule = scheduleService.allTeachersAreSet(scheduleId);
+        return ok(toScheduleEntityDto(updatedSchedule));
+    }
+
+
     @PatchMapping("/{scheduleId}/create/{subjectId}/{startTime}/{endTime}")
     public ResponseEntity<ScheduleEntityDto> scheduleLesson(@PathVariable Long scheduleId, @PathVariable Long subjectId,
                                                             @PathVariable(value = "startTime", required = true) String startTime,

@@ -94,8 +94,45 @@ public class ScheduleService {
             return true;
         }
         return false;
-
     }
+
+    public Schedule allTeachersAreSet(Long scheduleId) {
+
+        var existingSchedule = scheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", scheduleId.toString()));
+
+        // finding all teachers that are set for subjects
+        var scheduleSubjectsTeachers = existingSchedule.getSubjects()
+                .stream()
+                .map(subject -> subject.getTeacher())
+                .collect(Collectors.toList());
+
+        // finding all rooms that are set for subjects
+        var scheduleSubjectsRooms = existingSchedule.getSubjects()
+                .stream()
+                .map(subject -> subject.getRoom())
+                .collect(Collectors.toList());
+//        System.out.println(Arrays.toString(scheduleSubjectsRooms.toArray()) + "uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu" + scheduleSubjectsTeachers +
+//                scheduleSubjectsTeachers.size() + " " + existingSchedule.getSubjects().size() + " " + scheduleSubjectsRooms.size() + " " + existingSchedule.getSubjects().size());
+
+        //checking if any was not set
+        if (scheduleSubjectsTeachers.contains(null) || scheduleSubjectsRooms.contains(null)) {
+            existingSchedule.setStatus(1);
+        } else {
+            existingSchedule.setStatus(0);
+        }
+        scheduleRepository.save(existingSchedule);
+
+        return existingSchedule;
+    }
+
+
+//    public boolean teacherWorkingHoursValidation (Long teacherId, Double workHoursPerWeek ){
+//        var existingTeacher = teacherRepository.findById(teacherId)
+//                .orElseThrow(() -> new SchedulerValidationException("Teacher does not exist", "id", "Teacher not found", teacherId.toString()));
+//
+//        if (existingTeacher.getWorkHoursPerWeek()<= )
+//    }
 
 
     @Transactional
@@ -190,23 +227,22 @@ public class ScheduleService {
                     .stream()
                     .filter(lesson -> lesson.getId().equals(lessonId))
                     .forEach(lesson -> lesson.setTeacher(existingTeacher));
-            existingSchedule.setStatus(0);
-        } else {
-            existingSchedule.setStatus(1);
-        }
 
-        if (roomId != null) {
-            //finding the room
-            var existingRoom = roomRepository.findById(roomId)
-                    .orElseThrow(() -> new SchedulerValidationException("Room does not exist", "id", "Room not found", roomId.toString()));
-            //setting the room
-            existingSchedule.getSubjects()
-                    .stream()
-                    .filter(lesson -> lesson.getId().equals(lessonId))
-                    .forEach(lesson -> lesson.setRoom(existingRoom));
-            existingSchedule.setStatus(0);
-        } else {
-            existingSchedule.setStatus(2);
+
+            if (roomId != null) {
+                //finding the room
+                var existingRoom = roomRepository.findById(roomId)
+                        .orElseThrow(() -> new SchedulerValidationException("Room does not exist", "id", "Room not found", roomId.toString()));
+                //setting the room
+                existingSchedule.getSubjects()
+                        .stream()
+                        .filter(lesson -> lesson.getId().equals(lessonId))
+                        .forEach(lesson -> lesson.setRoom(existingRoom));
+
+                //replacing the subjectList
+                existingSchedule.setSubjects(existingSchedule.getSubjects());
+                //save to repository
+            }
         }
         //save to repository
         return scheduleRepository.save(existingSchedule);
@@ -282,7 +318,15 @@ public class ScheduleService {
 
 
         //save to repository
+
         return scheduleRepository.save(existingSchedule);
+    }
+
+    public Integer teacherLessonsPerDay(Long teacherId, LocalDateTime day) {
+        var teacherSetLessons = lessonRepository.findByTeacher_IdAndStartTime(teacherId, day);
+
+        return teacherSetLessons.size();
+
     }
 
     public Schedule ScheduleLesson(Long scheduleId, Long subjectId, LocalDateTime startTime, LocalDateTime endTime) {
@@ -321,19 +365,24 @@ public class ScheduleService {
 
                     existingSchedule.scheduleLesson(createdLesson);
 
-                    //subtracting the subjectHours from subjectTotalHours
+                    //subtracting the subjectHours from subjectTotalHours & setting teacher working hours
                     existingSchedule.getSubjects()
                             .stream()
                             .filter(lesson -> lesson.getId()
                                     .equals(subjectId))
                             .forEach(
                                     lesson -> {
-                                        if ((lesson.getLessonHours() - createdLesson.getLessonHours()) >= 0) {
+                                        if ((lesson.getLessonHours() - createdLesson.getLessonHours()) >= 0
+                                                && (teacherLessonsPerDay(lesson.getTeacher().getId(), startTime) + createdLesson.getLessonHours() <= 12)
+
+                                        ) {
                                             lesson.setLessonHours(lesson.getLessonHours() - createdLesson.getLessonHours());
+//                                            lesson.getTeacher().setWorkHoursPerWeek(lesson.getTeacher().getWorkHoursPerWeek() + createdLesson.getLessonHours());
                                         } else {
                                             throw new SchedulerValidationException("Too many lessons taken", "lesson", "Lesson amount", scheduleId.toString());
                                         }
                                     });
+
 
                     // finding and setting last day of planned schedule (last planned lesson)
                     var last = existingSchedule.getLessons()
