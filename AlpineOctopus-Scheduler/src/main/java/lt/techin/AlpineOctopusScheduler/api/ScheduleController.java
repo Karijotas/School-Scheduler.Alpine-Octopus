@@ -3,6 +3,7 @@ package lt.techin.AlpineOctopusScheduler.api;
 import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleTestDto;
+import lt.techin.AlpineOctopusScheduler.dao.LessonRepository;
 import lt.techin.AlpineOctopusScheduler.dao.ScheduleLessonsRepository;
 import lt.techin.AlpineOctopusScheduler.model.Lesson;
 import lt.techin.AlpineOctopusScheduler.model.Schedule;
@@ -36,11 +37,14 @@ public class ScheduleController {
 
     private final ScheduleService scheduleService;
     private final ScheduleLessonsRepository scheduleLessonsRepository;
+    private final LessonRepository lessonRepository;
 
     public ScheduleController(ScheduleService scheduleService,
-                              ScheduleLessonsRepository scheduleLessonsRepository) {
+                              ScheduleLessonsRepository scheduleLessonsRepository,
+                              LessonRepository lessonRepository) {
         this.scheduleService = scheduleService;
         this.scheduleLessonsRepository = scheduleLessonsRepository;
+        this.lessonRepository = lessonRepository;
     }
 
 
@@ -107,6 +111,12 @@ public class ScheduleController {
         return scheduleService.getAllSubjectsByScheduleId(scheduleId);
     }
 
+    @GetMapping(value = "/lesson/{teacherId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<Lesson> lessonsByTeacher(@PathVariable Long teacherId) {
+        return lessonRepository.findByTeacher_Id(teacherId);
+    }
+
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<ScheduleEntityDto> createSchedule(@RequestBody ScheduleEntityDto scheduleEntityDto, Long groupId,
                                                             @RequestParam(value = "startingDate", required = false) String startingDate) {
@@ -127,9 +137,15 @@ public class ScheduleController {
         }
     }
 
+    @PatchMapping("/{scheduleId}/{subjectId}")
+    public ResponseEntity<ScheduleEntityDto> setTeacherAndRoomInASchedule(@PathVariable Long scheduleId, @PathVariable Long subjectId, Long teacherId, Long roomId) {
+        var updatedSchedule = scheduleService.setTeacherAndRoomInASchedule(scheduleId, subjectId, teacherId, roomId);
+        return ok(toScheduleEntityDto(updatedSchedule));
+    }
+
     @PatchMapping("/{scheduleId}/{lessonId}")
-    public ResponseEntity<ScheduleEntityDto> setTeacherAndRoomInASchedule(@PathVariable Long scheduleId, @PathVariable Long lessonId, Long teacherId, Long roomId) {
-        var updatedSchedule = scheduleService.setTeacherAndRoomInASchedule(scheduleId, lessonId, teacherId, roomId);
+    public ResponseEntity<ScheduleEntityDto> setTeacherAndRoomInALesson(@PathVariable Long scheduleId, @PathVariable Long lessonId, Long teacherId, Long roomId) {
+        var updatedSchedule = scheduleService.setTeacherAndRoomInALesson(scheduleId, lessonId, teacherId, roomId);
         return ok(toScheduleEntityDto(updatedSchedule));
     }
 
