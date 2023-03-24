@@ -208,7 +208,9 @@ export function CreateSchedulePageNext() {
                     <Table.Cell>{subject.subject.name}</Table.Cell>
                     <Table.Cell>
                       <Select
-                        options={teachers}
+                      options={subject.subjectTeachers.map((x) => {
+                        return { key: x.id, text: x.name, value: x.id };
+                      })}
                         placeholder="Mokytojai"
                         onChange={(e, data) => setTeacherId(data.value)}
                       />

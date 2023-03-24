@@ -190,14 +190,15 @@ public class ScheduleService {
         var createdGroup = groupsRepository.findById(groupId)
                 .orElseThrow(() -> new SchedulerValidationException("Group doesn't exist", "id", "Group doesn't exist", groupId.toString()));
         var createdProgram = createdGroup.getProgram().getId();
-
         //Getting subjects in the program and adding them to the lesson Set
         List<ProgramSubjectHours> subjectHoursList = programSubjectHoursRepository.findAllByProgramId(createdProgram);
+
         Set<Lesson> lessonList = subjectHoursList
                 .stream()
                 .map(LessonMapper::toLessonFromSubject)
                 .collect(Collectors.toSet());
 
+        lessonList.stream().forEach(lesson -> lesson.setSubjectTeachers(teacherRepository.findAllByTeacherSubjects_Id(lesson.getSubject().getId())));
         //Creating the Schedule
         schedule.setName(createdGroup.getName() + " " + createdGroup.getShift().getName() + " " + createdGroup.getSchoolYear().toString());
         schedule.setStartingDate(startingDate);
