@@ -211,13 +211,6 @@ public class ScheduleService {
                     .filter(lesson -> lesson.getId().equals(lessonId))
                     .forEach(lesson -> lesson.setTeacher(existingTeacher));
 
-//                existingSchedule.getSubjects()
-//                        .stream()
-//                        .anyMatch(lesson -> lesson.getTeacher().equals(null));
-//            if (!allTeachersAreSet(id)) {
-//        } else {
-//            existingSchedule.setStatus(1);
-//        }
 
             if (roomId != null) {
                 //finding the room
@@ -237,6 +230,12 @@ public class ScheduleService {
         return scheduleRepository.save(existingSchedule);
     }
 
+    public Integer teacherLessonsPerDay(Long teacherId, LocalDateTime day) {
+        var teacherSetLessons = lessonRepository.findByTeacher_IdAndStartTime(teacherId, day);
+
+        return teacherSetLessons.size();
+
+    }
 
     public Schedule ScheduleLesson(Long scheduleId, Long subjectId, LocalDateTime startTime, LocalDateTime endTime) {
         //finding the schedule in repository
@@ -272,7 +271,8 @@ public class ScheduleService {
                             .forEach(
                                     lesson -> {
                                         if ((lesson.getLessonHours() - createdLesson.getLessonHours()) >= 0
-//                                                && lesson.getTeacher().getWorkHoursPerWeek() + createdLesson.getLessonHours() <= 12
+                                                && (teacherLessonsPerDay(lesson.getTeacher().getId(), startTime) + createdLesson.getLessonHours() <= 12)
+
                                         ) {
                                             lesson.setLessonHours(lesson.getLessonHours() - createdLesson.getLessonHours());
 //                                            lesson.getTeacher().setWorkHoursPerWeek(lesson.getTeacher().getWorkHoursPerWeek() + createdLesson.getLessonHours());
