@@ -339,6 +339,7 @@ export function ScheduleView() {
                   timeFormat='HH'
                   firstDayOfWeek='1'
                   height='550px'
+                  timezone='Europe/Vilnius'
                   editorTemplate={editorTemplate}
                   selectedDate={new Date(2023, 1, 10, 24, 0)}
                   eventSettings={{

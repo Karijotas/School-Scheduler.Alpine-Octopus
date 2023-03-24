@@ -1,5 +1,6 @@
 package lt.techin.AlpineOctopusScheduler.api.dto.mapper;
 
+import lt.techin.AlpineOctopusScheduler.dao.LessonRepository;
 import lt.techin.AlpineOctopusScheduler.dao.TeacherRepository;
 import lt.techin.AlpineOctopusScheduler.model.Lesson;
 import lt.techin.AlpineOctopusScheduler.model.ProgramSubjectHours;
@@ -11,6 +12,7 @@ import java.util.List;
 public class LessonMapper {
 
     static TeacherRepository teacherRepository;
+    static LessonRepository lessonRepository;
 
     public static Lesson toLessonFromSubject(ProgramSubjectHours subject) {
         var lesson = new Lesson();

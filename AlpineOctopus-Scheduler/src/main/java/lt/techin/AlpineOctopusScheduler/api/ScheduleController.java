@@ -148,11 +148,11 @@ public class ScheduleController {
         return ok(toScheduleEntityDto(updatedSchedule));
     }
 
-    @PatchMapping("/{scheduleId}/{lessonId}")
-    public ResponseEntity<ScheduleEntityDto> setTeacherAndRoomInALesson(@PathVariable Long scheduleId, @PathVariable Long lessonId, Long teacherId, Long roomId) {
-        var updatedSchedule = scheduleService.setTeacherAndRoomInALesson(scheduleId, lessonId, teacherId, roomId);
-        return ok(toScheduleEntityDto(updatedSchedule));
-    }
+//    @PatchMapping("/{scheduleId}/{lessonId}")
+//    public ResponseEntity<ScheduleEntityDto> setTeacherAndRoomInALesson(@PathVariable Long scheduleId, @PathVariable Long lessonId, Long teacherId, Long roomId) {
+//        var updatedSchedule = scheduleService.setTeacherAndRoomInALesson(scheduleId, lessonId, teacherId, roomId);
+//        return ok(toScheduleEntityDto(updatedSchedule));
+//    }
 
     @PatchMapping("/validation/{scheduleId}")
     public ResponseEntity<ScheduleEntityDto> checkAndSetScheduleStatus(@PathVariable Long scheduleId) {

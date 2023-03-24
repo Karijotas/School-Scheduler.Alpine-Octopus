@@ -92,19 +92,20 @@ export function CreateSchedulePageNext() {
   // };
 
   const updateSchedule = (lessonId) => {
-    if (teacherId === undefined){
+    if (teacherId === undefined) {
       fetch(`/api/v1/schedule/${params.id}/${lessonId}/?roomId=${roomId}`, {
         method: "PATCH",
       }).then(applyResult);
-    } else  if (roomId === undefined){
+    } else if (roomId === undefined) {
       fetch(`/api/v1/schedule/${params.id}/${lessonId}/?teacherId=${teacherId}`, {
         method: "PATCH",
       }).then(applyResult);
     } else {
-    fetch(`/api/v1/schedule/${params.id}/${lessonId}/?roomId=${roomId}&teacherId=${teacherId}`, {
-      method: "PATCH",
-    }).then(applyResult);
-  }};
+      fetch(`/api/v1/schedule/${params.id}/${lessonId}/?roomId=${roomId}&teacherId=${teacherId}`, {
+        method: "PATCH",
+      }).then(applyResult);
+    }
+  };
 
   //Teacher dropdown
   useEffect(() => {
@@ -183,7 +184,7 @@ export function CreateSchedulePageNext() {
             <div>
               <Table celled>
                 <Table.Header>
-                  <Table.HeaderCell colspan="3">
+                  <Table.HeaderCell colspan="4">
                     Programos pavadinimas
                   </Table.HeaderCell>
                 </Table.Header>
@@ -194,7 +195,7 @@ export function CreateSchedulePageNext() {
                 </Table.Row>
 
                 <Table.Header>
-                  <Table.HeaderCell colspan="3">Dalykai</Table.HeaderCell>
+                  <Table.HeaderCell colspan="4">Dalykai</Table.HeaderCell>
                   {okey && (
                     <Message size="tiny" color="teal">
                       {okey}
@@ -208,9 +209,9 @@ export function CreateSchedulePageNext() {
                     <Table.Cell>{subject.subject.name}</Table.Cell>
                     <Table.Cell>
                       <Select
-                      options={subject.subjectTeachers.map((x) => {
-                        return { key: x.id, text: x.name, value: x.id };
-                      })}
+                        options={subject.subjectTeachers.map((x) => {
+                          return { key: x.id, text: x.name, value: x.id };
+                        })}
                         placeholder="Mokytojai"
                         onChange={(e, data) => setTeacherId(data.value)}
                       />

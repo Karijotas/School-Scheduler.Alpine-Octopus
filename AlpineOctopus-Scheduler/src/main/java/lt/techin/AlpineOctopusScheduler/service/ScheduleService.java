@@ -73,15 +73,22 @@ public class ScheduleService {
     }
 
     public boolean validateTeacherBetweenSchedules(Long teacher, LocalDateTime startTime, LocalDateTime endTime) {
-        var teacherSchedules = lessonRepository.findByTeacher_Id(teacher);
         logger.info("Trying to validate teachers");
-        return teacherSchedules.stream().noneMatch(lesson -> lesson.getStartTime().equals(startTime) && lesson.getEndTime().equals(endTime)
-                && (lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime)));
+        var teacherSchedules = lessonRepository.findByTeacher_Id(teacher);
+        try {
+            boolean validated = teacherSchedules.stream().noneMatch(lesson -> lesson.getStartTime().equals(startTime) && lesson.getEndTime().equals(endTime)
+                    && (lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime)));
+            return validated;
+        } catch (NullPointerException e) {
+            logger.info(e.toString());
+            return true;
+        }
     }
 
     public boolean validateRoomBetweenSchedules(Long roomId, LocalDateTime startTime, LocalDateTime endTime) {
         var roomSchedules = lessonRepository.findByRoom_Id(roomId);
         logger.info("Trying to validate rooms");
+        try
         return roomSchedules.stream().noneMatch(lesson -> lesson.getStartTime().equals(startTime) && lesson.getEndTime().equals(endTime)
                 && lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime));
     }
@@ -134,12 +141,6 @@ public class ScheduleService {
 //        if (existingTeacher.getWorkHoursPerWeek()<= )
 //    }
 
-    public Integer teacherLessonsPerDay(Long teacherId, LocalDateTime day) {
-        var teacherSetLessons = lessonRepository.findByTeacher_IdAndStartTime(teacherId, day);
-
-        return teacherSetLessons.size();
-
-    }
 
     @Transactional
     public List<ScheduleEntityDto> getSchedulesByNameContaining(String nameText, int page, int pageSize) {
@@ -241,7 +242,8 @@ public class ScheduleService {
                 var existingRoom = roomRepository.findById(roomId)
                         .orElseThrow(() -> new SchedulerValidationException("Room does not exist", "id", "Room not found", roomId.toString()));
                 //setting the room
-                existingSchedule.getSubjects().stream()
+                existingSchedule.getSubjects()
+                        .stream()
                         .filter(lesson -> lesson.getId().equals(lessonId))
                         .forEach(lesson -> lesson.setRoom(existingRoom));
 
@@ -328,6 +330,12 @@ public class ScheduleService {
         return scheduleRepository.save(existingSchedule);
     }
 
+    public Integer teacherLessonsPerDay(Long teacherId, LocalDateTime day) {
+        var teacherSetLessons = lessonRepository.findByTeacher_IdAndStartTime(teacherId, day);
+
+        return teacherSetLessons.size();
+
+    }
 
     public Schedule ScheduleLesson(Long scheduleId, Long subjectId, LocalDateTime startTime, LocalDateTime endTime) {
         //finding the schedule in repository
@@ -345,16 +353,6 @@ public class ScheduleService {
                             .findAny()
                             .get();
 
-                    //validating if the teacher already teaches during the timeframe in another lesson. If so, setting the status to warning
-                    if (validateTeacherBetweenSchedules(createdLesson.getTeacher().getId(), startTime, endTime)) {
-                        createdLesson.setStatus(1);
-                        existingSchedule.setStatus(1);
-                    }
-                    //validating if the classroom is already in use in another Schedule lesson. If so, setting the status to warning
-                    if (validateRoomBetweenSchedules(createdLesson.getRoom().getId(), startTime, endTime)) {
-                        createdLesson.setStatus(1);
-                        existingSchedule.setStatus(1);
-                    }
 
                     //setting the time in the schedule
                     createdLesson.setStartTime(startTime);
@@ -363,7 +361,11 @@ public class ScheduleService {
                     //setting lesson duration
                     createdLesson.setLessonHours(endTime.getHour() - startTime.getHour());
 
+                    lessonRepository.save(createdLesson);
+
                     existingSchedule.scheduleLesson(createdLesson);
+                    logger.info("saved");
+
 
                     //subtracting the subjectHours from subjectTotalHours & setting teacher working hours
                     existingSchedule.getSubjects()
@@ -372,18 +374,16 @@ public class ScheduleService {
                                     .equals(subjectId))
                             .forEach(
                                     lesson -> {
-                                        if ((lesson.getLessonHours() - createdLesson.getLessonHours()) >= 0
-                                                && (teacherLessonsPerDay(lesson.getTeacher().getId(), startTime) + createdLesson.getLessonHours() <= 12)
-
-                                        ) {
-                                            lesson.setLessonHours(lesson.getLessonHours() - createdLesson.getLessonHours());
+//                                        if ((lesson.getLessonHours() - createdLesson.getLessonHours()) >= 0
+//                                                && (teacherLessonsPerDay(lesson.getTeacher().getId(), startTime) + createdLesson.getLessonHours() <= 12)) {
+                                        lesson.setLessonHours(lesson.getLessonHours() - createdLesson.getLessonHours());
 //                                            lesson.getTeacher().setWorkHoursPerWeek(lesson.getTeacher().getWorkHoursPerWeek() + createdLesson.getLessonHours());
-                                        } else {
-                                            throw new SchedulerValidationException("Too many lessons taken", "lesson", "Lesson amount", scheduleId.toString());
-                                        }
+//                                        } else {
+//                                            throw new SchedulerValidationException("Too many lessons taken", "lesson", "Lesson amount", scheduleId.toString());
+//                                        }
                                     });
 
-
+                    logger.info("planned till:");
                     // finding and setting last day of planned schedule (last planned lesson)
                     var last = existingSchedule.getLessons()
                             .stream()
@@ -392,6 +392,26 @@ public class ScheduleService {
                             .get(existingSchedule.getLessons().size() - 1).getEndTime();
 
                     existingSchedule.setPlannedTillDate(last.toLocalDate());
+
+                    logger.info("validation1");
+                    //validating if the teacher already teaches during the timeframe in another lesson. If so, setting the status to warning
+//                    if (createdLesson.getTeacher() != null) {
+                    logger.info("teacher is not null");
+                    if (validateTeacherBetweenSchedules(createdLesson.getTeacher().getId(), startTime, endTime)) {
+                        createdLesson.setStatus(1);
+                        existingSchedule.setStatus(1);
+                    }
+//                    }
+
+                    logger.info("validation2");
+
+                    //validating if the classroom is already in use in another Schedule lesson. If so, setting the status to warning
+//                    if (createdLesson.getRoom() != null) {
+                    if (validateRoomBetweenSchedules(createdLesson.getRoom().getId(), startTime, endTime)) {
+                        createdLesson.setStatus(1);
+                        existingSchedule.setStatus(1);
+                    }
+//                    }
 
 
                     return scheduleRepository.save(existingSchedule);
