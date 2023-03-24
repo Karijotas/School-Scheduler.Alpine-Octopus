@@ -9,8 +9,8 @@ public class HolidayTestDto extends HolidayDto {
     public HolidayTestDto() {
     }
 
-    public HolidayTestDto(String name, LocalDate startDate, LocalDate endDate) {
-        super(name, startDate, endDate);
+    public HolidayTestDto(String name, LocalDate startDate, LocalDate endDate, Boolean reccuring) {
+        super(name, startDate, endDate, reccuring);
         this.id = id;
     }
 

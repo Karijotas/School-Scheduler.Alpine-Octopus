@@ -10,6 +10,7 @@ import {
   Segment,
   Select,
   Table,
+  Form,
 } from "semantic-ui-react";
 import { YEAR_OPTIONS } from "../../../Components/const";
 import { EditMenu } from "../../../Components/EditMenu";
@@ -32,17 +33,21 @@ export function EditHoliday() {
     name: "",
     startDate: "",
     endDate: "",
+    reccuring: "",
   });
-const [name, setName] = useState("");
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
 
+const [name, setName] = useState("");
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
+  const [reccuring, setReccuring] = useState();
   
   const [nameError, setNameError] = useState("");
 //   const [starDateError, setStarDateError] = useState("");
 //   const [endDateError, setEndDateError] = useState("");
 
   const [formValid, setFormValid] = useState(false);
+
+  
 
   useEffect(() => {
     if (nameError) {
@@ -65,15 +70,15 @@ const [name, setName] = useState("");
     validateNameInput(e.target.value);
   };
 
-//   const handleStartDateInputChange = (e) => {
-//     holidays.starDate = e.target.value;
-//     setStartDate(e.target.value);
-//   };
-
-//   const handleEndDateInputChange = (e) => {
-//     holidays.endDate = e.target.value;
-//     setEndDate(e.target.value);
-//   };
+  const handleReccuringChange = (e) => {
+    if(e.target.value=== 'yes'){
+      holidays.reccuring = true
+      setReccuring(true)
+    } else {
+      holidays.reccuring = false
+      setReccuring(false)
+    } 
+  }
 
   const validateNameInput = (value) => {
     if (value.length < 2 || value.length > 100) {
@@ -86,9 +91,10 @@ const [name, setName] = useState("");
     }
   };
 
-//   const validateStartDateInput = (value) => {
-//     
-//   };
+useEffect(()=>{
+  setStartDate(holidays.startDate)
+  setEndDate(holidays.endDate)
+})
 
   useEffect(() => {
     fetch("/api/v1/holidays/" + params.id)
@@ -137,6 +143,7 @@ const [name, setName] = useState("");
     setUpdated(true);
   }, [setUpdated]);
 
+
   return (
     <div>
       <MainMenu />
@@ -165,6 +172,7 @@ const [name, setName] = useState("");
                       <Table.HeaderCell>Atostogų Pavadinimas</Table.HeaderCell>
                       <Table.HeaderCell>Data nuo</Table.HeaderCell>
                       <Table.HeaderCell>Data iki</Table.HeaderCell>
+                      <Table.HeaderCell>Pasikartoja</Table.HeaderCell>
                       <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
@@ -173,6 +181,8 @@ const [name, setName] = useState("");
                       <Table.Cell width={6}>{holidays.name}</Table.Cell>
                       <Table.Cell>{holidays.startDate}</Table.Cell>
                       <Table.Cell width={3}> {holidays.endDate} </Table.Cell>
+                      {console.log(holidays.reccuring)}
+                      <Table.Cell width={3}> {holidays.reccuring ? "Taip" : "Ne"} </Table.Cell>
                       <Table.Cell collapsing>
                         {" "}
                         <Button
@@ -202,9 +212,14 @@ const [name, setName] = useState("");
                       <Table.HeaderCell>
                       Atostogų Pavadinimas
                       </Table.HeaderCell>
-                      <Table.HeaderCell>Data nuo</Table.HeaderCell>
+                      <Table.HeaderCell>
+                        Data nuo
+                      </Table.HeaderCell>
                       <Table.HeaderCell>
                         Data iki
+                      </Table.HeaderCell>
+                      <Table.HeaderCell>
+                        Pasikartoja
                       </Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
@@ -223,20 +238,52 @@ const [name, setName] = useState("");
                       <DatePicker
               className="controls4"
               placeholder="Data nuo"
-              value={holidays.starDate}
-              onChange={(e) => {const newDate = dayjs(e).format("YYYY-MM-DD");setStartDate(newDate);holidays.startDate = newDate}}
+              defaultValue={dayjs(startDate)}
+              onChange={(e) => {const newDate = dayjs(e);
+                if (newDate.isValid()) {
+                  const formattedDate = newDate.format("YYYY-MM-DD");
+                  setStartDate(formattedDate);
+                  holidays.startDate = formattedDate;
+                }}}
             />
                       </Table.Cell>
                       <Table.Cell>
                       <DatePicker
               className="controls4"
               placeholder="Data iki"
-              value={holidays.starDate}
-              onChange={(e) => {
-                const newDate = dayjs(e).format("YYYY-MM-DD");
-                setEndDate(newDate);holidays.endDate = newDate
+              defaultValue={dayjs(endDate)}
+              onChange={(e) => {const newDate = dayjs(e);
+                if (newDate.isValid()) {
+                  const formattedDate = newDate.format("YYYY-MM-DD");
+                  setEndDate(formattedDate);
+                  holidays.endDate = formattedDate;
+                }
               }}
             />
+                      </Table.Cell>
+                      <Table.Cell>
+                      <Form style={{ paddingTop: '10px' }}>
+              <Form.Group >
+                <Form.Field><label>Taip</label></Form.Field>
+                <input type="radio"
+                value="yes" 
+                checked={reccuring}
+                style={{ marginRight: '10px', marginBottom: '14px' }}
+                onClick={handleReccuringChange}
+                // onChange={handleReccuringChange}
+                />
+                <Form.Group >
+                <Form.Field ><label>Ne</label></Form.Field>
+                <input type="radio"
+                value="no"
+                checked={!reccuring}
+                onClick={handleReccuringChange}
+                // onChange={handleReccuringChange} 
+                />
+              </Form.Group>
+              </Form.Group>
+            </Form>
+
                       </Table.Cell>
                       
                     </Table.Row>

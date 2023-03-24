@@ -100,11 +100,13 @@ CREATE TABLE modules_subjects (
 
 CREATE TABLE holiday (
   id BIGINT AUTO_INCREMENT NOT NULL,
-   name VARCHAR(255),
+   name VARCHAR(40),
    start_date date,
    end_date date,
+   reccuring BOOLEAN,
    CONSTRAINT pk_holiday PRIMARY KEY (id)
 );
+
 
 ALTER TABLE modules_subjects ADD CONSTRAINT fk_modsub_on_module FOREIGN KEY (module_id) REFERENCES module (id);
 

@@ -1,6 +1,5 @@
 package lt.techin.AlpineOctopusScheduler.api;
 
-import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.HolidayDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.HolidayEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.HolidayMapper;
@@ -71,11 +70,9 @@ public class HolidayController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteHoliday(@PathVariable Long id) {
-        var holidayDeleted = holidayService.deleteById(id);
-
+        boolean holidayDeleted = holidayService.deleteById(id);
         if (holidayDeleted) {
             return ResponseEntity.noContent().build();
-
         }
         return ResponseEntity.notFound().build();
     }
@@ -85,17 +82,44 @@ public class HolidayController {
     public List<HolidayEntityDto> getPagedHolidays(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
                                                    @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
 
-
         return holidayService.getAllPagedHolidays(page, pageSize);
 
     }
 
-    @GetMapping(path = "/name-filter/{nameText}")
-    @ApiOperation(value = "Get Holidays starting with", notes = "Returns list of Holidays starting with passed String")
-    @ResponseBody
-    public List<HolidayEntityDto> getHolidaysByNameContaining(@PathVariable String nameText) {
-        return holidayService.getHolidaysByNameContaining(nameText);
-    }
+    //    @GetMapping(path = "/name-filter/{nameText}")
+//    @ApiOperation(value = "Get Holidays starting with", notes = "Returns list of Holidays starting with passed String")
+//    @ResponseBody
+//    public List<HolidayEntityDto> getHolidaysByNameContaining(@PathVariable String nameText) {
+//        return holidayService.getHolidaysByNameContaining(nameText);
+//    }
+//
+//    @GetMapping(path = "/date-filter", produces = MediaType.APPLICATION_JSON_VALUE)
+//    @ApiOperation(value = "Get Holidays starting with", notes = "Returns list of Holidays starting with passed String")
+//    @ResponseBody
+//    public List<HolidayEntityDto> getHolidaysByDateRange(
+//            @RequestParam(value = "startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+//            @RequestParam(value = "endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+//        return holidayService.getHolidaysByDateRange(startDate, endDate);
+//    }
+//    @GetMapping(path = "page/starting-date-filter/{startingDate}")
+//    @ApiOperation(value = "Get paged schedules by starting date", notes = "Returns list of holidays by starting date with passed String")
+//    @ResponseBody
+//    public List<HolidayEntityDto> getPagedHolidaysByStartingDate(@PathVariable String startingDate,
+//                                                                 @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+//                                                                 @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+//
+//        return holidayService.getPagedHolidaysByStartingDate(startingDate, page, pageSize);
+//    }
+//
+//    @GetMapping(path = "page/name-filter/{nameText}")
+//    @ApiOperation(value = "Get paged Holidays starting with", notes = "Returns list of Holidays starting with passed String")
+//    @ResponseBody
+//    public List<HolidayEntityDto> getPagedHolidaysByNameContaining(@PathVariable String nameText,
+//                                                                   @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+//                                                                   @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+//
+//        return holidayService.getPagedHolidaysByNameContaining(nameText, page, pageSize);
+//    }
 
 
 }

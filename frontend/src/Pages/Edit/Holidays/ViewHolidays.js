@@ -83,7 +83,6 @@ const removeHoliday = (id) => {
                 onChange={(e) => setNameText(e.target.value)}
                 placeholder="Filtruoti pagal Pavadinima"
               />
-
               <Button
                 id="details"
                 icon
@@ -100,7 +99,7 @@ const removeHoliday = (id) => {
               <Table selectable>
                 <Table.Header>
                   <Table.Row>
-                    <Table.HeaderCell>Atostogų Pavadinimas</Table.HeaderCell>
+                    <Table.HeaderCell>Atostogų pavadinimas</Table.HeaderCell>
                     <Table.HeaderCell>Data nuo</Table.HeaderCell>
                     <Table.HeaderCell>Data iki</Table.HeaderCell>
                     <Table.HeaderCell>Veiksmai</Table.HeaderCell>

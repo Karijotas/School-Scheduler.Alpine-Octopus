@@ -13,6 +13,7 @@ public class HolidayMapper {
         holidayDto.setName(holiday.getName());
         holidayDto.setStartDate(holiday.getStartDate());
         holidayDto.setEndDate(holiday.getEndDate());
+        holidayDto.setReccuring(holiday.getReccuring());
 
         return holidayDto;
     }
@@ -23,6 +24,7 @@ public class HolidayMapper {
         holiday.setName(holidayDto.getName());
         holiday.setStartDate(holidayDto.getStartDate());
         holiday.setEndDate(holidayDto.getEndDate());
+        holiday.setReccuring(holidayDto.getReccuring());
 
 
         return holiday;
@@ -35,6 +37,7 @@ public class HolidayMapper {
         holidayEntityDto.setName(holiday.getName());
         holidayEntityDto.setStartDate(holiday.getStartDate());
         holidayEntityDto.setEndDate(holiday.getEndDate());
+        holidayEntityDto.setReccuring(holiday.getReccuring());
 
         return holidayEntityDto;
     }
@@ -46,6 +49,7 @@ public class HolidayMapper {
         holiday.setName(holidayEntityDto.getName());
         holiday.setStartDate(holidayEntityDto.getStartDate());
         holiday.setEndDate(holidayEntityDto.getEndDate());
+        holiday.setReccuring(holidayEntityDto.getReccuring());
 
 
         return holiday;

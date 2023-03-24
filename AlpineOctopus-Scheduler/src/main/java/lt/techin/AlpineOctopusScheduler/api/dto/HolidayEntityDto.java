@@ -9,12 +9,12 @@ public class HolidayEntityDto extends HolidayDto {
     public HolidayEntityDto() {
     }
 
-    public HolidayEntityDto(Long id, String name, LocalDate startDate, LocalDate endDate) {
-        super(name, startDate, endDate);
+    public HolidayEntityDto(Long id, String name, LocalDate startDate, LocalDate endDate, Boolean reccuring) {
+        super(name, startDate, endDate, reccuring);
         this.id = id;
     }
 
-    public HolidayEntityDto(String name, LocalDate startDate, LocalDate endDate, Long id) {
+    public HolidayEntityDto(String name, LocalDate startDate, LocalDate endDate, Long id, Boolean reccuring) {
 
     }
 

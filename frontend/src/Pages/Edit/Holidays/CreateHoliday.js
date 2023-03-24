@@ -18,6 +18,8 @@ export function CreateHoliday(){
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
 
+  const [reccuring, setReccuring] = useState(false);
+
   //Validation
   const [nameDirty, setNameDirty] = useState(false);
 //   const [buildingDirty, setBuildingDirty] = useState(false);
@@ -41,6 +43,7 @@ export function CreateHoliday(){
         break
     }
   }
+  console.log(reccuring)
 
   const nameHandler = (e) => {
     setName(e.target.value)
@@ -52,6 +55,10 @@ export function CreateHoliday(){
     } else {
       setNameError("")
     }
+  }
+
+  const handleReccuringChange = (event) => {
+    setReccuring(event.target.value === 'yes');
   }
 
 //   const buildingHandler = (e) => {
@@ -97,6 +104,7 @@ export function CreateHoliday(){
         name,
         startDate,
         endDate,
+        reccuring,
       })
     }).then(applyResult) 
 ;
@@ -116,7 +124,7 @@ export function CreateHoliday(){
 
           <Form >
             <Form.Field >
-              <label>Atostogų Pavadinimas</label>
+              <label>Atostogų pavadinimas</label>
               {(nameDirty && nameError) && <div style={{ color: "red" }}>{nameError}</div>}
               <input name="name"  onBlur={blurHandler} placeholder='Atostogų Pavadinimas' value={name} onChange={e => nameHandler(e)} />
             </Form.Field>
@@ -151,6 +159,28 @@ export function CreateHoliday(){
                 setEndDate(newDate);
               }}
             />
+
+            <Form style={{ paddingTop: '10px' }}>
+              <Form.Field>
+                <label>Ar atostogos pasikartoja?</label>
+              </Form.Field>
+              <Form.Group >
+                <Form.Field><label>Taip</label></Form.Field>
+                <input type="radio"
+                value="yes" 
+                checked={reccuring}
+                style={{ marginRight: '10px', marginBottom: '14px' }}
+                onChange={handleReccuringChange}/>
+                <Form.Group >
+                <Form.Field ><label>Ne</label></Form.Field>
+                <input type="radio"
+                value="no"
+                checked={!reccuring}
+                onChange={handleReccuringChange} />
+              </Form.Group>
+              </Form.Group>
+            </Form>
+            
             <Divider hidden></Divider>
             <Form>
               <div><Button icon labelPosition="left" className="" href='#/view/holidays'><Icon name="arrow left" />Atgal</Button>
