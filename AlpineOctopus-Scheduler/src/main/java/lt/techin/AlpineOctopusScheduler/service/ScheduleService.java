@@ -142,6 +142,16 @@ public class ScheduleService {
         return existingSchedule;
     }
 
+    public Integer teacherLessonsPerDay(Long teacherId, LocalDateTime day, Integer lessonHours) {
+        var teacherSetLessons = lessonRepository.findByTeacher_IdAndStartTime(teacherId, day);
+        Integer lessonAmount = teacherSetLessons.stream()
+                .map(lesson -> lesson.getLessonHours())
+                .reduce(0, (integer, integer2) -> integer + integer2) + lessonHours;
+        logger.info("counting lessons per day:");
+        logger.info(lessonAmount.toString());
+        return lessonAmount;
+
+    }
 
 //    public boolean teacherWorkingHoursValidation (Long teacherId, Double workHoursPerWeek ){
 //        var existingTeacher = teacherRepository.findById(teacherId)
@@ -339,105 +349,105 @@ public class ScheduleService {
         return scheduleRepository.save(existingSchedule);
     }
 
-    public Integer teacherLessonsPerDay(Long teacherId, LocalDateTime day, Integer lessonHours) {
-        var teacherSetLessons = lessonRepository.findByTeacher_IdAndStartTime(teacherId, day);
-        Integer lessonAmount = teacherSetLessons.stream()
-                .map(lesson -> lesson.getLessonHours())
-                .reduce(0, (integer, integer2) -> integer + integer2) + lessonHours;
-        logger.info("counting lessons per day:");
-        logger.info(lessonAmount.toString());
-        return lessonAmount;
-
-    }
 
     public Schedule ScheduleLesson(Long scheduleId, Long subjectId, LocalDateTime startTime, LocalDateTime endTime) {
         //finding the schedule in repository
         var existingSchedule = scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", scheduleId.toString()));
 
-        if (endTime.isAfter(startTime)) {
-            if (lessonIsNotPlanned(scheduleId, startTime, endTime)) {
-                if (lessonDateValidation(scheduleId, startTime)) {
-                    //finding and getting the subject to schedule, then turning it to a new lesson object
-                    Lesson createdLesson = existingSchedule.getSubjects()
-                            .stream()
-                            .filter(lesson -> lesson.getId().equals(subjectId))
-                            .map(LessonMapper::toIndividualLesson)
-                            .findAny()
-                            .get();
+        if (existingSchedule.getSubjects()
+                .stream()
+                .filter(lesson -> lesson.getId().equals(subjectId)).noneMatch(lesson -> lesson.getLessonHours() <= 0)) {
+
+            if (endTime.isAfter(startTime)) {
+
+                if (lessonIsNotPlanned(scheduleId, startTime, endTime)) {
+
+                    if (lessonDateValidation(scheduleId, startTime)) {
+
+                        //finding and getting the subject to schedule, then turning it to a new lesson object
+                        Lesson createdLesson = existingSchedule.getSubjects()
+                                .stream()
+                                .filter(lesson -> lesson.getId().equals(subjectId))
+                                .map(LessonMapper::toIndividualLesson)
+                                .findAny()
+                                .get();
 
 
-                    //setting the time in the schedule
-                    createdLesson.setStartTime(startTime);
-                    createdLesson.setEndTime(endTime);
+                        //setting the time in the schedule
+                        createdLesson.setStartTime(startTime);
+                        createdLesson.setEndTime(endTime);
 
-                    //setting lesson duration
-                    createdLesson.setLessonHours(endTime.getHour() - startTime.getHour());
+                        //setting lesson duration
+                        createdLesson.setLessonHours(endTime.getHour() - startTime.getHour());
 
 
-                    //subtracting the subjectHours from subjectTotalHours & setting teacher working hours
-                    existingSchedule.getSubjects()
-                            .stream()
-                            .filter(lesson -> lesson.getId()
-                                    .equals(subjectId))
-                            .forEach(
-                                    lesson -> {
-                                        if (teacherLessonsPerDay(lesson.getTeacher().getId(), startTime, createdLesson.getLessonHours()) <= 12) {
-                                            lesson.setLessonHours(lesson.getLessonHours() - createdLesson.getLessonHours());
+                        //subtracting the subjectHours from subjectTotalHours & setting teacher working hours
+                        existingSchedule.getSubjects()
+                                .stream()
+                                .filter(lesson -> lesson.getId()
+                                        .equals(subjectId))
+                                .forEach(
+                                        lesson -> {
+                                            if (teacherLessonsPerDay(lesson.getTeacher().getId(), startTime, createdLesson.getLessonHours()) <= 12) {
+                                                lesson.setLessonHours(lesson.getLessonHours() - createdLesson.getLessonHours());
 //                                            lesson.getTeacher().setWorkHoursPerWeek(lesson.getTeacher().getWorkHoursPerWeek() + createdLesson.getLessonHours());
-                                        } else {
-                                            throw new SchedulerValidationException("Too many lessons taken", "lesson", "Lesson amount", scheduleId.toString());
-                                        }
-                                    });
-                    lessonRepository.save(createdLesson);
+                                            } else {
+                                                throw new SchedulerValidationException("Too many lessons taken", "lesson", "Lesson amount", scheduleId.toString());
+                                            }
+                                        });
+                        lessonRepository.save(createdLesson);
 
-                    existingSchedule.scheduleLesson(createdLesson);
-                    logger.info("saved");
-                    logger.info("planned till:");
-                    // finding and setting last day of planned schedule (last planned lesson)
-                    var last = existingSchedule.getLessons()
-                            .stream()
-                            .sorted(Comparator.comparing(Lesson::getEndTime))
-                            .collect(Collectors.toList())
-                            .get(existingSchedule.getLessons().size() - 1).getEndTime();
+                        existingSchedule.scheduleLesson(createdLesson);
+                        logger.info("saved");
+                        logger.info("planned till:");
+                        // finding and setting last day of planned schedule (last planned lesson)
+                        var last = existingSchedule.getLessons()
+                                .stream()
+                                .sorted(Comparator.comparing(Lesson::getEndTime))
+                                .collect(Collectors.toList())
+                                .get(existingSchedule.getLessons().size() - 1).getEndTime();
 
-                    existingSchedule.setPlannedTillDate(last.toLocalDate());
+                        existingSchedule.setPlannedTillDate(last.toLocalDate());
 
-                    logger.info("validation1");
-                    //validating if the teacher already teaches during the timeframe in another lesson. If so, setting the status to warning
-                    if (createdLesson.getTeacher() != null) {
-                        if (validateTeacherBetweenSchedules(createdLesson.getTeacher().getId(), startTime, endTime)) {
-                            logger.info("Setting lesson status to critical. Reason: teacher works at the same time in another lesson");
-                            createdLesson.setStatus(1);
-                            existingSchedule.setStatus(1);
+                        logger.info("validation1");
+                        //validating if the teacher already teaches during the timeframe in another lesson. If so, setting the status to warning
+                        if (createdLesson.getTeacher() != null) {
+                            if (validateTeacherBetweenSchedules(createdLesson.getTeacher().getId(), startTime, endTime)) {
+                                logger.info("Setting lesson status to critical. Reason: teacher works at the same time in another lesson");
+                                createdLesson.setStatus(1);
+                                existingSchedule.setStatus(1);
+                            }
                         }
-                    }
 
-                    logger.info("validation2");
+                        logger.info("validation2");
 
-                    //validating if the classroom is already in use in another Schedule lesson. If so, setting the status to warning
-                    if (createdLesson.getRoom() != null) {
-                        if (validateRoomBetweenSchedules(createdLesson.getRoom().getId(), startTime, endTime)) {
-                            logger.info("Setting lesson status to critical. Reason: class is occupied at the same time in another lesson");
-                            createdLesson.setStatus(1);
-                            existingSchedule.setStatus(1);
+                        //validating if the classroom is already in use in another Schedule lesson. If so, setting the status to warning
+                        if (createdLesson.getRoom() != null) {
+                            if (validateRoomBetweenSchedules(createdLesson.getRoom().getId(), startTime, endTime)) {
+                                logger.info("Setting lesson status to critical. Reason: class is occupied at the same time in another lesson");
+                                createdLesson.setStatus(1);
+                                existingSchedule.setStatus(1);
+                            }
                         }
+
+
+                        return scheduleRepository.save(existingSchedule);
+                    } else {
+                        throw new SchedulerValidationException("Lesson date is not in schedule time scope", "time", "Invalid time", scheduleId.toString());
                     }
-
-
-                    return scheduleRepository.save(existingSchedule);
                 } else {
-                    throw new SchedulerValidationException("Lesson date is not in schedule time scope", "time", "Invalid time", scheduleId.toString());
+                    throw new SchedulerValidationException("Other lessons are planned during selected time", "time", "Invalid time", scheduleId.toString());
                 }
             } else {
-                throw new SchedulerValidationException("Other lessons are planned during selected time", "time", "Invalid time", scheduleId.toString());
+                throw new SchedulerValidationException("End time is before start time", "time", "Invalid time", scheduleId.toString());
             }
+
         } else {
-            throw new SchedulerValidationException("End time is before start time", "time", "Invalid time", scheduleId.toString());
+            throw new SchedulerValidationException("All available lessons already planned", "Subject", "Subject planned", subjectId.toString());
         }
     }
 
-    ;
 
     public Set<Lesson> getAllLessonsByScheduleId(Long scheduleId) {
         var existingSchedule = scheduleRepository.findById(scheduleId)
