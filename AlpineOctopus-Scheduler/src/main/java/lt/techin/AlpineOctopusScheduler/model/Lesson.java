@@ -9,7 +9,6 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -29,7 +28,6 @@ public class Lesson {
     @ManyToOne
     private Room room;
 
-    @NotNull
     private Integer lessonHours;
     private boolean online;
 

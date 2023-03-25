@@ -355,9 +355,18 @@ public class ScheduleService {
         var existingSchedule = scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", scheduleId.toString()));
 
+        /**
+         *     Validations before scheduling a lesson:
+         * 1 - Is there enough remaining lesson hours left in subject
+         * 2 - Is end time not earlier than start time
+         * 3 - If lesson is not already planned in this schedule, in this time period
+         * 4 - If lesson is not earlier than schedule start
+         */
+
         if (existingSchedule.getSubjects()
                 .stream()
-                .filter(lesson -> lesson.getId().equals(subjectId)).noneMatch(lesson -> lesson.getLessonHours() <= 0)) {
+                .filter(lesson -> lesson.getId().equals(subjectId))
+                .noneMatch(lesson -> (lesson.getLessonHours() - (endTime.getHour() - startTime.getHour())) < 0)) {
 
             if (endTime.isAfter(startTime)) {
 
@@ -390,7 +399,13 @@ public class ScheduleService {
                                 .forEach(
                                         lesson -> {
                                             if (teacherLessonsPerDay(lesson.getTeacher().getId(), startTime, createdLesson.getLessonHours()) <= 12) {
-                                                lesson.setLessonHours(lesson.getLessonHours() - createdLesson.getLessonHours());
+
+                                                if (lesson.getLessonHours() - createdLesson.getLessonHours() <= 0) {
+                                                    lesson.setLessonHours(0);
+                                                    logger.info("lessonHours" + lesson.getLessonHours().toString());
+                                                } else {
+                                                    lesson.setLessonHours(lesson.getLessonHours() - createdLesson.getLessonHours());
+                                                }
 //                                            lesson.getTeacher().setWorkHoursPerWeek(lesson.getTeacher().getWorkHoursPerWeek() + createdLesson.getLessonHours());
                                             } else {
                                                 throw new SchedulerValidationException("Too many lessons taken", "lesson", "Lesson amount", scheduleId.toString());
