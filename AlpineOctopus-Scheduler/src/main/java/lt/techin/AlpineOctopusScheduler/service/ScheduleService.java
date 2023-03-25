@@ -338,8 +338,10 @@ public class ScheduleService {
 
     public Integer teacherLessonsPerDay(Long teacherId, LocalDateTime day) {
         var teacherSetLessons = lessonRepository.findByTeacher_IdAndStartTime(teacherId, day);
-
-        return teacherSetLessons.size();
+        Integer lessonAmount = teacherSetLessons.stream().map(lesson -> lesson.getLessonHours()).reduce(0, (integer, integer2) -> integer + integer2);
+        logger.info("counting lessons:");
+        logger.info(lessonAmount.toString());
+        return lessonAmount;
 
     }
 
@@ -483,6 +485,13 @@ public class ScheduleService {
     }
 
     public boolean deleteById(Long id) {
+        //finding the schedule in repository
+        var existingSchedule = scheduleRepository.findById(id)
+                .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", id.toString()));
+        Set<Lesson> newList = new HashSet<>();
+        existingSchedule.setLessons(newList);
+        existingSchedule.setSubjects(newList);
+        scheduleRepository.save(existingSchedule);
         try {
             scheduleRepository.deleteById(id);
             return true;
