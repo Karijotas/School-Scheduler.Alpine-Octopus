@@ -88,9 +88,15 @@ public class ScheduleService {
     public boolean validateRoomBetweenSchedules(Long roomId, LocalDateTime startTime, LocalDateTime endTime) {
         var roomSchedules = lessonRepository.findByRoom_Id(roomId);
         logger.info("Trying to validate rooms");
-        try
-        return roomSchedules.stream().noneMatch(lesson -> lesson.getStartTime().equals(startTime) && lesson.getEndTime().equals(endTime)
-                && lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime));
+        try {
+            boolean validated = roomSchedules.stream().noneMatch(lesson -> lesson.getStartTime().equals(startTime) && lesson.getEndTime().equals(endTime)
+                    && lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime));
+            return validated;
+        } catch (NullPointerException e) {
+            logger.info(e.toString());
+            return true;
+        }
+
     }
 
     public boolean lessonDateValidation(Long scheduleId, LocalDateTime startTime) {
@@ -374,13 +380,13 @@ public class ScheduleService {
                                     .equals(subjectId))
                             .forEach(
                                     lesson -> {
-//                                        if ((lesson.getLessonHours() - createdLesson.getLessonHours()) >= 0
-//                                                && (teacherLessonsPerDay(lesson.getTeacher().getId(), startTime) + createdLesson.getLessonHours() <= 12)) {
-                                        lesson.setLessonHours(lesson.getLessonHours() - createdLesson.getLessonHours());
+                                        if ((lesson.getLessonHours() - createdLesson.getLessonHours()) >= 0
+                                                && (teacherLessonsPerDay(lesson.getTeacher().getId(), startTime) + createdLesson.getLessonHours() <= 12)) {
+                                            lesson.setLessonHours(lesson.getLessonHours() - createdLesson.getLessonHours());
 //                                            lesson.getTeacher().setWorkHoursPerWeek(lesson.getTeacher().getWorkHoursPerWeek() + createdLesson.getLessonHours());
-//                                        } else {
-//                                            throw new SchedulerValidationException("Too many lessons taken", "lesson", "Lesson amount", scheduleId.toString());
-//                                        }
+                                        } else {
+                                            throw new SchedulerValidationException("Too many lessons taken", "lesson", "Lesson amount", scheduleId.toString());
+                                        }
                                     });
 
                     logger.info("planned till:");
@@ -396,8 +402,8 @@ public class ScheduleService {
                     logger.info("validation1");
                     //validating if the teacher already teaches during the timeframe in another lesson. If so, setting the status to warning
 //                    if (createdLesson.getTeacher() != null) {
-                    logger.info("teacher is not null");
                     if (validateTeacherBetweenSchedules(createdLesson.getTeacher().getId(), startTime, endTime)) {
+                        logger.info("Setting lesson status to critical. Reason: teacher works at the same time in another lesson");
                         createdLesson.setStatus(1);
                         existingSchedule.setStatus(1);
                     }
@@ -408,6 +414,7 @@ public class ScheduleService {
                     //validating if the classroom is already in use in another Schedule lesson. If so, setting the status to warning
 //                    if (createdLesson.getRoom() != null) {
                     if (validateRoomBetweenSchedules(createdLesson.getRoom().getId(), startTime, endTime)) {
+                        logger.info("Setting lesson status to critical. Reason: class is occupied at the same time in another lesson");
                         createdLesson.setStatus(1);
                         existingSchedule.setStatus(1);
                     }
