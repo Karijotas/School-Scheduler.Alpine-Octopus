@@ -456,6 +456,13 @@ public class ScheduleService {
     }
 
     public boolean deleteById(Long id) {
+        //finding the schedule in repository
+        var existingSchedule = scheduleRepository.findById(id)
+                .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", id.toString()));
+        Set<Lesson> newList = new HashSet<>();
+        existingSchedule.setLessons(newList);
+        existingSchedule.setSubjects(newList);
+        scheduleRepository.save(existingSchedule);
         try {
             scheduleRepository.deleteById(id);
             return true;
