@@ -83,11 +83,14 @@ public class ScheduleService {
             logger.info(e.toString());
             return true;
         }
+
     }
 
     public boolean validateRoomBetweenSchedules(Long roomId, LocalDateTime startTime, LocalDateTime endTime) {
-        var roomSchedules = lessonRepository.findByRoom_Id(roomId);
         logger.info("Trying to validate rooms");
+
+        var roomSchedules = lessonRepository.findByRoom_Id(roomId);
+
         try {
             boolean validated = roomSchedules.stream().noneMatch(lesson -> lesson.getStartTime().equals(startTime) && lesson.getEndTime().equals(endTime)
                     && lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime));
@@ -336,10 +339,12 @@ public class ScheduleService {
         return scheduleRepository.save(existingSchedule);
     }
 
-    public Integer teacherLessonsPerDay(Long teacherId, LocalDateTime day) {
+    public Integer teacherLessonsPerDay(Long teacherId, LocalDateTime day, Integer lessonHours) {
         var teacherSetLessons = lessonRepository.findByTeacher_IdAndStartTime(teacherId, day);
-        Integer lessonAmount = teacherSetLessons.stream().map(lesson -> lesson.getLessonHours()).reduce(0, (integer, integer2) -> integer + integer2);
-        logger.info("counting lessons:");
+        Integer lessonAmount = teacherSetLessons.stream()
+                .map(lesson -> lesson.getLessonHours())
+                .reduce(0, (integer, integer2) -> integer + integer2) + lessonHours;
+        logger.info("counting lessons per day:");
         logger.info(lessonAmount.toString());
         return lessonAmount;
 
@@ -369,11 +374,6 @@ public class ScheduleService {
                     //setting lesson duration
                     createdLesson.setLessonHours(endTime.getHour() - startTime.getHour());
 
-                    lessonRepository.save(createdLesson);
-
-                    existingSchedule.scheduleLesson(createdLesson);
-                    logger.info("saved");
-
 
                     //subtracting the subjectHours from subjectTotalHours & setting teacher working hours
                     existingSchedule.getSubjects()
@@ -382,15 +382,17 @@ public class ScheduleService {
                                     .equals(subjectId))
                             .forEach(
                                     lesson -> {
-                                        if ((lesson.getLessonHours() - createdLesson.getLessonHours()) >= 0
-                                                && (teacherLessonsPerDay(lesson.getTeacher().getId(), startTime) + createdLesson.getLessonHours() <= 12)) {
+                                        if (teacherLessonsPerDay(lesson.getTeacher().getId(), startTime, createdLesson.getLessonHours()) <= 12) {
                                             lesson.setLessonHours(lesson.getLessonHours() - createdLesson.getLessonHours());
 //                                            lesson.getTeacher().setWorkHoursPerWeek(lesson.getTeacher().getWorkHoursPerWeek() + createdLesson.getLessonHours());
                                         } else {
                                             throw new SchedulerValidationException("Too many lessons taken", "lesson", "Lesson amount", scheduleId.toString());
                                         }
                                     });
+                    lessonRepository.save(createdLesson);
 
+                    existingSchedule.scheduleLesson(createdLesson);
+                    logger.info("saved");
                     logger.info("planned till:");
                     // finding and setting last day of planned schedule (last planned lesson)
                     var last = existingSchedule.getLessons()
@@ -403,24 +405,24 @@ public class ScheduleService {
 
                     logger.info("validation1");
                     //validating if the teacher already teaches during the timeframe in another lesson. If so, setting the status to warning
-//                    if (createdLesson.getTeacher() != null) {
-                    if (validateTeacherBetweenSchedules(createdLesson.getTeacher().getId(), startTime, endTime)) {
-                        logger.info("Setting lesson status to critical. Reason: teacher works at the same time in another lesson");
-                        createdLesson.setStatus(1);
-                        existingSchedule.setStatus(1);
+                    if (createdLesson.getTeacher() != null) {
+                        if (validateTeacherBetweenSchedules(createdLesson.getTeacher().getId(), startTime, endTime)) {
+                            logger.info("Setting lesson status to critical. Reason: teacher works at the same time in another lesson");
+                            createdLesson.setStatus(1);
+                            existingSchedule.setStatus(1);
+                        }
                     }
-//                    }
 
                     logger.info("validation2");
 
                     //validating if the classroom is already in use in another Schedule lesson. If so, setting the status to warning
-//                    if (createdLesson.getRoom() != null) {
-                    if (validateRoomBetweenSchedules(createdLesson.getRoom().getId(), startTime, endTime)) {
-                        logger.info("Setting lesson status to critical. Reason: class is occupied at the same time in another lesson");
-                        createdLesson.setStatus(1);
-                        existingSchedule.setStatus(1);
+                    if (createdLesson.getRoom() != null) {
+                        if (validateRoomBetweenSchedules(createdLesson.getRoom().getId(), startTime, endTime)) {
+                            logger.info("Setting lesson status to critical. Reason: class is occupied at the same time in another lesson");
+                            createdLesson.setStatus(1);
+                            existingSchedule.setStatus(1);
+                        }
                     }
-//                    }
 
 
                     return scheduleRepository.save(existingSchedule);
