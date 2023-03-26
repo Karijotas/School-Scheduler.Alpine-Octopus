@@ -33,10 +33,20 @@ const fetchHolidays = async () => {
     .then((response) => response.json())
     .then((jsonResponse) => setHolidays(jsonResponse));  
 };
+// const fetchFilterHolidays = async () => {
+//   // fetch(`/api/v1/holidays/name-filter/${nameText}`)
+//   //   .then((response) => response.json())
+//   //   .then((jsonRespone) => setHolidays(jsonRespone));
+//   const encodedNameText = encodeURIComponent(nameText);
+//   fetch(`/api/v1/holidays/name-filter/${encodedNameText}`)
+//     .then((response) => response.json())
+//     .then((jsonRespone) => setHolidays(jsonRespone));
+// };
+const encodedNameText = encodeURIComponent(nameText);
 const fetchFilterHolidays = async () => {
-  fetch(`/api/v1/holidays/name-filter/${nameText}`)
+  fetch(`/api/v1/holidays/name-filter/${encodedNameText}`)
     .then((response) => response.json())
-    .then((jsonRespone) => setHolidays(jsonRespone));
+    .then((jsonResponse) => setHolidays(jsonResponse));
 };
 const removeHoliday = (id) => {
     fetch("/api/v1/holidays/" + id, {

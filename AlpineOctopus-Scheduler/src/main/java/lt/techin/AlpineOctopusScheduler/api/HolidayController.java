@@ -1,7 +1,9 @@
 package lt.techin.AlpineOctopusScheduler.api;
 
+import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.HolidayDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.HolidayEntityDto;
+import lt.techin.AlpineOctopusScheduler.api.dto.HolidayTestDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.mapper.HolidayMapper;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Holiday;
@@ -15,6 +17,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -32,6 +36,11 @@ public class HolidayController {
         this.holidayService = holidayService;
     }
 
+    @GetMapping(path = "/all")
+    @ResponseBody
+    public List<HolidayTestDto> getAllHolidayss() {
+        return holidayService.getAllHolidays();
+    }
 
     @GetMapping
     @ResponseBody
@@ -86,12 +95,13 @@ public class HolidayController {
 
     }
 
-    //    @GetMapping(path = "/name-filter/{nameText}")
-//    @ApiOperation(value = "Get Holidays starting with", notes = "Returns list of Holidays starting with passed String")
-//    @ResponseBody
-//    public List<HolidayEntityDto> getHolidaysByNameContaining(@PathVariable String nameText) {
-//        return holidayService.getHolidaysByNameContaining(nameText);
-//    }
+    @GetMapping(path = "/name-filter/{nameText}")
+    @ApiOperation(value = "Get Holidays starting with", notes = "Returns list of Holidays starting with passed String")
+    @ResponseBody
+    public List<HolidayEntityDto> getHolidaysByNameContaining(@PathVariable String nameText) {
+        String decodedName = URLDecoder.decode(nameText, StandardCharsets.UTF_8);
+        return holidayService.getHolidaysByNameContaining(decodedName);
+    }
 //
 //    @GetMapping(path = "/date-filter", produces = MediaType.APPLICATION_JSON_VALUE)
 //    @ApiOperation(value = "Get Holidays starting with", notes = "Returns list of Holidays starting with passed String")

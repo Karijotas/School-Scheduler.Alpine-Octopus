@@ -10,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -19,11 +22,9 @@ import java.util.stream.Collectors;
 public class HolidayService {
     private final HolidayRepository holidayRepository;
 
-
     @Autowired
     public HolidayService(HolidayRepository holidayRepository) {
         this.holidayRepository = holidayRepository;
-
     }
 
     public boolean classIsUnique(Holiday holiday) {
@@ -38,13 +39,29 @@ public class HolidayService {
     }
 
     public List<HolidayEntityDto> getAllPagedHolidays(int page, int pageSize) {
+//        Pageable pageable = PageRequest.of(page, pageSize);
+//        return holidayRepository.findAll(pageable).stream().sorted(Comparator.comparing(Holiday::getStartDate))
+//                .map(HolidayMapper::toHolidayEntityDto).collect(Collectors.toList());
+        LocalDate startDate = LocalDate.now().withDayOfYear(1); // Get the start of the current year
         Pageable pageable = PageRequest.of(page, pageSize);
-        return holidayRepository.findAll(pageable).stream()
-                .map(HolidayMapper::toHolidayEntityDto).collect(Collectors.toList());
+        return holidayRepository.findAllByStartDateGreaterThanEqual(startDate, pageable)
+                .stream()
+                .sorted(Comparator.comparing(Holiday::getStartDate))
+                .map(HolidayMapper::toHolidayEntityDto)
+                .collect(Collectors.toList());
     }
 
     public List<Holiday> getAll() {
         return holidayRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<HolidayEntityDto> getHolidaysByNameContaining(String nameText) {
+
+        return holidayRepository.findByNameContainingIgnoreCase(nameText)
+                .stream()
+                .map(HolidayMapper::toHolidayEntityDto)
+                .collect(Collectors.toList());
     }
 
 //    @Transactional(readOnly = true)
@@ -87,7 +104,6 @@ public class HolidayService {
         newHoliday.setEndDate(holiday.getEndDate());
         newHoliday.setReccuring(holiday.getReccuring());
         return holidayRepository.save(newHoliday);
-
     }
 
     public Holiday update(Long id, Holiday holiday) {
