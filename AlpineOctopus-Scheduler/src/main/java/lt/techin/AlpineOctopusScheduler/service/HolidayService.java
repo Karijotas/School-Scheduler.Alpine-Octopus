@@ -33,6 +33,10 @@ public class HolidayService {
                 .noneMatch(holiday1 -> holiday1.getName().equals(holiday.getName()));
     }
 
+    public List<Holiday> getAll() {
+        return holidayRepository.findAll();
+    }
+
     public List<HolidayTestDto> getAllHolidays() {
         return holidayRepository.findAll().stream()
                 .map(HolidayMapper::toHolidayTestDto).collect(Collectors.toList());
@@ -51,10 +55,6 @@ public class HolidayService {
                 .collect(Collectors.toList());
     }
 
-    public List<Holiday> getAll() {
-        return holidayRepository.findAll();
-    }
-
     @Transactional(readOnly = true)
     public List<HolidayEntityDto> getHolidaysByNameContaining(String nameText) {
 
@@ -64,33 +64,27 @@ public class HolidayService {
                 .collect(Collectors.toList());
     }
 
-//    @Transactional(readOnly = true)
-//    public List<HolidayEntityDto> getPagedHolidaysByNameContaining(String nameText, int page, int pageSize) {
-//        Pageable pageable = PageRequest.of(page, pageSize);
-//        return holidayRepository.findByNameContainingIgnoreCase(nameText, pageable)
-//                .stream()
-//                .map(HolidayMapper::toHolidayEntityDto)
-//                .collect(Collectors.toList());
-//    }
-//
-//    @Transactional
-//    public List<HolidayEntityDto> getPagedHolidaysByStartingDate(String startingDate, int page, int pageSize) {
-//        Pageable pageable = PageRequest.of(page, pageSize);
+    @Transactional(readOnly = true)
+    public List<HolidayEntityDto> getHolidaysByDateRange(String startDate, String endDate) {
 //
 //        //Provided String must be in a YYYY-MM-DD format. Subtracting one in order for the searched day itself to appear in results
-//        var starting = LocalDate.parse(startingDate).minusDays(1);
+//        var start = LocalDate.parse(startDate).minusDays(1);
+//        var end = LocalDate.parse(endDate).minusDays(1);
 //
-//        return holidayRepository.findAllByStartingDate(starting, pageable)
+//        return holidayRepository.findByDateRange(start, end)
 //                .stream()
+//
 //                .map(HolidayMapper::toHolidayEntityDto)
 //                .collect(Collectors.toList());
-//    }
-//    @Transactional(readOnly = true)
-//    public List<HolidayEntityDto> getHolidaysByDateRange(LocalDate startDate, LocalDate endDate) {
-//        return holidayRepository.findByDateBetween(startDate, endDate).stream()
-//                .map(HolidayMapper::toHolidayEntityDto)
-//                .collect(Collectors.toList());
-//    }
+        LocalDate start = LocalDate.parse(startDate);
+        LocalDate end = LocalDate.parse(endDate);
+        List<Holiday> holidays = holidayRepository.findByStartDateBetween(start, end);
+        return holidays.stream()
+                .sorted(Comparator.comparing(Holiday::getStartDate))
+                .map(HolidayMapper::toHolidayEntityDto)
+                .collect(Collectors.toList());
+    }
+
 
     public Optional<Holiday> getById(Long id) {
         return holidayRepository.findById(id);

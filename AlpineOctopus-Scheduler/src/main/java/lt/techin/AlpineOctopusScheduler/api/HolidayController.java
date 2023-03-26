@@ -102,34 +102,13 @@ public class HolidayController {
         String decodedName = URLDecoder.decode(nameText, StandardCharsets.UTF_8);
         return holidayService.getHolidaysByNameContaining(decodedName);
     }
-//
-//    @GetMapping(path = "/date-filter", produces = MediaType.APPLICATION_JSON_VALUE)
-//    @ApiOperation(value = "Get Holidays starting with", notes = "Returns list of Holidays starting with passed String")
-//    @ResponseBody
-//    public List<HolidayEntityDto> getHolidaysByDateRange(
-//            @RequestParam(value = "startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-//            @RequestParam(value = "endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
-//        return holidayService.getHolidaysByDateRange(startDate, endDate);
-//    }
-//    @GetMapping(path = "page/starting-date-filter/{startingDate}")
-//    @ApiOperation(value = "Get paged schedules by starting date", notes = "Returns list of holidays by starting date with passed String")
-//    @ResponseBody
-//    public List<HolidayEntityDto> getPagedHolidaysByStartingDate(@PathVariable String startingDate,
-//                                                                 @RequestParam(value = "page", defaultValue = "0", required = false) int page,
-//                                                                 @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-//
-//        return holidayService.getPagedHolidaysByStartingDate(startingDate, page, pageSize);
-//    }
-//
-//    @GetMapping(path = "page/name-filter/{nameText}")
-//    @ApiOperation(value = "Get paged Holidays starting with", notes = "Returns list of Holidays starting with passed String")
-//    @ResponseBody
-//    public List<HolidayEntityDto> getPagedHolidaysByNameContaining(@PathVariable String nameText,
-//                                                                   @RequestParam(value = "page", defaultValue = "0", required = false) int page,
-//                                                                   @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-//
-//        return holidayService.getPagedHolidaysByNameContaining(nameText, page, pageSize);
-//    }
+
+    @GetMapping(path = "/date-range-filter/")
+    @ApiOperation(value = "Get paged holidays by date range", notes = "Returns list of holidays by date range with passed Strings")
+    @ResponseBody
+    public List<HolidayEntityDto> getHolidaysByStartingDate(@RequestParam String startDate, @RequestParam String endDate) {
+        return holidayService.getHolidaysByDateRange(startDate, endDate);
+    }
 
 
 }

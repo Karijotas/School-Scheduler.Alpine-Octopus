@@ -13,41 +13,58 @@ import {
 } from "semantic-ui-react";
 import { EditMenu } from "../../../Components/EditMenu";
 import MainMenu from "../../../Components/MainMenu";
+import { DatePicker} from "antd";
+import dayjs from "dayjs";
 
 const JSON_HEADERS = {
     "Content-Type": "application/json",
   };
 
   export function ViewHolidays() {
+
 const [holidays,setHolidays]= useState([]);
 const [active, setActive] = useState("");;
 const [activePage, setActivePage] = useState(0);
 const [nameText, setNameText] = useState("");
 const [pagecount, setPageCount] = useState();
 const [holidaysforPaging, setHolidaysForPaging] = useState([]);
-
 const [open, setOpen] = useState(false);
+
+const { RangePicker } = DatePicker;
+const [startDate, setStartDate] = useState(null);
+const [endDate, setEndDate] = useState(null);
 
 const fetchHolidays = async () => {
   fetch(`/api/v1/holidays/page?page=` + activePage)
     .then((response) => response.json())
     .then((jsonResponse) => setHolidays(jsonResponse));  
 };
-// const fetchFilterHolidays = async () => {
-//   // fetch(`/api/v1/holidays/name-filter/${nameText}`)
-//   //   .then((response) => response.json())
-//   //   .then((jsonRespone) => setHolidays(jsonRespone));
-//   const encodedNameText = encodeURIComponent(nameText);
-//   fetch(`/api/v1/holidays/name-filter/${encodedNameText}`)
-//     .then((response) => response.json())
-//     .then((jsonRespone) => setHolidays(jsonRespone));
-// };
+
 const encodedNameText = encodeURIComponent(nameText);
 const fetchFilterHolidays = async () => {
   fetch(`/api/v1/holidays/name-filter/${encodedNameText}`)
     .then((response) => response.json())
     .then((jsonResponse) => setHolidays(jsonResponse));
 };
+
+const fetchDateFilterHolidays = async () => {
+  if (startDate && endDate) {
+    fetch("/api/v1/holidays/date-range-filter/?startDate=" + startDate + "&endDate=" + endDate)
+    .then((response) => response.json())
+    .then((jsonResponse) => setHolidays(jsonResponse));
+  }
+}
+
+const handleDateChange = (dates) => {
+  if (dates && dates.length === 2) {
+    setStartDate(dayjs(dates[0]).format("YYYY-MM-DD"));
+    setEndDate(dayjs(dates[1]).format("YYYY-MM-DD"));
+  } else {
+    setStartDate(null);
+    setEndDate(null);
+  }
+};
+
 const removeHoliday = (id) => {
     fetch("/api/v1/holidays/" + id, {
         method: "DELETE",
@@ -55,26 +72,35 @@ const removeHoliday = (id) => {
       .then(fetchHolidays)
       .then(setOpen(false));
   };
+
   const fetchSingleHolidays = async () => {
     fetch("/api/v1/holidays/")
       .then((response) => response.json())
       .then((jsonResponse) => setHolidaysForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(holidaysforPaging.length / 10)));
   };
+
   useEffect(() => {
     if (pagecount !== null) {
       fetchSingleHolidays();
     }
   }, [holidays]);
 
+
   useEffect(() => {
     if (nameText.length === 0) {
       fetchHolidays();
     } else {
-       fetchFilterHolidays();
+      if(startDate === null && endDate === null){
+        fetchDateFilterHolidays();
+      }else{
+         fetchFilterHolidays();
+      }
+       
     }
-  }, [activePage, nameText]);
+  }, [activePage, nameText,startDate,endDate]);
 
+ 
   return (
     <div>
       <MainMenu />
@@ -93,6 +119,14 @@ const removeHoliday = (id) => {
                 onChange={(e) => setNameText(e.target.value)}
                 placeholder="Filtruoti pagal Pavadinima"
               />
+
+              <RangePicker
+              onChange={handleDateChange}
+              
+              /><Button type="primary" onClick={fetchDateFilterHolidays}>
+              Filtruoti
+            </Button>
+
               <Button
                 id="details"
                 icon
