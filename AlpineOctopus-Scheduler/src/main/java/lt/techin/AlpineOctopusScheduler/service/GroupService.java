@@ -75,7 +75,7 @@ public class GroupService {
     }
 
     public Optional<Groups> getById(Long id) {
-        
+
         return groupsRepository.findById(id);
     }
 
@@ -209,13 +209,13 @@ public class GroupService {
                 .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
     }
 
-//    public List<GroupsEntityDto> getAllDeletedPagedGroups(int page, int pageSize) {
-//
-//        Pageable pageable = PageRequest.of(page, pageSize);
-//
-//        return groupsRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.TRUE, pageable).stream()
-//                .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
-//    }
+    public List<GroupsEntityDto> getAllDeletedPagedGroups(int page, int pageSize) {
+
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        return groupsRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.TRUE, pageable).stream()
+                .map(GroupsMapper::toGroupEntityDto).collect(Collectors.toList());
+    }
 
     public List<GroupsEntityDto> getAllAvailableGroups() {
         return groupsRepository.findAllByDeletedOrderByModifiedDateDesc(Boolean.FALSE).stream()

@@ -78,7 +78,7 @@ export function ViewGroupsSchedules() {
   // };
 
   useEffect(() => {
-    nameText.length > 0
+    nameText.length > 0 && !nameText.includes('/') && !nameText.includes('#') && !nameText.includes('.') && !nameText.includes(';') && !nameText.match(new RegExp(/^\s/))
       ? fetchFilterSchedulesByName()
       : startingDate === "Invalid Date"
         ? fetchSchedules()

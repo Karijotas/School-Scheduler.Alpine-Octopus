@@ -67,33 +67,10 @@ export function ViewRooms() {
   };
 
   useEffect(() => {
-    if (nameText.length === 0 && buildingText.length === 0) {
-      fetchRooms();
-    } else {
-      nameText.length > 0 ? fetchFilterRooms() : fetchBuildingRooms();
-      nameText.length > 0 ? setBuildingText("") : setNameText("");
-      buildingText.length > 0 ? setNameText("") : setBuildingText("");
-    }
-    //  else if (buildingText.length > 0){
-    //     setNameText('')
-    //     fetchBuildingRooms();
-    //  }
-    //  if(nameText.length > 0){
-    //         setBuildingText('')
-    //         fetchFilterRooms();
-    //     }
-
-    //  else if (nameText.length > 0 ){
-    //     setBuildingText('')
-    //     fetchFilterRooms();
-    //  } else if(nameText.length > 0 && buildingText > 0){
-    //     setNameText('')
-    //     fetchBuildingRooms();
-    //  }
-    //nameText.length > 0 ? fetchFilterRooms() : fetchRooms();
-    //  buildingText.length > 0 ? fetchBuildingRooms() : fetchRooms();
-  }, [activePage, nameText, buildingText]);
-
+    nameText.length > 0 && !nameText.includes('/') && !nameText.includes('#') && !nameText.includes('.') && !nameText.includes(';') && !nameText.match(new RegExp( /^\s/)) ?
+    fetchFilterRooms() : (buildingText.length > 0 && !buildingText.includes('/') && !buildingText.includes('#') && !buildingText.includes('.') && !buildingText.includes(';') && !buildingText.match(new RegExp( /^\s/))? fetchBuildingRooms() : fetchRooms())      
+ 
+}, [activePage, nameText, buildingText]);
   useEffect(() => {
     if (pagecount !== null) {
       fetchSingleRooms();

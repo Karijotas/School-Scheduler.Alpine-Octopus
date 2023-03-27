@@ -74,7 +74,7 @@ export function ViewModules() {
   };
 
   useEffect(() => {
-    nameText.length > 0 ? fetchFilterModules() : fetchModules();
+    nameText.length > 0 && !nameText.includes('/') && !nameText.includes('#') && !nameText.includes('.') && !nameText.includes(';') && !nameText.match(new RegExp(/^\s/)) ? fetchFilterModules() : fetchModules();
   }, [activePage, nameText]);
 
   const [open, setOpen] = useState(false);
