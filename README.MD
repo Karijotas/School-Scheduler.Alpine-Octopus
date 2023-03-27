@@ -48,7 +48,7 @@ http://localhost:8080/swagger-ui/
 
 ## Authors
 
-Team Alpine Octopus
-List of [contributors](https://github.com/Karijotas/School-Scheduler.Alpine-Octopus/graphs/contributors) who participated in this project.
-Akademija.it project
-Copyright ©️ 2023
+-Team Alpine Octopus
+-List of [contributors](https://github.com/Karijotas/School-Scheduler.Alpine-Octopus/graphs/contributors) who participated in this project.
+-Akademija.it project
+-Copyright ©️ 2023
