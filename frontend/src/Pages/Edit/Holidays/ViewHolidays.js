@@ -41,6 +41,7 @@ const fetchHolidays = async () => {
 };
 
 const encodedNameText = encodeURIComponent(nameText);
+
 const fetchFilterHolidays = async () => {
   fetch(`/api/v1/holidays/name-filter/${encodedNameText}`)
     .then((response) => response.json())
@@ -91,7 +92,7 @@ const removeHoliday = (id) => {
     if (nameText.length === 0) {
       fetchHolidays();
     } else {
-      if(startDate === null && endDate === null){
+      if(!startDate === null && !endDate === null){
         fetchDateFilterHolidays();
       }else{
          fetchFilterHolidays();
@@ -117,12 +118,12 @@ const removeHoliday = (id) => {
                 className="controls1"
                 value={nameText}
                 onChange={(e) => setNameText(e.target.value)}
-                placeholder="Filtruoti pagal Pavadinima"
+                placeholder="Filtruoti pagal pavadinimą"
               />
 
               <RangePicker
               onChange={handleDateChange}
-              
+              placeholder={["Data nuo", "Data iki"]}
               /><Button type="primary" onClick={fetchDateFilterHolidays}>
               Filtruoti
             </Button>

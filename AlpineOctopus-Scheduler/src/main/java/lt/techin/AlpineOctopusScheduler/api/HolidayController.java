@@ -100,7 +100,7 @@ public class HolidayController {
     @ResponseBody
     public List<HolidayEntityDto> getHolidaysByNameContaining(@PathVariable String nameText) {
         String decodedName = URLDecoder.decode(nameText, StandardCharsets.UTF_8);
-        return holidayService.getHolidaysByNameContaining(decodedName);
+        return holidayService.getHolidaysByNameContaining(nameText);
     }
 
     @GetMapping(path = "/date-range-filter/")

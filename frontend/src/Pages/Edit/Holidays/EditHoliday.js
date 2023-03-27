@@ -8,46 +8,42 @@ import {
   Input,
   Message,
   Segment,
-  Select,
   Table,
   Form,
 } from "semantic-ui-react";
-import { YEAR_OPTIONS } from "../../../Components/const";
 import { EditMenu } from "../../../Components/EditMenu";
 import MainMenu from "../../../Components/MainMenu";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
+import moment from "moment";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
 };
 
 export function EditHoliday() {
+
   const params = useParams();
-
   const [active, setActive] = useState(true);
-
   const [error, setError] = useState();
-
   const [holidays, setHolidays] = useState({
     name: "",
     startDate: "",
     endDate: "",
     reccuring: "",
   });
-
-const [name, setName] = useState("");
+  const [name, setName] = useState("");
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
-  const [reccuring, setReccuring] = useState();
-  
-  const [nameError, setNameError] = useState("");
-//   const [starDateError, setStarDateError] = useState("");
-//   const [endDateError, setEndDateError] = useState("");
+  const [reccuring, setReccuring] = useState(holidays.reccuring);
 
+  //Validation
+  const [nameError, setNameError] = useState("");
   const [formValid, setFormValid] = useState(false);
 
-  
+  useEffect(() => {
+    setReccuring(holidays.reccuring);
+  }, [holidays.reccuring]);
 
   useEffect(() => {
     if (nameError) {
@@ -57,13 +53,6 @@ const [name, setName] = useState("");
     }
   }, [nameError]);
 
-  //   const selectProgramHandler = () => {
-  //     setSelectErrorProgram("")
-  //   }
-  //   const selectShiftHandler = () => {
-  //     setSelectErrorShift("")
-  //   }
-
   const handleNameInputChange = (e) => {
     holidays.name = e.target.value;
     setName(e.target.value);
@@ -71,13 +60,13 @@ const [name, setName] = useState("");
   };
 
   const handleReccuringChange = (e) => {
-    if(e.target.value=== 'yes'){
+    if (e.target.value === 'yes') {
       holidays.reccuring = true
       setReccuring(true)
     } else {
       holidays.reccuring = false
       setReccuring(false)
-    } 
+    }
   }
 
   const validateNameInput = (value) => {
@@ -91,10 +80,10 @@ const [name, setName] = useState("");
     }
   };
 
-useEffect(()=>{
-  setStartDate(holidays.startDate)
-  setEndDate(holidays.endDate)
-})
+  useEffect(() => {
+    setStartDate(holidays.startDate)
+    setEndDate(holidays.endDate)
+  }, [holidays])
 
   useEffect(() => {
     fetch("/api/v1/holidays/" + params.id)
@@ -105,11 +94,14 @@ useEffect(()=>{
   const applyResult = () => {
     setActive(true);
   };
+  const disabledStartDate = (current) => {
+    return current && current < moment().startOf("year");
+  };
 
   const updateHolidays = () => {
     fetch(
       "/api/v1/holidays/" +
-        params.id,
+      params.id,
       {
         method: "PUT",
         headers: JSON_HEADERS,
@@ -148,7 +140,7 @@ useEffect(()=>{
     <div>
       <MainMenu />
       <Grid columns={2}>
-        <Grid.Column width={2} id="main"> 
+        <Grid.Column width={2} id="main">
           <EditMenu active="holidays" />
         </Grid.Column>
         <Grid.Column
@@ -169,7 +161,7 @@ useEffect(()=>{
                 <Table celled>
                   <Table.Header>
                     <Table.Row>
-                      <Table.HeaderCell>Atostogų Pavadinimas</Table.HeaderCell>
+                      <Table.HeaderCell>Atostogų pavadinimas</Table.HeaderCell>
                       <Table.HeaderCell>Data nuo</Table.HeaderCell>
                       <Table.HeaderCell>Data iki</Table.HeaderCell>
                       <Table.HeaderCell>Pasikartoja</Table.HeaderCell>
@@ -181,7 +173,6 @@ useEffect(()=>{
                       <Table.Cell width={6}>{holidays.name}</Table.Cell>
                       <Table.Cell>{holidays.startDate}</Table.Cell>
                       <Table.Cell width={3}> {holidays.endDate} </Table.Cell>
-                      {console.log(holidays.reccuring)}
                       <Table.Cell width={3}> {holidays.reccuring ? "Taip" : "Ne"} </Table.Cell>
                       <Table.Cell collapsing>
                         {" "}
@@ -210,7 +201,7 @@ useEffect(()=>{
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>
-                      Atostogų Pavadinimas
+                        Atostogų pavadinimas
                       </Table.HeaderCell>
                       <Table.HeaderCell>
                         Data nuo
@@ -235,57 +226,64 @@ useEffect(()=>{
                         />
                       </Table.Cell>
                       <Table.Cell>
-                      <DatePicker
-              className="controls4"
-              placeholder="Data nuo"
-              defaultValue={dayjs(startDate)}
-              onChange={(e) => {const newDate = dayjs(e);
-                if (newDate.isValid()) {
-                  const formattedDate = newDate.format("YYYY-MM-DD");
-                  setStartDate(formattedDate);
-                  holidays.startDate = formattedDate;
-                }}}
-            />
+                        <DatePicker
+                          className="controls4"
+                          placeholder="Data nuo"
+                          disabledDate={disabledStartDate}
+                          defaultValue={dayjs(startDate)}
+                          onChange={(e) => {
+                            const newDate = dayjs(e);
+                            if (newDate.isValid()) {
+                              const formattedDate = newDate.format("YYYY-MM-DD");
+                              setStartDate(formattedDate);
+                              holidays.startDate = formattedDate;
+                            }
+                          }}
+                        />
                       </Table.Cell>
                       <Table.Cell>
-                      <DatePicker
-              className="controls4"
-              placeholder="Data iki"
-              defaultValue={dayjs(endDate)}
-              onChange={(e) => {const newDate = dayjs(e);
-                if (newDate.isValid()) {
-                  const formattedDate = newDate.format("YYYY-MM-DD");
-                  setEndDate(formattedDate);
-                  holidays.endDate = formattedDate;
-                }
-              }}
-            />
+                        <DatePicker
+                          className="controls4"
+                          placeholder="Data iki"
+                          disabledDate={disabledStartDate}
+                          defaultValue={dayjs(endDate)}
+                          onChange={(e) => {
+                            const newDate = dayjs(e);
+                            if (newDate.isValid()) {
+                              const formattedDate = newDate.format("YYYY-MM-DD");
+                              setEndDate(formattedDate);
+                              holidays.endDate = formattedDate;
+                            }
+                          }}
+                        />
                       </Table.Cell>
                       <Table.Cell>
-                      <Form style={{ paddingTop: '10px' }}>
-              <Form.Group >
-                <Form.Field><label>Taip</label></Form.Field>
-                <input type="radio"
-                value="yes" 
-                checked={reccuring}
-                style={{ marginRight: '10px', marginBottom: '14px' }}
-                onClick={handleReccuringChange}
-                // onChange={handleReccuringChange}
-                />
-                <Form.Group >
-                <Form.Field ><label>Ne</label></Form.Field>
-                <input type="radio"
-                value="no"
-                checked={!reccuring}
-                onClick={handleReccuringChange}
-                // onChange={handleReccuringChange} 
-                />
-              </Form.Group>
-              </Form.Group>
-            </Form>
+                        <Form style={{ paddingTop: '10px' }}>
+                          <Form.Group >
+                            <Form.Field><label>Taip</label></Form.Field>
+                            <input type="radio"
+                              value="yes"
+
+                              checked={holidays.reccuring}
+                              style={{ marginRight: '10px', marginBottom: '14px' }}
+                              onClick={handleReccuringChange}
+                            // onChange={handleReccuringChange}
+                            />
+                            <Form.Group >
+                              <Form.Field ><label>Ne</label></Form.Field>
+                              <input type="radio"
+                                value="no"
+                                defaultChecked={!holidays.reccuring}
+                                checked={!holidays.reccuring}
+                                onClick={handleReccuringChange}
+                              // onChange={handleReccuringChange} 
+                              />
+                            </Form.Group>
+                          </Form.Group>
+                        </Form>
 
                       </Table.Cell>
-                      
+
                     </Table.Row>
                   </Table.Body>
                 </Table>

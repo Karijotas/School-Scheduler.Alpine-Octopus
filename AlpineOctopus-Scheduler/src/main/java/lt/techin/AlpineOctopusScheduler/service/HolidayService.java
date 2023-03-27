@@ -7,8 +7,6 @@ import lt.techin.AlpineOctopusScheduler.dao.HolidayRepository;
 import lt.techin.AlpineOctopusScheduler.exception.SchedulerValidationException;
 import lt.techin.AlpineOctopusScheduler.model.Holiday;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,16 +41,18 @@ public class HolidayService {
     }
 
     public List<HolidayEntityDto> getAllPagedHolidays(int page, int pageSize) {
-//        Pageable pageable = PageRequest.of(page, pageSize);
-//        return holidayRepository.findAll(pageable).stream().sorted(Comparator.comparing(Holiday::getStartDate))
-//                .map(HolidayMapper::toHolidayEntityDto).collect(Collectors.toList());
         LocalDate startDate = LocalDate.now().withDayOfYear(1); // Get the start of the current year
-        Pageable pageable = PageRequest.of(page, pageSize);
-        return holidayRepository.findAllByStartDateGreaterThanEqual(startDate, pageable)
-                .stream()
+        List<Holiday> allHolidays = holidayRepository.findAll();
+
+        List<HolidayEntityDto> holidayDtos = allHolidays.stream()
+                .filter(holiday -> !holiday.getStartDate().isBefore(startDate)) // Filter holidays to show only those from the start of the current year or later
                 .sorted(Comparator.comparing(Holiday::getStartDate))
                 .map(HolidayMapper::toHolidayEntityDto)
                 .collect(Collectors.toList());
+
+        int fromIndex = page * pageSize;
+        int toIndex = Math.min(fromIndex + pageSize, holidayDtos.size());
+        return holidayDtos.subList(fromIndex, toIndex);
     }
 
     @Transactional(readOnly = true)
