@@ -205,3 +205,8 @@
 .e-drag-item.treeview-external-drag .e-icon-expandable {
    display: none;
 }
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 2fr 600px;
+  }

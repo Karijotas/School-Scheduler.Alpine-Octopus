@@ -81,6 +81,7 @@ export function ViewPrograms() {
           <Segment id="segment" color="teal">
             <div id="programs">
               <Input
+                className="controls1"
                 value={nameText}
                 onChange={(e) => setNameText(e.target.value)}
                 placeholder="Filtruoti pagal pavadinimą"

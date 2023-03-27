@@ -160,7 +160,7 @@ export function CreateSchedulePageNext() {
   };
 
   const checkAndSetStatus = () => {
-    fetch(`/api/v1/schedule/validation/${params.id}`, {
+    fetch(`/api/v1/schedule/validations/${params.id}`, {
       method: "PATCH",
     }).then(applyResult);
   }
@@ -183,7 +183,7 @@ export function CreateSchedulePageNext() {
             <div>
               <Table celled>
                 <Table.Header>
-                  <Table.HeaderCell colspan="3">
+                  <Table.HeaderCell colspan="4">
                     Programos pavadinimas
                   </Table.HeaderCell>
                 </Table.Header>
@@ -194,7 +194,7 @@ export function CreateSchedulePageNext() {
                 </Table.Row>
 
                 <Table.Header>
-                  <Table.HeaderCell colspan="3">Dalykai</Table.HeaderCell>
+                  <Table.HeaderCell colspan="4">Dalykai</Table.HeaderCell>
                   {okey && (
                     <Message size="tiny" color="teal">
                       {okey}
