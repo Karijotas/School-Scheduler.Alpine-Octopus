@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="be4542e8-401c-4b51-a94d-0543b0658664" name="Changes" comment="">
+
       <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/service/ScheduleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/service/ScheduleService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -114,8 +115,8 @@
       <command value="mvn flyway:repair" />
       <command value="mvn clean install" />
       <command value="mvn cargo:run" />
-      <command value="mvn flyway:clean" />
       <command value="mvn flyway:migrate" />
+      <command value="mvn flyway:clean" />
       <command value="mvn spring-boot:run" />
     </option>
   </component>
