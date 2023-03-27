@@ -363,6 +363,7 @@ public class ScheduleService {
          * 4 - If lesson is not earlier than schedule start
          */
 
+        
         if (existingSchedule.getSubjects()
                 .stream()
                 .filter(lesson -> lesson.getId().equals(subjectId))
@@ -530,7 +531,31 @@ public class ScheduleService {
     @Transactional
     public boolean removeLesson(Long scheduleId, Long lessonId) {
         try {
+
+            //finding the schedule in repository
+            var existingSchedule = scheduleRepository.findById(scheduleId)
+                    .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", scheduleId.toString()));
+
+            //finding the lesson
+            var existingLesson = lessonRepository.findById(lessonId)
+                    .orElseThrow(() -> new SchedulerValidationException("Lesson does not exist", "id", "Lesson not found", lessonId.toString()));
+
+
+            //adding the deleted lesson hours to subject hours
+            existingSchedule.getSubjects()
+                    .stream()
+                    .filter(lesson -> lesson.getSubject().getId().equals(existingLesson.getSubject().getId()))
+                    .forEach(
+                            lesson -> lesson.setLessonHours(lesson.getLessonHours() + existingLesson.getLessonHours()));
+
+            scheduleRepository.save(existingSchedule);
+
+            //deleting a lesson from schedule
             scheduleLessonsRepository.deleteByScheduleAndLesson(scheduleRepository.findById(scheduleId).get(), lessonRepository.findById(lessonId).get());
+
+            //delete a lesson
+            lessonRepository.deleteById(lessonId);
+
             return true;
         } catch (EmptyResultDataAccessException exception) {
             return false;
