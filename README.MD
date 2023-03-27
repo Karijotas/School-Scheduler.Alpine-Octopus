@@ -39,12 +39,16 @@ Password:
 http://localhost:8080/swagger-ui/
 
 
-## Running the tests
-
-
 ### Break down into end to end tests
 
+There are 10 different test packages: GroupPagesTests, ModulePagesTests, ProgramPagesTests, RoomPagesTests, SchedulePagesTests, SubjectPagesTests, HolidayPagesTests, TeacherPagesTests, smokeTests, and BaseTest. First 8 are packages for classifiers’ functionality testing, smokeTests hold main core tests of the application, and BaseTest is for set up (getting Chrome driver and application link) and closing all tests after running them.
 
+#### Classifiers functionality tests include:
+
+- Creation of the new clasificator
+- Editing of the existing clasificator
+- Filtering clasificator list
+- Archiving and restoring clasificator.
 
 ## Info
 
