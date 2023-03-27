@@ -1,28 +1,12 @@
-import { addClass, closest, L10n, remove } from "@syncfusion/ej2-base";
-import { DateTimePickerComponent } from "@syncfusion/ej2-react-calendars";
-import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
-import { TreeViewComponent } from "@syncfusion/ej2-react-navigations";
-import {
-  Agenda,
-  Day,
-  DragAndDrop,
-  ExcelExport,
-  Inject,
-  Month,
-  Print,
-  Resize,
-  ResourceDirective,
-  ResourcesDirective,
-  Schedule,
-  ScheduleComponent,
-  ViewDirective,
-  ViewsDirective,
-  Week,
-  WorkWeek,
-} from "@syncfusion/ej2-react-schedule";
-import React, { useEffect, useState } from "react";
+import { addClass, closest, L10n, remove } from '@syncfusion/ej2-base';
+import { ButtonComponent } from '@syncfusion/ej2-react-buttons';
+import { DateTimePickerComponent } from '@syncfusion/ej2-react-calendars';
+import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
+import { TreeViewComponent } from '@syncfusion/ej2-react-navigations';
+import { Agenda, Day, DragAndDrop, ExcelExport, Inject, Month, Print, Resize, ResourceDirective, ResourcesDirective, Schedule, ScheduleComponent, ViewDirective, ViewsDirective, Week, WorkWeek } from '@syncfusion/ej2-react-schedule';
+import React, { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
-import { Button, Grid, Header, Message, Segment } from "semantic-ui-react";
+import { Button, Grid, Header, Segment } from "semantic-ui-react";
 import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap5.css";
 import { updateSampleSection } from "./sample-base";
 import "./Schedule.css";
@@ -39,8 +23,20 @@ L10n.load({
       deleteButton: "Remove",
       newEvent: "Add Event",
     },
+    timeFormats: {
+      short: "HH",
+    },
+    schedule: {
+      saveButton: 'Pridėti',
+      cancelButton: 'Uždaryti',
+      deleteButton: 'Pašalinti',
+      newEvent: 'Pridėti pamoką',
+      editEvent: 'Redaguoti pamoką',
+    },
   },
 });
+// setCulture("lt");
+
 
 Schedule.Inject(
   Day,
@@ -51,8 +47,7 @@ Schedule.Inject(
   Resize,
   DragAndDrop,
   Print,
-  ExcelExport,
-  DragAndDrop
+  ExcelExport
 );
 
 export function ScheduleView() {
@@ -66,6 +61,7 @@ export function ScheduleView() {
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [active, setActive] = useState(false);
+  const [status, setStatus] = useState("");
 
   const [updated, setUpdated] = useState();
 
@@ -87,6 +83,17 @@ export function ScheduleView() {
       </div>
     );
   }
+
+  function validationMessages(props) {
+    return (
+      <div id="waiting">
+        <div id="waitdetails">
+          <div id="waitlist">{props.statusMessage}</div>
+        </div>
+      </div>
+    );
+  }
+
 
   function onItemSelecting(args) {
     args.cancel = true;
@@ -198,7 +205,14 @@ export function ScheduleView() {
       .then(setSchedules);
   }, [params]);
 
-  const lessonsOnSchedule = lessons.map((l) => {
+  function onPrint() {
+    scheduleObj.print();
+  }
+
+  function onExportClick() {
+    scheduleObj.exportToExcel();
+  }
+  const lessonsOnSchedule = lessons.map(l => {
     return {
       Id: l.id,
       Subject: l.subject.name,
@@ -219,6 +233,8 @@ export function ScheduleView() {
       LessonHours: s.lessonHours,
     };
   });
+
+
 
   function ClickButton() {
     scheduleObj.closeEditor();
@@ -398,135 +414,81 @@ export function ScheduleView() {
   ];
 
   return (
-    <div>
-      <div className="schedule-control-section">
-        <div className="control-section">
-          <div className="control-wrapper drag-sample-wrapper">
-            <Grid> 
-              <Grid.Row columns={2}>
-                <Grid.Column width={13}>
-                  <h1 className="title-text">{schedules.name}</h1>
-                  <ScheduleComponent
-                    id="schedule-drag-drop"
-                    cssClass="schedule-drag-drop"
-                    ref={(shedule) => (scheduleObj = shedule)}
-                    timeFormat="HH"
-                    firstDayOfWeek="1"
-                    height="550px"
-                    editorTemplate={editorTemplate}
-                    selectedDate={new Date(2023, 1, 10, 24, 0)}
-                    eventSettings={{
-                      dataSource: lessonsOnSchedule,
-                      fields: {
-                        editorTemplate,
-                      },
-                    }}
-                    colorField="Color"
-                    currentView="Month"
-                    actionBegin={onActionBegin.bind(this)}
-                  >
-                    {console.log(lessons)}
-                    {console.log(endTime)}
-                    <ResourcesDirective>
-                      <ResourceDirective
-                        field="GroupId"
-                        title="Owner"
-                        name="Owners"
-                        dataSource={resourceData}
-                        textField="GroupText"
-                        idField="GroupId"
-                        colorField="GroupColor"
-                      ></ResourceDirective>
-                    </ResourcesDirective>
-                    <ViewsDirective>
-                      <ViewDirective
-                        option="Day"
-                        startHour="01:00"
-                        endHour="15:00"
-                        timeScale={{ interval: 1, slotCount: 1 }}
-                        eventTemplate={eventTemplate.bind(this)}
-                      />
-                      <ViewDirective
-                        option="Week"
-                        startHour="01:00"
-                        endHour="15:00"
-                        timeScale={{ slotCount: 1 }}
-                        eventTemplate={eventTemplate.bind(this)}
-                      />
-                      <ViewDirective
-                        option="WorkWeek"
-                        startHour="01:00"
-                        endHour="15:00"
-                        timeScale={{ slotCount: 1 }}
-                        eventTemplate={eventTemplate.bind(this)}
-                      />
-                      <ViewDirective
-                        option="Month"
-                        startHour="01:00"
-                        endHour="15:00"
-                        timeScale={{ slotCount: 1 }}
-                        eventTemplate={eventTemplate.bind(this)}
-                      />
-                    </ViewsDirective>
-                    <Inject
-                      services={[
-                        Day,
-                        Week,
-                        WorkWeek,
-                        Month,
-                        Agenda,
-                        DragAndDrop,
-                        ExcelExport,
-                        DragAndDrop,
-                      ]}
-                    />
-                    {console.log(subjectId)}
-                  </ScheduleComponent>
-                </Grid.Column>
-                <Grid.Column width={2}>
-                  <Segment compact id="treeview">
-                    {" "}
-                    <Header textAlign="center">Nesuplanuotos pamokos</Header>
-                    <TreeViewComponent
-                      ref={(tree) => (treeObj = tree)}
-                      cssClass="treeview-external-drag"
-                      dragArea=".drag-sample-wrapper"
-                      nodeTemplate={treeTemplate.bind(this)}
-                      fields={{
-                        dataSource: subjectsOnSchedule,
-                        text: "Subject",
-                        id: "Id",
-                      }}
-                      nodeDragStop={onTreeDragStop.bind(this)}
-                      nodeSelecting={onItemSelecting.bind(this)}
-                      nodeDragging={onTreeDrag.bind(this)}
-                      nodeDragStart={onTreeDragStart.bind(this)}
-                      allowDragAndDrop={allowDragAndDrops}
-                    />
-                  </Segment>
-                  <Segment compact id="treeview">
-                    {" "}
-                    <Header textAlign="center">Tvarkaraščio validacijos pranešimai</Header>
-                    <TreeViewComponent
-                      ref={(tree) => (treeObj = tree)}
-                      cssClass="treeview-external-drag"
-                      dragArea=".drag-sample-wrapper"
-                      nodeTemplate={treeTemplate.bind(this)}
-                      fields={{
-                        dataSource: subjectsOnSchedule,
-                        text: "Subject",
-                        id: "Id",
-                      }}
-                      nodeDragStop={onTreeDragStop.bind(this)}
-                      nodeSelecting={onItemSelecting.bind(this)}
-                      nodeDragging={onTreeDrag.bind(this)}
-                      nodeDragStart={onTreeDragStart.bind(this)}
-                      allowDragAndDrop={allowDragAndDrops}
-                    />
-                  </Segment>
-                </Grid.Column>
+    <div >
+      <div className='schedule-control-section'>
+        <div className='control-section'>
+          <div className='control-wrapper drag-sample-wrapper'>
+
+            <Grid>
+              <Grid.Row>
+              <Grid.Column width={13}>
+                <div className='control-panel calendar-export'>
+                  <ButtonComponent id='printBtn' cssClass='title-bar-btn' iconCss='e-icons e-print' onClick={(onPrint.bind(this))} content='Print' />
+                </div>
+                <h1 className="title-text">{schedules.name}</h1>
+
+
+
+                <ScheduleComponent
+                  id='schedule-drag-drop'
+                  cssClass='schedule-drag-drop'
+                  ref={shedule => scheduleObj = shedule}
+                  timeFormat='HH'
+                  firstDayOfWeek='1'
+                  height='550px'
+                  timezone='Europe/Vilnius'
+                  editorTemplate={editorTemplate}
+                  selectedDate={new Date(2023, 1, 10, 24, 0)}
+                  eventSettings={{
+                    dataSource: lessonsOnSchedule,
+                    fields: {
+                      editorTemplate
+                    }
+
+                  }}
+                  colorField='Color'
+                  currentView='Month'
+                  actionBegin={onActionBegin.bind(this)} >
+                  {console.log(lessons)}
+                  {console.log(endTime)}
+                  <ResourcesDirective>
+                    <ResourceDirective field='GroupId' title='Owner' name='Owners' dataSource={resourceData} textField='GroupText' idField='GroupId' colorField='GroupColor'>
+                    </ResourceDirective>
+                  </ResourcesDirective>
+                  <ViewsDirective>
+                    <ViewDirective option='Day' startHour='01:00' endHour='15:00' timeScale={{ interval: 1, slotCount: 1 }} eventTemplate={eventTemplate.bind(this)} />
+                    <ViewDirective option='Week' startHour='01:00' endHour='15:00' timeScale={{ slotCount: 1 }} eventTemplate={eventTemplate.bind(this)} />
+                    <ViewDirective option='WorkWeek' startHour='01:00' endHour='15:00' timeScale={{ slotCount: 1 }} eventTemplate={eventTemplate.bind(this)} />
+                    <ViewDirective option='Month' startHour='01:00' endHour='15:00' timeScale={{ slotCount: 1 }} eventTemplate={eventTemplate.bind(this)} />
+                  </ViewsDirective>
+                  <Inject services={[Day, Week, WorkWeek, Month, Agenda, DragAndDrop, ExcelExport, DragAndDrop]} />
+                  {console.log(subjectId)}
+
+                </ScheduleComponent></Grid.Column>
+              <Grid.Column width={3}>
+
+                <Segment compact id="treeview" > <Header textAlign='center'>Nesuplanuotos Pamokos</Header>
+                  <TreeViewComponent ref={tree => treeObj = tree}
+                    cssClass='treeview-external-drag'
+                    dragArea=".drag-sample-wrapper"
+                    nodeTemplate={treeTemplate.bind(this)}
+                    fields={{ dataSource: subjectsOnSchedule, text: 'Subject', id: 'Id', }}
+                    nodeDragStop={onTreeDragStop.bind(this)}
+                    nodeSelecting={onItemSelecting.bind(this)}
+                    nodeDragging={onTreeDrag.bind(this)}
+                    nodeDragStart={onTreeDragStart.bind(this)}
+                    allowDragAndDrop={allowDragAndDrops} />
+                </Segment>
+                <Segment compact id="treeview" > <Header textAlign='center'>Tvarkaraščio validacijos</Header>
+                  <TreeViewComponent ref={tree => treeObj = tree}
+                    cssClass='treeview-external-drag'
+                    nodeTemplate={validationMessages.bind(this)}
+                    fields={{ dataSource: lessonsOnSchedule, text: 'Subject', id: 'Id', }}
+                   />
+                </Segment>
+              </Grid.Column>
               </Grid.Row>
-            </Grid>
+              </Grid>
           </div>
           <Button onClick={() => createLessonOnSchedule()}>add</Button>
         </div>

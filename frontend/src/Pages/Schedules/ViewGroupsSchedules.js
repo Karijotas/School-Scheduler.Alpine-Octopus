@@ -50,8 +50,8 @@ export function ViewGroupsSchedules() {
   };
 
   const removeSchedule = (id) => {
-    fetch("/api/v1/schedule/delete/" + id, {
-      method: "PATCH",
+    fetch("/api/v1/schedule/" + id, {
+      method: "DELETE",
     })
       .then(fetchSchedules)
       .then(setOpen(false));
@@ -78,14 +78,14 @@ export function ViewGroupsSchedules() {
   // };
 
   useEffect(() => {
-    nameText.length > 0
+    nameText.length > 0 && !nameText.includes('/') && !nameText.includes('#') && !nameText.includes('.') && !nameText.includes(';') && !nameText.match(new RegExp(/^\s/))
       ? fetchFilterSchedulesByName()
       : startingDate === "Invalid Date"
-      ? fetchSchedules()
-       // .then(setStartingDate(""))
-      : startingDate.length > 0
-      ? fetchFilterSchedulesByStartingDate()
-      : fetchSchedules();
+        ? fetchSchedules()
+        // .then(setStartingDate(""))
+        : startingDate.length > 0
+          ? fetchFilterSchedulesByStartingDate()
+          : fetchSchedules();
   }, [activePage, nameText, startingDate]);
 
   // useEffect(() => {
@@ -249,18 +249,18 @@ export function ViewGroupsSchedules() {
                           id="icocolor"
                           basic
                           compact
-                          title="Suarchyvuoti"
-                          icon="archive"
+                          title="Ištrinti"
+                          icon="trash"
                           onClick={() => setOpen(schedule.id)}
                         ></Button>
                         <Confirm
                           open={open}
                           header="Dėmesio!"
-                          content="Ar tikrai norite perkelti į archyvą?"
+                          content="Ar tikrai norite ištrinti?"
                           cancelButton="Grįžti atgal"
                           confirmButton="Taip"
                           onCancel={() => setOpen(false)}
-                          // onConfirm={() => removeGroup(open)}
+                          onConfirm={() => removeSchedule(open)}
                           size="small"
                         />
                       </Table.Cell>

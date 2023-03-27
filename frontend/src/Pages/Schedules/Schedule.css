@@ -9,8 +9,49 @@
 @import "../../../node_modules/@syncfusion/ej2-react-schedule/styles/material.css";
 
 
+
 #treeview{
-    margin-top: 50px;
+    /* margin-top: 20vmin; */
+}
+
+.drag-sample-wrapper {
+    display: -ms-flexbox;
+    display: flex;
+    
+}
+
+.schedule-container {
+    padding-right: 10px;
+    width: 100%;
+}
+
+.title-container {
+    padding-bottom: 10px;
+}
+
+.treeview-external-drag #waiting {
+    height: 100%;
+    padding: 0;
+
+}
+
+.treeview-external-drag #waitdetails {
+    width: 95%;
+    float: left;
+    height: 100%;
+    padding: 0;
+    
+}
+
+.e-schedule.schedule-drag-drop .e-resource-cells.e-parent-node .template-wrap {
+    padding: 3px 0px;
+}
+
+.title-text {
+    font-size: 18px;
+    margin: 0px;
+    font-weight: bold;
+    text-align: center;
 }
 
 .drag-sample-wrapper {
@@ -71,6 +112,7 @@
     padding-top: 5px;
     overflow: hidden;
     text-overflow: ellipsis;
+    
 }
 
 .treeview-external-drag .e-list-text, .treeview-external-drag.e-rtl .e-list-text, .e-bigger .treeview-external-drag .e-list-text, .e-bigger .treeview-external-drag.e-rtl .e-list-text {
@@ -79,6 +121,7 @@
     line-height: 15px;
     padding: 0 5px;
     width: 220px;
+    
 }
 
 .treeview-external-drag .e-list-parent, .treeview-external-drag.e-rtl .e-list-parent, .e-bigger .treeview-external-drag .e-list-parent, .e-bigger .treeview-external-drag.e-rtl .e-list-parent {

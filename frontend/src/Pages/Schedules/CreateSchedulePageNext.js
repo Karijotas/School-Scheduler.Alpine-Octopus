@@ -92,19 +92,20 @@ export function CreateSchedulePageNext() {
   // };
 
   const updateSchedule = (lessonId) => {
-    if (teacherId === undefined){
+    if (teacherId === undefined) {
       fetch(`/api/v1/schedule/${params.id}/${lessonId}/?roomId=${roomId}`, {
         method: "PATCH",
       }).then(applyResult);
-    } else  if (roomId === undefined){
+    } else if (roomId === undefined) {
       fetch(`/api/v1/schedule/${params.id}/${lessonId}/?teacherId=${teacherId}`, {
         method: "PATCH",
       }).then(applyResult);
     } else {
-    fetch(`/api/v1/schedule/${params.id}/${lessonId}/?roomId=${roomId}&teacherId=${teacherId}`, {
-      method: "PATCH",
-    }).then(applyResult);
-  }};
+      fetch(`/api/v1/schedule/${params.id}/${lessonId}/?roomId=${roomId}&teacherId=${teacherId}`, {
+        method: "PATCH",
+      }).then(applyResult);
+    }
+  };
 
   //Teacher dropdown
   useEffect(() => {
@@ -208,7 +209,9 @@ export function CreateSchedulePageNext() {
                     <Table.Cell>{subject.subject.name}</Table.Cell>
                     <Table.Cell>
                       <Select
-                        options={teachers}
+                        options={subject.subjectTeachers.map((x) => {
+                          return { key: x.id, text: x.name, value: x.id };
+                        })}
                         placeholder="Mokytojai"
                         onChange={(e, data) => setTeacherId(data.value)}
                       />
