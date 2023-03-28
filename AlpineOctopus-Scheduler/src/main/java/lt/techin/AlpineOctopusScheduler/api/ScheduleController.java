@@ -122,6 +122,13 @@ public class ScheduleController {
         return teacherRepository.findAllByTeacherSubjects_Id(subjectId);
     }
 
+    @GetMapping(value = "/lesson-teachers/{teacher}/{timess}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<Lesson> lessonsOfATeacher(@PathVariable Long teacher, @PathVariable String timess) {
+        var timeley = LocalDateTime.parse(timess);
+        return lessonRepository.findByTeacher_IdAndStartTimeGreaterThan(teacher, timeley);
+    }
+
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<ScheduleEntityDto> createSchedule(@RequestBody ScheduleEntityDto scheduleEntityDto, Long groupId,
                                                             @RequestParam(value = "startingDate", required = false) String startingDate) {

@@ -438,7 +438,6 @@ public class ScheduleService {
                             }
                         }
 
-
                         //validating if the classroom is already in use in another Schedule lesson. If so, setting the status to warning
                         if (createdLesson.getRoom() != null) {
                             if (validateRoomBetweenSchedules(createdLesson.getRoom().getId(), startTime, endTime)) {
