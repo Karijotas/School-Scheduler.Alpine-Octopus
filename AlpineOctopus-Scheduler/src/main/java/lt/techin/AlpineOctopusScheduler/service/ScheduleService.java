@@ -79,8 +79,8 @@ public class ScheduleService {
         logger.info(String.valueOf(teacherSchedules.stream().noneMatch(lesson -> lesson.getStartTime().equals(startTime) || lesson.getEndTime().equals(endTime)
                 || (lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime)))));
 
-        return teacherSchedules.stream().noneMatch(lesson -> lesson.getStartTime().equals(startTime) || lesson.getEndTime().equals(endTime)
-                || (lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime)));
+        return teacherSchedules.stream().noneMatch(lesson -> (lesson.getStartTime().equals(startTime) || lesson.getEndTime().equals(endTime))
+                && (lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime)));
 
     }
 
@@ -90,15 +90,17 @@ public class ScheduleService {
 
         var roomSchedules = lessonRepository.findByRoom_IdAndStartTimeGreaterThan(roomId, startTime.minusYears(10));
 
-        return roomSchedules.stream().noneMatch(lesson -> lesson.getStartTime().equals(startTime) || lesson.getEndTime().equals(endTime)
-                || (lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime)));
+        return roomSchedules.stream().noneMatch(lesson -> (lesson.getStartTime().equals(startTime) || lesson.getEndTime().equals(endTime))
+                && (lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime)));
     }
 
     public boolean lessonDateValidation(Long scheduleId, LocalDateTime startTime) {
         var existingSchedule = scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", scheduleId.toString()));
 
-        if (existingSchedule.getStartingDate().equals(startTime) || (existingSchedule.getStartingDate().isBefore(startTime.toLocalDate()))) {
+        var startDate = existingSchedule.getStartingDate().minusDays(1l);
+
+        if (startDate.equals(startTime) || (startDate.isBefore(startTime.toLocalDate()))) {
             return true;
         }
         return false;
@@ -425,7 +427,7 @@ public class ScheduleService {
                                 existingSchedule.setStatus(1);
                             }
                         }
-                        
+
                         //validating if the classroom is already in use in another Schedule lesson. If so, setting the status to warning
                         if (createdLesson.getRoom() != null) {
                             if (!validateRoomBetweenSchedules(createdLesson.getRoom().getId(), startTime, endTime)) {

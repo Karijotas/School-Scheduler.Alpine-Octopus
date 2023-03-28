@@ -3,16 +3,14 @@ import {
   closest,
   L10n,
   remove,
-  setCulture,
+  setCulture
 } from "@syncfusion/ej2-base";
 import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
 import { DateTimePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import { TreeViewComponent } from "@syncfusion/ej2-react-navigations";
 import {
-  Agenda,
-  Timezone,
-  Day,
+  Agenda, Day,
   DragAndDrop,
   ExcelExport,
   Inject,
@@ -22,18 +20,16 @@ import {
   ResourceDirective,
   ResourcesDirective,
   Schedule,
-  ScheduleComponent,
-  ViewDirective,
+  ScheduleComponent, Timezone, ViewDirective,
   ViewsDirective,
   Week,
-  WorkWeek,
+  WorkWeek
 } from "@syncfusion/ej2-react-schedule";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Grid, Header, Segment, List } from "semantic-ui-react";
+import { Grid, Header, List, Segment } from "semantic-ui-react";
 import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap5.css";
 import { updateSampleSection } from "./sample-base";
-import { Button } from "@syncfusion/ej2-buttons";
 import "./Schedule.css";
 
 const JSON_HEADERS = {
