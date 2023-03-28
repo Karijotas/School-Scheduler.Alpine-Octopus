@@ -92,14 +92,6 @@ export function ViewGroupsArchive() {
                       <Table.Cell disabled>{group.name}</Table.Cell>
                       <Table.Cell collapsing>
                         <Button
-                          href={"#/view/archives/groups/" + group.id}
-                          basic
-                          compact
-                          icon="eye"
-                          title="Peržiūrėti"
-                          onClick={() => setActive(group.id)}
-                        ></Button>
-                        <Button
                           textAlign="center"
                           basic
                           compact
