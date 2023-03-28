@@ -41,12 +41,11 @@ public class HolidayService {
     }
 
     public List<HolidayEntityDto> getAllPagedHolidays(int page, int pageSize) {
-        LocalDate startDate = LocalDate.now().withDayOfYear(1); // Get the start of the current year
         List<Holiday> allHolidays = holidayRepository.findAll();
 
         List<HolidayEntityDto> holidayDtos = allHolidays.stream()
-                .filter(holiday -> !holiday.getStartDate().isBefore(startDate)) // Filter holidays to show only those from the start of the current year or later
-                .sorted(Comparator.comparing(Holiday::getStartDate))
+                .filter(holiday -> holiday.getStartDate() == null || !holiday.getStartDate().isBefore(LocalDate.now().withDayOfYear(1)))
+                .sorted(Comparator.comparing(Holiday::getStartDate, Comparator.nullsLast(Comparator.naturalOrder())))
                 .map(HolidayMapper::toHolidayEntityDto)
                 .collect(Collectors.toList());
 
