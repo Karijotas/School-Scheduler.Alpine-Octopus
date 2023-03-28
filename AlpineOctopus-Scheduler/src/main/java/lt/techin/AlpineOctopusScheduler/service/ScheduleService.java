@@ -74,33 +74,24 @@ public class ScheduleService {
 
     public boolean validateTeacherBetweenSchedules(Long teacher, LocalDateTime startTime, LocalDateTime endTime) {
         logger.info("Trying to validate teachers");
-        var teacherSchedules = lessonRepository.findByTeacher_Id(teacher);
-        try {
-            return teacherSchedules.stream().filter(lesson -> lesson.getStartTime() != null).noneMatch(lesson -> lesson.getStartTime().equals(startTime) && lesson.getEndTime().equals(endTime)
-                    && (lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime)));
-        } catch (NullPointerException e) {
-            logger.info(e.toString(), "pointer");
+        var teacherSchedules = lessonRepository.findByTeacher_IdAndStartTimeGreaterThan(teacher, startTime.minusYears(10));
+        logger.info("foundTeacherSchedules");
+        logger.info(String.valueOf(teacherSchedules.stream().noneMatch(lesson -> lesson.getStartTime().equals(startTime) || lesson.getEndTime().equals(endTime)
+                || (lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime)))));
 
-        }
-        return false;
+        return teacherSchedules.stream().noneMatch(lesson -> lesson.getStartTime().equals(startTime) || lesson.getEndTime().equals(endTime)
+                || (lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime)));
+
     }
 
     public boolean validateRoomBetweenSchedules(Long roomId, LocalDateTime startTime, LocalDateTime endTime) {
+
         logger.info("Trying to validate rooms");
 
-        var roomSchedules = lessonRepository.findByRoom_Id(roomId);
+        var roomSchedules = lessonRepository.findByRoom_IdAndStartTimeGreaterThan(roomId, startTime.minusYears(10));
 
-        try {
-            return roomSchedules.stream().filter(lesson -> lesson.getStartTime() != null).noneMatch(lesson -> lesson.getStartTime().equals(startTime) && lesson.getEndTime().equals(endTime)
-                    && lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime));
-        } catch (NullPointerException e) {
-            logger.info(e.toString(), "pointer");
-        }
-        logger.info("EEE", roomSchedules.stream().filter(lesson -> lesson.getStartTime() != null).anyMatch(lesson -> lesson.getStartTime().equals(startTime) && lesson.getEndTime().equals(endTime)
-                && lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime)));
-        logger.info("false");
-
-        return false;
+        return roomSchedules.stream().noneMatch(lesson -> lesson.getStartTime().equals(startTime) || lesson.getEndTime().equals(endTime)
+                || (lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime)));
     }
 
     public boolean lessonDateValidation(Long scheduleId, LocalDateTime startTime) {
@@ -411,7 +402,6 @@ public class ScheduleService {
                                                 throw new SchedulerValidationException("Too many lessons taken", "lesson", "Lesson amount", scheduleId.toString());
                                             }
                                         });
-                        lessonRepository.save(createdLesson);
 
                         existingSchedule.scheduleLesson(createdLesson);
                         logger.info("saved");
@@ -427,24 +417,36 @@ public class ScheduleService {
 
                         //validating if the teacher already teaches during the timeframe in another lesson. If so, setting the status to warning
                         if (createdLesson.getTeacher() != null) {
-                            if (validateTeacherBetweenSchedules(createdLesson.getTeacher().getId(), startTime, endTime)) {
+                            logger.info("step1");
+                            if (!validateTeacherBetweenSchedules(createdLesson.getTeacher().getId(), startTime, endTime)) {
                                 logger.info("Setting lesson status to critical. Reason: teacher works at the same time in another lesson");
                                 createdLesson.setStatus(1);
                                 createdLesson.setStatusMessage("Mokytojas jau užimtas tuo pačiu laiku. Pamoka: " + createdLesson.getSubject().getName().toString() + ", Laikas:" + createdLesson.getStartTime().toString());
                                 existingSchedule.setStatus(1);
                             }
                         }
-
-
+                        
                         //validating if the classroom is already in use in another Schedule lesson. If so, setting the status to warning
                         if (createdLesson.getRoom() != null) {
-                            if (validateRoomBetweenSchedules(createdLesson.getRoom().getId(), startTime, endTime)) {
+                            if (!validateRoomBetweenSchedules(createdLesson.getRoom().getId(), startTime, endTime)) {
                                 logger.info("Setting lesson status to critical. Reason: class is occupied at the same time in another lesson");
                                 createdLesson.setStatus(1);
-                                createdLesson.setStatusMessage("Klasė jau užimta tuo pačiu laiku. Klasė: " + createdLesson.getRoom().getName().toString() + ", Laikas: " + createdLesson.getStartTime().toString());
+                                createdLesson.setStatusMessage("Klasė jau užimta tuo pačiu laiku. Klasė: " + createdLesson.getRoom().getName().toString() + ", Laikas:" + createdLesson.getStartTime().toString());
+                                existingSchedule.setStatus(1);
+
+                            }
+                        }
+
+                        if (createdLesson.getTeacher() != null && createdLesson.getRoom() != null) {
+                            if (!validateTeacherBetweenSchedules(createdLesson.getTeacher().getId(), startTime, endTime) && !validateRoomBetweenSchedules(createdLesson.getRoom().getId(), startTime, endTime)) {
+                                logger.info("Setting lesson status to critical. Reason: teacher works at the same time in another lesson");
+                                createdLesson.setStatus(1);
+                                createdLesson.setStatusMessage("Mokytojas ir klasė jau užimti tuo pačiu laiku. Pamoka: " + createdLesson.getSubject().getName().toString() + ", Laikas:" + createdLesson.getStartTime().toString());
                                 existingSchedule.setStatus(1);
                             }
                         }
+
+                        lessonRepository.save(createdLesson);
 
                         return scheduleRepository.save(existingSchedule);
                     } else {

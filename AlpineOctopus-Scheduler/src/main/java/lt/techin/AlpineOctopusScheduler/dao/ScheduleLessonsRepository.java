@@ -12,7 +12,7 @@ public interface ScheduleLessonsRepository extends JpaRepository<ScheduleLessons
 
     void deleteByScheduleAndLesson(Schedule schedule, Lesson lesson);
 
-    List<ScheduleLessons> findBySchedule_Lessons_Teacher(Long teacherId);
+    List<ScheduleLessons> findByLesson_Teacher_Id(Long id);
 
 
 }
