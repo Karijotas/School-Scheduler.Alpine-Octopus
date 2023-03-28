@@ -444,7 +444,7 @@ public class ScheduleService {
                             if (validateRoomBetweenSchedules(createdLesson.getRoom().getId(), startTime, endTime)) {
                                 logger.info("Setting lesson status to critical. Reason: class is occupied at the same time in another lesson");
                                 createdLesson.setStatus(1);
-                                createdLesson.setStatusMessage("Klasė jau užimta tuo pačiu laiku. Klasė: " + createdLesson.getRoom().getName().toString() + ", Laikas: " + createdLesson.getStartTime().toString().);
+                                createdLesson.setStatusMessage("Klasė jau užimta tuo pačiu laiku. Klasė: " + createdLesson.getRoom().getName().toString() + ", Laikas: " + createdLesson.getStartTime().toString());
                                 existingSchedule.setStatus(1);
 
                             }

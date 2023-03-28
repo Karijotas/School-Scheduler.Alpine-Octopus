@@ -1,58 +1,50 @@
-import { addClass, closest, L10n, remove } from "@syncfusion/ej2-base";
-import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
-import { DateTimePickerComponent } from "@syncfusion/ej2-react-calendars";
-import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
-import { TreeViewComponent } from "@syncfusion/ej2-react-navigations";
-import {
-  Agenda,
-  Day,
-  DragAndDrop,
-  ExcelExport,
-  Inject,
-  Month,
-  Print,
-  Resize,
-  ResourceDirective,
-  ResourcesDirective,
-  Schedule,
-  ScheduleComponent,
-  ViewDirective,
-  ViewsDirective,
-  Week,
-  WorkWeek,
-} from "@syncfusion/ej2-react-schedule";
-import React, { useEffect, useState } from "react";
+import { addClass, closest, L10n, remove, setCulture } from '@syncfusion/ej2-base';
+import { ButtonComponent } from '@syncfusion/ej2-react-buttons';
+import { DateTimePickerComponent } from '@syncfusion/ej2-react-calendars';
+import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
+import { TreeViewComponent } from '@syncfusion/ej2-react-navigations';
+import { Agenda, Timezone, Day, DragAndDrop, ExcelExport, Inject, Month, Print, Resize, ResourceDirective, ResourcesDirective, Schedule, ScheduleComponent, ViewDirective, ViewsDirective, Week, WorkWeek } from '@syncfusion/ej2-react-schedule';
+import React, { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
-import { Button, Grid, Header, Segment, Table, List } from "semantic-ui-react";
+import { Grid, Header, Segment, List } from "semantic-ui-react";
 import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap5.css";
-import { updateSampleSection } from "./sample-base";
-import "./Schedule.css";
+import { updateSampleSection } from './sample-base';
+import { Button } from '@syncfusion/ej2-buttons';
+import './Schedule.css';
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
 };
 
+// if (Browser.isIE) {
+//   Timezone.prototype.offset = (date, timezone) => {
+//     return tz.zone(timezone).utcOffset(date.getTime());
+//   };
+// } 
 L10n.load({
-  "en-US": {
+  // 'en-US': {
+  //   'schedule': {
+  //     'saveButton': 'Add',
+  //     'cancelButton': 'Close',
+  //     'deleteButton': 'Remove',
+  //     'newEvent': 'Add Event',
+  //   },
+   
+    lt: {
     schedule: {
-      saveButton: "Add",
-      cancelButton: "Close",
-      deleteButton: "Remove",
-      newEvent: "Add Event",
-    },
-    timeFormats: {
-      short: "HH",
-    },
-    schedule: {
-      saveButton: "Pridėti",
+      saveButton: "Išsaugoti",
       cancelButton: "Uždaryti",
       deleteButton: "Pašalinti",
       newEvent: "Pridėti pamoką",
       editEvent: "Redaguoti pamoką",
     },
+    timeFormats: {
+      short: "HH",
+    },
   },
-});
-// setCulture("lt");
+  }
+);
+setCulture("lt");
 
 Schedule.Inject(
   Day,
@@ -69,27 +61,36 @@ Schedule.Inject(
 export function ScheduleView() {
   let scheduleObj;
   const params = useParams();
-
   const [schedules, setSchedules] = useState([]);
-  const [lessons, setLessons] = useState([]);
-  const [lesson, setLesson] = useState([]);
+  const [lessons, setLessons] = useState([]); 
   const [subjects, setSubjects] = useState([]);
   const [subjectId, setSubjectId] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [active, setActive] = useState(false);
+  const [subject, setSubject] = useState('');
+  const [lesson, setLesson] = useState({
+    id: "",
+    name: "",
+    startTime: "",
+    endTime: "",    
+  });
   const [statusMessage, setStatusMessage] = useState("");
-
   const [updated, setUpdated] = useState();
 
   let treeObj;
   let isTreeItemDropped = false;
   let draggedItemId = "";
   const allowDragAndDrops = true;
+  let isDialogButtonsSet = false;
+  let flag = true;
+  const timezone = new Timezone();
+
   useEffect(() => {
     updateSampleSection();
   }, []);
 
+  
   function treeTemplate(props) {
     return (
       <div id="waiting">
@@ -130,6 +131,23 @@ export function ScheduleView() {
         remove(elements[i]);
       }
     }
+    else if (event.requestType === 'eventCreate'){
+      console.log("cia kurimas");
+      console.log(event.data[0]);
+      var newLesson = ({
+        id: lesson.id,
+        startTime: timezone.removeLocalOffset(new Date(event.data[0].StartTime)).toISOString(),
+        endTime: timezone.removeLocalOffset(new Date(event.data[0].EndTime)).toISOString()
+      })
+      console.log(newLesson);
+      createLessonOnSchedule(newLesson);
+
+    } 
+    else if (event.requestType === 'eventRemove') {
+      removeLessonOnSchedule(event.data[0])
+
+    }
+    
   }
 
   function onTreeDragStop(event) {
@@ -148,13 +166,18 @@ export function ScheduleView() {
           let eventData = {
             Id: filteredData[0].Id,
             Subject: filteredData[0].Subject,
+            Teacher: filteredData[0].Teacher,
+            Room: filteredData[0].Room,
             StartTime: cellData.startTime,
-            EndTime: cellData.endTime,
+            EndTime: cellData.endTime,              
           };
-          scheduleObj.openEditor(eventData, "Add", true);
+          setLesson({name: filteredData[0].Subject, id: filteredData[0].Id})          
+          console.log(filteredData[0]);
+          scheduleObj.openEditor(eventData, 'Add', true);
           isTreeItemDropped = true;
           draggedItemId = event.draggedNodeData.id;
           setSubjectId(eventData.Id);
+          
         }
       }
     }
@@ -189,21 +212,24 @@ export function ScheduleView() {
       .then(setSubjects);
   }, [params, active]);
 
-  function newStartTime() {
-    const data1 = new Date(startTime).toISOString();
-    setStartTime(data1);
-    const data2 = new Date(endTime).toISOString();
-    setEndTime(data2);
+  const createLessonOnSchedule = (props) => {
+    fetch(
+      `/api/v1/schedule/${params.id}/create/${props.id}/${props.startTime}/${props.endTime}`, {
+      method: 'PATCH'
+    })
+      .then(setActive(true));
+      setLesson({});
+      setStartTime("");
+      setEndTime("");
   }
 
-  const createLessonOnSchedule = () => {
+  const removeLessonOnSchedule = (props) => {
     fetch(
-      `/api/v1/schedule/${params.id}/create/${subjectId}/${startTime}/${endTime}`,
-      {
-        method: "PATCH",
-      }
-    ).then(setActive(true));
-  };
+      `/api/v1/schedule/${params.id}/remove/${props.Id}`, {
+      method: 'DELETE'
+    })
+      .then(setActive(true));
+  }
 
   useEffect(() => {
     fetch("/api/v1/schedule/" + params.id)
@@ -224,6 +250,8 @@ export function ScheduleView() {
       Subject: l.subject.name,
       StartTime: l.startTime,
       EndTime: l.endTime,
+      Room: l.room.name,
+      Teacher: l.teacher.name,
       GroupId: l.subject.id,
       Description: l.online ? "ONLINE" : "",
       Status: l.statusMessage,
@@ -236,21 +264,14 @@ export function ScheduleView() {
       Subject: s.subject.name,
       StartTime: s.startTime,
       EndTime: s.endTime,
+      Room: s.room.name,
+      Teacher: s.teacher.name,      
       GroupId: s.subject.id,
       LessonHours: s.lessonHours,
     };
   });
 
-  const lessonsStatusList = lessons.map((l) => {
-    if (l.statusMessage !== undefined) {
-      return {
-        Status: l.statusMessage,
-      };
-    }
-  });
-
   var filteredMessages = lessons.filter(l => l.status!== 0); 
-
 
   function ClickButton() {
     scheduleObj.closeEditor();
@@ -263,41 +284,32 @@ export function ScheduleView() {
   };
 
   function eventTemplate(props) {
-    return (
-      <div
-        className="template-wrap"
-        style={{ background: props.SecondaryColor }}
-      >
-        <div className="subject" style={{ background: props.GroupId }}>
-          {props.Subject}
-        </div>
-        {console.log(props.Subject)}
-        <div className="event-description">{props.Description}</div>
-      </div>
-    );
+    return (<div className="template-wrap" style={{ background: props.SecondaryColor }}>
+      <div className="subject" style={{ background: props.GroupId }}>{props.Subject}</div>      
+      <div className="event-description">{props.Description}</div>         
+      
+    </div>);
   }
 
   function editorTemplate(props) {
-    return props !== undefined ? (
-      <table className="custom-event-editor" style={{ width: "100%" }}>
-        <tbody>
-          <tr>
-            <td className="e-textlabel">Pamoka</td>
-            <td colSpan={4}>
-              <DropDownListComponent
-                id="Subject"
-                placeholder="Pasirinkti"
-                data-name="Subject"
-                className="e-field"
-                style={{ width: "100%" }}
-                value={props.Subject}
-                dataSource={subjectsOnSchedule}
-                fields={subjectFields}
-                onChange={(e) => setSubjectId(e.value)}
-              ></DropDownListComponent>
-            </td>
-          </tr>
-          {/* <tr><td className="e-textlabel">Nuotolinė pamoka</td><td colSpan={4}>
+    return props !== undefined ? ( <table className="custom-event-editor" style={{ width: '100%' }}>
+      <tbody>
+        <tr><td className="e-textlabel">Pamoka</td><td colSpan={4}>
+          <DropDownListComponent          
+            id="Subject"
+            placeholder='Pasirinkti'
+            data-name="Subject"
+            className="e-field"
+            style={{ width: '100%' }}
+            value={lesson.name == "" ? props.Subject : lesson.name}               
+            dataSource={subjectsOnSchedule}         
+            fields={subjectFields}
+            onChange={(e) => setLesson({id: e.target.itemData.Id, name: e.value})}>
+          </DropDownListComponent>
+          {console.log(props.Subject)}
+          {console.log(lesson)}
+        </td></tr>
+        {/* <tr><td className="e-textlabel">Nuotolinė pamoka</td><td colSpan={4}>
           <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['Taip', 'Ne']}>
           </DropDownListComponent>
         </td></tr>
@@ -309,43 +321,13 @@ export function ScheduleView() {
           <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['Kabinetas1', 'Kabinetas2']}>
           </DropDownListComponent>
         </td></tr> */}
-          <tr>
-            <td className="e-textlabel">Data nuo</td>
-            <td colSpan={4}>
-              <DateTimePickerComponent
-                firstDayOfWeek={1}
-                format="yyyy/MM/dd HH"
-                timeFormat={"HH"}
-                step={60}
-                locale="lt"
-                id="StartTime"
-                data-name="StartTime"
-                value={
-                  new Date(props.startTime || props.StartTime || startTime)
-                }
-                onChange={(e) => setStartTime(new Date(e.value).toISOString())}
-                className="e-field"
-              ></DateTimePickerComponent>
-            </td>
-          </tr>
-          <tr>
-            <td className="e-textlabel">Data iki</td>
-            <td colSpan={4}>
-              <DateTimePickerComponent
-                firstDayOfWeek={1}
-                locale="lt"
-                format="yyyy/MM/dd HH"
-                timeFormat={"HH"}
-                step={60}
-                id="EndTime"
-                data-name="EndTime"
-                value={new Date(props.endTime || props.EndTime || endTime)}
-                onChange={(e) => setEndTime(new Date(e.value).toISOString())}
-                className="e-field"
-              ></DateTimePickerComponent>
-            </td>
-          </tr>
-          {/* <tr><td className="e-textlabel">Pamoka nuo</td><td colSpan={4}>
+        <tr><td className="e-textlabel">Data nuo</td><td colSpan={4}>
+          <DateTimePickerComponent firstDayOfWeek={1} format='yyyy/MM/dd HH' timeFormat={"HH"} step={60} locale='lt' id="StartTime" data-name="StartTime" value={new Date(props.startTime || props.StartTime || startTime)} onChange={(e) => setStartTime(new Date(e.value))} className="e-field"></DateTimePickerComponent>
+        </td></tr>
+        <tr><td className="e-textlabel">Data iki</td><td colSpan={4}>
+          <DateTimePickerComponent firstDayOfWeek={1} locale='lt' format='yyyy/MM/dd HH' timeFormat={"HH"} step={60} id="EndTime" data-name="EndTime" value={new Date(props.endTime || props.EndTime || endTime)} onChange={(e) => setEndTime(new Date(e.value))} className="e-field"></DateTimePickerComponent>
+        </td></tr>
+        {/* <tr><td className="e-textlabel">Pamoka nuo</td><td colSpan={4}>
           <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14']}>
           </DropDownListComponent>
         </td></tr>
@@ -441,107 +423,61 @@ export function ScheduleView() {
                   </div>
                   <h1 className="title-text">{schedules.name}</h1>
 
-                  <ScheduleComponent
-                    id="schedule-drag-drop"
-                    cssClass="schedule-drag-drop"
-                    ref={(shedule) => (scheduleObj = shedule)}
-                    timeFormat="HH"
-                    firstDayOfWeek="1"
-                    height="550px"
-                    timezone="Europe/Vilnius"
-                    editorTemplate={editorTemplate}
-                    selectedDate={new Date(2023, 1, 10, 24, 0)}
-                    eventSettings={{
-                      dataSource: lessonsOnSchedule,
-                      fields: {
-                        editorTemplate,
-                      },
-                    }}
-                    colorField="Color"
-                    currentView="Month"
-                    actionBegin={onActionBegin.bind(this)}
-                  >
-                    {console.log(lessons)}
-                    {console.log(endTime)}
-                    <ResourcesDirective>
-                      <ResourceDirective
-                        field="GroupId"
-                        title="Owner"
-                        name="Owners"
-                        dataSource={resourceData}
-                        textField="GroupText"
-                        idField="GroupId"
-                        colorField="GroupColor"
-                      ></ResourceDirective>
-                    </ResourcesDirective>
-                    <ViewsDirective>
-                      <ViewDirective
-                        option="Day"
-                        startHour="01:00"
-                        endHour="15:00"
-                        timeScale={{ interval: 1, slotCount: 1 }}
-                        eventTemplate={eventTemplate.bind(this)}
-                      />
-                      <ViewDirective
-                        option="Week"
-                        startHour="01:00"
-                        endHour="15:00"
-                        timeScale={{ slotCount: 1 }}
-                        eventTemplate={eventTemplate.bind(this)}
-                      />
-                      <ViewDirective
-                        option="WorkWeek"
-                        startHour="01:00"
-                        endHour="15:00"
-                        timeScale={{ slotCount: 1 }}
-                        eventTemplate={eventTemplate.bind(this)}
-                      />
-                      <ViewDirective
-                        option="Month"
-                        startHour="01:00"
-                        endHour="15:00"
-                        timeScale={{ slotCount: 1 }}
-                        eventTemplate={eventTemplate.bind(this)}
-                      />
-                    </ViewsDirective>
-                    <Inject
-                      services={[
-                        Day,
-                        Week,
-                        WorkWeek,
-                        Month,
-                        Agenda,
-                        DragAndDrop,
-                        ExcelExport,
-                        DragAndDrop,
-                      ]}
-                    />
-                    {console.log(subjectId)}
-                  </ScheduleComponent>
-                </Grid.Column>
-                <Grid.Column width={3}>
-                  <Segment id="treeview">
-                    {" "}
-                    <Header textAlign="center">Nesuplanuotos Pamokos</Header>
-                    <TreeViewComponent 
-                      ref={(tree) => (treeObj = tree)}
-                      cssClass="treeview-external-drag"
-                      dragArea=".drag-sample-wrapper"
-                      nodeTemplate={treeTemplate.bind(this)}
-                      fields={{
-                        dataSource: subjectsOnSchedule,
-                        text: "Subject",
-                        id: "Id",
-                      }}
-                      nodeDragStop={onTreeDragStop.bind(this)}
-                      nodeSelecting={onItemSelecting.bind(this)}
-                      nodeDragging={onTreeDrag.bind(this)}
-                      nodeDragStart={onTreeDragStart.bind(this)}
-                      allowDragAndDrop={allowDragAndDrops}
-                    />
-                  </Segment>
-                 
-                  <Segment>
+
+
+                <ScheduleComponent
+                  id='schedule-drag-drop'
+                  cssClass='schedule-drag-drop'
+                  ref={schedule => scheduleObj = schedule}
+                  timeFormat='HH'
+                  firstDayOfWeek='1'
+                  height='550px'
+                  timezone='Europe/Vilnius'
+                  editorTemplate={editorTemplate}
+                  selectedDate={new Date(2023, 1, 10, 24, 0)}
+                  eventSettings={{
+                    dataSource: lessonsOnSchedule,
+                    fields: {
+                      editorTemplate
+                    }
+
+                  }}
+                  colorField='Color'
+                  currentView='Month'
+                  actionBegin={onActionBegin.bind(this)}> 
+                   {/* popupOpen={onPopupOpen.bind(this)}> */}
+                  {/* {console.log(lessons)}
+                  {console.log(endTime)} */}
+                  <ResourcesDirective>
+                    <ResourceDirective field='GroupId' title='Owner' name='Owners' dataSource={resourceData} textField='GroupText' idField='GroupId' colorField='GroupColor'>
+                    </ResourceDirective>
+                  </ResourcesDirective>
+                  <ViewsDirective>
+                    <ViewDirective option='Day' startHour='01:00' endHour='15:00' timeScale={{ interval: 1, slotCount: 1 }} eventTemplate={eventTemplate.bind(this)} />
+                    <ViewDirective option='Week' startHour='01:00' endHour='15:00' timeScale={{ slotCount: 1 }} eventTemplate={eventTemplate.bind(this)} />
+                    <ViewDirective option='WorkWeek' startHour='01:00' endHour='15:00' timeScale={{ slotCount: 1 }} eventTemplate={eventTemplate.bind(this)} />
+                    <ViewDirective option='Month' startHour='01:00' endHour='15:00' timeScale={{ slotCount: 1 }} eventTemplate={eventTemplate.bind(this)} />
+                  </ViewsDirective>
+                  <Inject services={[Day, Week, WorkWeek, Month, Agenda, DragAndDrop, ExcelExport, DragAndDrop]} />
+                  {/* {console.log(subjectId)} */}
+
+                </ScheduleComponent></Grid.Column>
+              <Grid.Column width={3}>
+
+                <Segment compact id="treeview" > <Header textAlign='center'>Nesuplanuotos Pamokos</Header>
+                  <TreeViewComponent ref={tree => treeObj = tree}
+
+                    cssClass='treeview-external-drag'
+                    dragArea=".drag-sample-wrapper"
+                    nodeTemplate={treeTemplate.bind(this)}
+                    fields={{ dataSource: subjectsOnSchedule, text: 'Subject', id: 'Id', }}
+                    nodeDragStop={onTreeDragStop.bind(this)}
+                    nodeSelecting={onItemSelecting.bind(this)}
+                    nodeDragging={onTreeDrag.bind(this)}
+                    nodeDragStart={onTreeDragStart.bind(this)}
+                    allowDragAndDrop={allowDragAndDrops} />
+                </Segment>
+                <Segment>
                     <List compact id="treeview">
                       <Header textAlign="center">Validacijos</Header>
                       {filteredMessages.map((lesson) => (
@@ -551,11 +487,10 @@ export function ScheduleView() {
                       ))}
                     </List>
                   </Segment>
-                </Grid.Column>
+              </Grid.Column>
               </Grid.Row>
-            </Grid>
-          </div>
-          <Button onClick={() => createLessonOnSchedule()}>add</Button>
+              </Grid>
+          </div>          
         </div>
       </div>
     </div>
