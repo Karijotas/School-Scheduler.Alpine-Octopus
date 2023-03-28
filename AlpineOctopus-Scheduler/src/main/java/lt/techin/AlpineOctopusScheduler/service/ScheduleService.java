@@ -78,6 +78,7 @@ public class ScheduleService {
         logger.info("foundTeacherSchedules");
         logger.info(String.valueOf(teacherSchedules.stream().noneMatch(lesson -> lesson.getStartTime().equals(startTime) || lesson.getEndTime().equals(endTime)
                 || (lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime)))));
+
         return teacherSchedules.stream().noneMatch(lesson -> lesson.getStartTime().equals(startTime) || lesson.getEndTime().equals(endTime)
                 || (lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime)));
 
@@ -423,6 +424,7 @@ public class ScheduleService {
                                 logger.info("Setting lesson status to critical. Reason: teacher works at the same time in another lesson");
                                 createdLesson.setStatus(1);
                                 createdLesson.setStatusMessage("Mokytojas jau užimtas tuo pačiu laiku. Pamoka: " + createdLesson.getSubject().getName().toString() + ", Laikas:" + createdLesson.getStartTime().toString());
+
                                 existingSchedule.setStatus(1);
 
                             }

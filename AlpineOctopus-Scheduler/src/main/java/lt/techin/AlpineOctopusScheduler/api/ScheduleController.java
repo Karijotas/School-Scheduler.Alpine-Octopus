@@ -189,9 +189,9 @@ public class ScheduleController {
         return ok(toScheduleEntityDto(updatedSchedule));
     }
 
-    @DeleteMapping("/{scheduleId}/{lessonId}")
+    @DeleteMapping("/{scheduleId}/remove/{lessonId}")
     public ResponseEntity<ScheduleEntityDto> removeLesson(@PathVariable Long scheduleId,
-                                                          Long lessonId) {
+                                                          @PathVariable Long lessonId) {
 
         logger.info("Attempt to delete Lesson from Schedule by id: {}", lessonId);
         boolean deleted = scheduleService.removeLesson(scheduleId, lessonId);
