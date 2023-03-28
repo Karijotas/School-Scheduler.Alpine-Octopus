@@ -1,5 +1,5 @@
 import { addClass, closest, L10n, remove, setCulture } from '@syncfusion/ej2-base';
-import { ButtonComponent } from '@syncfusion/ej2-react-buttons';
+import { ButtonComponent, CheckBoxComponent } from '@syncfusion/ej2-react-buttons';
 import { DateTimePickerComponent } from '@syncfusion/ej2-react-calendars';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { TreeViewComponent } from '@syncfusion/ej2-react-navigations';
@@ -147,6 +147,10 @@ export function ScheduleView() {
       removeLessonOnSchedule(event.data[0])
 
     }
+    else if (event.requestType === 'eventClose') {
+      setLesson({});
+
+    }
     
   }
 
@@ -253,6 +257,7 @@ export function ScheduleView() {
       Room: l.room.name,
       Teacher: l.teacher.name,
       GroupId: l.subject.id,
+      Online: l.online,
       Description: l.online ? "ONLINE" : "",
       Status: l.statusMessage,
     };
@@ -285,7 +290,7 @@ export function ScheduleView() {
 
   function eventTemplate(props) {
     return (<div className="template-wrap" style={{ background: props.SecondaryColor }}>
-      <div className="subject" style={{ background: props.GroupId }}>{props.Subject}</div>      
+      <div className="subject" style={{ background: props.GroupId }}>{props.Subject} {!props.status? <span className="e-icons e-circle-check"></span> : <span className="e-icons e-warning"></span>}</div>      
       <div className="event-description">{props.Description}</div>         
       
     </div>);
@@ -294,14 +299,14 @@ export function ScheduleView() {
   function editorTemplate(props) {
     return props !== undefined ? ( <table className="custom-event-editor" style={{ width: '100%' }}>
       <tbody>
-        <tr><td className="e-textlabel">Pamoka</td><td colSpan={4}>
+        <tr><td className="e-textlabel">Pamoka: </td><td colSpan={4}>
           <DropDownListComponent          
             id="Subject"
             placeholder='Pasirinkti'
             data-name="Subject"
             className="e-field"
             style={{ width: '100%' }}
-            value={lesson.name == "" ? props.Subject : lesson.name}               
+            value={lesson.name == "" ? props.Subject : lesson.name || props.Subject == "undefined" ? lesson.name : props.Subject}               
             dataSource={subjectsOnSchedule}         
             fields={subjectFields}
             onChange={(e) => setLesson({id: e.target.itemData.Id, name: e.value})}>
@@ -309,22 +314,31 @@ export function ScheduleView() {
           {console.log(props.Subject)}
           {console.log(lesson)}
         </td></tr>
-        {/* <tr><td className="e-textlabel">Nuotolinė pamoka</td><td colSpan={4}>
-          <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['Taip', 'Ne']}>
-          </DropDownListComponent>
+        <br />
+        <tr><td className="e-textlabel">Nuotolinė pamoka: </td><td colSpan={4}>
+        <CheckBoxComponent name="Sport" value="Cricket" checked={props.Online} ></CheckBoxComponent>
         </td></tr>
-        <tr><td className="e-textlabel">Mokytojas</td><td colSpan={4}>
-          <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['Mokytojas1', 'Mokytojas2', 'Mokytojas']}>
-          </DropDownListComponent>
-        </td></tr>
-        <tr><td className="e-textlabel">Kabinetas</td><td colSpan={4}>
+        <br />
+        {!props.Online ? (props.Room == undefined ? <tr><td className="e-textlabel">Kabinetas: </td><td colSpan={4}>
+          
           <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['Kabinetas1', 'Kabinetas2']}>
           </DropDownListComponent>
-        </td></tr> */}
-        <tr><td className="e-textlabel">Data nuo</td><td colSpan={4}>
+        </td></tr> : <tr><td className="e-textlabel">Kabinetas:</td><td colSpan={4}> <br/>          
+          <div>{props.Room}<br/></div>
+          <br/>
+        </td></tr>
+        ) : ""}
+        {props.Teacher == undefined ? <tr><td className="e-textlabel">Mokytojas: </td><td colSpan={4}>
+          <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['Mokytojas1', 'Mokytojas2', 'Mokytojas']}>
+          </DropDownListComponent>
+        </td></tr> : <tr><td className="e-textlabel">Mokytojas: </td><td colSpan={4}>
+          <div>{props.Teacher}</div>
+        </td></tr>}
+        
+        <tr><td className="e-textlabel">Data nuo: </td><td colSpan={4}>
           <DateTimePickerComponent firstDayOfWeek={1} format='yyyy/MM/dd HH' timeFormat={"HH"} step={60} locale='lt' id="StartTime" data-name="StartTime" value={new Date(props.startTime || props.StartTime || startTime)} onChange={(e) => setStartTime(new Date(e.value))} className="e-field"></DateTimePickerComponent>
         </td></tr>
-        <tr><td className="e-textlabel">Data iki</td><td colSpan={4}>
+        <tr><td className="e-textlabel">Data iki: </td><td colSpan={4}>
           <DateTimePickerComponent firstDayOfWeek={1} locale='lt' format='yyyy/MM/dd HH' timeFormat={"HH"} step={60} id="EndTime" data-name="EndTime" value={new Date(props.endTime || props.EndTime || endTime)} onChange={(e) => setEndTime(new Date(e.value))} className="e-field"></DateTimePickerComponent>
         </td></tr>
         {/* <tr><td className="e-textlabel">Pamoka nuo</td><td colSpan={4}>
@@ -336,7 +350,7 @@ export function ScheduleView() {
           </DropDownListComponent>
         </td></tr> */}
           <tr>
-            <td className="e-textlabel">Pastabos</td>
+            <td className="e-textlabel">Pastabos: </td>
             <td colSpan={4}>
               <textarea
                 id="Description"
