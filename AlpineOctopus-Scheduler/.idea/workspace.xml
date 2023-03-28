@@ -6,6 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="be4542e8-401c-4b51-a94d-0543b0658664" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+
+      <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/ScheduleController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/ScheduleController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/service/ScheduleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/service/ScheduleService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/Pages/Schedules/Schedule.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Pages/Schedules/Schedule.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,8 +121,8 @@
       <command value="mvn clean install" />
       <command value="mvn cargo:run" />
       <command value="mvn flyway:migrate" />
-      <command value="mvn spring-boot:run" />
       <command value="mvn flyway:clean" />
+      <command value="mvn spring-boot:run" />
     </option>
   </component>
   <component name="RunManager" selected="Application.AlpineOctopusSchedulerApplication">
@@ -300,20 +306,20 @@
     <select />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$All_in_AlpineOctopus_Scheduler__2_.ic" NAME="All in AlpineOctopus-Scheduler (2) Coverage Results" MODIFIED="1679246195974" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
-    <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$All_in_AlpineOctopus_Scheduler.ic" NAME="All in AlpineOctopus-Scheduler Coverage Results" MODIFIED="1679245785418" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
-    <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$AlpineOctopusSchedulerApplication.ic" NAME="AlpineOctopusSchedulerApplication Coverage Results" MODIFIED="1677692928857" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
-      <FILTER>lt.techin.AlpineOctopusScheduler.*</FILTER>
-    </SUITE>
     <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$ProgramControllerTest.ic" NAME="ProgramControllerTest Coverage Results" MODIFIED="1675964990724" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>lt.techin.AlpineOctopusScheduler.api.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$All_in_AlpineOctopus_Scheduler__4_.ic" NAME="All in AlpineOctopus-Scheduler (4) Coverage Results" MODIFIED="1679230251731" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
-    <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$All_in_AlpineOctopus_Scheduler__5_.ic" NAME="All in AlpineOctopus-Scheduler (5) Coverage Results" MODIFIED="1677756557296" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$AlpineOctopusSchedulerApplication.ic" NAME="AlpineOctopusSchedulerApplication Coverage Results" MODIFIED="1677692928857" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>lt.techin.AlpineOctopusScheduler.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$All_in_AlpineOctopus_Scheduler__2_.ic" NAME="All in AlpineOctopus-Scheduler (2) Coverage Results" MODIFIED="1675965957052" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$All_in_AlpineOctopus_Scheduler__1_.ic" NAME="All in AlpineOctopus-Scheduler (1) Coverage Results" MODIFIED="1675965757179" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$ProgramServiceTest.ic" NAME="ProgramServiceTest Coverage Results" MODIFIED="1675965734640" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>lt.techin.AlpineOctopusScheduler.service.*</FILTER>
     </SUITE>
     <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$All_in_AlpineOctopus_Scheduler__3_.ic" NAME="All in AlpineOctopus-Scheduler (3) Coverage Results" MODIFIED="1676046660569" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
-    <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$All_in_AlpineOctopus_Scheduler__1_.ic" NAME="All in AlpineOctopus-Scheduler (1) Coverage Results" MODIFIED="1679246021974" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$All_in_AlpineOctopus_Scheduler__4_.ic" NAME="All in AlpineOctopus-Scheduler (4) Coverage Results" MODIFIED="1677757302333" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$All_in_AlpineOctopus_Scheduler__5_.ic" NAME="All in AlpineOctopus-Scheduler (5) Coverage Results" MODIFIED="1677756557296" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/AlpineOctopus_Scheduler$All_in_AlpineOctopus_Scheduler.ic" NAME="All in AlpineOctopus-Scheduler Coverage Results" MODIFIED="1676376250071" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>
