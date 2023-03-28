@@ -12,6 +12,7 @@
 
 #treeview{
     margin-top: 5px;
+    width: 100%;
 }
 
 .drag-sample-wrapper {
@@ -121,8 +122,7 @@
     height: 50px;
     line-height: 15px;
     padding: 0 5px;
-    width: 100%;
-    
+    width: 100%
 }
 
 .treeview-external-drag .e-list-parent, .treeview-external-drag.e-rtl .e-list-parent, .e-bigger .treeview-external-drag .e-list-parent, .e-bigger .treeview-external-drag.e-rtl .e-list-parent {
