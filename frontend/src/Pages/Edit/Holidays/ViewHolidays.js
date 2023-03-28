@@ -13,68 +13,95 @@ import {
 } from "semantic-ui-react";
 import { EditMenu } from "../../../Components/EditMenu";
 import MainMenu from "../../../Components/MainMenu";
+import { DatePicker} from "antd";
+import dayjs from "dayjs";
 
 const JSON_HEADERS = {
-  "Content-Type": "application/json",
+    "Content-Type": "application/json",
+  };
+
+  export function ViewHolidays() {
+
+const [holidays,setHolidays]= useState([]);
+const [active, setActive] = useState("");;
+const [activePage, setActivePage] = useState(0);
+const [nameText, setNameText] = useState("");
+const [pagecount, setPageCount] = useState();
+const [holidaysforPaging, setHolidaysForPaging] = useState([]);
+const [open, setOpen] = useState(false);
+
+const { RangePicker } = DatePicker;
+const [startDate, setStartDate] = useState(null);
+const [endDate, setEndDate] = useState(null);
+
+const fetchHolidays = async () => {
+  fetch(`/api/v1/holidays/page?page=` + activePage)
+    .then((response) => response.json())
+    .then((jsonResponse) => setHolidays(jsonResponse));  
 };
 
-export function ViewRooms() {
-  const [active, setActive] = useState("");
-  const [rooms, setRooms] = useState([]);
-  const [activePage, setActivePage] = useState(0);
-  const [nameText, setNameText] = useState("");
-  const [buildingText, setBuildingText] = useState("");
-  const [pagecount, setPageCount] = useState();
-  const [roomsforPaging, setRoomsForPaging] = useState([]);
+const encodedNameText = encodeURIComponent(nameText);
 
-  const fetchRooms = async () => {
-    fetch(`/api/v1/rooms/page?page=` + activePage)
-      .then((response) => response.json())
-      .then((jsonResponse) => setRooms(jsonResponse));
-  };
+const fetchFilterHolidays = async () => {
+  fetch(`/api/v1/holidays/name-filter/${encodedNameText}`)
+    .then((response) => response.json())
+    .then((jsonResponse) => setHolidays(jsonResponse));
+};
 
-  const fetchFilterRooms = async () => {
-    fetch(`/api/v1/rooms/name-filter/${nameText}`)
-      .then((response) => response.json())
-      .then((jsonRespone) => setRooms(jsonRespone));
-  };
+const fetchDateFilterHolidays = async () => {
+  if (startDate && endDate) {
+    fetch("/api/v1/holidays/date-range-filter/?startDate=" + startDate + "&endDate=" + endDate)
+    .then((response) => response.json())
+    .then((jsonResponse) => setHolidays(jsonResponse));
+  }
+}
 
-  const removeRoom = (id) => {
-    fetch("/api/v1/rooms/delete/" + id, {
-      method: "PATCH",
+const handleDateChange = (dates) => {
+  if (dates && dates.length === 2) {
+    setStartDate(dayjs(dates[0]).format("YYYY-MM-DD"));
+    setEndDate(dayjs(dates[1]).format("YYYY-MM-DD"));
+  } else {
+    setStartDate(null);
+    setEndDate(null);
+  }
+};
+
+const removeHoliday = (id) => {
+    fetch("/api/v1/holidays/" + id, {
+        method: "DELETE",
     })
-      .then(fetchRooms)
+      .then(fetchHolidays)
       .then(setOpen(false));
   };
 
-  const fetchBuildingRooms = async () => {
-    fetch(
-      `/api/v1/rooms/building-filter/${buildingText}`
-    )
+  const fetchSingleHolidays = async () => {
+    fetch("/api/v1/holidays/")
       .then((response) => response.json())
-      .then((jsonRespone) => setRooms(jsonRespone));
+      .then((jsonResponse) => setHolidaysForPaging(jsonResponse))
+      .then(setPageCount(Math.ceil(holidaysforPaging.length / 10)));
   };
 
-  const fetchSingleRooms = async () => {
-    fetch("/api/v1/rooms/")
-      .then((response) => response.json())
-      .then((jsonResponse) => setRoomsForPaging(jsonResponse))
-      .then(setPageCount(Math.ceil(roomsforPaging.length / 10)));
-  };
-
-  useEffect(() => {
-    nameText.length > 0 && !nameText.includes('/') && !nameText.includes('#') && !nameText.includes('.') && !nameText.includes(';') && !nameText.match(new RegExp(/^\s/)) ?
-      fetchFilterRooms() : (buildingText.length > 0 && !buildingText.includes('/') && !buildingText.includes('#') && !buildingText.includes('.') && !buildingText.includes(';') && !buildingText.match(new RegExp(/^\s/)) ? fetchBuildingRooms() : fetchRooms())
-
-  }, [activePage, nameText, buildingText]);
   useEffect(() => {
     if (pagecount !== null) {
-      fetchSingleRooms();
+      fetchSingleHolidays();
     }
-  }, [rooms]);
+  }, [holidays]);
 
-  const [open, setOpen] = useState(false);
 
+  useEffect(() => {
+    if (nameText.length === 0) {
+      fetchHolidays();
+    } else {
+      if(!startDate === null && !endDate === null){
+        fetchDateFilterHolidays();
+      }else{
+         fetchFilterHolidays();
+      }
+       
+    }
+  }, [activePage, nameText,startDate,endDate]);
+
+ 
   return (
     <div>
       <MainMenu />
@@ -86,19 +113,20 @@ export function ViewRooms() {
 
         <Grid.Column textAlign="left" verticalAlign="top" width={13}>
           <Segment id="segment" color="teal">
-            <div id="rooms">
+            <div id="holidays">
               <Input
                 className="controls1"
                 value={nameText}
                 onChange={(e) => setNameText(e.target.value)}
-                placeholder="Filtruoti pagal kabinetą"
+                placeholder="Filtruoti pagal pavadinimą"
               />
-              <Input
-                className="controls1"
-                value={buildingText}
-                onChange={(e) => setBuildingText(e.target.value)}
-                placeholder="Filtruoti pagal pastatą"
-              />
+
+              <RangePicker
+              onChange={handleDateChange}
+              placeholder={["Data nuo", "Data iki"]}
+              /><Button type="primary" onClick={fetchDateFilterHolidays}>
+              Filtruoti
+            </Button>
 
               <Button
                 id="details"
@@ -107,53 +135,55 @@ export function ViewRooms() {
                 className="controls"
                 as={NavLink}
                 exact
-                to="/create/rooms"
+                to="/create/holidays"
               >
                 <Icon name="database" />
-                Kurti naują kabinetą
+                Kurti naują
               </Button>
               <Divider horizontal hidden></Divider>
               <Table selectable>
                 <Table.Header>
                   <Table.Row>
-                    <Table.HeaderCell>Kabineto pavadinimas</Table.HeaderCell>
-                    <Table.HeaderCell>Pastatas</Table.HeaderCell>
+                    <Table.HeaderCell>Atostogų pavadinimas</Table.HeaderCell>
+                    <Table.HeaderCell>Data nuo</Table.HeaderCell>
+                    <Table.HeaderCell>Data iki</Table.HeaderCell>
                     <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                   </Table.Row>
                 </Table.Header>
 
                 <Table.Body>
-                  {rooms.map((room) => (
-                    <Table.Row key={room.id}>
-                      <Table.Cell>{room.name}</Table.Cell>
-                      <Table.Cell>{room.building}</Table.Cell>
+                  {holidays.map((holiday) => (
+                    <Table.Row key={holiday.id}>
+                      <Table.Cell>{holiday.name}</Table.Cell>
+                      <Table.Cell>{holiday.startDate}</Table.Cell>
+                      <Table.Cell>{holiday.endDate}</Table.Cell>
 
                       <Table.Cell collapsing>
                         <Button
                           id="icocolor"
-                          href={"#/view/rooms/edit/" + room.id}
+                          href={"#/view/holidays/edit/" + holiday.id}
                           basic
                           compact
                           icon="eye"
                           title="Peržiūrėti"
-                          onClick={() => setActive(room.id)}
+                          onClick={() => setActive(holiday.id)}
                         ></Button>
                         <Button
                           id="icocolor"
                           basic
                           compact
-                          title="Suarchyvuoti"
-                          icon="archive"
-                          onClick={() => setOpen(room.id)}
+                          title="Ištrinti"
+                          icon="trash alternate"
+                          onClick={() => setOpen(holiday.id)}
                         ></Button>
                         <Confirm
                           open={open}
                           header="Dėmesio!"
-                          content="Ar tikrai norite perkelti į archyvą?"
+                          content="Ar tikrai norite Ištrinti?"
                           cancelButton="Grįžti atgal"
                           confirmButton="Taip"
                           onCancel={() => setOpen(false)}
-                          onConfirm={() => removeRoom(open)}
+                          onConfirm={() => removeHoliday(open)}
                           size="small"
                         />
                       </Table.Cell>
@@ -204,4 +234,4 @@ export function ViewRooms() {
       </Grid>
     </div>
   );
-}
+  }
