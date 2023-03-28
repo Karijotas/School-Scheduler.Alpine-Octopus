@@ -375,14 +375,12 @@ public class ScheduleService {
                                 .findAny()
                                 .get();
 
-
                         //setting the time in the schedule
                         createdLesson.setStartTime(startTime);
                         createdLesson.setEndTime(endTime);
 
                         //setting lesson duration
                         createdLesson.setLessonHours(endTime.getHour() - startTime.getHour());
-
 
                         //subtracting the subjectHours from subjectTotalHours & setting teacher working hours
                         existingSchedule.getSubjects()
@@ -424,12 +422,10 @@ public class ScheduleService {
                                 logger.info("Setting lesson status to critical. Reason: teacher works at the same time in another lesson");
                                 createdLesson.setStatus(1);
                                 createdLesson.setStatusMessage("Mokytojas jau užimtas tuo pačiu laiku. Pamoka: " + createdLesson.getSubject().getName().toString() + ", Laikas:" + createdLesson.getStartTime().toString());
-
                                 existingSchedule.setStatus(1);
-
                             }
                         }
-
+                        
                         //validating if the classroom is already in use in another Schedule lesson. If so, setting the status to warning
                         if (createdLesson.getRoom() != null) {
                             if (!validateRoomBetweenSchedules(createdLesson.getRoom().getId(), startTime, endTime)) {
