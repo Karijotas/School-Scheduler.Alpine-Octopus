@@ -25,6 +25,11 @@ import { ViewTeachers } from './Pages/Edit/Teachers/ViewTeachers';
 import { CreateProgramPage } from './Pages/Edit/Programs/CreateProgramPage';
 import { EditModuleObject } from './Pages/Edit/Module/EditModuleObject';
 import { CreateModulePage } from './Pages/Edit/Module/CreateModulePage';
+
+import { CreateHoliday } from './Pages/Edit/Holidays/CreateHoliday';
+import { EditHoliday } from './Pages/Edit/Holidays/EditHoliday';
+import { ViewHolidays } from './Pages/Edit/Holidays/ViewHolidays';
+
 import { ViewProgramsArchive } from './Pages/Edit/Programs/ViewProgramsArchive';
 import { ViewSubjectsArchive } from './Pages/Edit/Subjects/ViewSubjectsArchive';
 import { ViewTeachersArchive } from './Pages/Edit/Teachers/ViewTeachersArchive';
@@ -101,6 +106,11 @@ root.render(
         <Route path='/view/modules' element={<ViewModules />} />
         <Route path='/view/modules/edit/:id' element={<EditModuleObject />} />
         <Route path='/create/modules' element={<CreateModulePage />} />
+
+        {/* Holidays routes: */}
+        <Route path='/view/holidays' element={<ViewHolidays />} />
+        <Route path='/view/holidays/edit/:id' element={<EditHoliday />} />
+        <Route path='/create/holidays' element={<CreateHoliday />} />
 
         {/* Archive routes: */}
         <Route path='/view/archives/subjects' element={<ViewSubjectsArchive />} />
