@@ -106,12 +106,12 @@ export function ViewSubjects() {
                   value={nameText}
                   onChange={(e) => setNameText(e.target.value)}
                 />
-                <Input
+                {/* <Input
                   className="controls1"
                   value={moduleText}
                   onChange={(e) => setModuleText(e.target.value)}
                   placeholder="Filtruoti pagal modulį"
-                />
+                /> */}
 
                 <Button
                   icon
