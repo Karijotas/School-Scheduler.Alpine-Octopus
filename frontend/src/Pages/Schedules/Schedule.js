@@ -6,7 +6,7 @@ import { TreeViewComponent } from '@syncfusion/ej2-react-navigations';
 import { Agenda, Timezone, Day, DragAndDrop, ExcelExport, Inject, Month, Print, Resize, ResourceDirective, ResourcesDirective, Schedule, ScheduleComponent, ViewDirective, ViewsDirective, Week, WorkWeek } from '@syncfusion/ej2-react-schedule';
 import React, { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
-import { Grid, Header, Segment } from "semantic-ui-react";
+import { Grid, Header, Segment, List } from "semantic-ui-react";
 import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap5.css";
 import { updateSampleSection } from './sample-base';
 import { Button } from '@syncfusion/ej2-buttons';
@@ -32,11 +32,11 @@ L10n.load({
    
     lt: {
     schedule: {
-      saveButton: 'Pridėti',
-      cancelButton: 'Uždaryti',
-      deleteButton: 'Pašalinti',
-      newEvent: 'Pridėti pamoką',
-      editEvent: 'Redaguoti pamoką',
+      saveButton: "Išsaugoti",
+      cancelButton: "Uždaryti",
+      deleteButton: "Pašalinti",
+      newEvent: "Pridėti pamoką",
+      editEvent: "Redaguoti pamoką",
     },
     timeFormats: {
       short: "HH",
@@ -46,15 +46,23 @@ L10n.load({
 );
 setCulture("lt");
 
-
-Schedule.Inject(Day, Week, WorkWeek, Month, Agenda, Resize, DragAndDrop, Print, ExcelExport, DragAndDrop);
+Schedule.Inject(
+  Day,
+  Week,
+  WorkWeek,
+  Month,
+  Agenda,
+  Resize,
+  DragAndDrop,
+  Print,
+  ExcelExport
+);
 
 export function ScheduleView() {
   let scheduleObj;
   const params = useParams();
-
   const [schedules, setSchedules] = useState([]);
-  const [lessons, setLessons] = useState([]);
+  const [lessons, setLessons] = useState([]); 
   const [subjects, setSubjects] = useState([]);
   const [subjectId, setSubjectId] = useState("");
   const [startTime, setStartTime] = useState("");
@@ -67,12 +75,12 @@ export function ScheduleView() {
     startTime: "",
     endTime: "",    
   });
-
+  const [statusMessage, setStatusMessage] = useState("");
   const [updated, setUpdated] = useState();
 
   let treeObj;
   let isTreeItemDropped = false;
-  let draggedItemId = '';
+  let draggedItemId = "";
   const allowDragAndDrops = true;
   let isDialogButtonsSet = false;
   let flag = true;
@@ -82,64 +90,16 @@ export function ScheduleView() {
     updateSampleSection();
   }, []);
 
-  function eventAdd(e) {
-
   
-    //createLessonOnSchedule();
-    // dialogObj.hide();
-    
-    
-  }
-
-  // function onEventDelete(args) {
-
-  //   var dialogObj = document.querySelector('.e-dialog').ej2_instances[0];
-  //   console.log("delete");
-  //   dialogObj.hide(); 
-   
-    
-  // }
- 
-
-  // function dialogClose() {
-  //   let dialogObj = document.querySelector('.e-dialog')
-  //     .ej2_instances[0];
-
-  //   dialogObj.hide();
-
-  // }
-
- 
-
-  // const onPopupOpen = (args) => {
-  //   if (args.type === 'Editor') { 
-  //     if (flag) { 
-  //       let dialogObj = args.element.ej2_instances[0]; 
-  //       dialogObj.footerTemplate = 
-  //         '<input id="save" type="button" value="Save" /> <input id="print" type="button" value="Print" /> <input id="cancel" type="button" value="Cancel" />'; 
-  //       dialogObj.dataBind(); 
-  //       let saveButtonObj = new Button(); 
-  //       saveButtonObj.appendTo('#save'); 
-  //       saveButtonObj.element.onclick = () => { 
-  //         eventAdd(); 
-  //       }; 
-  //       let printButtonObj = new Button(); 
-  //       printButtonObj.appendTo('#print'); 
-  //       printButtonObj.element.onclick = () => { 
-  //         alert('Print button called'); 
-  //       }; 
-  //       let cancelButtonObj = new Button(); 
-  //       cancelButtonObj.appendTo('#cancel'); 
-  //       cancelButtonObj.element.onclick = () => { 
-  //         dialogClose(); 
-  //       }; 
-  //       flag = false; 
-  //     } 
-  //   } 
-  // } 
   function treeTemplate(props) {
-    return (<div id="waiting"><div id="waitdetails"><div id="waitlist">{props.Subject}</div>
-      <div id="waitcategory">{props.LessonHours} val </div></div></div>);
+    return (
+      <div id="waiting">
+        <div id="waitdetails">
+          <div id="waitlist">{props.Subject}</div>
+          <div id="waitcategory">{props.LessonHours} val </div>
+        </div>
+      </div>
+    );
   }
 
   function onItemSelecting(args) {
@@ -148,21 +108,25 @@ export function ScheduleView() {
 
   function onTreeDrag(event) {
     if (scheduleObj.isAdaptive) {
-      let classElement = scheduleObj.element.querySelector('.e-device-hover');
+      let classElement = scheduleObj.element.querySelector(".e-device-hover");
       if (classElement) {
-        classElement.classList.remove('e-device-hover');
+        classElement.classList.remove("e-device-hover");
       }
-      if (event.target.classList.contains('e-work-cells')) {
-        addClass([event.target], 'e-device-hover');
+      if (event.target.classList.contains("e-work-cells")) {
+        addClass([event.target], "e-device-hover");
       }
     }
   }
   function onActionBegin(event) {
-    if (event.requestType === 'eventCreate' && isTreeItemDropped) {
+    if (event.requestType === "eventCreate" && isTreeItemDropped) {
       let treeViewData = treeObj.fields.dataSource;
-      const filteredPeople = treeViewData.filter((item) => item.Id !== parseInt(draggedItemId, 10));
+      const filteredPeople = treeViewData.filter(
+        (item) => item.Id !== parseInt(draggedItemId, 10)
+      );
       treeObj.fields.dataSource = filteredPeople;
-      let elements = document.querySelectorAll('.e-drag-item.treeview-external-drag');
+      let elements = document.querySelectorAll(
+        ".e-drag-item.treeview-external-drag"
+      );
       for (let i = 0; i < elements.length; i++) {
         remove(elements[i]);
       }
@@ -187,15 +151,17 @@ export function ScheduleView() {
   }
 
   function onTreeDragStop(event) {
-    let treeElement = closest(event.target, '.e-treeview');
+    let treeElement = closest(event.target, ".e-treeview");
 
     if (!treeElement) {
       event.cancel = true;
-      let scheduleElement = closest(event.target, '.e-content-wrap');
+      let scheduleElement = closest(event.target, ".e-content-wrap");
       if (scheduleElement) {
         let treeviewData = treeObj.fields.dataSource;
-        if (event.target.classList.contains('e-work-cells')) {
-          const filteredData = treeviewData.filter((item) => item.Id === parseInt(event.draggedNodeData.id, 10));
+        if (event.target.classList.contains("e-work-cells")) {
+          const filteredData = treeviewData.filter(
+            (item) => item.Id === parseInt(event.draggedNodeData.id, 10)
+          );
           let cellData = scheduleObj.getCellDetails(event.target);
           let eventData = {
             Id: filteredData[0].Id,
@@ -215,15 +181,14 @@ export function ScheduleView() {
         }
       }
     }
-    document.body.classList.remove('e-disble-not-allowed');
+    document.body.classList.remove("e-disble-not-allowed");
   }
   function onTreeDragStart() {
-    document.body.classList.add('e-disble-not-allowed');
+    document.body.classList.add("e-disble-not-allowed");
   }
   useEffect(() => {
     setUpdated(true);
   }, [setUpdated]);
-
 
   function onPrintIconClick() {
     scheduleObj.print();
@@ -238,22 +203,14 @@ export function ScheduleView() {
       .then((response) => response.json())
       // .then((jsonRespones) => setLessons(jsonRespones))
       .then(setLessons)
-      .then(setActive(false))
+      .then(setActive(false));
   }, [params, active]);
 
   useEffect(() => {
     fetch(`/api/v1/schedule/${params.id}/subjects`)
       .then((response) => response.json())
-      .then(setSubjects)
+      .then(setSubjects);
   }, [params, active]);
-
-  function newStartTime() {
-    const data1 = new Date(startTime).toISOString();
-    setStartTime(data1);
-    const data2 = new Date(endTime).toISOString();
-    setEndTime(data2);
-  }
-
 
   const createLessonOnSchedule = (props) => {
     fetch(
@@ -274,7 +231,6 @@ export function ScheduleView() {
       .then(setActive(true));
   }
 
-
   useEffect(() => {
     fetch("/api/v1/schedule/" + params.id)
       .then((response) => response.json())
@@ -288,7 +244,7 @@ export function ScheduleView() {
   function onExportClick() {
     scheduleObj.exportToExcel();
   }
-  const lessonsOnSchedule = lessons.map(l => {
+  const lessonsOnSchedule = lessons.map((l) => {
     return {
       Id: l.id,
       Subject: l.subject.name,
@@ -297,11 +253,12 @@ export function ScheduleView() {
       Room: l.room.name,
       Teacher: l.teacher.name,
       GroupId: l.subject.id,
-      Description: l.online ? "ONLINE" : ""
-    }
+      Description: l.online ? "ONLINE" : "",
+      Status: l.statusMessage,
+    };
   });
 
-  const subjectsOnSchedule = subjects.map(s => {
+  const subjectsOnSchedule = subjects.map((s) => {
     return {
       Id: s.id,
       Subject: s.subject.name,
@@ -310,17 +267,21 @@ export function ScheduleView() {
       Room: s.room.name,
       Teacher: s.teacher.name,      
       GroupId: s.subject.id,
-      LessonHours: s.lessonHours
-    }
+      LessonHours: s.lessonHours,
+    };
   });
 
-
+  var filteredMessages = lessons.filter(l => l.status!== 0); 
 
   function ClickButton() {
     scheduleObj.closeEditor();
   }
 
-  const subjectFields = { dataSource: subjectsOnSchedule, text: 'Subject', id: 'Id', };
+  const subjectFields = {
+    dataSource: subjectsOnSchedule,
+    text: "Subject",
+    id: "Id",
+  };
 
   function eventTemplate(props) {
     return (<div className="template-wrap" style={{ background: props.SecondaryColor }}>
@@ -331,11 +292,10 @@ export function ScheduleView() {
   }
 
   function editorTemplate(props) {
-    return (props !== undefined ? <table className="custom-event-editor" style={{ width: '100%' }}>
+    return props !== undefined ? ( <table className="custom-event-editor" style={{ width: '100%' }}>
       <tbody>
         <tr><td className="e-textlabel">Pamoka</td><td colSpan={4}>
-          <DropDownListComponent
-          
+          <DropDownListComponent          
             id="Subject"
             placeholder='Pasirinkti'
             data-name="Subject"
@@ -375,16 +335,31 @@ export function ScheduleView() {
           <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14']}>
           </DropDownListComponent>
         </td></tr> */}
-        <tr><td className="e-textlabel">Pastabos</td><td colSpan={4}>
-          <textarea id="Description" className="e-field e-input" name="Description" rows={3} cols={50} style={{ width: '100%', height: '60px !important', resize: 'vertical' }}></textarea>
-        </td></tr>
-      </tbody>
-    </table> : '');
+          <tr>
+            <td className="e-textlabel">Pastabos</td>
+            <td colSpan={4}>
+              <textarea
+                id="Description"
+                className="e-field e-input"
+                name="Description"
+                rows={3}
+                cols={50}
+                style={{
+                  width: "100%",
+                  height: "60px !important",
+                  resize: "vertical",
+                }}
+              ></textarea>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    ) : (
+      ""
+    );
   }
 
-
   const data = [
-
     {
       Id: 1,
       Subject: "Velykų atostogos",
@@ -393,9 +368,7 @@ export function ScheduleView() {
       IsAllDay: true,
       IsBlock: true,
       CategoryColor: "#357cd2",
-      GroupId: 2
-
-
+      GroupId: 2,
     },
     {
       Id: 2,
@@ -404,45 +377,51 @@ export function ScheduleView() {
       EndTime: new Date(2023, 1, 6, 12, 0),
       IsAllDay: false,
       IsBlock: true,
-
-    }];
+    },
+  ];
 
   const resourceData = [
-    { GroupText: schedules.name, GroupId: 1, GroupColor: '#2a787a' },
-    { GroupText: schedules.name, GroupId: 2, GroupColor: '#1c5252' },
-    { GroupText: schedules.name, GroupId: 3, GroupColor: '#569a9b' },
-    { GroupText: schedules.name, GroupId: 4, GroupColor: '#40b3b6' },
-    { GroupText: schedules.name, GroupId: 5, GroupColor: '#73cdce' },
-    { GroupText: schedules.name, GroupId: 6, GroupColor: '#a8e0e1' },
-    { GroupText: schedules.name, GroupId: 7, GroupColor: '#c3e3e4' },
-    { GroupText: schedules.name, GroupId: 8, GroupColor: '#deebec' },
-    { GroupText: schedules.name, GroupId: 9, GroupColor: '#e4e4e4' },
-    { GroupText: schedules.name, GroupId: 10, GroupColor: '#cfcccc' },
-    { GroupText: schedules.name, GroupId: 11, GroupColor: '#b5b4b4' },
-    { GroupText: schedules.name, GroupId: 12, GroupColor: '#9d968d' },
-    { GroupText: schedules.name, GroupId: 13, GroupColor: '#8f7c64' },
-    { GroupText: schedules.name, GroupId: 14, GroupColor: '#866947' },
-    { GroupText: schedules.name, GroupId: 15, GroupColor: '#8a5c2b' },
-    { GroupText: schedules.name, GroupId: 16, GroupColor: '#9e580e' },
-    { GroupText: schedules.name, GroupId: 17, GroupColor: '#c56907' },
-    { GroupText: schedules.name, GroupId: 18, GroupColor: '#e17604' },
-    { GroupText: schedules.name, GroupId: 19, GroupColor: '#fd901b' },
-    { GroupText: schedules.name, GroupId: 20, GroupColor: '#faa952' },
-    { GroupText: schedules.name, GroupId: 21, GroupColor: '#f7c48e' },
+    { GroupText: schedules.name, GroupId: 1, GroupColor: "#1c5252" },
+    { GroupText: schedules.name, GroupId: 2, GroupColor: "#2a787a" },
+    { GroupText: schedules.name, GroupId: 3, GroupColor: "#569a9b" },
+    { GroupText: schedules.name, GroupId: 4, GroupColor: "#40b3b6" },
+    { GroupText: schedules.name, GroupId: 5, GroupColor: "#73cdce" },
+    { GroupText: schedules.name, GroupId: 6, GroupColor: "#a8e0e1" },
+    { GroupText: schedules.name, GroupId: 7, GroupColor: "#c3e3e4" },
+    { GroupText: schedules.name, GroupId: 8, GroupColor: "#c6dcbe" },
+    { GroupText: schedules.name, GroupId: 9, GroupColor: "#9fc592" },
+    { GroupText: schedules.name, GroupId: 10, GroupColor: "#80b56e" },
+    { GroupText: schedules.name, GroupId: 11, GroupColor: "#559640" },
+    { GroupText: schedules.name, GroupId: 12, GroupColor: "#428b27" },
+    { GroupText: schedules.name, GroupId: 13, GroupColor: "#307318" },
+    { GroupText: schedules.name, GroupId: 14, GroupColor: "#285e15" },
+    { GroupText: schedules.name, GroupId: 15, GroupColor: "#4d5e15" },
+    { GroupText: schedules.name, GroupId: 16, GroupColor: "#7a7a13" },
+    { GroupText: schedules.name, GroupId: 17, GroupColor: "#949413" },
+    { GroupText: schedules.name, GroupId: 18, GroupColor: "#b3b30f" },
+    { GroupText: schedules.name, GroupId: 19, GroupColor: "#e7e707" },
+    { GroupText: schedules.name, GroupId: 20, GroupColor: "#ffe016" },
+    { GroupText: schedules.name, GroupId: 21, GroupColor: "#ffcd16" },
   ];
 
   return (
-    <div >
-      <div className='schedule-control-section'>
-        <div className='control-section'>
-          <div className='control-wrapper drag-sample-wrapper'>
-
+    <div>
+      <div className="schedule-control-section">
+        <div className="control-section">
+          <div className="control-wrapper drag-sample-wrapper">
             <Grid>
-              <Grid.Column width={13}>
-                <div className='control-panel calendar-export'>
-                  <ButtonComponent id='printBtn' cssClass='title-bar-btn' iconCss='e-icons e-print' onClick={(onPrint.bind(this))} content='Print' />
-                </div>
-                <h1 className="title-text">{schedules.name}</h1>
+              <Grid.Row>
+                <Grid.Column width={13}>
+                  <div className="control-panel calendar-export">
+                    <ButtonComponent
+                      id="printBtn"
+                      cssClass="title-bar-btn"
+                      iconCss="e-icons e-print"
+                      onClick={onPrint.bind(this)}
+                      content="Print"
+                    />
+                  </div>
+                  <h1 className="title-text">{schedules.name}</h1>
 
 
 
@@ -498,7 +477,19 @@ export function ScheduleView() {
                     nodeDragStart={onTreeDragStart.bind(this)}
                     allowDragAndDrop={allowDragAndDrops} />
                 </Segment>
-              </Grid.Column></Grid>
+                <Segment>
+                    <List compact id="treeview">
+                      <Header textAlign="center">Validacijos</Header>
+                      {filteredMessages.map((lesson) => (
+                        <div key={lesson.id}>
+                          <Segment><List.Item >{lesson.statusMessage}</List.Item></Segment>
+                        </div>
+                      ))}
+                    </List>
+                  </Segment>
+              </Grid.Column>
+              </Grid.Row>
+              </Grid>
           </div>          
         </div>
       </div>

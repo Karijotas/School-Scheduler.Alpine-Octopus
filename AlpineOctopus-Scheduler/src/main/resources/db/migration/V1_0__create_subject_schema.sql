@@ -43,9 +43,10 @@ CREATE TABLE lesson (
    subject_id BIGINT,
    teacher_id BIGINT,
    room_id BIGINT,
-   lesson_hours INT NOT NULL,
+   lesson_hours INT,
    online BOOLEAN NOT NULL,
-   status BIGINT,
+   status INT,
+   status_message VARCHAR(255),
    start_time TIMESTAMP,
    end_time TIMESTAMP,
    created_date TIMESTAMP,
@@ -105,6 +106,16 @@ CREATE TABLE modules_subjects (
    CONSTRAINT pk_modules_subjects PRIMARY KEY (module_id, subject_id)
 );
 
+CREATE TABLE holiday (
+  id BIGINT AUTO_INCREMENT NOT NULL,
+   name VARCHAR(40),
+   start_date date,
+   end_date date,
+   reccuring BOOLEAN,
+   CONSTRAINT pk_holiday PRIMARY KEY (id)
+);
+
+
 ALTER TABLE modules_subjects ADD CONSTRAINT fk_modsub_on_module FOREIGN KEY (module_id) REFERENCES module (id);
 
 ALTER TABLE modules_subjects ADD CONSTRAINT fk_modsub_on_subject FOREIGN KEY (subject_id) REFERENCES subject (id);
@@ -145,6 +156,7 @@ CREATE TABLE teacher (
   DELETED BOOLEAN,
    CONSTRAINT pk_teacher PRIMARY KEY (id)
 );
+
 
 
 

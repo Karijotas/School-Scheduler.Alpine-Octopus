@@ -32,6 +32,8 @@ public class Lesson {
     private boolean online;
 
     private Integer status;
+
+    private String statusMessage;
     @ManyToMany(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinTable(
@@ -77,6 +79,13 @@ public class Lesson {
     public Lesson() {
     }
 
+    public String getStatusMessage() {
+        return statusMessage;
+    }
+
+    public void setStatusMessage(String statusMessage) {
+        this.statusMessage = statusMessage;
+    }
 
     public List<Teacher> getSubjectTeachers() {
         return subjectTeachers;
@@ -195,12 +204,12 @@ public class Lesson {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Lesson lesson = (Lesson) o;
-        return isOnline() == lesson.isOnline() && Objects.equals(getId(), lesson.getId()) && Objects.equals(getSubject(), lesson.getSubject()) && Objects.equals(getTeacher(), lesson.getTeacher()) && Objects.equals(getRoom(), lesson.getRoom()) && Objects.equals(getLessonHours(), lesson.getLessonHours()) && Objects.equals(getStatus(), lesson.getStatus()) && Objects.equals(getSubjectTeachers(), lesson.getSubjectTeachers()) && Objects.equals(getStartTime(), lesson.getStartTime()) && Objects.equals(getEndTime(), lesson.getEndTime()) && Objects.equals(getCreatedDate(), lesson.getCreatedDate()) && Objects.equals(getModifiedDate(), lesson.getModifiedDate()) && Objects.equals(getCreatedBy(), lesson.getCreatedBy()) && Objects.equals(getModifiedBy(), lesson.getModifiedBy());
+        return isOnline() == lesson.isOnline() && Objects.equals(getId(), lesson.getId()) && Objects.equals(getSubject(), lesson.getSubject()) && Objects.equals(getTeacher(), lesson.getTeacher()) && Objects.equals(getRoom(), lesson.getRoom()) && Objects.equals(getLessonHours(), lesson.getLessonHours()) && Objects.equals(getStatus(), lesson.getStatus()) && Objects.equals(getStatusMessage(), lesson.getStatusMessage()) && Objects.equals(getSubjectTeachers(), lesson.getSubjectTeachers()) && Objects.equals(getStartTime(), lesson.getStartTime()) && Objects.equals(getEndTime(), lesson.getEndTime()) && Objects.equals(getCreatedDate(), lesson.getCreatedDate()) && Objects.equals(getModifiedDate(), lesson.getModifiedDate()) && Objects.equals(getCreatedBy(), lesson.getCreatedBy()) && Objects.equals(getModifiedBy(), lesson.getModifiedBy());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getSubject(), getTeacher(), getRoom(), getLessonHours(), isOnline(), getStatus(), getSubjectTeachers(), getStartTime(), getEndTime(), getCreatedDate(), getModifiedDate(), getCreatedBy(), getModifiedBy());
+        return Objects.hash(getId(), getSubject(), getTeacher(), getRoom(), getLessonHours(), isOnline(), getStatus(), getStatusMessage(), getSubjectTeachers(), getStartTime(), getEndTime(), getCreatedDate(), getModifiedDate(), getCreatedBy(), getModifiedBy());
     }
 
     @Override
@@ -213,6 +222,7 @@ public class Lesson {
                 ", lessonHours=" + lessonHours +
                 ", online=" + online +
                 ", status=" + status +
+                ", statusMessage='" + statusMessage + '\'' +
                 ", subjectTeachers=" + subjectTeachers +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
