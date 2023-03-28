@@ -9,9 +9,8 @@ import java.util.List;
 
 public interface LessonRepository extends JpaRepository<Lesson, Long> {
 
-    List<Lesson> findByTeacher_Id(Long id);
 
-    List<Lesson> findByRoom_Id(Long id);
+    List<Lesson> findByRoom_IdAndStartTimeGreaterThan(Long id, LocalDateTime startTime);
 
     List<Lesson> findByTeacher_IdAndStartTime(Long id, @NonNull LocalDateTime startTime);
 
