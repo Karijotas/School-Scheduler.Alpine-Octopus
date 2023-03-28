@@ -161,7 +161,7 @@ export function CreateSchedulePageNext() {
   };
 
   const checkAndSetStatus = () => {
-    fetch(`/api/v1/schedule/validations/${params.id}`, {
+    fetch(`/api/v1/schedule/validation/${params.id}`, {
       method: "PATCH",
     }).then(applyResult);
   }

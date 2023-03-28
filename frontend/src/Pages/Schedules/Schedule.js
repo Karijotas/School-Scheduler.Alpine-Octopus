@@ -23,7 +23,7 @@ import {
 } from "@syncfusion/ej2-react-schedule";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Button, Grid, Header, Segment, Table, List } from "semantic-ui-react";
+import { Button, Grid, Header, Segment, List } from "semantic-ui-react";
 import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap5.css";
 import { updateSampleSection } from "./sample-base";
 import "./Schedule.css";
@@ -72,13 +72,11 @@ export function ScheduleView() {
 
   const [schedules, setSchedules] = useState([]);
   const [lessons, setLessons] = useState([]);
-  const [lesson, setLesson] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [subjectId, setSubjectId] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [active, setActive] = useState(false);
-  const [statusMessage, setStatusMessage] = useState("");
 
   const [updated, setUpdated] = useState();
 
@@ -241,16 +239,7 @@ export function ScheduleView() {
     };
   });
 
-  const lessonsStatusList = lessons.map((l) => {
-    if (l.statusMessage !== undefined) {
-      return {
-        Status: l.statusMessage,
-      };
-    }
-  });
-
-  var filteredMessages = lessons.filter(l => l.status!== 0); 
-
+  var filteredMessages = lessons.filter((l) => l.status !== 0);
 
   function ClickButton() {
     scheduleObj.closeEditor();
@@ -523,7 +512,7 @@ export function ScheduleView() {
                   <Segment id="treeview">
                     {" "}
                     <Header textAlign="center">Nesuplanuotos Pamokos</Header>
-                    <TreeViewComponent 
+                    <TreeViewComponent
                       ref={(tree) => (treeObj = tree)}
                       cssClass="treeview-external-drag"
                       dragArea=".drag-sample-wrapper"
@@ -540,13 +529,15 @@ export function ScheduleView() {
                       allowDragAndDrop={allowDragAndDrops}
                     />
                   </Segment>
-                 
+
                   <Segment>
                     <List compact id="treeview">
                       <Header textAlign="center">Validacijos</Header>
                       {filteredMessages.map((lesson) => (
                         <div key={lesson.id}>
-                          <Segment><List.Item >{lesson.statusMessage}</List.Item></Segment>
+                          <Segment>
+                            <List.Item>{lesson.statusMessage}</List.Item>
+                          </Segment>
                         </div>
                       ))}
                     </List>
@@ -555,7 +546,6 @@ export function ScheduleView() {
               </Grid.Row>
             </Grid>
           </div>
-          <Button onClick={() => createLessonOnSchedule()}>add</Button>
         </div>
       </div>
     </div>
