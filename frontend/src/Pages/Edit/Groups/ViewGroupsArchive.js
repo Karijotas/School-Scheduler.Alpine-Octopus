@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import {
   Button,
-  ButtonGroup, Divider, Grid, Icon,
+  ButtonGroup,
+  Divider,
+  Grid,
+  Icon,
   Input,
   Segment,
-  Table
+  Table,
 } from "semantic-ui-react";
-import { EditMenu } from '../../../Components/EditMenu';
+import { EditMenu } from "../../../Components/EditMenu";
 import MainMenu from "../../../Components/MainMenu";
 
 const JSON_HEADERS = {
@@ -14,7 +17,6 @@ const JSON_HEADERS = {
 };
 
 export function ViewGroupsArchive() {
-
   const [active, setActive] = useState();
   const [groups, setGroups] = useState([]);
   const [groupsforPaging, setGroupsForPaging] = useState([]);
@@ -22,14 +24,14 @@ export function ViewGroupsArchive() {
   const [pagecount, setPageCount] = useState();
 
   const fetchSingleGroups = async () => {
-    fetch('/api/v1/groups/archive/')
+    fetch("/api/v1/groups/archive/")
       .then((response) => response.json())
       .then((jsonResponse) => setGroupsForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(groupsforPaging.length / 10)));
   };
 
   const fetchPagedGroups = async () => {
-    fetch('/api/v1/groups/archive/page?page=' + activePage)
+    fetch("/api/v1/groups/archive/page?page=" + activePage)
       .then((response) => response.json())
       .then((jsonResponse) => setGroups(jsonResponse));
   };
@@ -89,7 +91,7 @@ export function ViewGroupsArchive() {
                     <Table.Row key={group.id}>
                       <Table.Cell disabled>{group.name}</Table.Cell>
                       <Table.Cell collapsing>
-                      <Button                        
+                        <Button
                           href={"#/view/archives/groups/" + group.id}
                           basic
                           compact
@@ -113,11 +115,29 @@ export function ViewGroupsArchive() {
               <Divider hidden></Divider>
 
               <ButtonGroup compact basic>
-                <Button title='Atgal' onClick={() => setActivePage(activePage <= 0 ? activePage : activePage - 1)} icon><Icon name="arrow left" />  </Button>
+                <Button
+                  title="Atgal"
+                  onClick={() =>
+                    setActivePage(activePage <= 0 ? activePage : activePage - 1)
+                  }
+                  icon
+                >
+                  <Icon name="arrow left" />{" "}
+                </Button>
                 {/* {[...Array(pagecount)].map((e, i) => {
                   return <Button title={i + 1} key={i} active={activePage === i ? true : false} onClick={() => setActivePage(i)}>{i + 1}</Button>
                 })} */}
-                <Button title='Pirmyn' onClick={() => setActivePage(activePage >= pagecount - 1 ? activePage : activePage + 1)} icon><Icon name="arrow right" />  </Button>
+                <Button
+                  title="Pirmyn"
+                  onClick={() =>
+                    setActivePage(
+                      activePage >= pagecount - 1 ? activePage : activePage + 1
+                    )
+                  }
+                  icon
+                >
+                  <Icon name="arrow right" />{" "}
+                </Button>
               </ButtonGroup>
             </div>
           </Segment>

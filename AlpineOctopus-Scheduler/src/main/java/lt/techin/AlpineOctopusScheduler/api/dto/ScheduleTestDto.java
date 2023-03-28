@@ -18,7 +18,7 @@ public class ScheduleTestDto extends ScheduleDto {
         this.id = id;
     }
 
-    public ScheduleTestDto(String name, String status, LocalDate startingDate, LocalDate plannedTillDate, LocalDateTime createdDate, LocalDateTime modifiedDate, Set<Lesson> lessons, String groupName, String shiftName, Long groupId, Long shiftId, Long id) {
+    public ScheduleTestDto(String name, Integer status, LocalDate startingDate, LocalDate plannedTillDate, LocalDateTime createdDate, LocalDateTime modifiedDate, Set<Lesson> lessons, String groupName, String shiftName, Long groupId, Long shiftId, Long id) {
         super(name, status, startingDate, plannedTillDate, createdDate, modifiedDate, lessons, groupName, shiftName, groupId, shiftId);
         this.id = id;
     }
@@ -37,17 +37,16 @@ public class ScheduleTestDto extends ScheduleDto {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         ScheduleTestDto that = (ScheduleTestDto) o;
-        return Objects.equals(getId(), that.getId());
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getId());
+        return Objects.hash(super.hashCode(), id);
     }
 
     @Override
-    public String
-    toString() {
+    public String toString() {
         return "ScheduleTestDto{" +
                 "id=" + id +
                 '}';

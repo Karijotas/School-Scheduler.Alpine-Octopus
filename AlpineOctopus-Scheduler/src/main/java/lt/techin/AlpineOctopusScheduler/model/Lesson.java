@@ -2,14 +2,15 @@ package lt.techin.AlpineOctopusScheduler.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Cascade;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -27,11 +28,18 @@ public class Lesson {
     @ManyToOne
     private Room room;
 
-    @NotNull
     private Integer lessonHours;
     private boolean online;
 
-
+    private Integer status;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JoinTable(
+            name = "lesson_Teachers",
+            joinColumns = @JoinColumn(name = "lesson_id"),
+            inverseJoinColumns = @JoinColumn(name = "teacher_id"))
+    @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
+    private List<Teacher> subjectTeachers;
     // @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startTime;
     //@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -70,6 +78,14 @@ public class Lesson {
     }
 
 
+    public List<Teacher> getSubjectTeachers() {
+        return subjectTeachers;
+    }
+
+    public void setSubjectTeachers(List<Teacher> subjectTeachers) {
+        this.subjectTeachers = subjectTeachers;
+    }
+
     public Integer getLessonHours() {
         return lessonHours;
     }
@@ -100,6 +116,14 @@ public class Lesson {
 
     public void setSubject(Subject subject) {
         this.subject = subject;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public Teacher getTeacher() {
@@ -171,12 +195,12 @@ public class Lesson {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Lesson lesson = (Lesson) o;
-        return isOnline() == lesson.isOnline() && Objects.equals(getId(), lesson.getId()) && Objects.equals(getSubject(), lesson.getSubject()) && Objects.equals(getTeacher(), lesson.getTeacher()) && Objects.equals(getRoom(), lesson.getRoom()) && Objects.equals(getLessonHours(), lesson.getLessonHours()) && Objects.equals(getStartTime(), lesson.getStartTime()) && Objects.equals(getEndTime(), lesson.getEndTime()) && Objects.equals(getCreatedDate(), lesson.getCreatedDate()) && Objects.equals(getModifiedDate(), lesson.getModifiedDate()) && Objects.equals(getCreatedBy(), lesson.getCreatedBy()) && Objects.equals(getModifiedBy(), lesson.getModifiedBy());
+        return isOnline() == lesson.isOnline() && Objects.equals(getId(), lesson.getId()) && Objects.equals(getSubject(), lesson.getSubject()) && Objects.equals(getTeacher(), lesson.getTeacher()) && Objects.equals(getRoom(), lesson.getRoom()) && Objects.equals(getLessonHours(), lesson.getLessonHours()) && Objects.equals(getStatus(), lesson.getStatus()) && Objects.equals(getSubjectTeachers(), lesson.getSubjectTeachers()) && Objects.equals(getStartTime(), lesson.getStartTime()) && Objects.equals(getEndTime(), lesson.getEndTime()) && Objects.equals(getCreatedDate(), lesson.getCreatedDate()) && Objects.equals(getModifiedDate(), lesson.getModifiedDate()) && Objects.equals(getCreatedBy(), lesson.getCreatedBy()) && Objects.equals(getModifiedBy(), lesson.getModifiedBy());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getSubject(), getTeacher(), getRoom(), getLessonHours(), isOnline(), getStartTime(), getEndTime(), getCreatedDate(), getModifiedDate(), getCreatedBy(), getModifiedBy());
+        return Objects.hash(getId(), getSubject(), getTeacher(), getRoom(), getLessonHours(), isOnline(), getStatus(), getSubjectTeachers(), getStartTime(), getEndTime(), getCreatedDate(), getModifiedDate(), getCreatedBy(), getModifiedBy());
     }
 
     @Override
@@ -188,6 +212,8 @@ public class Lesson {
                 ", room=" + room +
                 ", lessonHours=" + lessonHours +
                 ", online=" + online +
+                ", status=" + status +
+                ", subjectTeachers=" + subjectTeachers +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", createdDate=" + createdDate +

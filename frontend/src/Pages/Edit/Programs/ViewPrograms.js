@@ -56,8 +56,9 @@ export function ViewPrograms() {
   };
 
   useEffect(() => {
-    nameText.length > 0 ? fetchFilterPrograms() : fetchPrograms();
+    nameText.length > 0 && !nameText.includes('/') && !nameText.includes('#') && !nameText.includes('.') && !nameText.includes(';') && !nameText.match(new RegExp( /^\s/)) ? fetchFilterPrograms() : fetchPrograms();
   }, [activePage, nameText]);
+
 
   const [open, setOpen] = useState(false);
   const [close, setClose] = useState(false);

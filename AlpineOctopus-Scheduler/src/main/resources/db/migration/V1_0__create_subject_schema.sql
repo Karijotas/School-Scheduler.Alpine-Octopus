@@ -18,7 +18,7 @@ CREATE TABLE schedule (
    name VARCHAR(255),
    starting_date date,
    planned_till_date date,
-   status VARCHAR(255),
+   status BIGINT,
    group_id BIGINT,
    shift_id BIGINT,
    group_id_value VARCHAR(255),
@@ -45,6 +45,7 @@ CREATE TABLE lesson (
    room_id BIGINT,
    lesson_hours INT NOT NULL,
    online BOOLEAN NOT NULL,
+   status BIGINT,
    start_time TIMESTAMP,
    end_time TIMESTAMP,
    created_date TIMESTAMP,
@@ -52,6 +53,12 @@ CREATE TABLE lesson (
    created_by VARCHAR(255),
    modified_by VARCHAR(255),
    CONSTRAINT pk_lesson PRIMARY KEY (id)
+);
+
+CREATE TABLE lesson_teachers (
+  lesson_id BIGINT NOT NULL,
+   teacher_id BIGINT NOT NULL,
+   CONSTRAINT pk_lesson_teachers PRIMARY KEY (lesson_id, teacher_id)
 );
 
 CREATE TABLE schedule_lessons (
@@ -232,3 +239,7 @@ ALTER TABLE schedule_subjects ADD CONSTRAINT FK_SCHEDULESUBJECTS_ON_SCHEDULE FOR
 ALTER TABLE schedule_lessons ADD CONSTRAINT FK_SCHEDULELESSONS_ON_LESSON FOREIGN KEY (lesson_id) REFERENCES lesson (id);
 
 ALTER TABLE schedule_lessons ADD CONSTRAINT FK_SCHEDULELESSONS_ON_SCHEDULE FOREIGN KEY (schedule_id) REFERENCES schedule (id);
+
+ALTER TABLE lesson_teachers ADD CONSTRAINT fk_lestea_on_lesson FOREIGN KEY (lesson_id) REFERENCES lesson (id);
+
+ALTER TABLE lesson_teachers ADD CONSTRAINT fk_lestea_on_teacher FOREIGN KEY (teacher_id) REFERENCES teacher (id);
