@@ -68,7 +68,8 @@ export function ViewSubjects() {
   };
 
   useEffect(() => {
-    nameText.length > 0 ? fetchFilterSubjects() : (moduleText.length > 0 ? fetchSubjectsByModules() : fetchSubjects())
+    nameText.length > 0 && !nameText.includes('/') && !nameText.includes('#') && !nameText.includes('.') && !nameText.includes(';') && !nameText.match(new RegExp( /^\s/)) ?
+     fetchFilterSubjects() : (moduleText.length > 0 && !nameText.includes('/') && !nameText.includes('#') && !nameText.includes('.') && !nameText.includes(';') && !nameText.match(new RegExp( /^\s/)) ? fetchSubjectsByModules() : fetchSubjects())
   }, [activePage, nameText, moduleText]);
 
 
@@ -105,12 +106,12 @@ export function ViewSubjects() {
                   value={nameText}
                   onChange={(e) => setNameText(e.target.value)}
                 />
-                <Input
+                {/* <Input
                   className="controls1"
                   value={moduleText}
                   onChange={(e) => setModuleText(e.target.value)}
                   placeholder="Filtruoti pagal modulį"
-                />
+                /> */}
 
                 <Button
                   icon

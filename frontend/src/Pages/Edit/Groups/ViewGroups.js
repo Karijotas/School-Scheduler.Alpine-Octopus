@@ -85,7 +85,7 @@ export function ViewGroups() {
       .then(setOpen(false));
   };
 
-  useEffect(() => {
+useEffect(() => {
     if (
       (nameText.length === 0 &&
         yearText.length === 0 &&
@@ -93,7 +93,7 @@ export function ViewGroups() {
     ) {
       fetchGroups();
       // setYearText('2023')
-    } else if (nameText.length > 0 ) {
+    } else if (nameText.length > 0 && !nameText.includes('/') && !nameText.includes('#') && !nameText.includes('.') && !nameText.includes(';') && !nameText.match(new RegExp( /^\s/)) ) {
       setProgramText("");
       setYearText("");
       fetchFilterGroups();
@@ -101,11 +101,15 @@ export function ViewGroups() {
       setNameText("");
       setProgramText("");
       fetchYearGroups();
-    } else if (programText.length > 0) {
+    } else if (programText.length > 0 && !programText.includes('/') && !programText.includes('#') && !programText.includes('.') && !programText.includes(';') && !programText.match(new RegExp( /^\s/))) {
       setNameText("");
       setYearText("");
       fetchProgramGroups();
     }
+    else{
+      fetchGroups();
+    }
+
   }, [nameText, yearText, programText, activePage]);
 
   useEffect(() => {
@@ -115,6 +119,7 @@ export function ViewGroups() {
   }, [groups]);
 
   const [open, setOpen] = useState(false);
+
 
   return (
     <div>

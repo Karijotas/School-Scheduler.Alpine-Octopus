@@ -81,7 +81,7 @@ public class ScheduleControllerTest {
     void createSchedule_shouldCreateSchedule() throws Exception {
         Schedule newSchedule = new Schedule();
         newSchedule.setName("Akademija.it NET 22/2 Visa diena 2023");
-        newSchedule.setStatus("Valid");
+        newSchedule.setStatus(0);
 
         var mvcResult = mockMvc.perform(
                         MockMvcRequestBuilders

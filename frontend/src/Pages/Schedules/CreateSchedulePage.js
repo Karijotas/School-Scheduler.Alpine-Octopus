@@ -25,7 +25,7 @@ export function CreateSchedule() {
   const listUrl = useHref("/create/groupsSchedules/modify/");
   const [groups, setGroups] = useState([]);
   const [groupId, setGroupId] = useState();
-  const [status, setStatus] = useState("Valid");
+  const [status, setStatus] = useState(0);
   const [startingDate, setStartingDate] = useState("");
   const [defaultDate, setDefaultDate] = useState(today);
 

@@ -52,7 +52,7 @@ public class Subject {
             joinColumns = @JoinColumn(name = "subject_id"),
             inverseJoinColumns = @JoinColumn(name = "module_id"))
     private Set<Module> subjectModules = new HashSet<>();
-    ;
+
     @ManyToMany(fetch = FetchType.LAZY)
     //@JsonIgnore
     @JoinTable(

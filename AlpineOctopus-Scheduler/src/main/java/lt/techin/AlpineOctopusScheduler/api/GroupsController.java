@@ -57,13 +57,13 @@ public class GroupsController {
         return groupService.getAllAvailablePagedGroups(page, pageSize);
     }
 
-//    @GetMapping(path = "/archive/page", produces = {MediaType.APPLICATION_JSON_VALUE})
-//    @ResponseBody
-//    public List<GroupsEntityDto> getPagedDeletedGroups(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
-//                                                       @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-//
-//        return groupService.getAllDeletedPagedGroups(page, pageSize);
-//    }
+    @GetMapping(path = "/archive/page", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<GroupsEntityDto> getPagedDeletedGroups(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                       @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+
+        return groupService.getAllDeletedPagedGroups(page, pageSize);
+    }
 
 //    @GetMapping(path = "/page/all", produces = {MediaType.APPLICATION_JSON_VALUE})
 //    @ResponseBody

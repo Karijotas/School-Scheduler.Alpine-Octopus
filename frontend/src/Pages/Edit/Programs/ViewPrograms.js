@@ -56,8 +56,9 @@ export function ViewPrograms() {
   };
 
   useEffect(() => {
-    nameText.length > 0 ? fetchFilterPrograms() : fetchPrograms();
+    nameText.length > 0 && !nameText.includes('/') && !nameText.includes('#') && !nameText.includes('.') && !nameText.includes(';') && !nameText.match(new RegExp( /^\s/)) ? fetchFilterPrograms() : fetchPrograms();
   }, [activePage, nameText]);
+
 
   const [open, setOpen] = useState(false);
   const [close, setClose] = useState(false);
@@ -81,6 +82,7 @@ export function ViewPrograms() {
           <Segment id="segment" color="teal">
             <div id="programs">
               <Input
+                className="controls1"
                 value={nameText}
                 onChange={(e) => setNameText(e.target.value)}
                 placeholder="Filtruoti pagal pavadinimą"

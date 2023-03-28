@@ -75,8 +75,12 @@ code {
   color:rgb(1, 94, 1)!important;
 }
 
-#attention{
+#attention1{
   color:rgb(109, 2, 26)!important;
+}
+
+#attention2{
+  color:rgb(130, 115, 4)!important;
 }
 
 
@@ -103,6 +107,7 @@ code {
   background-position-x: 95%;
   background-position-y: 6px;
 }
+
 
 
 

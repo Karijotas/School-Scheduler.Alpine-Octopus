@@ -54,7 +54,7 @@ export function ViewShifts() {
   };
 
   useEffect(() => {
-    nameText.length > 0 ? fetchFilterShifts() : fetchShifts();
+    nameText.length > 0 && !nameText.includes('/') && !nameText.includes('#') && !nameText.includes('.') && !nameText.includes(';') && !nameText.match(new RegExp( /^\s/)) ? fetchFilterShifts() : fetchShifts();
   }, [activePage, nameText]);
 
   const [open, setOpen] = useState(false);
@@ -107,7 +107,7 @@ export function ViewShifts() {
                 <Table selectable>
                   <Table.Header>
                     <Table.Row>
-                      <Table.HeaderCell>Pavadinimas</Table.HeaderCell>
+                      <Table.HeaderCell>Pamainos pavadinimas</Table.HeaderCell>
                       <Table.HeaderCell>Pamokos nuo</Table.HeaderCell>
                       <Table.HeaderCell>Pamokos iki</Table.HeaderCell>
                       <Table.HeaderCell>Veiksmai</Table.HeaderCell>

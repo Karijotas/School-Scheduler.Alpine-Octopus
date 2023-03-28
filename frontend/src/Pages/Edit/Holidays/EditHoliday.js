@@ -94,6 +94,7 @@ export function EditHoliday() {
   const applyResult = () => {
     setActive(true);
   };
+  
   const disabledStartDate = (current) => {
     return current && current < moment().startOf("year");
   };
@@ -110,7 +111,7 @@ export function EditHoliday() {
     )
       .then((result) => {
         if (!result.ok) {
-          setError("Update failed. Please fill all fields");
+          setError("Update failed. Check if name is unique and dates doesn't overlap with other holidays!");
         } else {
           setError();
         }

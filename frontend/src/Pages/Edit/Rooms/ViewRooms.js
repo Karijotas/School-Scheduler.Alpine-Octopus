@@ -13,7 +13,6 @@ import {
 } from "semantic-ui-react";
 import { EditMenu } from "../../../Components/EditMenu";
 import MainMenu from "../../../Components/MainMenu";
-import { SchedulesMenu } from "../../../Components/SchedulesMenu";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -42,7 +41,7 @@ export function ViewRooms() {
 
   const removeRoom = (id) => {
     fetch("/api/v1/rooms/delete/" + id, {
-        method: "PATCH",
+      method: "PATCH",
     })
       .then(fetchRooms)
       .then(setOpen(false));
@@ -64,15 +63,10 @@ export function ViewRooms() {
   };
 
   useEffect(() => {
-    if (nameText.length === 0 && buildingText.length === 0) {
-      fetchRooms();
-    } else {
-      nameText.length > 0 ? fetchFilterRooms() : fetchBuildingRooms();
-      nameText.length > 0 ? setBuildingText("") : setNameText("");
-      buildingText.length > 0 ? setNameText("") : setBuildingText("");
-    }
-  }, [activePage, nameText, buildingText]);
+    nameText.length > 0 && !nameText.includes('/') && !nameText.includes('#') && !nameText.includes('.') && !nameText.includes(';') && !nameText.match(new RegExp(/^\s/)) ?
+      fetchFilterRooms() : (buildingText.length > 0 && !buildingText.includes('/') && !buildingText.includes('#') && !buildingText.includes('.') && !buildingText.includes(';') && !buildingText.match(new RegExp(/^\s/)) ? fetchBuildingRooms() : fetchRooms())
 
+  }, [activePage, nameText, buildingText]);
   useEffect(() => {
     if (pagecount !== null) {
       fetchSingleRooms();

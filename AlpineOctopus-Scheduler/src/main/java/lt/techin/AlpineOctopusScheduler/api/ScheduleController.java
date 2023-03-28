@@ -3,9 +3,12 @@ package lt.techin.AlpineOctopusScheduler.api;
 import io.swagger.annotations.ApiOperation;
 import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleEntityDto;
 import lt.techin.AlpineOctopusScheduler.api.dto.ScheduleTestDto;
+import lt.techin.AlpineOctopusScheduler.dao.LessonRepository;
 import lt.techin.AlpineOctopusScheduler.dao.ScheduleLessonsRepository;
+import lt.techin.AlpineOctopusScheduler.dao.TeacherRepository;
 import lt.techin.AlpineOctopusScheduler.model.Lesson;
 import lt.techin.AlpineOctopusScheduler.model.Schedule;
+import lt.techin.AlpineOctopusScheduler.model.Teacher;
 import lt.techin.AlpineOctopusScheduler.service.ScheduleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,11 +39,17 @@ public class ScheduleController {
 
     private final ScheduleService scheduleService;
     private final ScheduleLessonsRepository scheduleLessonsRepository;
+    private final LessonRepository lessonRepository;
+    private final TeacherRepository teacherRepository;
 
     public ScheduleController(ScheduleService scheduleService,
-                              ScheduleLessonsRepository scheduleLessonsRepository) {
+                              ScheduleLessonsRepository scheduleLessonsRepository,
+                              LessonRepository lessonRepository,
+                              TeacherRepository teacherRepository) {
         this.scheduleService = scheduleService;
         this.scheduleLessonsRepository = scheduleLessonsRepository;
+        this.lessonRepository = lessonRepository;
+        this.teacherRepository = teacherRepository;
     }
 
 
@@ -107,6 +116,19 @@ public class ScheduleController {
         return scheduleService.getAllSubjectsByScheduleId(scheduleId);
     }
 
+    @GetMapping(value = "/teachers/{subjectId}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<Teacher> teachersBySubject(@PathVariable Long subjectId) {
+        return teacherRepository.findAllByTeacherSubjects_Id(subjectId);
+    }
+
+    @GetMapping(value = "/lesson-teachers/{teacher}/{timess}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public List<Lesson> lessonsOfATeacher(@PathVariable Long teacher, @PathVariable String timess) {
+        var timeley = LocalDateTime.parse(timess);
+        return lessonRepository.findByTeacher_IdAndStartTimeGreaterThan(teacher, timeley);
+    }
+
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<ScheduleEntityDto> createSchedule(@RequestBody ScheduleEntityDto scheduleEntityDto, Long groupId,
                                                             @RequestParam(value = "startingDate", required = false) String startingDate) {
@@ -127,11 +149,24 @@ public class ScheduleController {
         }
     }
 
-    @PatchMapping("/{scheduleId}/{lessonId}/{teacherId}/{roomId}")
-    public ResponseEntity<ScheduleEntityDto> setTeacherAndRoomInASchedule(@PathVariable Long scheduleId, @PathVariable Long lessonId, @PathVariable Long teacherId, @PathVariable Long roomId) {
-        var updatedSchedule = scheduleService.setTeacherAndRoomInASchedule(scheduleId, lessonId, teacherId, roomId);
+    @PatchMapping("/{scheduleId}/{subjectId}")
+    public ResponseEntity<ScheduleEntityDto> setTeacherAndRoomInASchedule(@PathVariable Long scheduleId, @PathVariable Long subjectId, Long teacherId, Long roomId) {
+        var updatedSchedule = scheduleService.setTeacherAndRoomInASchedule(scheduleId, subjectId, teacherId, roomId);
         return ok(toScheduleEntityDto(updatedSchedule));
     }
+
+//    @PatchMapping("/{scheduleId}/{lessonId}")
+//    public ResponseEntity<ScheduleEntityDto> setTeacherAndRoomInALesson(@PathVariable Long scheduleId, @PathVariable Long lessonId, Long teacherId, Long roomId) {
+//        var updatedSchedule = scheduleService.setTeacherAndRoomInALesson(scheduleId, lessonId, teacherId, roomId);
+//        return ok(toScheduleEntityDto(updatedSchedule));
+//    }
+
+    @PatchMapping("/validation/{scheduleId}")
+    public ResponseEntity<ScheduleEntityDto> checkAndSetScheduleStatus(@PathVariable Long scheduleId) {
+        var updatedSchedule = scheduleService.allTeachersAreSet(scheduleId);
+        return ok(toScheduleEntityDto(updatedSchedule));
+    }
+
 
     @PatchMapping("/{scheduleId}/create/{subjectId}/{startTime}/{endTime}")
     public ResponseEntity<ScheduleEntityDto> scheduleLesson(@PathVariable Long scheduleId, @PathVariable Long subjectId,
@@ -154,9 +189,9 @@ public class ScheduleController {
         return ok(toScheduleEntityDto(updatedSchedule));
     }
 
-    @DeleteMapping("/{scheduleId}/{lessonId}")
+    @DeleteMapping("/{scheduleId}/remove/{lessonId}")
     public ResponseEntity<ScheduleEntityDto> removeLesson(@PathVariable Long scheduleId,
-                                                          Long lessonId) {
+                                                          @PathVariable Long lessonId) {
 
         logger.info("Attempt to delete Lesson from Schedule by id: {}", lessonId);
         boolean deleted = scheduleService.removeLesson(scheduleId, lessonId);
