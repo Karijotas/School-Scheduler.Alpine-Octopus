@@ -20,7 +20,6 @@ public class LessonMapper {
 
         lesson.setSubject(subject.getSubject());
         lesson.setLessonHours(subject.getSubjectHours());
-//        teachersList.addAll(teacherRepository.findAllByTeacherSubjects_Id(subject.getId()).stream().collect(Collectors.toSet()));
         lesson.setSubjectTeachers(teachersList);
 
         return lesson;

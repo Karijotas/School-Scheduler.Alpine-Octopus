@@ -75,23 +75,33 @@ public class ScheduleService {
     public boolean validateTeacherBetweenSchedules(Long teacher, LocalDateTime startTime, LocalDateTime endTime) {
         logger.info("Trying to validate teachers");
         var teacherSchedules = lessonRepository.findByTeacher_IdAndStartTimeGreaterThan(teacher, startTime.minusYears(10));
-        logger.info("foundTeacherSchedules");
-        logger.info(String.valueOf(teacherSchedules.stream().noneMatch(lesson -> lesson.getStartTime().equals(startTime) || lesson.getEndTime().equals(endTime)
-                || (lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime)))));
-
-        return teacherSchedules.stream().noneMatch(lesson -> (lesson.getStartTime().equals(startTime) || lesson.getEndTime().equals(endTime))
-                && (lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime)));
-
+        if (teacherSchedules.stream().anyMatch(lesson -> (lesson.getStartTime().equals(startTime)))) {
+            return false;
+        } else if (teacherSchedules.stream().anyMatch(lesson -> (lesson.getEndTime().equals(endTime)))) {
+            return false;
+        } else if (teacherSchedules.stream().anyMatch(lesson -> (lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime)))) {
+            return false;
+        }
+        return true;
     }
+
 
     public boolean validateRoomBetweenSchedules(Long roomId, LocalDateTime startTime, LocalDateTime endTime) {
 
         logger.info("Trying to validate rooms");
 
-        var roomSchedules = lessonRepository.findByRoom_IdAndStartTimeGreaterThan(roomId, startTime.minusYears(10));
 
-        return roomSchedules.stream().noneMatch(lesson -> (lesson.getStartTime().equals(startTime) || lesson.getEndTime().equals(endTime))
-                && (lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime)));
+        var roomSchedules = lessonRepository.findByRoom_IdAndStartTimeGreaterThan(roomId, startTime.minusYears(10));
+        if (roomSchedules.stream().anyMatch(lesson -> (lesson.getStartTime().equals(startTime)))) {
+            return false;
+        } else if (roomSchedules.stream().anyMatch(lesson -> (lesson.getEndTime().equals(endTime)))) {
+            return false;
+        } else if (roomSchedules.stream().anyMatch(lesson -> lesson.getEndTime().isBefore(endTime) & lesson.getStartTime().isAfter(startTime))) {
+            return false;
+        }
+
+
+        return true;
     }
 
     public boolean lessonDateValidation(Long scheduleId, LocalDateTime startTime) {
@@ -218,7 +228,10 @@ public class ScheduleService {
                 .map(LessonMapper::toLessonFromSubject)
                 .collect(Collectors.toSet());
 
-        lessonList.stream().forEach(lesson -> lesson.setSubjectTeachers(teacherRepository.findAllByTeacherSubjects_Id(lesson.getSubject().getId())));
+        lessonList.stream()
+                .forEach(lesson -> lesson.setSubjectTeachers(teacherRepository.findAllByTeacherSubjects_Id(lesson.getSubject().getId())));
+
+
         //Creating the Schedule
         schedule.setName(createdGroup.getName() + " " + createdGroup.getShift().getName() + " " + createdGroup.getSchoolYear().toString());
         schedule.setStartingDate(startingDate);
