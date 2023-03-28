@@ -104,7 +104,9 @@ export function CreateSchedulePageNext() {
       fetch(`/api/v1/schedule/${params.id}/${lessonId}/?roomId=${roomId}&teacherId=${teacherId}`, {
         method: "PATCH",
       }).then(applyResult);
-    }
+    }    
+    setRoomId('');
+    setTeacherId('');
   };
 
   //Teacher dropdown

@@ -68,7 +68,18 @@ export function ScheduleView() {
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [active, setActive] = useState(false);
+  const [online, setOnline] = useState(false);
   const [subject, setSubject] = useState('');
+  const [rooms, setRooms] = useState([]);
+  const [teachers, setTeachers] = useState([]);
+  const [room, setRoom] = useState({
+    id: "",
+    name: ""
+  });
+  const [teacher, setTeacher] = useState({
+    id: "",
+    name: ""
+  });
   const [lesson, setLesson] = useState({
     id: "",
     name: "",
@@ -132,27 +143,60 @@ export function ScheduleView() {
       }
     }
     else if (event.requestType === 'eventCreate'){
-      console.log("cia kurimas");
-      console.log(event.data[0]);
+      // console.log("cia kurimas");
+      // console.log(event.data[0]);
       var newLesson = ({
         id: lesson.id,
         startTime: timezone.removeLocalOffset(new Date(event.data[0].StartTime)).toISOString(),
         endTime: timezone.removeLocalOffset(new Date(event.data[0].EndTime)).toISOString()
       })
-      console.log(newLesson);
+      // console.log(newLesson);
       createLessonOnSchedule(newLesson);
 
     } 
     else if (event.requestType === 'eventRemove') {
       removeLessonOnSchedule(event.data[0])
 
+    } 
+    else if (event.requestType === 'eventChanged') {
+      console.log("cia changas")
+      //console.log(event.data)
+
     }
+    else if(event.action == "update" || (event.action == "batch" && event.changed != null)) { 
+              //... custom action goes here 
+              console.log("cia editas")
+    }   
     else if (event.requestType === 'eventClose') {
       setLesson({});
 
     }
-    
+    console.log(event);
   }
+
+  const onPopupOpen = (event) => {
+    if (event.data.isBooked) {
+      
+      event.cancel = true;
+    } else if (event.type === 'Editor') {      
+      console.log(event);
+      setLesson({name: event.data.Subject});
+      setOnline(event.data.Online);
+      setRoom({name: event.data?.Room});
+      setTeacher({name: event.data?.Teacher});
+      setStartTime(timezone.removeLocalOffset(new Date(event.data.StartTime)).toISOString());
+      setEndTime(timezone.removeLocalOffset(new Date(event.data.EndTime)).toISOString());
+      var editedLesson = ({
+        id: event.data.Id,
+        name: event.data.Subject,
+        online: event.data.Online,
+        room: event.data?.Room,
+        teacher: event.data?.Teacher,
+        startTime: timezone.removeLocalOffset(new Date(event.data.StartTime)).toISOString(),
+        endTime: timezone.removeLocalOffset(new Date(event.data.EndTime)).toISOString()
+      })
+    }
+  };
 
   function onTreeDragStop(event) {
     let treeElement = closest(event.target, ".e-treeview");
@@ -175,8 +219,12 @@ export function ScheduleView() {
             StartTime: cellData.startTime,
             EndTime: cellData.endTime,              
           };
-          setLesson({name: filteredData[0].Subject, id: filteredData[0].Id})          
-          console.log(filteredData[0]);
+          setTeacher({name: filteredData[0].Teacher, id: filteredData[0].Id});
+          setRoom({name: filteredData[0].Room, id: filteredData[0].Id});
+          setLesson({name: filteredData[0].Subject, id: filteredData[0].Id});
+          setStartTime(cellData.startTime);
+          setEndTime(cellData.endTime);          
+          // console.log(filteredData[0]);
           scheduleObj.openEditor(eventData, 'Add', true);
           isTreeItemDropped = true;
           draggedItemId = event.draggedNodeData.id;
@@ -254,25 +302,28 @@ export function ScheduleView() {
       Subject: l.subject.name,
       StartTime: l.startTime,
       EndTime: l.endTime,
-      Room: l.room.name,
-      Teacher: l.teacher.name,
+      Room: l.room?.name,
+      Teacher: l.teacher?.name,
       GroupId: l.subject.id,
       Online: l.online,
       Description: l.online ? "ONLINE" : "",
-      Status: l.statusMessage,
+      StatusMessage: l.statusMessage,
+      Status: l.status
     };
   });
-
+// {console.log(lessons)}
   const subjectsOnSchedule = subjects.map((s) => {
     return {
       Id: s.id,
       Subject: s.subject.name,
       StartTime: s.startTime,
       EndTime: s.endTime,
-      Room: s.room.name,
-      Teacher: s.teacher.name,      
+      Room: s.room?.name,
+      Teacher: s.teacher?.name,      
       GroupId: s.subject.id,
       LessonHours: s.lessonHours,
+      Rooms: s.subject.subjectRooms,
+      Teachers: s.subjectTeachers
     };
   });
 
@@ -287,12 +338,21 @@ export function ScheduleView() {
     text: "Subject",
     id: "Id",
   };
-
+  const roomFields = {
+    dataSource: subjectsOnSchedule,
+    text: "Room",
+    id: "Id",
+  };
+  const teacherFields = {
+    dataSource: subjectsOnSchedule,
+    text: "Teacher",
+    id: "Id",
+  };
   function eventTemplate(props) {
     return (<div className="template-wrap" style={{ background: props.SecondaryColor }}>
-      <div className="subject" style={{ background: props.GroupId }}>{props.Subject} {!props.status? <span className="e-icons e-circle-check"></span> : <span className="e-icons e-warning"></span>}</div>      
+      <div className="subject" style={{ background: props.GroupId }}>{props.Subject} {props.Status === 0? "" : <span className="e-icons e-warning"></span>}</div>      
       <div className="event-description">{props.Description}</div>         
-      
+      {/* {console.log(props)} */}
     </div>);
   }
 
@@ -306,30 +366,33 @@ export function ScheduleView() {
             data-name="Subject"
             className="e-field"
             style={{ width: '100%' }}
-            value={lesson.name == "" ? props.Subject : lesson.name || props.Subject == "undefined" ? lesson.name : props.Subject}               
+            value={lesson.name === "" ? props.Subject : lesson.name || props.Subject === undefined ? lesson.name : props.Subject}               
             dataSource={subjectsOnSchedule}         
             fields={subjectFields}
             onChange={(e) => setLesson({id: e.target.itemData.Id, name: e.value})}>
           </DropDownListComponent>
-          {console.log(props.Subject)}
-          {console.log(lesson)}
+          {/* {console.log(props)}
+          {console.log(subjects)} */}
         </td></tr>
         <br />
         <tr><td className="e-textlabel">Nuotolinė pamoka: </td><td colSpan={4}>
-        <CheckBoxComponent name="Sport" value="Cricket" checked={props.Online} ></CheckBoxComponent>
+        <CheckBoxComponent name="Online" value={online} checked={props.Online || online} onChange={(e) => setOnline(e.target.properties.checked)}></CheckBoxComponent>
         </td></tr>
+        {/* {console.log(online)} */}
         <br />
-        {!props.Online ? (props.Room == undefined ? <tr><td className="e-textlabel">Kabinetas: </td><td colSpan={4}>
+        {!online || props.Online ? (props.Room === undefined ? <tr><td className="e-textlabel">Kabinetas: </td><td colSpan={4}>
           
-          <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['Kabinetas1', 'Kabinetas2']}>
-          </DropDownListComponent>
+          <DropDownListComponent id="Room" value={props.Room || room.name} placeholder='Pasirinkti' data-name="Room" className="e-field" style={{ width: '100%' }} dataSource={subjectsOnSchedule}
+          fields={roomFields} onChange={(e) => setRoom({id: e.target.itemData.Id, name: e.value})}>
+          </DropDownListComponent >
         </td></tr> : <tr><td className="e-textlabel">Kabinetas:</td><td colSpan={4}> <br/>          
           <div>{props.Room}<br/></div>
           <br/>
         </td></tr>
         ) : ""}
-        {props.Teacher == undefined ? <tr><td className="e-textlabel">Mokytojas: </td><td colSpan={4}>
-          <DropDownListComponent id="EventType" placeholder='Pasirinkti' data-name="Status" className="e-field" style={{ width: '100%' }} dataSource={['Mokytojas1', 'Mokytojas2', 'Mokytojas']}>
+        {props.Teacher === undefined ? <tr><td className="e-textlabel">Mokytojas: </td><td colSpan={4}>
+          <DropDownListComponent id="Teacher" value={props.Teacher || teacher.name} placeholder='Pasirinkti' data-name="Teacher" className="e-field" style={{ width: '100%' }} dataSource={subjectsOnSchedule}
+          fields={teacherFields} onChange={(e) => setTeacher({id: e.target.itemData.Id, name: e.value})}>
           </DropDownListComponent>
         </td></tr> : <tr><td className="e-textlabel">Mokytojas: </td><td colSpan={4}>
           <div>{props.Teacher}</div>
@@ -458,7 +521,8 @@ export function ScheduleView() {
                   }}
                   colorField='Color'
                   currentView='Month'
-                  actionBegin={onActionBegin.bind(this)}> 
+                  actionBegin={onActionBegin.bind(this)}
+                  popupOpen={onPopupOpen}> 
                    {/* popupOpen={onPopupOpen.bind(this)}> */}
                   {/* {console.log(lessons)}
                   {console.log(endTime)} */}
