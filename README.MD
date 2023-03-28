@@ -41,7 +41,7 @@ http://localhost:8080/swagger-ui/
 
 ### Break down into end to end tests
 
-There are 10 different test packages: GroupPagesTests, ModulePagesTests, ProgramPagesTests, RoomPagesTests, SchedulePagesTests, SubjectPagesTests, HolidayPagesTests, TeacherPagesTests, smokeTests, and BaseTest. First 8 are packages for classifiers’ functionality testing, smokeTests hold main core tests of the application, and BaseTest is for set up (getting Chrome driver and application link) and closing all tests after running them.
+There are 11 different test packages: GroupPagesTests, ModulePagesTests, ProgramPagesTests, RoomPagesTests, SchedulePagesTests, SubjectPagesTests, ShiftPagesTests, HolidayPagesTests, TeacherPagesTests, smokeTests, and BaseTest. First 9 are packages for classifiers’ functionality testing, smokeTests hold main core tests of the application, and BaseTest is for set up (getting Chrome driver and application link) and closing all tests after running them.
 
 #### Classifiers functionality tests include:
 
