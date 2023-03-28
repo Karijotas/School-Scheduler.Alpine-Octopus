@@ -211,9 +211,9 @@ export function EditGroupScheduleObject() {
                         Tvarkaraščio pavadinimas
                       </Table.HeaderCell>
                       <Table.HeaderCell>Data nuo</Table.HeaderCell>
-                      <Table.HeaderCell>Data iki</Table.HeaderCell>
-                      <Table.HeaderCell>Statusas</Table.HeaderCell>
-                      <Table.HeaderCell>Veiksmai</Table.HeaderCell>
+                      <Table.HeaderCell width={3}>Data iki</Table.HeaderCell>
+                      <Table.HeaderCell width={1}>Statusas</Table.HeaderCell>
+                      {/* <Table.HeaderCell>Veiksmai</Table.HeaderCell> */}
                     </Table.Row>
                   </Table.Header>
                   <Table.Body>
@@ -255,7 +255,7 @@ export function EditGroupScheduleObject() {
                           />
                         )}
                       </Table.Cell>
-                      <Table.Cell width={1}>
+                      {/* <Table.Cell width={1}>
                         {" "}
                         <Button
                           id="details"
@@ -264,7 +264,7 @@ export function EditGroupScheduleObject() {
                         >
                           Redaguoti
                         </Button>{" "}
-                      </Table.Cell>
+                      </Table.Cell> */}
                     </Table.Row>
                   </Table.Body>
                 </Table>
@@ -336,7 +336,7 @@ export function EditGroupScheduleObject() {
               </div>
             )}
 
-            {!active && (
+            {/* {!active && (
               <div>
                 <Table celled>
                   <Table.Header>
@@ -361,7 +361,7 @@ export function EditGroupScheduleObject() {
                 </Table>
                 <Divider hidden />
                 <ScheduleView id={params.id} />
-                <Divider hidden />
+                <Divider hidden /> */}
 
                 {/* <Table.Cell width={6}>y
                         {nameError && (
@@ -427,7 +427,7 @@ export function EditGroupScheduleObject() {
                   </Table.Body>
                 </Table> */}
 
-                <Button onClick={() => setActive(true)}>Atšaukti</Button>
+                {/* <Button onClick={() => setActive(true)}>Atšaukti</Button>
                 <Button
                   disabled={!formValid}
                   className="controls"
@@ -436,8 +436,8 @@ export function EditGroupScheduleObject() {
                 >
                   Atnaujinti
                 </Button>
-              </div>
-            )}
+              </div> */}
+            {/* )} */}
           </Segment>
         </Grid.Column>
       </Grid>
