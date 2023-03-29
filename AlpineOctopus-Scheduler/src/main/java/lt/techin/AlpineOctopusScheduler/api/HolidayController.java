@@ -63,17 +63,33 @@ public class HolidayController {
 
     @PostMapping
     public ResponseEntity<HolidayEntityDto> createHoliday(@Valid @RequestBody HolidayEntityDto holidayDto) {
-        if (holidayService.classIsUnique(toHoliday(holidayDto))) {
-            var createdHoliday = holidayService.create(toHoliday(holidayDto));
+//        if (holidayService.classIsUnique(toHoliday(holidayDto))) {
+//            var createdHoliday = holidayService.create(toHoliday(holidayDto));
+//            return ok(toHolidayEntityDto(createdHoliday));
+//        } else {
+//            throw new SchedulerValidationException("Class already exists", "Class name & building adress", "Already exists", holidayDto.getName());
+//        }
+        Holiday holiday = toHoliday(holidayDto);
+        if (holidayService.classIsUnique(holiday)) {
+            if (holidayService.dateRangeOverlap(holiday)) {
+                throw new SchedulerValidationException("Date range overlaps with an existing holiday", "startDate and endDate", "Overlap", holidayDto.getStartDate() + " - " + holidayDto.getEndDate());
+            }
+            var createdHoliday = holidayService.create(holiday);
             return ok(toHolidayEntityDto(createdHoliday));
         } else {
-            throw new SchedulerValidationException("Class already exists", "Class name & building adress", "Already exists", holidayDto.getName());
+            throw new SchedulerValidationException("Holiday name already exists", "Holiday name", "Already exists", holidayDto.getName());
         }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<HolidayDto> updateHoliday(@PathVariable Long id, @Valid @RequestBody HolidayDto holidayDto) {
-        var updatedHoliday = holidayService.update(id, toHoliday(holidayDto));
+        Holiday holiday = toHoliday(holidayDto);
+        holiday.setId(id);
+        if (holidayService.dateRangeOverlap(holiday)) {
+            throw new SchedulerValidationException("Date range overlaps with an existing holiday", "startDate and endDate", "Overlap", holiday.getStartDate() + " - " + holiday.getEndDate());
+        }
+
+        var updatedHoliday = holidayService.update(id, holiday);
         return ok(toHolidayDto(updatedHoliday));
     }
 
