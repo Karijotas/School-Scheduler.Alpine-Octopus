@@ -421,7 +421,7 @@ public class ScheduleService {
                             if (!validateTeacherBetweenSchedules(createdLesson.getTeacher().getId(), startTime, endTime)) {
                                 logger.info("Setting lesson status to critical. Reason: teacher works at the same time in another lesson");
                                 createdLesson.setStatus(1);
-                                createdLesson.setStatusMessage("Mokytojas jau užimtas tuo pačiu laiku. Pamoka: " + createdLesson.getSubject().getName().toString() + ", Laikas:" + createdLesson.getStartTime().toString());
+                                createdLesson.setStatusMessage("Mokytojas jau užimtas tuo pačiu laiku. Pamoka: " + createdLesson.getSubject().getName().toString() + ", Laikas: " + (createdLesson.getStartTime().getMonthValue() + 1) + "mėn.  " + createdLesson.getStartTime().getDayOfMonth() + "d. , nuo " + createdLesson.getStartTime().getHour() + " pamokos.");
                                 existingSchedule.setStatus(1);
                             }
                         }
@@ -431,7 +431,7 @@ public class ScheduleService {
                             if (!validateRoomBetweenSchedules(createdLesson.getRoom().getId(), startTime, endTime)) {
                                 logger.info("Setting lesson status to critical. Reason: class is occupied at the same time in another lesson");
                                 createdLesson.setStatus(1);
-                                createdLesson.setStatusMessage("Klasė jau užimta tuo pačiu laiku. Klasė: " + createdLesson.getRoom().getName().toString() + ", Laikas:" + createdLesson.getStartTime().toString());
+                                createdLesson.setStatusMessage("Klasė jau užimta tuo pačiu laiku. Klasė: " + createdLesson.getRoom().getName().toString() + ", Laikas: " + (createdLesson.getStartTime().getMonthValue() + 1) + "mėn.  " + createdLesson.getStartTime().getDayOfMonth() + "d. , nuo " + createdLesson.getStartTime().getHour() + " pamokos.");
                                 existingSchedule.setStatus(1);
 
                             }
@@ -441,7 +441,7 @@ public class ScheduleService {
                             if (!validateTeacherBetweenSchedules(createdLesson.getTeacher().getId(), startTime, endTime) && !validateRoomBetweenSchedules(createdLesson.getRoom().getId(), startTime, endTime)) {
                                 logger.info("Setting lesson status to critical. Reason: teacher works at the same time in another lesson");
                                 createdLesson.setStatus(1);
-                                createdLesson.setStatusMessage("Mokytojas ir klasė jau užimti tuo pačiu laiku. Pamoka: " + createdLesson.getSubject().getName().toString() + ", Laikas:" + createdLesson.getStartTime().toString());
+                                createdLesson.setStatusMessage("Mokytojas ir klasė jau užimti tuo pačiu laiku. Pamoka: " + createdLesson.getSubject().getName().toString() + ", Laikas: " + (createdLesson.getStartTime().getMonthValue() + 1) + "mėn.  " + createdLesson.getStartTime().getDayOfMonth() + "d. , nuo " + createdLesson.getStartTime().getHour() + " pamokos.");
                                 existingSchedule.setStatus(1);
                             }
                         }
