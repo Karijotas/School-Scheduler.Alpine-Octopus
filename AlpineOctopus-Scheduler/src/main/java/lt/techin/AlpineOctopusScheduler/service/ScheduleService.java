@@ -438,17 +438,17 @@ public class ScheduleService {
                             if (!validateTeacherBetweenSchedules(createdLesson.getTeacher().getId(), startTime, endTime)) {
                                 logger.info("Setting lesson status to critical. Reason: teacher works at the same time in another lesson");
                                 createdLesson.setStatus(1);
-                                createdLesson.setStatusMessage("Mokytojas jau užimtas tuo pačiu laiku. Pamoka: " + createdLesson.getSubject().getName().toString() + ", Laikas: " + (createdLesson.getStartTime().getMonthValue() + 1) + "mėn.  " + createdLesson.getStartTime().getDayOfMonth() + "d. , nuo " + createdLesson.getStartTime().getHour() + " pamokos.");
+                                createdLesson.setStatusMessage("Mokytojas jau užimtas tuo pačiu laiku. Pamoka: " + createdLesson.getSubject().getName().toString() + ", Laikas: " + (createdLesson.getStartTime().toLocalDate()) + ", nuo " + createdLesson.getStartTime().getHour() + " pamokos.");
                                 existingSchedule.setStatus(1);
                             }
                         }
-
+                        createdLesson.setStatus(0);
                         //validating if the classroom is already in use in another Schedule lesson. If so, setting the status to warning
                         if (createdLesson.getRoom() != null) {
                             if (!validateRoomBetweenSchedules(createdLesson.getRoom().getId(), startTime, endTime)) {
                                 logger.info("Setting lesson status to critical. Reason: class is occupied at the same time in another lesson");
                                 createdLesson.setStatus(1);
-                                createdLesson.setStatusMessage("Klasė jau užimta tuo pačiu laiku. Klasė: " + createdLesson.getRoom().getName().toString() + ", Laikas: " + (createdLesson.getStartTime().getMonthValue() + 1) + "mėn.  " + createdLesson.getStartTime().getDayOfMonth() + "d. , nuo " + createdLesson.getStartTime().getHour() + " pamokos.");
+                                createdLesson.setStatusMessage("Klasė jau užimta tuo pačiu laiku. Klasė: " + createdLesson.getRoom().getName().toString() + ", Laikas: " + (createdLesson.getStartTime().toLocalDate()) + ", nuo " + createdLesson.getStartTime().getHour() + " pamokos.");
                                 existingSchedule.setStatus(1);
 
                             }
@@ -458,16 +458,16 @@ public class ScheduleService {
                             if (!validateTeacherBetweenSchedules(createdLesson.getTeacher().getId(), startTime, endTime) && !validateRoomBetweenSchedules(createdLesson.getRoom().getId(), startTime, endTime)) {
                                 logger.info("Setting lesson status to critical. Reason: teacher works at the same time in another lesson");
                                 createdLesson.setStatus(1);
-                                createdLesson.setStatusMessage("Mokytojas ir klasė jau užimti tuo pačiu laiku. Pamoka: " + createdLesson.getSubject().getName().toString() + ", Laikas: " + (createdLesson.getStartTime().getMonthValue() + 1) + "mėn.  " + createdLesson.getStartTime().getDayOfMonth() + "d. , nuo " + createdLesson.getStartTime().getHour() + " pamokos.");
+                                createdLesson.setStatusMessage("Mokytojas ir klasė jau užimti tuo pačiu laiku. Pamoka: " + createdLesson.getSubject().getName().toString() + ", Laikas: " + (createdLesson.getStartTime().toLocalDate()) + ", nuo " + createdLesson.getStartTime().getHour() + " pamokos.");
                                 existingSchedule.setStatus(1);
                             }
                         }
-                        createdLesson.setStatus(0);
+
                         lessonRepository.save(createdLesson);
 
                         return scheduleRepository.save(existingSchedule);
                     } else {
-                        throw new SchedulerValidationException("Planuojama pamoka yra anksčiau nei tvarkaraščio pradžia. Pradžia:" + existingSchedule.getStartingDate(), "time", "Invalid time", scheduleId.toString());
+                        throw new SchedulerValidationException("Planuojama pamoka yra anksčiau nei tvarkaraščio pradžia. Pradžia: " + existingSchedule.getStartingDate(), "time", "Invalid time", scheduleId.toString());
                     }
                 } else {
                     throw new SchedulerValidationException("Pasirinktu metu jau yra suplanuotos kitos pamokos", "time", "Invalid time", scheduleId.toString());
