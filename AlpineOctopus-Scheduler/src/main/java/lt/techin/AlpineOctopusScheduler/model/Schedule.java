@@ -218,6 +218,10 @@ public class Schedule {
     public void scheduleLesson(Lesson lesson) {
         this.lessons.add(lesson);
     }
+    public void updateLesson(Lesson lesson){
+        this.lessons.remove(lesson.getId());
+        this.lessons.add(lesson);
+    }
 
     @Override
     public boolean equals(Object o) {

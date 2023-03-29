@@ -168,17 +168,23 @@ public class ScheduleController {
     }
 
 
-    @PatchMapping("/{scheduleId}/create/{subjectId}/{startTime}/{endTime}")
+    @PatchMapping("/{scheduleId}/create/{subjectId}/{startTime}/{endTime}/")
     public ResponseEntity<ScheduleEntityDto> scheduleLesson(@PathVariable Long scheduleId, @PathVariable Long subjectId,
                                                             @PathVariable(value = "startTime", required = true) String startTime,
-                                                            @PathVariable(value = "endTime", required = true) String endTime) {
+                                                            @PathVariable(value = "endTime", required = true) String endTime,
+//                                                            @PathVariable(value= "givenBoolean", required = false)
+                                                                Boolean givenBoolean,
+//                                                            @PathVariable(value = "teacherId", required = false)
+                                                                Long teacherId,
+//                                                            @PathVariable(value = "roomId", required = false)
+                                                                Long roomId) {
         DateTimeFormatter formatter =
                 DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH);
 
         var starting = LocalDateTime.parse(startTime.toString(), formatter);
         var ending = LocalDateTime.parse(endTime.toString(), formatter);
 
-        var updatedSchedule = scheduleService.ScheduleLesson(scheduleId, subjectId, starting, ending);
+        var updatedSchedule = scheduleService.ScheduleLesson(scheduleId, subjectId, starting, ending,  givenBoolean,  teacherId,  roomId);
         return ok(toScheduleEntityDto(updatedSchedule));
     }
 
