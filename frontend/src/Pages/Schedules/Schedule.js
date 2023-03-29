@@ -82,6 +82,7 @@ export function ScheduleView() {
   const params = useParams();
   const [schedules, setSchedules] = useState([]);
   const [lessons, setLessons] = useState([]);
+  const [holidays, setHolidays] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [subjectId, setSubjectId] = useState("");
   const [startTime, setStartTime] = useState("");
@@ -228,6 +229,12 @@ export function ScheduleView() {
       .then(setSubjects);
   }, [params, active]);
 
+  useEffect(() => {
+    fetch(`/api/v1/holidays/`)
+      .then((response) => response.json())
+      .then(setHolidays);
+  }, [params, active]);
+
   const createLessonOnSchedule = (props) => {
     fetch(
       `/api/v1/schedule/${params.id}/create/${props.id}/${props.startTime}/${props.endTime}`,
@@ -259,7 +266,7 @@ export function ScheduleView() {
   function onExportClick() {
     scheduleObj.exportToExcel();
   }
-  const lessonsOnSchedule = lessons.map((l) => {
+  const lessonsOnSchedule = (lessons).map((l) => {
     return {
       Id: l.id,
       Subject: l.subject.name,
@@ -283,6 +290,17 @@ export function ScheduleView() {
       Teacher: s.teacher?.name,
       GroupId: s.subject.id,
       LessonHours: s.lessonHours,
+    };
+  });
+
+  const holidaysOnSchedule = holidays.map((h) => {
+    return {
+      Id: h.id,
+      Subject: h.name,
+      StartTime: h.startDate,
+      EndTime: h.endDate,
+      IsBlock: true,
+      // AllDay: true,
     };
   });
 
@@ -461,6 +479,8 @@ export function ScheduleView() {
     { GroupText: schedules.name, GroupId: 21, GroupColor: "#ffcd16" },
   ];
 
+  const dataaSource = [...lessonsOnSchedule, ...holidaysOnSchedule];
+
   return (
     <div>
       <div className="schedule-control-section">
@@ -491,11 +511,12 @@ export function ScheduleView() {
                     editorTemplate={editorTemplate}
                     selectedDate={new Date(2023, 1, 10, 24, 0)}
                     eventSettings={{
-                      dataSource: lessonsOnSchedule,
+                      dataSource: dataaSource,
                       fields: {
                         editorTemplate,
                       },
                     }}
+                    
                     colorField="Color"
                     currentView="Month"
                     actionBegin={onActionBegin.bind(this)}

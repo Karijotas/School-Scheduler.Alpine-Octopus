@@ -38,6 +38,7 @@ public class ScheduleService {
     private final TeacherRepository teacherRepository;
     private final ScheduleLessonsRepository scheduleLessonsRepository;
     private final LessonRepository lessonRepository;
+    private final HolidayRepository holidayRepository;
 
     public ScheduleService(ScheduleRepository scheduleRepository, ScheduleSubjectsRepository scheduleSubjectsRepository,
                            GroupsRepository groupsRepository,
@@ -47,7 +48,8 @@ public class ScheduleService {
                            RoomRepository roomRepository,
                            TeacherRepository teacherRepository,
                            ScheduleLessonsRepository scheduleLessonsRepository,
-                           LessonRepository lessonRepository) {
+                           LessonRepository lessonRepository,
+                           HolidayRepository holidayRepository) {
         this.scheduleRepository = scheduleRepository;
         this.scheduleSubjectsRepository = scheduleSubjectsRepository;
         this.groupsRepository = groupsRepository;
@@ -58,6 +60,7 @@ public class ScheduleService {
         this.teacherRepository = teacherRepository;
         this.scheduleLessonsRepository = scheduleLessonsRepository;
         this.lessonRepository = lessonRepository;
+        this.holidayRepository = holidayRepository;
     }
 
 
@@ -96,7 +99,7 @@ public class ScheduleService {
             return false;
         } else if (roomSchedules.stream().anyMatch(lesson -> (lesson.getEndTime().equals(endTime)))) {
             return false;
-        } else if (roomSchedules.stream().anyMatch(lesson -> lesson.getEndTime().isBefore(endTime) & lesson.getStartTime().isAfter(startTime))) {
+        } else if (roomSchedules.stream().anyMatch(lesson -> lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime))) {
             return false;
         }
 
@@ -388,7 +391,7 @@ public class ScheduleService {
                                 .filter(lesson -> lesson.getId().equals(subjectId))
                                 .map(LessonMapper::toIndividualLesson)
                                 .findAny()
-                                .get();
+                                .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", scheduleId.toString()));
 
                         //setting the time in the schedule
                         createdLesson.setStartTime(startTime);
@@ -404,18 +407,18 @@ public class ScheduleService {
                                         .equals(subjectId))
                                 .forEach(
                                         lesson -> {
-                                            if (teacherLessonsPerDay(lesson.getTeacher().getId(), startTime, createdLesson.getLessonHours()) <= 12) {
+//                                            if (teacherLessonsPerDay(lesson.getTeacher().getId(), startTime, createdLesson.getLessonHours()) <= 12) {
 
-                                                if (lesson.getLessonHours() - createdLesson.getLessonHours() <= 0) {
-                                                    lesson.setLessonHours(0);
-                                                    logger.info("lessonHours" + lesson.getLessonHours().toString());
-                                                } else {
-                                                    lesson.setLessonHours(lesson.getLessonHours() - createdLesson.getLessonHours());
-                                                }
-//                                            lesson.getTeacher().setWorkHoursPerWeek(lesson.getTeacher().getWorkHoursPerWeek() + createdLesson.getLessonHours());
+                                            if (lesson.getLessonHours() - createdLesson.getLessonHours() <= 0) {
+                                                lesson.setLessonHours(0);
+                                                logger.info("lessonHours" + lesson.getLessonHours().toString());
                                             } else {
-                                                throw new SchedulerValidationException("Too many lessons taken", "lesson", "Lesson amount", scheduleId.toString());
+                                                lesson.setLessonHours(lesson.getLessonHours() - createdLesson.getLessonHours());
                                             }
+//                                            lesson.getTeacher().setWorkHoursPerWeek(lesson.getTeacher().getWorkHoursPerWeek() + createdLesson.getLessonHours());
+//                                            } else {
+//                                                throw new SchedulerValidationException("Too many lessons taken", "lesson", "Lesson amount", scheduleId.toString());
+//                                            }
                                         });
 
                         existingSchedule.scheduleLesson(createdLesson);
@@ -460,7 +463,7 @@ public class ScheduleService {
                                 existingSchedule.setStatus(1);
                             }
                         }
-
+                        createdLesson.setStatus(0);
                         lessonRepository.save(createdLesson);
 
                         return scheduleRepository.save(existingSchedule);
