@@ -54,7 +54,7 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:8084/",
+  "proxy": "http://localhost:8085/",
   "devDependencies": {
     "systemjs-plugin-json": "^0.3.0"
   }
