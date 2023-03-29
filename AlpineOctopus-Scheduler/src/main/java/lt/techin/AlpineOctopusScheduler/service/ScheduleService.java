@@ -82,8 +82,6 @@ public class ScheduleService {
             return false;
         } else if (teacherSchedules.stream().anyMatch(lesson -> (lesson.getEndTime().equals(endTime)))) {
             return false;
-        } else if (teacherSchedules.stream().anyMatch(lesson -> (lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime)))) {
-            return false;
         }
         return true;
     }
@@ -98,8 +96,6 @@ public class ScheduleService {
         if (roomSchedules.stream().anyMatch(lesson -> (lesson.getStartTime().equals(startTime)))) {
             return false;
         } else if (roomSchedules.stream().anyMatch(lesson -> (lesson.getEndTime().equals(endTime)))) {
-            return false;
-        } else if (roomSchedules.stream().anyMatch(lesson -> lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime))) {
             return false;
         }
 
@@ -244,7 +240,7 @@ public class ScheduleService {
         schedule.setShiftName(createdGroup.getShift().getName());
         schedule.setSubjects(lessonList);
         schedule.setStatus(1);
-        
+
         return scheduleRepository.save(schedule);
     }
 
@@ -442,6 +438,7 @@ public class ScheduleService {
                                 existingSchedule.setStatus(1);
                             }
                         }
+                        createdLesson.setStatus(0);
 
                         //validating if the classroom is already in use in another Schedule lesson. If so, setting the status to warning
                         if (createdLesson.getRoom() != null) {
@@ -462,7 +459,6 @@ public class ScheduleService {
                                 existingSchedule.setStatus(1);
                             }
                         }
-                        createdLesson.setStatus(0);
                         lessonRepository.save(createdLesson);
 
                         return scheduleRepository.save(existingSchedule);

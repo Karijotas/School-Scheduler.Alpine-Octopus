@@ -195,12 +195,12 @@ export function CreateSchedulePageNext() {
                 </Table.Row>
 
                 <Table.Header>
-                  <Table.HeaderCell colspan="4">Dalykai</Table.HeaderCell>
-                  {okey && (
-                    <Message size="tiny" color="teal">
+                  <Table.HeaderCell  colspan="4">Dalykai  {okey && (
+                    <Message className="controls"  size="tiny" color="teal">
                       {okey}
                     </Message>
-                  )}
+                  )}</Table.HeaderCell>
+                
                 </Table.Header>
 
                 {subjects.map((subject) => (
