@@ -6,9 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="c0961f98-11f4-4515-90b5-fdfcfa4e97bd" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/HolidayController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/api/HolidayController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/service/HolidayService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lt/techin/AlpineOctopusScheduler/service/HolidayService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/db/migration/V3_16__inset_holiday_test_data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/db/migration/V3_16__inset_holiday_test_data.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/lt/techin/AlpineOctopusScheduler/api/HolidayControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/lt/techin/AlpineOctopusScheduler/api/HolidayControllerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

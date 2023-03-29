@@ -117,7 +117,7 @@ export function EditHoliday() {
     )
       .then((result) => {
         if (!result.ok) {
-          setError("Update failed. Check if name is unique and dates doesn't overlap with other holidays!");
+          setError("Update failed. Check if dates doesn't overlap with other holidays!");
         } else {
           setError();
         }

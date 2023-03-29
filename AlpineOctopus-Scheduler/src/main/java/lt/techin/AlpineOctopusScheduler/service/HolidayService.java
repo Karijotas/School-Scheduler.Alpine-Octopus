@@ -32,9 +32,16 @@ public class HolidayService {
     }
 
     public boolean dateRangeOverlap(Holiday holiday) {
+//        List<Holiday> holidays = holidayRepository.findAll();
+//        for (Holiday h : holidays) {
+//            if (h.getId() != holiday.getId() && h.getStartDate().isBefore(holiday.getEndDate()) && holiday.getStartDate().isBefore(h.getEndDate())) {
+//                return true;
+//            }
+//        }
+//        return false;
         List<Holiday> holidays = holidayRepository.findAll();
         for (Holiday h : holidays) {
-            if (h.getId() != holiday.getId() && h.getStartDate().isBefore(holiday.getEndDate()) && holiday.getStartDate().isBefore(h.getEndDate())) {
+            if (h.getId() != holiday.getId() && (h.getStartDate().isBefore(holiday.getEndDate()) || h.getStartDate().isEqual(holiday.getEndDate())) && (holiday.getStartDate().isBefore(h.getEndDate()) || holiday.getStartDate().isEqual(h.getEndDate()))) {
                 return true;
             }
         }
