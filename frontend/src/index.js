@@ -7,7 +7,10 @@ import './index.css';
 import { CreateGroupPage } from './Pages/Edit/Groups/CreateGroupPage';
 import { EditGroupObject } from './Pages/Edit/Groups/EditGroupObject';
 import { ViewGroups } from './Pages/Edit/Groups/ViewGroups.js';
+import { CreateModulePage } from './Pages/Edit/Module/CreateModulePage';
+import { EditModuleObject } from './Pages/Edit/Module/EditModuleObject';
 import { ViewModules } from './Pages/Edit/Module/ViewModules';
+import { CreateProgramPage } from './Pages/Edit/Programs/CreateProgramPage';
 import { EditProgramObject } from './Pages/Edit/Programs/EditProgramObject';
 import { ViewPrograms } from './Pages/Edit/Programs/ViewPrograms';
 import { CreateRoom } from './Pages/Edit/Rooms/CreateRoom';
@@ -22,38 +25,31 @@ import { ViewSubjects } from './Pages/Edit/Subjects/ViewSubjects';
 import { CreateTeacher } from './Pages/Edit/Teachers/CreateTeacher';
 import { EditTeacherObject } from './Pages/Edit/Teachers/EditTeacherObject';
 import { ViewTeachers } from './Pages/Edit/Teachers/ViewTeachers';
-import { CreateProgramPage } from './Pages/Edit/Programs/CreateProgramPage';
-import { EditModuleObject } from './Pages/Edit/Module/EditModuleObject';
-import { CreateModulePage } from './Pages/Edit/Module/CreateModulePage';
 
 import { CreateHoliday } from './Pages/Edit/Holidays/CreateHoliday';
 import { EditHoliday } from './Pages/Edit/Holidays/EditHoliday';
 import { ViewHolidays } from './Pages/Edit/Holidays/ViewHolidays';
 
-import { ViewProgramsArchive } from './Pages/Edit/Programs/ViewProgramsArchive';
-import { ViewSubjectsArchive } from './Pages/Edit/Subjects/ViewSubjectsArchive';
-import { ViewTeachersArchive } from './Pages/Edit/Teachers/ViewTeachersArchive';
-import { ViewGroupsArchive } from './Pages/Edit/Groups/ViewGroupsArchive';
-import { ViewShiftsArchive } from './Pages/Edit/Shifts/ViewShiftsArchive';
-import { ViewRoomsArchive } from './Pages/Edit/Rooms/ViewRoomsArchive';
-import { ViewModulesArchive } from './Pages/Edit/Module/ViewModulesArchive';
 import { ViewArchivedGroup } from './Pages/Edit/Groups/ViewArchivedGroup';
+import { ViewGroupsArchive } from './Pages/Edit/Groups/ViewGroupsArchive';
 import { ViewArchivedModule } from './Pages/Edit/Module/ViewArchivedModule';
-import { ViewArchivedRooms } from './Pages/Edit/Rooms/ViewArchivedRoom';
+import { ViewModulesArchive } from './Pages/Edit/Module/ViewModulesArchive';
 import { ViewArchivedProgram } from './Pages/Edit/Programs/ViewArchivedProgram';
+import { ViewProgramsArchive } from './Pages/Edit/Programs/ViewProgramsArchive';
+import { ViewArchivedRooms } from './Pages/Edit/Rooms/ViewArchivedRoom';
+import { ViewRoomsArchive } from './Pages/Edit/Rooms/ViewRoomsArchive';
 import { ViewArchivedShift } from './Pages/Edit/Shifts/ViewArchivedShift';
+import { ViewShiftsArchive } from './Pages/Edit/Shifts/ViewShiftsArchive';
 import { ViewArchivedSubject } from './Pages/Edit/Subjects/ViewArchivedSubject';
+import { ViewSubjectsArchive } from './Pages/Edit/Subjects/ViewSubjectsArchive';
 import { ViewArchivedTeacher } from './Pages/Edit/Teachers/ViewArchivedTeachers';
+import { ViewTeachersArchive } from './Pages/Edit/Teachers/ViewTeachersArchive';
 import { ViewGroupsSchedules } from './Pages/Schedules/ViewGroupsSchedules';
-import { ScheduleView } from './Pages/Schedules/Schedule';
-import { Sched1 } from './Pages/Schedules/Sched1';
 
-import { ScheduleView1 } from './Pages/Schedules/Schedule1';
 import { registerLicense } from '@syncfusion/ej2-base';
-import { EditGroupScheduleObject } from './Pages/Schedules/EditGroupScheduleObject';
 import { CreateSchedule } from './Pages/Schedules/CreateSchedulePage';
 import { CreateSchedulePageNext } from './Pages/Schedules/CreateSchedulePageNext';
-import { Drag_Drop } from './Pages/Schedules/Drag&Drop';
+import { EditGroupScheduleObject } from './Pages/Schedules/EditGroupScheduleObject';
 
 
 // Registering Syncfusion license key

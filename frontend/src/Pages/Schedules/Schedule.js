@@ -10,7 +10,6 @@ import { Grid, Header, List, Message, Segment } from "semantic-ui-react";
 import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap5.css";
 import { updateSampleSection } from "./sample-base";
 import "./Schedule.css";
-import { MessagePopUp } from "./Message";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",

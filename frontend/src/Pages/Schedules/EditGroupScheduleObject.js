@@ -5,13 +5,9 @@ import {
   Divider,
   Grid,
   Icon,
-  Input,
   Message,
   Segment,
-  Select,
   Table,
-  TextArea,
-  Form,
 } from "semantic-ui-react";
 import MainMenu from "../../Components/MainMenu";
 import { SchedulesMenu } from "../../Components/SchedulesMenu";
