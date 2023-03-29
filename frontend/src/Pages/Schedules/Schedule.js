@@ -247,7 +247,7 @@ export function ScheduleView() {
             Room: filteredData[0].Room,
             StartTime: cellData.startTime,
             EndTime: cellData.endTime,
-            Online: filteredData[0].Online,
+            Online: false,
           };
           setTeacher({ name: filteredData[0].Teacher, id: filteredData[0].Id });
           setRoom({ name: filteredData[0].Room, id: filteredData[0].Id });
@@ -255,7 +255,7 @@ export function ScheduleView() {
           setStartTime(cellData.startTime);
           setEndTime(cellData.endTime);
           setOnline(filteredData[0].Online);
-          console.log(filteredData[0]);
+          console.log(false);
           scheduleObj.openEditor(eventData, 'Add', true);
           isTreeItemDropped = true;
           draggedItemId = event.draggedNodeData.id;
@@ -310,7 +310,7 @@ export function ScheduleView() {
 
   const applyResult = (result) => {
     if (result.ok) {
-      setActive(true);
+      setActive(false);
       setLesson({});
       setStartTime("");
       setEndTime("");
@@ -318,7 +318,7 @@ export function ScheduleView() {
     setTeacher({});
     setOnline(false);
     } else {
-      setActive(true);
+      setActive(false);
       setError(true);
       let info = result.json()
         .then((jsonResponse) => setOkey(jsonResponse.message));
@@ -450,12 +450,12 @@ export function ScheduleView() {
         </td></tr>
         {console.log(online)}
         <br />
-        {!online || !props.Online ? (<tr><td className="e-textlabel">Kabinetas: </td><td colSpan={4}>
+        {online || props.Online ? "" : (<tr><td className="e-textlabel">Kabinetas: </td><td colSpan={4}>
 
           <DropDownListComponent id="Room" value={props.Room || room.name} placeholder='Pasirinkti' data-name="Room" className="e-field" style={{ width: '100%' }} dataSource={subjectsOnSchedule}
             fields={roomFields} onChange={(e) => setRoom({ id: e.target.itemData.Id, name: e.value })}>
           </DropDownListComponent >
-        </td></tr>  ) : ""}
+        </td></tr>  )}
         <tr><td className="e-textlabel">Mokytojas: </td><td colSpan={4}>
           <DropDownListComponent id="Teacher" value={props.Teacher || teacher.name} placeholder='Pasirinkti' data-name="Teacher" className="e-field" style={{ width: '100%' }} dataSource={subjectsOnSchedule}
             fields={teacherFields} onChange={(e) => setTeacher({ id: e.target.itemData.Id, name: e.value })}>
