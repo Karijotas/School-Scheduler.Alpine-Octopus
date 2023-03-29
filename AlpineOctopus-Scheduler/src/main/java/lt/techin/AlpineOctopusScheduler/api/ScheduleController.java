@@ -168,13 +168,16 @@ public class ScheduleController {
     }
 
 
-    @PatchMapping("/{scheduleId}/create/{subjectId}/{startTime}/{endTime}/{givenBoolean}/{teacherId}/{roomId}")
+    @PatchMapping("/{scheduleId}/create/{subjectId}/{startTime}/{endTime}/")
     public ResponseEntity<ScheduleEntityDto> scheduleLesson(@PathVariable Long scheduleId, @PathVariable Long subjectId,
                                                             @PathVariable(value = "startTime", required = true) String startTime,
                                                             @PathVariable(value = "endTime", required = true) String endTime,
-                                                            @PathVariable(value= "givenBoolean", required = false) Boolean givenBoolean,
-                                                            @PathVariable(value = "teacherId", required = false)Long teacherId,
-                                                            @PathVariable(value = "roomId", required = false)Long roomId) {
+//                                                            @PathVariable(value= "givenBoolean", required = false)
+                                                                Boolean givenBoolean,
+//                                                            @PathVariable(value = "teacherId", required = false)
+                                                                Long teacherId,
+//                                                            @PathVariable(value = "roomId", required = false)
+                                                                Long roomId) {
         DateTimeFormatter formatter =
                 DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH);
 
