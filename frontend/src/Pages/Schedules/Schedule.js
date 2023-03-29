@@ -162,9 +162,15 @@ export function ScheduleView() {
       removeLessonOnSchedule(event.data[0])
 
     }
-    else if (event.requestType === 'eventChanged') {
-      console.log("cia changas")
-      //console.log(event.data)
+    else if (event.requestType === 'eventChange') {
+      var newLesson = ({
+        id: event.data.Id,
+        startTime: timezone.removeLocalOffset(new Date(event.data.StartTime)).toISOString(),
+        endTime: timezone.removeLocalOffset(new Date(event.data.EndTime)).toISOString()
+      })
+      setLesson({id: event.data.Id})
+      console.log(newLesson);
+      createLessonOnSchedule(newLesson);
 
     }
     else if (event.action == "update" || (event.action == "batch" && event.changed != null)) {
@@ -180,7 +186,7 @@ export function ScheduleView() {
 
   const onPopupOpen = (event) => {
     setSubject("");
-    setOnline("");
+    setOnline(false);
     setRoom({});
     setTeacher({});
     setLesson({});
@@ -241,13 +247,15 @@ export function ScheduleView() {
             Room: filteredData[0].Room,
             StartTime: cellData.startTime,
             EndTime: cellData.endTime,
+            Online: false,
           };
           setTeacher({ name: filteredData[0].Teacher, id: filteredData[0].Id });
           setRoom({ name: filteredData[0].Room, id: filteredData[0].Id });
           setLesson({ name: filteredData[0].Subject, id: filteredData[0].Id });
           setStartTime(cellData.startTime);
           setEndTime(cellData.endTime);
-          console.log(filteredData[0]);
+          setOnline(filteredData[0].Online);
+          console.log(false);
           scheduleObj.openEditor(eventData, 'Add', true);
           isTreeItemDropped = true;
           draggedItemId = event.draggedNodeData.id;
@@ -287,7 +295,7 @@ export function ScheduleView() {
 
   const createLessonOnSchedule = (props) => {
     fetch(
-      `/api/v1/schedule/${params.id}/create/${lesson.id}/${props.startTime}/${props.endTime}/${online ? `?givenBoolean=${online}` : ""}${room.id ? `&roomId=${room.id}` : ""}${teacher.id ? `&teacherId=${teacher.id}` : ""}`, {
+      `/api/v1/schedule/${params.id}/create/${lesson.id === undefined || lesson.id === "" ? props.id : lesson.id}/${props.startTime}/${props.endTime}/?givenBoolean=${online}${room.id ? `&roomId=${room.id}` : ""}${teacher.id ? `&teacherId=${teacher.id}` : ""}`, {
       method: 'PATCH'
     })
       .then(setActive(true))
@@ -295,16 +303,22 @@ export function ScheduleView() {
     setLesson({});
     setStartTime("");
     setEndTime("");
+    setRoom({});
+    setTeacher({});
+    setOnline(false);
   };
 
   const applyResult = (result) => {
     if (result.ok) {
-      setActive(true);
+      setActive(false);
       setLesson({});
       setStartTime("");
       setEndTime("");
+      setRoom({});
+    setTeacher({});
+    setOnline(false);
     } else {
-      setActive(true);
+      setActive(false);
       setError(true);
       let info = result.json()
         .then((jsonResponse) => setOkey(jsonResponse.message));
@@ -428,33 +442,25 @@ export function ScheduleView() {
             onChange={(e) => setLesson({ id: e.target.itemData.Id, name: e.value })}
           >
           </DropDownListComponent>
-          {/* {console.log(props)}
-          {console.log(subjects)} */}
+                   
         </td></tr>
         <br />
         <tr><td className="e-textlabel">Nuotolinė pamoka: </td><td colSpan={4}>
           <CheckBoxComponent name="Online" value={online} checked={props.Online || online} onChange={(e) => setOnline(e.target.properties.checked)}></CheckBoxComponent>
         </td></tr>
-        {/* {console.log(online)} */}
+        {console.log(online)}
         <br />
-        {!online || props.Online ? (props.Room === undefined ? <tr><td className="e-textlabel">Kabinetas: </td><td colSpan={4}>
+        {online || props.Online ? "" : (<tr><td className="e-textlabel">Kabinetas: </td><td colSpan={4}>
 
           <DropDownListComponent id="Room" value={props.Room || room.name} placeholder='Pasirinkti' data-name="Room" className="e-field" style={{ width: '100%' }} dataSource={subjectsOnSchedule}
             fields={roomFields} onChange={(e) => setRoom({ id: e.target.itemData.Id, name: e.value })}>
           </DropDownListComponent >
-        </td></tr> : <tr><td className="e-textlabel">Kabinetas:</td><td colSpan={4}> <br />
-          <div>{props.Room}<br /></div>
-          <br />
-        </td></tr>
-        ) : ""}
-        {props.Teacher === undefined ? <tr><td className="e-textlabel">Mokytojas: </td><td colSpan={4}>
+        </td></tr>  )}
+        <tr><td className="e-textlabel">Mokytojas: </td><td colSpan={4}>
           <DropDownListComponent id="Teacher" value={props.Teacher || teacher.name} placeholder='Pasirinkti' data-name="Teacher" className="e-field" style={{ width: '100%' }} dataSource={subjectsOnSchedule}
             fields={teacherFields} onChange={(e) => setTeacher({ id: e.target.itemData.Id, name: e.value })}>
           </DropDownListComponent>
-        </td></tr> : <tr><td className="e-textlabel">Mokytojas: </td><td colSpan={4}>
-          <div>{props.Teacher}</div>
-        </td></tr>}
-
+        </td></tr>
         <tr><td className="e-textlabel">Data nuo: </td><td colSpan={4}>
           <DateTimePickerComponent firstDayOfWeek={1} format='yyyy/MM/dd HH' timeFormat={"HH"} step={60} locale='lt' id="StartTime" data-name="StartTime" value={new Date(props.startTime || props.StartTime || startTime)} onChange={(e) => setStartTime(new Date(e.value))} className="e-field"></DateTimePickerComponent>
         </td></tr>
@@ -562,6 +568,13 @@ export function ScheduleView() {
                       iconCss="e-icons e-print"
                       onClick={onPrint.bind(this)}
                       content="Print"
+                    /> {" "}
+                    <ButtonComponent
+                      id="excelBtn"
+                      cssClass="title-bar-btn"
+                      iconCss="e-icons e-export-excel"
+                      onClick={onExportClick.bind(this)}
+                      content="Excel"
                     />
                   </div>
                   <h1 className="title-text">{schedules.name}</h1>
@@ -620,7 +633,7 @@ export function ScheduleView() {
                       </ResourceDirective>
                     </ResourcesDirective>
                     <ViewsDirective>
-                      <ViewDirective option='Day' startHour='01:00' endHour='15:00' timeScale={{ interval: 1, slotCount: 1 }} eventTemplate={eventTemplate.bind(this)} />
+                      <ViewDirective option='Day' startHour='01:00' endHour='15:00' timeScale={{ slotCount: 1 }} eventTemplate={eventTemplate.bind(this)} />
                       <ViewDirective option='Week' startHour='01:00' endHour='15:00' timeScale={{ slotCount: 1 }} eventTemplate={eventTemplate.bind(this)} />
                       <ViewDirective option='WorkWeek' startHour='01:00' endHour='15:00' timeScale={{ slotCount: 1 }} eventTemplate={eventTemplate.bind(this)} />
                       <ViewDirective option='Month' startHour='01:00' endHour='15:00' timeScale={{ slotCount: 1 }} eventTemplate={eventTemplate.bind(this)} />
