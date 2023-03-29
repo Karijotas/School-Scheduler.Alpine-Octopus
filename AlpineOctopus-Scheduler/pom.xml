@@ -84,7 +84,7 @@
     <!--        </repository>-->
     <!--    </repositories>-->
     <build>
-        <finalName>alpine-octopus</finalName>
+        <finalName>alpine</finalName>
         <plugins>
 
             <!--            <plugin>-->
