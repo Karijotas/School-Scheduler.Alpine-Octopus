@@ -31,6 +31,23 @@ public class HolidayService {
                 .noneMatch(holiday1 -> holiday1.getName().equals(holiday.getName()));
     }
 
+    public boolean dateRangeOverlap(Holiday holiday) {
+//        List<Holiday> holidays = holidayRepository.findAll();
+//        for (Holiday h : holidays) {
+//            if (h.getId() != holiday.getId() && h.getStartDate().isBefore(holiday.getEndDate()) && holiday.getStartDate().isBefore(h.getEndDate())) {
+//                return true;
+//            }
+//        }
+//        return false;
+        List<Holiday> holidays = holidayRepository.findAll();
+        for (Holiday h : holidays) {
+            if (h.getId() != holiday.getId() && (h.getStartDate().isBefore(holiday.getEndDate()) || h.getStartDate().isEqual(holiday.getEndDate())) && (holiday.getStartDate().isBefore(h.getEndDate()) || holiday.getStartDate().isEqual(h.getEndDate()))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public List<Holiday> getAll() {
         return holidayRepository.findAll();
     }
@@ -41,12 +58,23 @@ public class HolidayService {
     }
 
     public List<HolidayEntityDto> getAllPagedHolidays(int page, int pageSize) {
-        LocalDate startDate = LocalDate.now().withDayOfYear(1); // Get the start of the current year
         List<Holiday> allHolidays = holidayRepository.findAll();
 
         List<HolidayEntityDto> holidayDtos = allHolidays.stream()
-                .filter(holiday -> !holiday.getStartDate().isBefore(startDate)) // Filter holidays to show only those from the start of the current year or later
-                .sorted(Comparator.comparing(Holiday::getStartDate))
+                .filter(holiday -> holiday.getStartDate() == null || !holiday.getStartDate().isBefore(LocalDate.now().withDayOfYear(1)))
+                .sorted((h1, h2) -> {
+                    LocalDate h1StartDate = h1.getStartDate();
+                    LocalDate h2StartDate = h2.getStartDate();
+                    if (h1StartDate == null && h2StartDate == null) {
+                        return 0;
+                    } else if (h1StartDate == null) {
+                        return -1;
+                    } else if (h2StartDate == null) {
+                        return 1;
+                    } else {
+                        return h1StartDate.compareTo(h2StartDate);
+                    }
+                })
                 .map(HolidayMapper::toHolidayEntityDto)
                 .collect(Collectors.toList());
 
@@ -66,16 +94,6 @@ public class HolidayService {
 
     @Transactional(readOnly = true)
     public List<HolidayEntityDto> getHolidaysByDateRange(String startDate, String endDate) {
-//
-//        //Provided String must be in a YYYY-MM-DD format. Subtracting one in order for the searched day itself to appear in results
-//        var start = LocalDate.parse(startDate).minusDays(1);
-//        var end = LocalDate.parse(endDate).minusDays(1);
-//
-//        return holidayRepository.findByDateRange(start, end)
-//                .stream()
-//
-//                .map(HolidayMapper::toHolidayEntityDto)
-//                .collect(Collectors.toList());
         LocalDate start = LocalDate.parse(startDate);
         LocalDate end = LocalDate.parse(endDate);
         List<Holiday> holidays = holidayRepository.findByStartDateBetween(start, end);
@@ -109,6 +127,7 @@ public class HolidayService {
         existingHoliday.setReccuring(holiday.getReccuring());
 
         return holidayRepository.save(existingHoliday);
+
     }
 
     public boolean deleteById(Long id) {

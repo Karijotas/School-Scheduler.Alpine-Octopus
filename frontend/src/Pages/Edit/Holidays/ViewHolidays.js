@@ -123,7 +123,7 @@ const removeHoliday = (id) => {
 
               <RangePicker
               onChange={handleDateChange}
-              placeholder={["Data nuo", "Data iki"]}
+              placeholder={["Pradžios data", "Pabaigos data"]}
               /><Button type="primary" onClick={fetchDateFilterHolidays}>
               Filtruoti
             </Button>
@@ -145,8 +145,8 @@ const removeHoliday = (id) => {
                 <Table.Header>
                   <Table.Row>
                     <Table.HeaderCell>Atostogų pavadinimas</Table.HeaderCell>
-                    <Table.HeaderCell>Data nuo</Table.HeaderCell>
-                    <Table.HeaderCell>Data iki</Table.HeaderCell>
+                    <Table.HeaderCell>Pradžios data</Table.HeaderCell>
+                    <Table.HeaderCell>Pabaigos data</Table.HeaderCell>
                     <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                   </Table.Row>
                 </Table.Header>

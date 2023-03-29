@@ -24,26 +24,35 @@ export function CreateHoliday(){
 
   //Validation
   const [nameDirty, setNameDirty] = useState(false);
-  const [nameError, setNameError] = useState("Pavadinimas negali būti tuščias!")
-  // const [startDateError, setStartDateError] = useState("")
-//   const [descriptionError, setDescriptionError] = useState("")
+  const [startDateDirty, setStartDateDirty] = useState(false);
+  const [endDateDirty, setEndDateDirty] = useState(false);
+  
+  const [nameError, setNameError] = useState("Negali būti tuščias!")
+  const [startDateError, setStartDateError] = useState("Negali būti tuščias!")
+  const [endDateError, setEndDateError] = useState("Negali būti tuščias!")
+
   const [formValid, setFormValid] = useState(false)
 
 
-
   useEffect(() => {
-    if (nameError ) {
+    if (nameError || startDateError|| endDateError) {
       setFormValid(false)
     } else {
       setFormValid(true)
     }
-  }, [nameError])
+  }, [nameError,startDateError,endDateError])
 
   const blurHandler = (e) => {
     switch (e.target.name) {
-      case 'name':
+      case "name":
         setNameDirty(true);
-        break
+        break;
+        case "startDate":
+          setStartDateDirty(true);
+        break;
+        case "endDate":
+          setEndDateDirty(true);
+        break;
     }
   }
 
@@ -52,24 +61,43 @@ export function CreateHoliday(){
     if (e.target.value.length < 2 || e.target.value.length > 100) {
       setNameError("Įveskite nuo 2 iki 100 simbolių!")
       if (!e.target.value) {
-        setNameError("Pavadinimas negali būti tuščias!")
+        setNameError("Negali būti tuščias!")
       }
     } else {
       setNameError("")
     }
   }
 
-  const handleReccuringChange = (event) => {
-    setReccuring(event.target.value === 'yes');
+  const startDateHandler = (date) => {
+    if (date) {
+      if (!endDate || !date.isAfter(endDate)) {
+        const newDate = dayjs(date).format("YYYY-MM-DD");
+        setStartDate(newDate);
+        setStartDateError("");
+      } else {
+        setStartDateError("Pradžios data negali būti vėlesnė nei pabaigos data!");
+      }
+    } else {
+      setStartDateError("Negali būti tuščias!");
+    }
   }
 
-  const startDateHandler = (e) => {
-    const newDate = dayjs(e).format("YYYY-MM-DD");
-                setStartDate(newDate);
+  const endDateHandler = (date) => {
+    if (date) {
+      if (!startDate || !date.isBefore(startDate)) {
+        const newDate = dayjs(date).format("YYYY-MM-DD");
+        setEndDate(newDate);
+        setEndDateError("");
+      } else {
+        setEndDateError("Pabaigos data negali būti ankstesnė nei pradžios data!");
+      }
+    } else {
+      setEndDateError("Negali būti tuščias!");
+    }       
   }
-  const endDateHandler = (e) => {
-   const newDate = dayjs(e).format("YYYY-MM-DD");
-                setEndDate(newDate);
+  
+  const handleReccuringChange = (event) => {
+    setReccuring(event.target.value === 'yes');
   }
   
   const disabledStartDate = (current) => {
@@ -119,33 +147,43 @@ export function CreateHoliday(){
             <Form.Field >
               <label>Atostogų pavadinimas</label>
               {(nameDirty && nameError) && <div style={{ color: "red" }}>{nameError}</div>}
-              <input name="name"  onBlur={blurHandler} placeholder='Atostogų pavadinimas' value={name} onChange={e => nameHandler(e)} />
+              <input 
+              name="name"  
+              onBlur={blurHandler} 
+              placeholder='Atostogų pavadinimas' 
+              value={name} 
+              onChange={e => nameHandler(e)} 
+              />
             </Form.Field>
             <Form.Field >
-              <label>Data nuo</label>
+              <label>Pradžios data</label>
             </Form.Field>
           </Form>
 
-              {/* {(starDateError) && <div style={{ color: "red" }}>{starDateError}</div>} */}
-              <DatePicker
-              className="controls4"
-              placeholder="Data nuo"
-              onChange={(e) => startDateHandler(e)}
-              disabledDate={disabledStartDate}
+              {(startDateDirty && startDateError) && <div style={{ color: "red" }}>{startDateError}</div>}
+              <DatePicker 
+              name="startDate"
+               onBlur={blurHandler}
+               className="controls4"
+               placeholder="Data nuo"
+               onChange={startDateHandler}
+               disabledDate={disabledStartDate}
             />
             
             <Form style={{ paddingTop: '10px' }}>
             <Form.Field >
-              <label>Data iki</label>
+              <label>Pabaigos data</label>
              </Form.Field> 
             </Form>
 
-              {/* {(descriptionError) && <div style={{ color: "red" }}>{descriptionError}</div>} */}
+            {(endDateDirty && endDateError) && <div style={{ color: "red" }}>{endDateError}</div>}
               <DatePicker
-              className="controls4"
-              placeholder="Data iki"
-              disabledDate={disabledStartDate}
-              onChange={(e) => endDateHandler(e)}
+              name="endDate"
+              onBlur={blurHandler}
+               className="controls4"
+               placeholder="Data iki"
+               onChange={endDateHandler}
+               disabledDate={disabledStartDate}
               />
 
             <Form style={{ paddingTop: '10px' }}>

@@ -19,13 +19,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -54,36 +53,38 @@ public class HolidayControllerTest {
     @Test
     @Order(1)
     void getHoliday_returnsCorrectDtos() throws Exception {
-        // Arrange
-        List<HolidayTestDto> expectedHolidayDtos = Arrays.asList(
-                new HolidayTestDto("New Year's Day", LocalDate.of(2022, 1, 1), LocalDate.of(2022, 1, 1), false),
-                new HolidayTestDto("Christmas Day", LocalDate.of(2022, 12, 25), LocalDate.of(2022, 12, 25), false),
-                new HolidayTestDto("Easter Sunday", LocalDate.of(2022, 4, 17), LocalDate.of(2022, 4, 17), true)
-        );
-        Mockito.when(holidayService.getAllHolidays()).thenReturn(expectedHolidayDtos);
+        //operacija_kokiusduomenis_expectedresult
 
-        // Act
-        MvcResult result = mockMvc.perform(get("/api/v1/holidays/all"))
+
+        var holidayDto1 = new HolidayTestDto(1L);
+        var holidayDto2 = new HolidayTestDto(2L);
+        var holidayDto3 = new HolidayTestDto(3L);
+        var holidayDto4 = new HolidayTestDto(4l);
+        var holidayDto5 = new HolidayTestDto(5l);
+        var holidayDto6 = new HolidayTestDto(6l);
+        var holidayDto7 = new HolidayTestDto(7l);
+        var holidayDto8 = new HolidayTestDto(8l);
+        var holidayDto9 = new HolidayTestDto(9l);
+        var holidayDto10 = new HolidayTestDto(10l);
+        var holidayDto11 = new HolidayTestDto(11l);
+        var holidayDto12 = new HolidayTestDto(12l);
+
+
+        var mvcResult = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .get("/api/v1/holidays/all")
+                                .accept(MediaType.APPLICATION_JSON)
+                )
                 .andExpect(status().isOk())
                 .andReturn();
 
-        // Assert
-        String jsonResponse = result.getResponse().getContentAsString();
-        List<HolidayTestDto> actualHolidayDtos = objectMapper.readValue(jsonResponse, new TypeReference<List<HolidayTestDto>>() {
+        var mappedResponse = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<HolidayTestDto>>() {
         });
-        assertEquals(expectedHolidayDtos.size(), actualHolidayDtos.size());
-        for (int i = 0; i < expectedHolidayDtos.size(); i++) {
-            assertEquals(expectedHolidayDtos.get(i).getName(), actualHolidayDtos.get(i).getName());
-            assertEquals(expectedHolidayDtos.get(i).getStartDate(), actualHolidayDtos.get(i).getStartDate());
-            assertEquals(expectedHolidayDtos.get(i).getEndDate(), actualHolidayDtos.get(i).getEndDate());
-            assertEquals(expectedHolidayDtos.get(i).getReccuring(), actualHolidayDtos.get(i).getReccuring());
-        }
-        if (!expectedHolidayDtos.equals(actualHolidayDtos)) {
-            System.out.println("Actual list contains:");
-            for (HolidayTestDto actualHolidayDto : actualHolidayDtos) {
-                System.out.println(actualHolidayDto);
-            }
-        }
+
+        assertThat(mappedResponse)
+                .containsExactlyInAnyOrder(holidayDto1, holidayDto2, holidayDto3, holidayDto4, holidayDto5, holidayDto6,
+                        holidayDto7, holidayDto8, holidayDto9, holidayDto10, holidayDto11, holidayDto12);
+
 
     }
 
