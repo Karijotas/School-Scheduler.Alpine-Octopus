@@ -287,7 +287,7 @@ export function ScheduleView() {
 
   const createLessonOnSchedule = (props) => {
     fetch(
-      `/api/v1/schedule/${params.id}/create/${lesson.id}/${props.startTime}/${props.endTime}/${online ? `?givenBoolean=${online}` : " "}${room.id ? `&roomId=${room.id}` : " "}${teacher.id ? `&teacherId=${teacher.id}` : " "}`, {
+      `/api/v1/schedule/${params.id}/create/${lesson.id}/${props.startTime}/${props.endTime}/${online ? `?givenBoolean=${online}` : ""}${room.id ? `&roomId=${room.id}` : ""}${teacher.id ? `&teacherId=${teacher.id}` : ""}`, {
       method: 'PATCH'
     })
       .then(setActive(true))
@@ -579,7 +579,7 @@ export function ScheduleView() {
                     editorTemplate={editorTemplate}
                     selectedDate={new Date(2023, 1, 10, 24, 0)}
                     eventSettings={{
-                      dataSource: lessonsOnSchedule,
+                      dataSource: dataaSource,
                       fields: {
                         editorTemplate
                       }
