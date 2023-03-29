@@ -27,11 +27,11 @@ import {
 } from "@syncfusion/ej2-react-schedule";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Grid, Header, List, Segment } from "semantic-ui-react";
+import { Grid, Header, List, Message, Segment } from "semantic-ui-react";
 import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap5.css";
 import { updateSampleSection } from "./sample-base";
 import "./Schedule.css";
-import MessagePopUp from "./Message";
+import { MessagePopUp } from "./Message";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -84,6 +84,7 @@ export function ScheduleView() {
   const [schedules, setSchedules] = useState([]);
   const [lessons, setLessons] = useState([]);
   const [holidays, setHolidays] = useState([]);
+  const [error, setError] = useState(false)
   const [subjects, setSubjects] = useState([]);
   const [subjectId, setSubjectId] = useState("");
   const [startTime, setStartTime] = useState("");
@@ -243,25 +244,27 @@ export function ScheduleView() {
       {
         method: "PATCH",
       }
-    ).then(applyResult);
+    ).then(applyResult)
   };
 
   const applyResult = (result) => {
     if (result.ok) {
-      setOkey("Sėkmingai sukurta");
       setActive(true);
       setLesson({});
       setStartTime("");
       setEndTime("");
-      setTimeout(() => {
-        setOkey("");
-      }, 5000);
     } else {
-      setOkey(<MessagePopUp/>);
+      setActive(true);
+      setError(true);
+      let info = result.json()
+        .then((jsonResponse) => setOkey(jsonResponse.message));
+
+      ;
       setTimeout(() => {
         setOkey("");
-      }, 5000)
-      ;
+        setError(false);
+      }, 10000)
+        ;
     }
   };
 
@@ -500,9 +503,14 @@ export function ScheduleView() {
   const dataaSource = [...lessonsOnSchedule, ...holidaysOnSchedule];
 
   return (
-    
+
     <div>
-      <div>{okey}</div>
+      {error && <Message negative>
+        <Message.Header>Nepavyko sukurti</Message.Header>
+        <p >
+          {okey}
+        </p>
+      </Message>}
       <div className="schedule-control-section">
         <div className="control-section">
           <div className="control-wrapper drag-sample-wrapper">
@@ -535,7 +543,7 @@ export function ScheduleView() {
                         editorTemplate,
                       },
                     }}
-                    
+
                     colorField="Color"
                     currentView="Month"
                     actionBegin={onActionBegin.bind(this)}

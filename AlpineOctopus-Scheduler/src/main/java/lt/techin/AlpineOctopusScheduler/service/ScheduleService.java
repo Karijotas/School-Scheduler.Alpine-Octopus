@@ -467,17 +467,17 @@ public class ScheduleService {
 
                         return scheduleRepository.save(existingSchedule);
                     } else {
-                        throw new SchedulerValidationException("Lesson date is not in schedule time scope", "time", "Invalid time", scheduleId.toString());
+                        throw new SchedulerValidationException("Planuojama pamoka yra anksčiau nei tvarkaraščio pradžia. Pradžia:" + existingSchedule.getStartingDate(), "time", "Invalid time", scheduleId.toString());
                     }
                 } else {
-                    throw new SchedulerValidationException("Other lessons are planned during selected time", "time", "Invalid time", scheduleId.toString());
+                    throw new SchedulerValidationException("Pasirinktu metu jau yra suplanuotos kitos pamokos", "time", "Invalid time", scheduleId.toString());
                 }
             } else {
-                throw new SchedulerValidationException("End time is before start time", "time", "Invalid time", scheduleId.toString());
+                throw new SchedulerValidationException("Pamokos pabaigos laiką pasirinkote ankstesnį, nei pamokos pradžia.", "time", "Invalid time", scheduleId.toString());
             }
 
         } else {
-            throw new SchedulerValidationException("All available lessons already planned", "Subject", "Subject planned", subjectId.toString());
+            throw new SchedulerValidationException("Pasirinkote daugiau pamokų, nei liko / suplanuotos visos pamokos.", "Subject", "Subject planned", subjectId.toString());
         }
     }
 
