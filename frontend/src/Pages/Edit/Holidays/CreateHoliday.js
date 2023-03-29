@@ -61,7 +61,7 @@ export function CreateHoliday(){
     if (e.target.value.length < 2 || e.target.value.length > 100) {
       setNameError("Įveskite nuo 2 iki 100 simbolių!")
       if (!e.target.value) {
-        setNameError("Pavadinimas negali būti tuščias!")
+        setNameError("Negali būti tuščias!")
       }
     } else {
       setNameError("")
@@ -69,26 +69,30 @@ export function CreateHoliday(){
   }
 
   const startDateHandler = (date) => {
-    if(date){
-      const newDate = dayjs(date).format("YYYY-MM-DD");
-      setStartDate(newDate);
-      setStartDateError("")
+    if (date) {
+      if (!endDate || !date.isAfter(endDate)) {
+        const newDate = dayjs(date).format("YYYY-MM-DD");
+        setStartDate(newDate);
+        setStartDateError("");
+      } else {
+        setStartDateError("Pradžios data negali būti vėlesnė nei pabaigos data!");
+      }
     } else {
-      setStartDateError("Negali būti tuščias!")
+      setStartDateError("Negali būti tuščias!");
     }
   }
 
   const endDateHandler = (date) => {
-    if(date){
-      if(!date.isBefore(startDate)){
+    if (date) {
+      if (!startDate || !date.isBefore(startDate)) {
         const newDate = dayjs(date).format("YYYY-MM-DD");
-      setEndDate(newDate);
-      setEndDateError("")
+        setEndDate(newDate);
+        setEndDateError("");
       } else {
-        setEndDateError("Data iki negali buti anksciau nei Data nuo")
+        setEndDateError("Pabaigos data negali būti ankstesnė nei pradžios data!");
       }
     } else {
-      setEndDateError("Negali būti tuščias!")
+      setEndDateError("Negali būti tuščias!");
     }       
   }
   
@@ -152,7 +156,7 @@ export function CreateHoliday(){
               />
             </Form.Field>
             <Form.Field >
-              <label>Data nuo</label>
+              <label>Pradžios data</label>
             </Form.Field>
           </Form>
 
@@ -168,7 +172,7 @@ export function CreateHoliday(){
             
             <Form style={{ paddingTop: '10px' }}>
             <Form.Field >
-              <label>Data iki</label>
+              <label>Pabaigos data</label>
              </Form.Field> 
             </Form>
 

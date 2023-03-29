@@ -38,20 +38,19 @@ export function EditHoliday() {
   const [reccuring, setReccuring] = useState(holidays.reccuring);
 
   //Validation
- 
+
   const [nameError, setNameError] = useState("")
   const [startDateError, setStartDateError] = useState("")
   const [endDateError, setEndDateError] = useState("")
-
   const [formValid, setFormValid] = useState(false);
 
   useEffect(() => {
-    if (nameError || startDateError|| endDateError) {
+    if (nameError || startDateError || endDateError) {
       setFormValid(false)
     } else {
       setFormValid(true)
     }
-  }, [nameError,startDateError,endDateError])
+  }, [nameError, startDateError, endDateError])
 
   useEffect(() => {
     setReccuring(holidays.reccuring);
@@ -62,20 +61,6 @@ export function EditHoliday() {
     setName(e.target.value);
     validateNameInput(e.target.value);
   };
-
-  const handleStartDateInputChange = (e) => {
-    holidays.startDate = e.target.value;
-    const newDate = dayjs(e).format("YYYY-MM-DD");
-      setStartDate(newDate);
-    validateStartDate(e.target.value)
-  }
-
-  const handleEndDateInputChange = (e) => {
-    holidays.startDate = e.target.value;
-    const newDate = dayjs(e).format("YYYY-MM-DD");
-      setEndDate(newDate);
-    validateEndDate(e.target.value)
-  }
 
   const handleReccuringChange = (e) => {
     if (e.target.value === 'yes') {
@@ -97,24 +82,9 @@ export function EditHoliday() {
       setNameError("");
     }
   };
-  const validateStartDate = (value) => {
-    if(value){
-      setStartDateError("")
-    } else {
-      setStartDateError("Negali būti tuščias!")
-    }
-  }
+ 
 
-  const validateEndDate = (value) => {
-    if(!value){
-      setEndDateError("Negali būti tuščias!")
-    } else {
-      if(value.isBefore(startDate)){
-        setEndDateError("Data iki negali buti anksciau nei Data nuo")
-      }
-      setEndDateError("")
-    }       
-  }
+  
 
   useEffect(() => {
     setStartDate(holidays.startDate)
@@ -130,7 +100,7 @@ export function EditHoliday() {
   const applyResult = () => {
     setActive(true);
   };
-  
+
   const disabledStartDate = (current) => {
     return current && current < moment().startOf("year");
   };
@@ -199,8 +169,8 @@ export function EditHoliday() {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Atostogų pavadinimas</Table.HeaderCell>
-                      <Table.HeaderCell>Data nuo</Table.HeaderCell>
-                      <Table.HeaderCell>Data iki</Table.HeaderCell>
+                      <Table.HeaderCell>Pradžios data</Table.HeaderCell>
+                      <Table.HeaderCell>Pabaigos data</Table.HeaderCell>
                       <Table.HeaderCell>Pasikartoja</Table.HeaderCell>
                       <Table.HeaderCell>Veiksmai</Table.HeaderCell>
                     </Table.Row>
@@ -241,10 +211,10 @@ export function EditHoliday() {
                         Atostogų pavadinimas
                       </Table.HeaderCell>
                       <Table.HeaderCell>
-                        Data nuo
+                        Pradžios data
                       </Table.HeaderCell>
                       <Table.HeaderCell>
-                        Data iki
+                        Pabaigos data
                       </Table.HeaderCell>
                       <Table.HeaderCell>
                         Pasikartoja
@@ -263,40 +233,57 @@ export function EditHoliday() {
                         />
                       </Table.Cell>
                       <Table.Cell>
-                      {(startDateError) && <div style={{ color: "red" }}>{startDateError}</div>}
+
+                        {(startDateError) && <div style={{ color: "red" }}>{startDateError}</div>}
                         <DatePicker
                           className="controls4"
                           placeholder="Data nuo"
                           disabledDate={disabledStartDate}
                           defaultValue={dayjs(startDate)}
                           onChange={(e) => {
-                            const newDate = dayjs(e);
-                            if (!newDate.isValid()) {
-                              setStartDateError("Negali buti tuscias")
-                            } else {
-                              setStartDateError("");
+                            const newDate = dayjs(e);     
+                            if (newDate) {
+                              if(!endDate || !newDate.isAfter(endDate)){
+                                setStartDateError("");
                               const formattedDate = newDate.format("YYYY-MM-DD");
                               setStartDate(formattedDate);
                               holidays.startDate = formattedDate;
+                              }else{
+                                setStartDateError("Pradžios data negali būti vėlesnė nei pabaigos data!")
+                              }               
+                            } else {
+                              setStartDateError("Negali būti tuščias!")
                             }
                           }}
                         />
+
                       </Table.Cell>
                       <Table.Cell>
+
+                        {(endDateError) && <div style={{ color: "red" }}>{endDateError}</div>}
                         <DatePicker
                           className="controls4"
-                          placeholder="Data iki"
+                          placeholder="Pabaigos data"
                           disabledDate={disabledStartDate}
                           defaultValue={dayjs(endDate)}
+
                           onChange={(e) => {
-                            const newDate = dayjs(e);
-                            if (newDate.isValid()) {
-                              const formattedDate = newDate.format("YYYY-MM-DD");
-                              setEndDate(formattedDate);
-                              holidays.endDate = formattedDate;
+                            const newDate = dayjs(e)  
+                            if (newDate) {
+                              if (!startDate || !newDate.isBefore(startDate)) {
+                                setEndDateError("")
+                                const formattedDate = newDate.format("YYYY-MM-DD");
+                                setEndDate(formattedDate);
+                                holidays.endDate = formattedDate;
+                              } else {
+                                setEndDateError("Pabaigos data negali būti ankstesnė nei pradžios data!")
+                              }
+                            } else {
+                              setEndDateError("Negali būti tuščias!")
                             }
                           }}
                         />
+
                       </Table.Cell>
                       <Table.Cell>
                         <Form style={{ paddingTop: '10px' }}>

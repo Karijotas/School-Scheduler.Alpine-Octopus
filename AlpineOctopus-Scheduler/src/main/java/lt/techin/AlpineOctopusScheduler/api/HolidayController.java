@@ -85,10 +85,6 @@ public class HolidayController {
     public ResponseEntity<HolidayDto> updateHoliday(@PathVariable Long id, @Valid @RequestBody HolidayDto holidayDto) {
         Holiday holiday = toHoliday(holidayDto);
         holiday.setId(id);
-
-        if (!holidayService.classIsUnique(holiday)) {
-            throw new SchedulerValidationException("Holiday name already exists", "Holiday name", "Already exists", holiday.getName());
-        }
         if (holidayService.dateRangeOverlap(holiday)) {
             throw new SchedulerValidationException("Date range overlaps with an existing holiday", "startDate and endDate", "Overlap", holiday.getStartDate() + " - " + holiday.getEndDate());
         }
