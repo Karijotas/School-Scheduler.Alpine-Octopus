@@ -52,7 +52,7 @@ export function CreateSchedulePageNext() {
       setOkey("Sėkmingai priskirta");
       setTimeout(() => {
         setOkey("");
-      }, 5000);
+      }, 15000);
     } else {
       window.alert("Nepavyko sukurti: pavadinimas turi būti unikalus!");
     }

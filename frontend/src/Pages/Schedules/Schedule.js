@@ -6,11 +6,11 @@ import { TreeViewComponent } from '@syncfusion/ej2-react-navigations';
 import { Agenda, Timezone, Day, DragAndDrop, ExcelExport, Inject, Month, Print, Resize, ResourceDirective, ResourcesDirective, Schedule, ScheduleComponent, ViewDirective, ViewsDirective, Week, WorkWeek } from '@syncfusion/ej2-react-schedule';
 import React, { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
-import { Grid, Header, Segment, List } from "semantic-ui-react";
+import { Grid, Header, List, Message, Segment } from "semantic-ui-react";
 import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap5.css";
-import { updateSampleSection } from './sample-base';
-import { Button } from '@syncfusion/ej2-buttons';
-import './Schedule.css';
+import { updateSampleSection } from "./sample-base";
+import "./Schedule.css";
+import { MessagePopUp } from "./Message";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -62,14 +62,15 @@ export function ScheduleView() {
   let scheduleObj;
   const params = useParams();
   const [schedules, setSchedules] = useState([]);
-  const [lessons, setLessons] = useState([]); 
+  const [lessons, setLessons] = useState([]);
+  const [holidays, setHolidays] = useState([]);
+  const [error, setError] = useState(false)
   const [subjects, setSubjects] = useState([]);
   const [subjectId, setSubjectId] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [active, setActive] = useState(false);
-  const [online, setOnline] = useState(false);
-  const [subject, setSubject] = useState('');
+  const [online, setOnline] = useState(false);  
   const [rooms, setRooms] = useState([]);
   const [teachers, setTeachers] = useState([]);
   const [room, setRoom] = useState({
@@ -80,6 +81,8 @@ export function ScheduleView() {
     id: "",
     name: ""
   });
+  const [subject, setSubject] = useState("");
+  const [okey, setOkey] = useState("");
   const [lesson, setLesson] = useState({
     id: "",
     name: "",
@@ -276,16 +279,44 @@ console.log(event);
       .then(setSubjects);
   }, [params, active]);
 
+  useEffect(() => {
+    fetch(`/api/v1/holidays/`)
+      .then((response) => response.json())
+      .then(setHolidays);
+  }, [params, active]);
+
   const createLessonOnSchedule = (props) => {
   fetch(
       `/api/v1/schedule/${params.id}/create/${lesson.id}/${props.startTime}/${props.endTime}`, {
       method: 'PATCH'
     })
-      .then(setActive(true));
+      .then(setActive(true))
+      .then(applyResult);
+      setLesson({});
+      setStartTime("");
+      setEndTime("");    
+  };
+
+  const applyResult = (result) => {
+    if (result.ok) {
+      setActive(true);
       setLesson({});
       setStartTime("");
       setEndTime("");
-  }
+    } else {
+      setActive(true);
+      setError(true);
+      let info = result.json()
+        .then((jsonResponse) => setOkey(jsonResponse.message));
+
+      ;
+      setTimeout(() => {
+        setOkey("");
+        setError(false);
+      }, 10000)
+        ;
+    }
+  };
 
   const removeLessonOnSchedule = (props) => {
     fetch(
@@ -308,7 +339,7 @@ console.log(event);
   function onExportClick() {
     scheduleObj.exportToExcel();
   }
-  const lessonsOnSchedule = lessons.map((l) => {
+  const lessonsOnSchedule = (lessons).map((l) => {
     return {
       Id: l.id,
       Subject: l.subject.name,
@@ -333,7 +364,7 @@ console.log(event);
       StartTime: s.startTime,
       EndTime: s.endTime,
       Room: s.room?.name,
-      Teacher: s.teacher?.name,      
+      Teacher: s.teacher?.name,
       GroupId: s.subject.id,
       LessonHours: s.lessonHours,
       Rooms: s.subject.subjectRooms,
@@ -341,7 +372,18 @@ console.log(event);
     };
   });
 
-  var filteredMessages = lessons.filter(l => l.status!== 0); 
+  const holidaysOnSchedule = holidays.map((h) => {
+    return {
+      Id: h.id,
+      Subject: h.name,
+      StartTime: h.startDate,
+      EndTime: h.endDate,
+      IsBlock: true,
+      // AllDay: true,
+    };
+  });
+
+  var filteredMessages = lessons.filter((l) => l.status !== 0);
 
   function ClickButton() {
     scheduleObj.closeEditor();
@@ -496,8 +538,17 @@ console.log(event);
     { GroupText: schedules.name, GroupId: 21, GroupColor: "#ffcd16" },
   ];
 
+  const dataaSource = [...lessonsOnSchedule, ...holidaysOnSchedule];
+
   return (
+
     <div>
+      {error && <Message negative>
+        <Message.Header>Nepavyko sukurti</Message.Header>
+        <p >
+          {okey}
+        </p>
+      </Message>}
       <div className="schedule-control-section">
         <div className="control-section">
           <div className="control-wrapper drag-sample-wrapper">
@@ -540,6 +591,29 @@ console.log(event);
                   popupOpen={onPopupOpen}> 
                    {/* popupOpen={onPopupOpen.bind(this)}> */}
                   {/* {console.log(lessons)}
+                  <ScheduleComponent
+                    id="schedule-drag-drop"
+                    cssClass="schedule-drag-drop"
+                    ref={(schedule) => (scheduleObj = schedule)}
+                    timeFormat="HH"
+                    firstDayOfWeek="1"
+                    height="550px"
+                    timezone="Europe/Vilnius"
+                    editorTemplate={editorTemplate}
+                    selectedDate={new Date(2023, 1, 10, 24, 0)}
+                    eventSettings={{
+                      dataSource: dataaSource,
+                      fields: {
+                        editorTemplate,
+                      },
+                    }}
+
+                    colorField="Color"
+                    currentView="Month"
+                    actionBegin={onActionBegin.bind(this)}
+                  >
+                    {/* popupOpen={onPopupOpen.bind(this)}> */}
+                    {/* {console.log(lessons)}
                   {console.log(endTime)} */}
                   <ResourcesDirective>
                     <ResourceDirective field='GroupId' title='Owner' name='Owners' dataSource={resourceData} textField='GroupText' idField='GroupId' colorField='GroupColor'>
