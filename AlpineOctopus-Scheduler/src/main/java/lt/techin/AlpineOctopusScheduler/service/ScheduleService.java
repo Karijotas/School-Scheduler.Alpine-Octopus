@@ -390,7 +390,8 @@ public class ScheduleService {
                 .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", scheduleId.toString()));
 
         if (existingSchedule.getLessons().stream().anyMatch(lesson -> lesson.getId().equals(subjectId))) {
-        Lesson newLesson = updateLesson(subjectId, startTime, endTime, givenBoolean, teacherId, roomId);
+            logger.info("itsNew");
+            Lesson newLesson = updateLesson(subjectId, startTime, endTime, givenBoolean, teacherId, roomId);
             lessonRepository.save(newLesson);
             existingSchedule.updateLesson(newLesson);
             return scheduleRepository.save(existingSchedule);
