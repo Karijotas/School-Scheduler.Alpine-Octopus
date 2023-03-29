@@ -71,8 +71,8 @@ public class ScheduleService {
 
         return existingSchedule.getLessons()
                 .stream()
-                .noneMatch(lesson -> lesson.getStartTime().equals(startTime) && lesson.getEndTime().equals(endTime)
-                        && (lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime)));
+                .noneMatch(lesson -> lesson.getStartTime().equals(startTime) || lesson.getEndTime().equals(endTime)
+                        || (lesson.getStartTime().isAfter(startTime) && lesson.getEndTime().isBefore(endTime)));
     }
 
     public boolean validateTeacherBetweenSchedules(Long teacher, LocalDateTime startTime, LocalDateTime endTime) {
@@ -244,7 +244,7 @@ public class ScheduleService {
         schedule.setShiftName(createdGroup.getShift().getName());
         schedule.setSubjects(lessonList);
         schedule.setStatus(1);
-        
+
         return scheduleRepository.save(schedule);
     }
 
