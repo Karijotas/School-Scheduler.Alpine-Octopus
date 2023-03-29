@@ -3,16 +3,14 @@ import {
   closest,
   L10n,
   remove,
-  setCulture,
+  setCulture
 } from "@syncfusion/ej2-base";
 import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
 import { DateTimePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import { TreeViewComponent } from "@syncfusion/ej2-react-navigations";
 import {
-  Agenda,
-  Timezone,
-  Day,
+  Agenda, Day,
   DragAndDrop,
   ExcelExport,
   Inject,
@@ -22,19 +20,18 @@ import {
   ResourceDirective,
   ResourcesDirective,
   Schedule,
-  ScheduleComponent,
-  ViewDirective,
+  ScheduleComponent, Timezone, ViewDirective,
   ViewsDirective,
   Week,
-  WorkWeek,
+  WorkWeek
 } from "@syncfusion/ej2-react-schedule";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Grid, Header, Segment, List } from "semantic-ui-react";
+import { Grid, Header, List, Message, Segment } from "semantic-ui-react";
 import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap5.css";
 import { updateSampleSection } from "./sample-base";
-import { Button } from "@syncfusion/ej2-buttons";
 import "./Schedule.css";
+import { MessagePopUp } from "./Message";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -86,12 +83,15 @@ export function ScheduleView() {
   const params = useParams();
   const [schedules, setSchedules] = useState([]);
   const [lessons, setLessons] = useState([]);
+  const [holidays, setHolidays] = useState([]);
+  const [error, setError] = useState(false)
   const [subjects, setSubjects] = useState([]);
   const [subjectId, setSubjectId] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [active, setActive] = useState(false);
   const [subject, setSubject] = useState("");
+  const [okey, setOkey] = useState("");
   const [lesson, setLesson] = useState({
     id: "",
     name: "",
@@ -232,16 +232,40 @@ export function ScheduleView() {
       .then(setSubjects);
   }, [params, active]);
 
+  useEffect(() => {
+    fetch(`/api/v1/holidays/`)
+      .then((response) => response.json())
+      .then(setHolidays);
+  }, [params, active]);
+
   const createLessonOnSchedule = (props) => {
     fetch(
       `/api/v1/schedule/${params.id}/create/${props.id}/${props.startTime}/${props.endTime}`,
       {
         method: "PATCH",
       }
-    ).then(setActive(true));
-    setLesson({});
-    setStartTime("");
-    setEndTime("");
+    ).then(applyResult)
+  };
+
+  const applyResult = (result) => {
+    if (result.ok) {
+      setActive(true);
+      setLesson({});
+      setStartTime("");
+      setEndTime("");
+    } else {
+      setActive(true);
+      setError(true);
+      let info = result.json()
+        .then((jsonResponse) => setOkey(jsonResponse.message));
+
+      ;
+      setTimeout(() => {
+        setOkey("");
+        setError(false);
+      }, 10000)
+        ;
+    }
   };
 
   const removeLessonOnSchedule = (props) => {
@@ -263,14 +287,14 @@ export function ScheduleView() {
   function onExportClick() {
     scheduleObj.exportToExcel();
   }
-  const lessonsOnSchedule = lessons.map((l) => {
+  const lessonsOnSchedule = (lessons).map((l) => {
     return {
       Id: l.id,
       Subject: l.subject.name,
       StartTime: l.startTime,
       EndTime: l.endTime,
-      Room: l.room.name,
-      Teacher: l.teacher.name,
+      Room: l.room?.name,
+      Teacher: l.teacher?.name,
       GroupId: l.subject.id,
       Description: l.online ? "ONLINE" : "",
       Status: l.statusMessage,
@@ -283,10 +307,21 @@ export function ScheduleView() {
       Subject: s.subject.name,
       StartTime: s.startTime,
       EndTime: s.endTime,
-      Room: s.room.name,
-      Teacher: s.teacher.name,
+      Room: s.room?.name,
+      Teacher: s.teacher?.name,
       GroupId: s.subject.id,
       LessonHours: s.lessonHours,
+    };
+  });
+
+  const holidaysOnSchedule = holidays.map((h) => {
+    return {
+      Id: h.id,
+      Subject: h.name,
+      StartTime: h.startDate,
+      EndTime: h.endDate,
+      IsBlock: true,
+      // AllDay: true,
     };
   });
 
@@ -465,8 +500,17 @@ export function ScheduleView() {
     { GroupText: schedules.name, GroupId: 21, GroupColor: "#ffcd16" },
   ];
 
+  const dataaSource = [...lessonsOnSchedule, ...holidaysOnSchedule];
+
   return (
+
     <div>
+      {error && <Message negative>
+        <Message.Header>Nepavyko sukurti</Message.Header>
+        <p >
+          {okey}
+        </p>
+      </Message>}
       <div className="schedule-control-section">
         <div className="control-section">
           <div className="control-wrapper drag-sample-wrapper">
@@ -483,7 +527,6 @@ export function ScheduleView() {
                     />
                   </div>
                   <h1 className="title-text">{schedules.name}</h1>
-
                   <ScheduleComponent
                     id="schedule-drag-drop"
                     cssClass="schedule-drag-drop"
@@ -495,11 +538,12 @@ export function ScheduleView() {
                     editorTemplate={editorTemplate}
                     selectedDate={new Date(2023, 1, 10, 24, 0)}
                     eventSettings={{
-                      dataSource: lessonsOnSchedule,
+                      dataSource: dataaSource,
                       fields: {
                         editorTemplate,
                       },
                     }}
+
                     colorField="Color"
                     currentView="Month"
                     actionBegin={onActionBegin.bind(this)}

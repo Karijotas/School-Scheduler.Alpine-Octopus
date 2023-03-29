@@ -12,6 +12,9 @@ public interface LessonRepository extends JpaRepository<Lesson, Long> {
 
     List<Lesson> findByRoom_IdAndStartTimeGreaterThan(Long id, LocalDateTime startTime);
 
+    List<Lesson> findByTeacher_IdAndStartTimeGreaterThanEqualAndEndTimeLessThanEqual(Long id, LocalDateTime startTime, LocalDateTime endTime);
+
+
     List<Lesson> findByTeacher_IdAndStartTime(Long id, @NonNull LocalDateTime startTime);
 
     List<Lesson> findByTeacher_IdAndStartTimeGreaterThan(Long id, LocalDateTime startTime);
