@@ -87,7 +87,7 @@
     <!--    </repositories>-->
 
     <build>
-        <finalName>alpin</finalName>
+        <finalName>alpine</finalName>
         <plugins>
             <!--            <plugin>-->
             <!--                <groupId>org.codehaus.cargo</groupId>-->
