@@ -35,6 +35,7 @@ import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap5.css";
 import { updateSampleSection } from "./sample-base";
 import { Button } from "@syncfusion/ej2-buttons";
 import "./Schedule.css";
+import MessagePopUp from "./Message";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -92,6 +93,7 @@ export function ScheduleView() {
   const [endTime, setEndTime] = useState("");
   const [active, setActive] = useState(false);
   const [subject, setSubject] = useState("");
+  const [okey, setOkey] = useState("");
   const [lesson, setLesson] = useState({
     id: "",
     name: "",
@@ -238,10 +240,26 @@ export function ScheduleView() {
       {
         method: "PATCH",
       }
-    ).then(setActive(true));
-    setLesson({});
-    setStartTime("");
-    setEndTime("");
+    ).then(applyResult);
+  };
+
+  const applyResult = (result) => {
+    if (result.ok) {
+      setOkey("Sėkmingai sukurta");
+      setActive(true);
+      setLesson({});
+      setStartTime("");
+      setEndTime("");
+      setTimeout(() => {
+        setOkey("");
+      }, 5000);
+    } else {
+      setOkey(<MessagePopUp/>);
+      setTimeout(() => {
+        setOkey("");
+      }, 5000)
+      ;
+    }
   };
 
   const removeLessonOnSchedule = (props) => {
@@ -466,7 +484,9 @@ export function ScheduleView() {
   ];
 
   return (
+    
     <div>
+      <div>{okey}</div>
       <div className="schedule-control-section">
         <div className="control-section">
           <div className="control-wrapper drag-sample-wrapper">
@@ -483,7 +503,6 @@ export function ScheduleView() {
                     />
                   </div>
                   <h1 className="title-text">{schedules.name}</h1>
-
                   <ScheduleComponent
                     id="schedule-drag-drop"
                     cssClass="schedule-drag-drop"

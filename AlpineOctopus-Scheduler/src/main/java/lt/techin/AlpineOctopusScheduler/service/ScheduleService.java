@@ -389,18 +389,18 @@ public class ScheduleService {
                                         .equals(subjectId))
                                 .forEach(
                                         lesson -> {
-                                            if (teacherLessonsPerDay(lesson.getTeacher().getId(), startTime, createdLesson.getLessonHours()) <= 12) {
+//                                            if (teacherLessonsPerDay(lesson.getTeacher().getId(), startTime, createdLesson.getLessonHours()) <= 12) {
 
-                                                if (lesson.getLessonHours() - createdLesson.getLessonHours() <= 0) {
-                                                    lesson.setLessonHours(0);
-                                                    logger.info("lessonHours" + lesson.getLessonHours().toString());
-                                                } else {
-                                                    lesson.setLessonHours(lesson.getLessonHours() - createdLesson.getLessonHours());
-                                                }
-//                                            lesson.getTeacher().setWorkHoursPerWeek(lesson.getTeacher().getWorkHoursPerWeek() + createdLesson.getLessonHours());
+                                            if (lesson.getLessonHours() - createdLesson.getLessonHours() <= 0) {
+                                                lesson.setLessonHours(0);
+                                                logger.info("lessonHours" + lesson.getLessonHours().toString());
                                             } else {
-                                                throw new SchedulerValidationException("Too many lessons taken", "lesson", "Lesson amount", scheduleId.toString());
+                                                lesson.setLessonHours(lesson.getLessonHours() - createdLesson.getLessonHours());
                                             }
+//                                            lesson.getTeacher().setWorkHoursPerWeek(lesson.getTeacher().getWorkHoursPerWeek() + createdLesson.getLessonHours());
+//                                            } else {
+//                                                throw new SchedulerValidationException("Too many lessons taken", "lesson", "Lesson amount", scheduleId.toString());
+//                                            }
                                         });
 
                         existingSchedule.scheduleLesson(createdLesson);
@@ -425,7 +425,7 @@ public class ScheduleService {
                                 existingSchedule.setStatus(1);
                             }
                         }
-                        
+
                         //validating if the classroom is already in use in another Schedule lesson. If so, setting the status to warning
                         if (createdLesson.getRoom() != null) {
                             if (!validateRoomBetweenSchedules(createdLesson.getRoom().getId(), startTime, endTime)) {
