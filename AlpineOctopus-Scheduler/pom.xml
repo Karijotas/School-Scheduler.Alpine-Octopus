@@ -54,8 +54,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
-
     </dependencies>
 
     <!--    <pluginRepositories>-->
@@ -85,10 +83,10 @@
     <!--            </snapshots>-->
     <!--        </repository>-->
     <!--    </repositories>-->
-
     <build>
-        <finalName>alpine</finalName>
+        <finalName>alpine-octopus</finalName>
         <plugins>
+
             <!--            <plugin>-->
             <!--                <groupId>org.codehaus.cargo</groupId>-->
             <!--                <artifactId>cargo-maven3-plugin</artifactId>-->
@@ -103,7 +101,7 @@
             <!--                    <configuration>-->
             <!--                        <home>${project.build.directory}/catalina-base</home>-->
             <!--                        <properties>-->
-            <!--                            <cargo.servlet.port>8081</cargo.servlet.port>-->
+            <!--                            <cargo.servlet.port>8077</cargo.servlet.port>-->
             <!--                            &lt;!&ndash;                            <cargo.rmi.port>${cargo.samples.rmi.port}</cargo.rmi.port>&ndash;&gt;-->
             <!--                            &lt;!&ndash;                            <cargo.tomcat.ajp.port>${cargo.samples.tomcat.ajp.port}</cargo.tomcat.ajp.port>&ndash;&gt;-->
             <!--                        </properties>-->
