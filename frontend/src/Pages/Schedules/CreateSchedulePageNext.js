@@ -59,13 +59,13 @@ export function CreateSchedulePageNext() {
   };
 
   useEffect(() => {
-    fetch(`/api/v1/schedule/${params.id}/subjects`)
+    fetch(`/alpine/api/v1/schedule/${params.id}/subjects`)
       .then((response) => response.json())
       .then(setSubjects);
   }, [params]);
 
   useEffect(() => {
-    fetch("/api/v1/schedule/" + params.id)
+    fetch("/alpine/api/v1/schedule/" + params.id)
       .then((response) => response.json())
       .then((result) => {
         getGroup(result);
@@ -93,15 +93,15 @@ export function CreateSchedulePageNext() {
 
   const updateSchedule = (lessonId) => {
     if (teacherId === undefined) {
-      fetch(`/api/v1/schedule/${params.id}/${lessonId}/?roomId=${roomId}`, {
+      fetch(`/alpine/api/v1/schedule/${params.id}/${lessonId}/?roomId=${roomId}`, {
         method: "PATCH",
       }).then(applyResult);
     } else if (roomId === undefined) {
-      fetch(`/api/v1/schedule/${params.id}/${lessonId}/?teacherId=${teacherId}`, {
+      fetch(`/alpine/api/v1/schedule/${params.id}/${lessonId}/?teacherId=${teacherId}`, {
         method: "PATCH",
       }).then(applyResult);
     } else {
-      fetch(`/api/v1/schedule/${params.id}/${lessonId}/?roomId=${roomId}&teacherId=${teacherId}`, {
+      fetch(`/alpine/api/v1/schedule/${params.id}/${lessonId}/?roomId=${roomId}&teacherId=${teacherId}`, {
         method: "PATCH",
       }).then(applyResult);
     }
@@ -109,7 +109,7 @@ export function CreateSchedulePageNext() {
 
   //Teacher dropdown
   useEffect(() => {
-    fetch("/api/v1/teachers/")
+    fetch("/alpine/api/v1/teachers/")
       .then((response) => response.json())
       .then((data) =>
         setTeachers(
@@ -121,7 +121,7 @@ export function CreateSchedulePageNext() {
   }, []);
 
   const getGroup = (props) => {
-    fetch(`/api/v1/groups/${props.groupIdValue}`)
+    fetch(`/alpine/api/v1/groups/${props.groupIdValue}`)
       .then((response) => response.json())
       .then((data) => {
         setGroups(data);
@@ -142,7 +142,7 @@ export function CreateSchedulePageNext() {
 
   // Room dropdown
   useEffect(() => {
-    fetch("/api/v1/rooms/")
+    fetch("/alpine/api/v1/rooms/")
       .then((response) => response.json())
       .then((data) =>
         setRooms(
@@ -154,14 +154,14 @@ export function CreateSchedulePageNext() {
   }, []);
 
   const getTeachersInSubjects = (props) => {
-    fetch(`/api/v1/subjects/${props.id}/teachers`)
+    fetch(`/alpine/api/v1/subjects/${props.id}/teachers`)
       .then((response) => response.json())
       .then(setTeachersInSubjects)
       .then(console.log(teachersInSubjects));
   };
 
   const checkAndSetStatus = () => {
-    fetch(`/api/v1/schedule/validation/${params.id}`, {
+    fetch(`/alpine/api/v1/schedule/validation/${params.id}`, {
       method: "PATCH",
     }).then(applyResult);
   }

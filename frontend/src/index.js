@@ -66,7 +66,7 @@ registerLicense('Mgo+DSMBaFt/QHRqVVhjVFpFdEBBXHxAd1p/VWJYdVt5flBPcDwsT3RfQF5jSn5
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <HashRouter >
+    <HashRouter basename={process.env.REACT_APP_PUBLIC_URL}>
       <Routes>
         <Route path='/' element={<App />} />
         {/* EDIT MENU ROUTES */}
@@ -130,13 +130,7 @@ root.render(
 
         {/* Group schedules routes: */}
         <Route path='/view/groupsSchedules' element={<ViewGroupsSchedules />} />
-        <Route path='/view/scheduleView' element={<Sched1 />} />
-        <Route path='/view/scheduleView1' element={<ScheduleView1 />} />
-        <Route path='/view/dnd' element={<Drag_Drop />} />
-
-        {/* <Route path='/view/groupsSchedules/edit/:id' element={<EditModuleObject />} /> */}
         <Route path='/view/groupsSchedules/edit/:id' element={<EditGroupScheduleObject />} />
-        {/* <Route path='/create/groupsSchedules' element={<CreateModulePage />} /> */}
 
 
         <Route path='/create/groupsSchedules' element={<CreateSchedule />} />

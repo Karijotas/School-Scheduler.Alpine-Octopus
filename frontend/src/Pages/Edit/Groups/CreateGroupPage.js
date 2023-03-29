@@ -127,7 +127,7 @@ export function CreateGroupPage() {
   };
 
   const createGroup = () => {
-    fetch("/api/v1/groups?programId=" + programId + "&shiftId=" + shiftId, {
+    fetch("/alpine/api/v1/groups?programId=" + programId + "&shiftId=" + shiftId, {
       method: "POST",
       headers: JSON_HEADERS,
       body: JSON.stringify({
@@ -138,7 +138,7 @@ export function CreateGroupPage() {
     }).then(applyResult);
   };
   useEffect(() => {
-    fetch("/api/v1/programs")
+    fetch("/alpine/api/v1/programs")
       .then((response) => response.json())
       .then((data) =>
         setPrograms(
@@ -150,7 +150,7 @@ export function CreateGroupPage() {
   }, [shifts]);
 
   useEffect(() => {
-    fetch("/api/v1/shifts")
+    fetch("/alpine/api/v1/shifts")
       .then((response) => response.json())
       .then((data) =>
         setShifts(

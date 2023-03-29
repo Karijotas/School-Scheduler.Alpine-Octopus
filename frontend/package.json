@@ -1,5 +1,6 @@
 {
   "name": "frontend",
+  "homepage": "/alpine/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -54,7 +55,6 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:8084/",
   "devDependencies": {
     "systemjs-plugin-json": "^0.3.0"
   }

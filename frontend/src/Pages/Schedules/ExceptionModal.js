@@ -39,7 +39,7 @@ const ModalExampleSize = () => {
 
   const createLessonOnSchedule = (props) => {
     fetch(
-      `/api/v1/schedule/${params.id}/create/${props.id}/${props.startTime}/${props.endTime}`,
+      `/alpine/api/v1/schedule/${params.id}/create/${props.id}/${props.startTime}/${props.endTime}`,
       {
         method: "PATCH",
       }

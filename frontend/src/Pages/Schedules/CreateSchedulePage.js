@@ -42,7 +42,7 @@ export function CreateSchedule() {
 
   const createSchedule = () => {
     fetch(
-      "/api/v1/schedule?groupId=" + groupId + "&startingDate=" + startingDate,
+      "/alpine/api/v1/schedule?groupId=" + groupId + "&startingDate=" + startingDate,
       {
         method: "POST",
         headers: JSON_HEADERS,
@@ -54,7 +54,7 @@ export function CreateSchedule() {
   };
 
   useEffect(() => {
-    fetch("/api/v1/groups/")
+    fetch("/alpine/api/v1/groups/")
       .then((response) => response.json())
       .then((data) =>
         setGroups(

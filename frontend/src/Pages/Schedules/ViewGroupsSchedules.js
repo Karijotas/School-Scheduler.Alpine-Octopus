@@ -44,13 +44,13 @@ export function ViewGroupsSchedules() {
   const [dates, setDates] = useState([]);
 
   const fetchSchedules = async () => {
-    fetch("/api/v1/schedule/page?page=" + activePage)
+    fetch("/alpine/api/v1/schedule/page?page=" + activePage)
       .then((response) => response.json())
       .then((jsonResponse) => setSchedules(jsonResponse));
   };
 
   const removeSchedule = (id) => {
-    fetch("/api/v1/schedule/" + id, {
+    fetch("/alpine/api/v1/schedule/" + id, {
       method: "DELETE",
     })
       .then(fetchSchedules)
@@ -58,13 +58,13 @@ export function ViewGroupsSchedules() {
   };
 
   const fetchFilterSchedulesByName = async () => {
-    fetch(`/api/v1/schedule/page/name-filter/${nameText}`)
+    fetch(`/alpine/api/v1/schedule/page/name-filter/${nameText}`)
       .then((response) => response.json())
       .then((jsonRespone) => setSchedules(jsonRespone));
   };
 
   const fetchFilterSchedulesByStartingDate = async () => {
-    fetch(`/api/v1/schedule/page/starting-date-filter/${formatStartingDate()}`)
+    fetch(`/alpine/api/v1/schedule/page/starting-date-filter/${formatStartingDate()}`)
       .then((response) => response.json())
       .then((jsonResponse) => setSchedules(jsonResponse));
   };

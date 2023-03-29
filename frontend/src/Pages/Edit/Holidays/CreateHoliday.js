@@ -118,7 +118,7 @@ export function CreateHoliday(){
 
   const createHoliday = () => {
     fetch(
-      '/api/v1/holidays', {
+      '/alpine/api/v1/holidays', {
       method: 'POST',
       headers: JSON_HEADERS,
       body: JSON.stringify({

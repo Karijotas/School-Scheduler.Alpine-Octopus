@@ -34,7 +34,7 @@ export function ViewModules() {
   const [pagecount, setPageCount] = useState();
 
   const fetchFilterModules = async () => {
-    fetch(`/api/v1/modules/page/name-filter/${nameText}`)
+    fetch(`/alpine/api/v1/modules/page/name-filter/${nameText}`)
       .then((response) => response.json())
       .then((jsonRespone) => setModules(jsonRespone));
 
@@ -54,20 +54,20 @@ export function ViewModules() {
   // }, [modules]);
 
   const fetchSingleModules = () => {
-    fetch("/api/v1/modules")
+    fetch("/alpine/api/v1/modules")
       .then((response) => response.json())
       .then((jsonResponse) => setModulesForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(modulesforPaging.length / 10)));
   };
 
   const fetchModules = async () => {
-    fetch(`/api/v1/modules/page?page=` + activePage)
+    fetch(`/alpine/api/v1/modules/page?page=` + activePage)
       .then((response) => response.json())
       .then((jsonRespones) => setModules(jsonRespones));
   };
 
   const removeModule = (id) => {
-    fetch("/api/v1/modules/delete/" + id, {
+    fetch("/alpine/api/v1/modules/delete/" + id, {
       method: "PATCH",      
     }).then(fetchModules)
     .then(setOpen(false));

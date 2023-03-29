@@ -119,7 +119,7 @@ export function EditShiftObject() {
   };
 
   useEffect(() => {
-    fetch("/api/v1/shifts/" + params.id)
+    fetch("/alpine/api/v1/shifts/" + params.id)
       .then((response) => response.json())
       .then(setShifts)
       .then(setStarts(shifts.starts))
@@ -131,7 +131,7 @@ export function EditShiftObject() {
   };
 
   const updateShifts = () => {
-    fetch("/api/v1/shifts/" + params.id, {
+    fetch("/alpine/alpine/api/v1/shifts/" + params.id, {
       method: "PUT",
       headers: JSON_HEADERS,
       body: JSON.stringify(shifts),

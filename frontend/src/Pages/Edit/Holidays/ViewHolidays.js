@@ -35,7 +35,7 @@ const [startDate, setStartDate] = useState(null);
 const [endDate, setEndDate] = useState(null);
 
 const fetchHolidays = async () => {
-  fetch(`/api/v1/holidays/page?page=` + activePage)
+  fetch(`/alpine/api/v1/holidays/page?page=` + activePage)
     .then((response) => response.json())
     .then((jsonResponse) => setHolidays(jsonResponse));  
 };
@@ -43,14 +43,14 @@ const fetchHolidays = async () => {
 const encodedNameText = encodeURIComponent(nameText);
 
 const fetchFilterHolidays = async () => {
-  fetch(`/api/v1/holidays/name-filter/${encodedNameText}`)
+  fetch(`/alpine/api/v1/holidays/name-filter/${encodedNameText}`)
     .then((response) => response.json())
     .then((jsonResponse) => setHolidays(jsonResponse));
 };
 
 const fetchDateFilterHolidays = async () => {
   if (startDate && endDate) {
-    fetch("/api/v1/holidays/date-range-filter/?startDate=" + startDate + "&endDate=" + endDate)
+    fetch("/alpine/api/v1/holidays/date-range-filter/?startDate=" + startDate + "&endDate=" + endDate)
     .then((response) => response.json())
     .then((jsonResponse) => setHolidays(jsonResponse));
   }
@@ -67,7 +67,7 @@ const handleDateChange = (dates) => {
 };
 
 const removeHoliday = (id) => {
-    fetch("/api/v1/holidays/" + id, {
+    fetch("/alpine/api/v1/holidays/" + id, {
         method: "DELETE",
     })
       .then(fetchHolidays)
@@ -75,7 +75,7 @@ const removeHoliday = (id) => {
   };
 
   const fetchSingleHolidays = async () => {
-    fetch("/api/v1/holidays/")
+    fetch("/alpine/api/v1/holidays/")
       .then((response) => response.json())
       .then((jsonResponse) => setHolidaysForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(holidaysforPaging.length / 10)));

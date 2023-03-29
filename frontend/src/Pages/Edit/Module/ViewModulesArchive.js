@@ -23,26 +23,26 @@ export function ViewModulesArchive() {
 
 
   const fetchSingleModules = () => {
-    fetch("/api/v1/modules/archive/")
+    fetch("/alpine/api/v1/modules/archive/")
       .then((response) => response.json())
       .then((jsonResponse) => setModulesForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(modulesforPaging.length / 10)));
   };
 
   const fetchPagedModules = async () => {
-    fetch('/api/v1/modules/archive/page?page=' + activePage)
+    fetch('/alpine/api/v1/modules/archive/page?page=' + activePage)
       .then((response) => response.json())
       .then((jsonResponse) => setModules(jsonResponse));
   };
 
   const fetchModules = async () => {
-    fetch(`/api/v1/modules/archive/`)
+    fetch(`/alpine/api/v1/modules/archive/`)
       .then((response) => response.json())
       .then((jsonRespones) => setModules(jsonRespones));
   };
 
   useEffect(() => {
-    fetch("/api/v1/modules/archive/page?page=" + activePage)
+    fetch("/alpine/api/v1/modules/archive/page?page=" + activePage)
       .then((response) => response.json())
       .then((jsonRespones) => setModules(jsonRespones));
   }, []);
@@ -52,7 +52,7 @@ export function ViewModulesArchive() {
   }, [activePage]);
 
   const restoreModule = (id) => {
-    fetch("/api/v1/modules/restore/" + id, {
+    fetch("/alpine/api/v1/modules/restore/" + id, {
       method: "PATCH",
     }).then(fetchPagedModules);
   };

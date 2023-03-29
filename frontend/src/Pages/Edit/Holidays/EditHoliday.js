@@ -92,7 +92,7 @@ export function EditHoliday() {
   }, [holidays])
 
   useEffect(() => {
-    fetch("/api/v1/holidays/" + params.id)
+    fetch("/alpine/api/v1/holidays/" + params.id)
       .then((response) => response.json())
       .then(setHolidays);
   }, [active, params]);
@@ -107,7 +107,7 @@ export function EditHoliday() {
 
   const updateHolidays = () => {
     fetch(
-      "/api/v1/holidays/" +
+      "/alpine/api/v1/holidays/" +
       params.id,
       {
         method: "PUT",

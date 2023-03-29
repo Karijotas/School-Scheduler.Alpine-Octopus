@@ -28,19 +28,19 @@ export function ViewRooms() {
   const [roomsforPaging, setRoomsForPaging] = useState([]);
 
   const fetchRooms = async () => {
-    fetch(`/api/v1/rooms/page?page=` + activePage)
+    fetch(`/alpine/api/v1/rooms/page?page=` + activePage)
       .then((response) => response.json())
       .then((jsonResponse) => setRooms(jsonResponse));
   };
 
   const fetchFilterRooms = async () => {
-    fetch(`/api/v1/rooms/name-filter/${nameText}`)
+    fetch(`/alpine/api/v1/rooms/name-filter/${nameText}`)
       .then((response) => response.json())
       .then((jsonRespone) => setRooms(jsonRespone));
   };
 
   const removeRoom = (id) => {
-    fetch("/api/v1/rooms/delete/" + id, {
+    fetch("/alpine/api/v1/rooms/delete/" + id, {
       method: "PATCH",
     })
       .then(fetchRooms)
@@ -49,14 +49,14 @@ export function ViewRooms() {
 
   const fetchBuildingRooms = async () => {
     fetch(
-      `/api/v1/rooms/building-filter/${buildingText}`
+      `/alpine/api/v1/rooms/building-filter/${buildingText}`
     )
       .then((response) => response.json())
       .then((jsonRespone) => setRooms(jsonRespone));
   };
 
   const fetchSingleRooms = async () => {
-    fetch("/api/v1/rooms/")
+    fetch("/alpine/api/v1/rooms/")
       .then((response) => response.json())
       .then((jsonResponse) => setRoomsForPaging(jsonResponse))
       .then(setPageCount(Math.ceil(roomsforPaging.length / 10)));

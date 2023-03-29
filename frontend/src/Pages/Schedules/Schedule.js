@@ -266,7 +266,7 @@ export function ScheduleView() {
 
 
   useEffect(() => {
-    fetch(`/api/v1/schedule/${params.id}/lessons`)
+    fetch(`/alpine/api/v1/schedule/${params.id}/lessons`)
       .then((response) => response.json())
       // .then((jsonRespones) => setLessons(jsonRespones))
       .then(setLessons)
@@ -274,20 +274,20 @@ export function ScheduleView() {
   }, [params, active]);
 
   useEffect(() => {
-    fetch(`/api/v1/schedule/${params.id}/subjects`)
+    fetch(`/alpine/api/v1/schedule/${params.id}/subjects`)
       .then((response) => response.json())
       .then(setSubjects);
   }, [params, active]);
 
   useEffect(() => {
-    fetch(`/api/v1/holidays/`)
+    fetch(`/alpine/api/v1/holidays/`)
       .then((response) => response.json())
       .then(setHolidays);
   }, [params, active]);
 
   const createLessonOnSchedule = (props) => {
     fetch(
-      `/api/v1/schedule/${params.id}/create/${lesson.id}/${props.startTime}/${props.endTime}/${online ? `?givenBoolean=${online}` : ""}${room.id ? `&roomId=${room.id}` : ""}${teacher.id ? `&teacherId=${teacher.id}` : ""}`, {
+      `/alpine/api/v1/schedule/${params.id}/create/${lesson.id}/${props.startTime}/${props.endTime}/${online ? `?givenBoolean=${online}` : ""}${room.id ? `&roomId=${room.id}` : ""}${teacher.id ? `&teacherId=${teacher.id}` : ""}`, {
       method: 'PATCH'
     })
       .then(setActive(true))
@@ -320,14 +320,14 @@ export function ScheduleView() {
 
   const removeLessonOnSchedule = (props) => {
     fetch(
-      `/api/v1/schedule/${params.id}/remove/${props.Id}`, {
+      `/alpine/api/v1/schedule/${params.id}/remove/${props.Id}`, {
       method: 'DELETE'
     })
       .then(setActive(true));
   }
 
   useEffect(() => {
-    fetch("/api/v1/schedule/" + params.id)
+    fetch("/alpine/api/v1/schedule/" + params.id)
       .then((response) => response.json())
       .then(setSchedules);
   }, [params]);
