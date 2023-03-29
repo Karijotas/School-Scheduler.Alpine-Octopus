@@ -244,8 +244,7 @@ public class ScheduleService {
         schedule.setShiftName(createdGroup.getShift().getName());
         schedule.setSubjects(lessonList);
         schedule.setStatus(1);
-
-
+        
         return scheduleRepository.save(schedule);
     }
 
