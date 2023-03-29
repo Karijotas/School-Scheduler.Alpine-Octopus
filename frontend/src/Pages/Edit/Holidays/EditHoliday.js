@@ -38,26 +38,44 @@ export function EditHoliday() {
   const [reccuring, setReccuring] = useState(holidays.reccuring);
 
   //Validation
-  const [nameError, setNameError] = useState("");
+ 
+  const [nameError, setNameError] = useState("")
+  const [startDateError, setStartDateError] = useState("")
+  const [endDateError, setEndDateError] = useState("")
+
   const [formValid, setFormValid] = useState(false);
+
+  useEffect(() => {
+    if (nameError || startDateError|| endDateError) {
+      setFormValid(false)
+    } else {
+      setFormValid(true)
+    }
+  }, [nameError,startDateError,endDateError])
 
   useEffect(() => {
     setReccuring(holidays.reccuring);
   }, [holidays.reccuring]);
-
-  useEffect(() => {
-    if (nameError) {
-      setFormValid(false);
-    } else {
-      setFormValid(true);
-    }
-  }, [nameError]);
 
   const handleNameInputChange = (e) => {
     holidays.name = e.target.value;
     setName(e.target.value);
     validateNameInput(e.target.value);
   };
+
+  const handleStartDateInputChange = (e) => {
+    holidays.startDate = e.target.value;
+    const newDate = dayjs(e).format("YYYY-MM-DD");
+      setStartDate(newDate);
+    validateStartDate(e.target.value)
+  }
+
+  const handleEndDateInputChange = (e) => {
+    holidays.startDate = e.target.value;
+    const newDate = dayjs(e).format("YYYY-MM-DD");
+      setEndDate(newDate);
+    validateEndDate(e.target.value)
+  }
 
   const handleReccuringChange = (e) => {
     if (e.target.value === 'yes') {
@@ -79,6 +97,24 @@ export function EditHoliday() {
       setNameError("");
     }
   };
+  const validateStartDate = (value) => {
+    if(value){
+      setStartDateError("")
+    } else {
+      setStartDateError("Negali būti tuščias!")
+    }
+  }
+
+  const validateEndDate = (value) => {
+    if(!value){
+      setEndDateError("Negali būti tuščias!")
+    } else {
+      if(value.isBefore(startDate)){
+        setEndDateError("Data iki negali buti anksciau nei Data nuo")
+      }
+      setEndDateError("")
+    }       
+  }
 
   useEffect(() => {
     setStartDate(holidays.startDate)
@@ -227,6 +263,7 @@ export function EditHoliday() {
                         />
                       </Table.Cell>
                       <Table.Cell>
+                      {(startDateError) && <div style={{ color: "red" }}>{startDateError}</div>}
                         <DatePicker
                           className="controls4"
                           placeholder="Data nuo"
@@ -234,7 +271,10 @@ export function EditHoliday() {
                           defaultValue={dayjs(startDate)}
                           onChange={(e) => {
                             const newDate = dayjs(e);
-                            if (newDate.isValid()) {
+                            if (!newDate.isValid()) {
+                              setStartDateError("Negali buti tuscias")
+                            } else {
+                              setStartDateError("");
                               const formattedDate = newDate.format("YYYY-MM-DD");
                               setStartDate(formattedDate);
                               holidays.startDate = formattedDate;
