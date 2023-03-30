@@ -1,4 +1,4 @@
-import { addClass, closest, L10n, remove, setCulture } from '@syncfusion/ej2-base';
+import { addClass, closest, L10n, remove, setCulture, loadCldr } from '@syncfusion/ej2-base';
 import { ButtonComponent, CheckBoxComponent } from '@syncfusion/ej2-react-buttons';
 import { DateTimePickerComponent } from '@syncfusion/ej2-react-calendars';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
@@ -10,6 +10,12 @@ import { Grid, Header, List, Message, Segment } from "semantic-ui-react";
 import "../../../node_modules/@syncfusion/ej2-icons/styles/bootstrap5.css";
 import { updateSampleSection } from "./sample-base";
 import "./Schedule.css";
+import * as gregorian from "cldr-data/main/lt/ca-gregorian.json";
+import * as numbers from "cldr-data/main/lt/numbers.json";
+import * as timeZoneNames from "cldr-data/main/lt/timeZoneNames.json";
+import * as numberingSystems from "cldr-data/supplemental/numberingSystems.json";
+
+loadCldr(numberingSystems, gregorian, numbers, timeZoneNames);
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
@@ -167,7 +173,7 @@ export function ScheduleView() {
         startTime: timezone.removeLocalOffset(new Date(event.data.StartTime)).toISOString(),
         endTime: timezone.removeLocalOffset(new Date(event.data.EndTime)).toISOString()
       })
-      setLesson({id: event.data.Id})
+      setLesson({ id: event.data.Id })
       console.log(newLesson);
       createLessonOnSchedule(newLesson);
 
@@ -314,8 +320,8 @@ export function ScheduleView() {
       setStartTime("");
       setEndTime("");
       setRoom({});
-    setTeacher({});
-    setOnline(false);
+      setTeacher({});
+      setOnline(false);
     } else {
       setActive(false);
       setError(true);
@@ -441,7 +447,7 @@ export function ScheduleView() {
             onChange={(e) => setLesson({ id: e.target.itemData.Id, name: e.value })}
           >
           </DropDownListComponent>
-                   
+
         </td></tr>
         <br />
         <tr><td className="e-textlabel">Nuotolinė pamoka: </td><td colSpan={4}>
@@ -454,7 +460,7 @@ export function ScheduleView() {
           <DropDownListComponent id="Room" value={props.Room || room.name} placeholder='Pasirinkti' data-name="Room" className="e-field" style={{ width: '100%' }} dataSource={subjectsOnSchedule}
             fields={roomFields} onChange={(e) => setRoom({ id: e.target.itemData.Id, name: e.value })}>
           </DropDownListComponent >
-        </td></tr>  )}
+        </td></tr>)}
         <tr><td className="e-textlabel">Mokytojas: </td><td colSpan={4}>
           <DropDownListComponent id="Teacher" value={props.Teacher || teacher.name} placeholder='Pasirinkti' data-name="Teacher" className="e-field" style={{ width: '100%' }} dataSource={subjectsOnSchedule}
             fields={teacherFields} onChange={(e) => setTeacher({ id: e.target.itemData.Id, name: e.value })}>
