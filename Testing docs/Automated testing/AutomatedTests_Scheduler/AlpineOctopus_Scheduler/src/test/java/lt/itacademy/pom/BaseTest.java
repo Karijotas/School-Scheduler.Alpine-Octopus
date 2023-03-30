@@ -16,8 +16,8 @@ public class BaseTest {
         driver = new ChromeDriver();
         //driver = new FirefoxDriver();
         driver.manage().window().maximize();
-        driver.get("http://localhost:3000/");
-        //driver.get("https://tomcat.akademijait.vtmc.lt/alpine-octopus/#/");
+        //driver.get("http://localhost:3000/");
+        driver.get("https://tomcat.akademijait.vtmc.lt/alpine/");
     }
 
 
