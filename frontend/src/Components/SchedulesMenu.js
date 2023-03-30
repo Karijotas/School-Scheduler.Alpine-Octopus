@@ -32,7 +32,7 @@ export function SchedulesMenu() {
               exact
               to="/view/groupsSchedules"
             />
-            <Menu.Item
+            {/* <Menu.Item
               disabled
               // id="icocolor"
               name="teachers"
@@ -45,7 +45,7 @@ export function SchedulesMenu() {
               name="rooms"
               icon="warehouse"
               content="Kabinetai"
-            />
+            /> */}
           </Menu>
         </Grid.Column>
       </Grid>

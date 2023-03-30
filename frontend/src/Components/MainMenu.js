@@ -25,12 +25,12 @@ export default class MainMenu extends Component {
                     name='edit'
                     content='Tvarkyti duomenis'
                 />
-                <Menu.Item
+                {/* <Menu.Item
                     disabled
                     name='statistics'
                     content='Statistika'
 
-                />
+                /> */}
                 <Menu.Item
                     href='#/view/groupsSchedules'
                     name='Schedules'
