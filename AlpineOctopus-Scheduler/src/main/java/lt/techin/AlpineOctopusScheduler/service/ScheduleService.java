@@ -358,11 +358,12 @@ public class ScheduleService {
         return scheduleRepository.save(existingSchedule);
     }
 
-    public Lesson updateLesson(Long subjectId, LocalDateTime startTime, LocalDateTime endTime, Boolean givenBoolean, Long teacherId, Long roomId){
+    public Lesson updateLesson(Long subjectId, LocalDateTime startTime, LocalDateTime endTime, Boolean givenBoolean, Long teacherId, Long roomId) {
         var newLesson = lessonRepository.findById(subjectId).orElseThrow(() -> new SchedulerValidationException("Lesson does not exist", "id", "Lesson not found", subjectId.toString()));
         newLesson.setStartTime(startTime);
         newLesson.setEndTime(endTime);
         newLesson.setOnline(givenBoolean);
+
 
         if (teacherId != null) {
             //finding the teacher
@@ -371,14 +372,15 @@ public class ScheduleService {
             newLesson.setTeacher(existingTeacher);
         }
 
-        if (roomId != null) {
+        if (givenBoolean.equals(true)) {
+            newLesson.setRoom(null);
+        } else if (roomId != null & givenBoolean.equals(false)) {
             //finding the room
             var existingRoom = roomRepository.findById(roomId)
                     .orElseThrow(() -> new SchedulerValidationException("Room does not exist", "id", "Room not found", roomId.toString()));
             //setting the room
             newLesson.setRoom(existingRoom);
         }
-
         return newLesson;
     }
 
@@ -425,6 +427,11 @@ public class ScheduleService {
                                     .map(LessonMapper::toIndividualLesson)
                                     .findAny()
                                     .orElseThrow(() -> new SchedulerValidationException("Schedule does not exist", "id", "Schedule not found", scheduleId.toString()));
+
+                            if (givenBoolean.equals(true)) {
+                                createdLesson.setRoom(null);
+                            }
+                            createdLesson.setOnline(givenBoolean);
 
                             //setting the time in the schedule
                             createdLesson.setStartTime(startTime);

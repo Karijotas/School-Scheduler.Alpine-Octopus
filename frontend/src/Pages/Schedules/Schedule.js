@@ -356,8 +356,18 @@ export function ScheduleView() {
   }
 
   function onExportClick() {
-    scheduleObj.exportToExcel();
+    const exportFields = [
+      { name: 'Teacher', text: 'Mokytojas' },
+      { name: 'Subject', text: 'Paskaita' },
+      { name: 'Room', text: 'Kabinetas' },
+      { name: 'Description', text: "Nuotolinė" },
+      { name: 'StartTime', text: 'Pradžia' },
+      { name: 'EndTime', text: 'Pabaiga' },
+    ];
+    const exportValues = { fieldsInfo: exportFields };
+    scheduleObj.exportToExcel(exportValues);
   }
+  
   const lessonsOnSchedule = (lessons).map((l) => {
     return {
       Id: l.id,
